@@ -13,6 +13,10 @@ repositories {
 }
 
 dependencies {
-      compile group: 'com.opencsv', name: 'opencsv', version: '3.3'
-      compile 'org.apache.httpcomponents:httpclient:4.5.5'
+	// https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream
+	compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.2'
+	
+	compile group: 'com.opencsv', name: 'opencsv', version: '3.3'
+	
+ 	compile 'org.apache.httpcomponents:httpclient:4.5.5'
 }
