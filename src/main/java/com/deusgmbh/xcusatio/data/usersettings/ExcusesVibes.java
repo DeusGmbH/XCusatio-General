@@ -5,26 +5,17 @@ package com.deusgmbh.xcusatio.data.usersettings;
  * @author Tobias.Schmidt@de.ibm.com
  *
  */
-public class QuickSettings {
-    private ContextMode contextMode;
+public class ExcusesVibes {
     private boolean aggresiv;
     private boolean funny;
     private boolean suckUp; // einschleimen
 
-    public QuickSettings(ContextMode contextMode, boolean aggresiv, boolean funny, boolean suckUp) {
+    public ExcusesVibes(boolean aggresiv, boolean funny, boolean suckUp) {
         super();
-        this.contextMode = contextMode;
+
         this.aggresiv = aggresiv;
         this.funny = funny;
         this.suckUp = suckUp;
-    }
-
-    public ContextMode getContextMode() {
-        return contextMode;
-    }
-
-    public void setContextMode(ContextMode contextMode) {
-        this.contextMode = contextMode;
     }
 
     public boolean isAggresiv() {
@@ -51,7 +42,4 @@ public class QuickSettings {
         this.suckUp = suckUp;
     }
 
-    public enum ContextMode {
-        AUTOMATIC, MANUALLY;
-    }
 }

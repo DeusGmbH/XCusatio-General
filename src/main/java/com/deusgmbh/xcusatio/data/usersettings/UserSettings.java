@@ -16,18 +16,20 @@ public class UserSettings {
     private Sex sex;
     private Address home;
     private Address university;
-    private QuickSettings quickSettings;
+    private ExcusesVibesMode excusesVibesMode;
+    private ExcusesVibes excusesVibes;
     private Set<String> interests;
 
     public UserSettings(String googleCalendar, int age, Sex sex, Address home, Address university,
-            QuickSettings quickSettings, Set<String> interests) {
+            ExcusesVibesMode excusesVibesMode, ExcusesVibes excusesVibes, Set<String> interests) {
         super();
         this.googleCalendar = googleCalendar;
         this.home = home;
         this.university = university;
         this.age = age;
         this.sex = sex;
-        this.quickSettings = quickSettings;
+        this.excusesVibesMode = excusesVibesMode;
+        this.excusesVibes = excusesVibes;
         this.interests = interests;
     }
 
@@ -76,14 +78,6 @@ public class UserSettings {
         this.sex = sex;
     }
 
-    public QuickSettings getQuickSettings() {
-        return quickSettings;
-    }
-
-    public void setQuickSettings(QuickSettings quickSettings) {
-        this.quickSettings = quickSettings;
-    }
-
     public Set<String> getInterests() {
         return interests;
     }
@@ -92,7 +86,27 @@ public class UserSettings {
         this.interests = interests;
     }
 
+    public ExcusesVibesMode getExcusesVibesMode() {
+        return excusesVibesMode;
+    }
+
+    public void setExcusesVibesMode(ExcusesVibesMode excusesVibesMode) {
+        this.excusesVibesMode = excusesVibesMode;
+    }
+
+    public ExcusesVibes getExcusesVibes() {
+        return excusesVibes;
+    }
+
+    public void setExcusesVibes(ExcusesVibes excusesVibes) {
+        this.excusesVibes = excusesVibes;
+    }
+
     public enum Sex {
         Male, Female;
+    }
+
+    public enum ExcusesVibesMode {
+        AUTOMATIC, MANUALLY;
     }
 }
