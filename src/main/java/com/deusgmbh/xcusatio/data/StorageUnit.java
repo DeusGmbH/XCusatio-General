@@ -6,6 +6,11 @@ import java.util.logging.Logger;
 
 import com.thoughtworks.xstream.XStream;
 
+/**
+ * 
+ * @author Tobias.Schmidt@de.ibm.com
+ *
+ */
 public class StorageUnit<T> {
     private static final Logger LOGGER = Logger.getLogger(StorageUnit.class.getName());
     protected final String path;
