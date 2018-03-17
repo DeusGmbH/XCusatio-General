@@ -12,13 +12,13 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
  *
  */
 public class APIManager {
-    List<APIService> apis;
+    List<? extends APIService> apis;
 
-    public APIManager(List<APIService> apis) {
+    public APIManager(List<? extends APIService> apis) {
         this.apis = apis;
     }
 
-    public Map<APIService, Object> executeAPICalls(UserSettings userSettings) {
+    public Map<? extends APIService, Object> executeAPICalls(UserSettings userSettings) {
         // TODO: Maybe some performance optimization is necessary here:
         // investigate Futures and completableFutures
 
