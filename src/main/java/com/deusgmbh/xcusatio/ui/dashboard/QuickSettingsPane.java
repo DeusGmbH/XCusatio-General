@@ -78,6 +78,7 @@ public class QuickSettingsPane extends VBox {
         recentlyUsedList.stream().limit(LIMIT_RU_ENTRIES).forEach(entry -> {
             Label tmpLabel = new Label(entry);
             recentlyUsedPane.getChildren().add(tmpLabel);
+        });
     }
 
     public boolean getAutoMoodToggle() {
