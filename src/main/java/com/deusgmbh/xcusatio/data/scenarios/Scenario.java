@@ -4,6 +4,7 @@ public class Scenario {
     // following Section is only for UI-testing-purposes and can be deleted
     // afterwards
     private String UIName;
+    private String scenarioType;
 
     public Scenario(String name) {
         this.UIName = name;
@@ -15,6 +16,14 @@ public class Scenario {
 
     public String getUIName() {
         return this.UIName;
+    }
+
+    public void setScenarioType(String type) {
+        this.scenarioType = type;
+    }
+
+    public String getScenarioType() {
+        return scenarioType;
     }
 
 }

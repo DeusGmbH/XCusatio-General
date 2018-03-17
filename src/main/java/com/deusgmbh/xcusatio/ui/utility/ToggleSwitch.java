@@ -51,8 +51,8 @@ public class ToggleSwitch extends Parent {
         Rectangle backgroundRectangle = new Rectangle(SWITCH_WIDTH, SWITCH_HEIGHT);
         backgroundRectangle.setArcWidth(SWITCH_HEIGHT);
         backgroundRectangle.setArcHeight(SWITCH_HEIGHT);
-        backgroundRectangle.setFill(Color.WHITE);
-        backgroundRectangle.setStroke(Color.LIGHTGRAY);
+        backgroundRectangle.setFill(SWITCH_BACKGROUND_COLOR);
+        backgroundRectangle.setStroke(SWITCH_STROKE_COLOR);
         return backgroundRectangle;
     }
 

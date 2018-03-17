@@ -1,5 +1,9 @@
 package com.deusgmbh.xcusatio.ui;
 
+import java.util.ArrayList;
+import java.util.function.Consumer;
+
+import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.ui.dashboard.Dashboard;
 import com.deusgmbh.xcusatio.ui.editor.Editor;
 import com.deusgmbh.xcusatio.ui.profilsettings.ProfileSettings;
@@ -34,7 +38,7 @@ public class XCusatioWindow extends Application {
     private static final double NAVIGATION_PANEL_WIDTH_MULTIPLIER = 0.1;
     private static final double NAVIGATION_PANEL_BUTTON_HEIGHT_MULTIPLIER = 0.1;
 
-    private static final String DASHBOARD_TAB_NAME = "Back";
+    private static final String DASHBOARD_TAB_NAME = "Zurück";
     private static final String EDITOR_TAB_NAME = "Editor";
     private static final String PROFILE_SETTINGS_TAB_NAME = "Profile";
 
@@ -54,7 +58,21 @@ public class XCusatioWindow extends Application {
 
         main.setLeft(navigationPanel);
         main.setCenter(dashboard);
+
         stage.show();
+    }
+
+    public void createScenarioButtons(ArrayList<Scenario> scenarioList, Consumer<String> generateExcuse) {
+        scenarioList.stream().forEach(scenario -> {
+            Button tmpBtn = new Button(scenario.getUIName());
+            tmpBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(final ActionEvent e) {
+                    generateExcuse.accept(scenario.getScenarioType());
+                }
+            });
+            dashboard.getScenarioButtonPane().getChildren().add(tmpBtn);
+        });
     }
 
     private BorderPane initMainStage(Stage stage) {
@@ -103,5 +121,33 @@ public class XCusatioWindow extends Application {
             }
         });
         return btn;
+    }
+
+    public void setExcuseLabel(String excuse) {
+        this.dashboard.setExcuseLabel(excuse);
+    }
+
+    public void setThumbGesture(int value) {
+        this.dashboard.setThumbGesture(value);
+    }
+
+    public void setRUList(ArrayList<String> ruList) {
+        this.dashboard.setRUList(ruList);
+    }
+
+    public boolean getAutoMoodToggle() {
+        return this.dashboard.getAutoMoodToggle();
+    }
+
+    public boolean getMoodHumorToggle() {
+        return this.dashboard.getMoodHumorToggle();
+    }
+
+    public boolean getMoodAggressionToggle() {
+        return this.dashboard.getMoodAggressionToggle();
+    }
+
+    public boolean getMoodFawnToggle() {
+        return this.dashboard.getMoodFawnToggle();
     }
 }

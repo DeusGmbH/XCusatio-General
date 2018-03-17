@@ -2,9 +2,6 @@ package com.deusgmbh.xcusatio.ui.dashboard;
 
 import java.util.ArrayList;
 
-import com.deusgmbh.xcusatio.data.scenarios.Scenario;
-
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -25,6 +22,7 @@ public class Dashboard extends BorderPane {
     private HBox scenarioButtonPane;
     private QuickSettingsPane quickSettingsPane;
     private ExcusePane excusePane;
+    private BorderPane innerPane;
 
     public Dashboard() {
         initScenarioButtonPane();
@@ -34,9 +32,12 @@ public class Dashboard extends BorderPane {
 
         excusePane = new ExcusePane();
 
-        this.setBottom(this.scenarioButtonPane);
+        innerPane = new BorderPane();
+        innerPane.setBottom(this.scenarioButtonPane);
+        innerPane.setCenter(this.excusePane);
+
         this.setRight(this.quickSettingsPane);
-        this.setCenter(this.excusePane);
+        this.setCenter(innerPane);
     }
 
     private void initScenarioButtonPane() {
@@ -45,22 +46,39 @@ public class Dashboard extends BorderPane {
                 .bind(this.heightProperty().multiply(SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER));
         scenarioButtonPane.setStyle("-fx-border-color: " + SCENARIO_BUTTON_PANE_BACKGROUND_BORDER_COLOR);
 
-        // only for testing purposes. Later these buttons should be generated
-        // by getting every scenario given in scenarioConfig
-        this.getScenarioUINames().stream().forEach(scenario -> {
-            Button tmpBtn = new Button(scenario.getUIName());
-            scenarioButtonPane.getChildren().add(tmpBtn);
-        });
     }
 
-    // only for testing purposes
-    private ArrayList<Scenario> getScenarioUINames() {
-        ArrayList<Scenario> testScenarioList = new ArrayList<Scenario>();
-        testScenarioList.add(new Scenario("Verspätung"));
-        testScenarioList.add(new Scenario("Glücksrad"));
-        testScenarioList.add(new Scenario("Projektabgabe"));
-        testScenarioList.add(new Scenario("Daumengeste"));
+    public HBox getScenarioButtonPane() {
+        return this.scenarioButtonPane;
+    }
 
-        return testScenarioList;
+    public void setExcuseLabel(String excuse) {
+        this.excusePane = new ExcusePane(excuse);
+        innerPane.setCenter(excusePane);
+    }
+
+    public void setThumbGesture(int value) {
+        this.excusePane = new ExcusePane(value);
+        innerPane.setCenter(excusePane);
+    }
+
+    public void setRUList(ArrayList<String> ruList) {
+        this.quickSettingsPane.setRUList(ruList);
+    }
+
+    public boolean getAutoMoodToggle() {
+        return this.quickSettingsPane.getAutoMoodToggle();
+    }
+
+    public boolean getMoodHumorToggle() {
+        return this.quickSettingsPane.getMoodHumorToggle();
+    }
+
+    public boolean getMoodAggressionToggle() {
+        return this.quickSettingsPane.getMoodAggressionToggle();
+    }
+
+    public boolean getMoodFawnToggle() {
+        return this.quickSettingsPane.getMoodFawnToggle();
     }
 }
