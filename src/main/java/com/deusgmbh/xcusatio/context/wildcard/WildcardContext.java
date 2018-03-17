@@ -1,4 +1,4 @@
-package com.deusgmbh.xcusatio.context;
+package com.deusgmbh.xcusatio.context.wildcard;
 
 /**
  * 

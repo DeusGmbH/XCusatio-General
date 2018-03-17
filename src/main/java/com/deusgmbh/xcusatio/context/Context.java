@@ -2,6 +2,7 @@ package com.deusgmbh.xcusatio.context;
 
 import java.util.Set;
 
+import com.deusgmbh.xcusatio.context.wildcard.WildcardContext;
 import com.deusgmbh.xcusatio.data.usersettings.ExcusesVibes;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 
