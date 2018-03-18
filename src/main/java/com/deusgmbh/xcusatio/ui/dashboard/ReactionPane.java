@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
  */
 
 public class ReactionPane extends VBox {
+    // TODO: Change
     private static final String DEFAULT_OUTPUT = "Hier könnte Ihre Ausrede stehen";
 
     private ExcusePane excusePane;

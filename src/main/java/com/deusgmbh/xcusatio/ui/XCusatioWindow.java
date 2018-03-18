@@ -105,7 +105,7 @@ public class XCusatioWindow extends Application {
         return this.dashboard.getMoodFawnToggle();
     }
 
-    public void setScenarioList(ArrayList<Scenario> scenarioList) {
+    public void setScenarios(ArrayList<Scenario> scenarioList) {
         this.scenarioList = scenarioList;
     }
 

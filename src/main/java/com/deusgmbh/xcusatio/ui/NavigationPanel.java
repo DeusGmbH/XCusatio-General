@@ -7,6 +7,15 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * 
+ * This class is for initializing and filling the navigation pane of the user
+ * interface with linked entries
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
+
 public class NavigationPanel extends VBox {
 
     private static final String NAVIGATION_PANEL_BACKGROUND_COLOR = "#888888";

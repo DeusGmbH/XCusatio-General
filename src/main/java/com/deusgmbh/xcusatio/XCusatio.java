@@ -30,7 +30,7 @@ public class XCusatio extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         mainWindow.start(stage);
-        mainWindow.setScenarioList(mainController.getScenarioList());
+        mainWindow.setScenarios(mainController.getScenarios());
         mainWindow.registerScenarioButtonActionEvent(mainController::generateExcuse);
 
         registerCallbacks();

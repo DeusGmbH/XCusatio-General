@@ -7,7 +7,9 @@ import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -26,33 +28,38 @@ public class Dashboard extends BorderPane {
     private static final String SCENARIO_BUTTON_PANE_BACKGROUND_BORDER_COLOR = "#000000";
 
     private HBox scenarioButtonPane;
-    private QuickSettingsPane quickSettingsPane;
     private ReactionPane reactionPane;
-    private BorderPane innerPane;
+    private QuickSettingsPane quickSettingsPane;
+    private RecentlyUsedPane recentlyUsedPane;
+    private BorderPane leftPane;
+    private BorderPane rightPane;
 
     public Dashboard() {
-        initScenarioButtonPane();
-
-        quickSettingsPane = new QuickSettingsPane();
-        quickSettingsPane.prefWidthProperty().bind(this.widthProperty().multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
-
-        reactionPane = new ReactionPane();
-
-        // innerPane for designing reasons for giving right side all height of
-        // dashboard
-        innerPane = new BorderPane();
-        innerPane.setBottom(this.scenarioButtonPane);
-        innerPane.setCenter(this.reactionPane);
-
-        this.setRight(this.quickSettingsPane);
-        this.setCenter(innerPane);
-    }
-
-    private void initScenarioButtonPane() {
         scenarioButtonPane = new HBox();
         scenarioButtonPane.prefHeightProperty()
                 .bind(this.heightProperty().multiply(SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER));
         scenarioButtonPane.setStyle("-fx-border-color: " + SCENARIO_BUTTON_PANE_BACKGROUND_BORDER_COLOR);
+
+        reactionPane = new ReactionPane();
+
+        quickSettingsPane = new QuickSettingsPane();
+        quickSettingsPane.prefWidthProperty().bind(this.widthProperty().multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
+
+        Separator separator = new Separator();
+        separator.setOrientation(Orientation.HORIZONTAL);
+
+        // left and right pane for designing reasons - left side output &
+        // scenario buttons; right side quick settings & recently used
+        leftPane = new BorderPane();
+        leftPane.setBottom(this.scenarioButtonPane);
+        leftPane.setCenter(this.reactionPane);
+
+        rightPane = new BorderPane();
+        rightPane.setTop(quickSettingsPane);
+        rightPane.setCenter(recentlyUsedPane);
+
+        this.setRight(this.quickSettingsPane);
+        this.setCenter(leftPane);
     }
 
     public void createScenarioButtons(ArrayList<Scenario> scenarioList, Consumer<String> generateExcuse) {
@@ -70,16 +77,16 @@ public class Dashboard extends BorderPane {
 
     public void setExcuseLabel(String excuse) {
         this.reactionPane = new ReactionPane(excuse);
-        innerPane.setCenter(reactionPane);
+        leftPane.setCenter(reactionPane);
     }
 
     public void setThumbGesture(int value) {
         this.reactionPane = new ReactionPane(value);
-        innerPane.setCenter(reactionPane);
+        leftPane.setCenter(reactionPane);
     }
 
     public void setRUList(ArrayList<String> ruList) {
-        this.quickSettingsPane.setRUList(ruList);
+        this.recentlyUsedPane.setRUList(ruList);
     }
 
     public boolean getAutoMoodToggle() {

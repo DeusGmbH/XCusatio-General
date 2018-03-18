@@ -6,10 +6,18 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
+/**
+ * 
+ * This class if for creating the excuse labels in the excuse pane
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
 public class ExcuseLabelPane extends VBox {
     private static final int EXCUSE_TITLE_LABEL_FONT_SIZE = 40;
     private static final int EXCUSE_LABEL_FONT_SIZE = 24;
 
+    // TODO: Change
     private static final String EXCUSE_TITLE = "Ausrede";
 
     public ExcuseLabelPane(String output) {

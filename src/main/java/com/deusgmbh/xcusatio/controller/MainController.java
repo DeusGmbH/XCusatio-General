@@ -23,7 +23,7 @@ public class MainController {
         // TODO: Write generateExcuse method
     }
 
-    public ArrayList<Scenario> getScenarioList() {
+    public ArrayList<Scenario> getScenarios() {
         ArrayList<Scenario> scenarioList = new ArrayList<Scenario>();
         // TODO Get all scenarios
         return scenarioList;

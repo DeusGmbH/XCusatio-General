@@ -4,6 +4,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
+/**
+ * 
+ * This class is for creating the thumb gesture if needed
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
 public class ThumbGesturePane extends BorderPane {
     private static final String THUMB_GESTURE_PATH = "file:src/main/resources/thumbGesture.png";
     private static final int THUMB_GESTURE_HEIGHT = 200;
