@@ -28,7 +28,7 @@ public class XCusatioWindow extends Application {
     private static final int WINDOW_DEF_HEIGHT = 600;
 
     private static final double NAVIGATION_PANEL_WIDTH_MULTIPLIER = 0.1;
-    private static final String DASHBOARD_TAB_NAME = "Zurück";
+    private static final String DASHBOARD_TAB_NAME = "ZurÃ¼ck";
     private static final String EDITOR_TAB_NAME = "Editor";
     private static final String PROFILE_SETTINGS_TAB_NAME = "Profile";
 
@@ -59,7 +59,6 @@ public class XCusatioWindow extends Application {
 
         stage.show();
     }
-
     private BorderPane initMainStage(Stage stage) {
         main = new BorderPane();
         Scene scene = new Scene(main);

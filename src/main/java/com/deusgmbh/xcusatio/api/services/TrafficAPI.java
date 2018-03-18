@@ -2,6 +2,6 @@ package com.deusgmbh.xcusatio.api.services;
 
 import com.deusgmbh.xcusatio.api.APIService;
 
-public class TrafficAPI implements APIService {
+public class TrafficAPI extends APIService {
 
 }

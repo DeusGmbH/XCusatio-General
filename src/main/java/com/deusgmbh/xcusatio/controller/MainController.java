@@ -19,7 +19,7 @@ public class MainController {
     public MainController() {
     }
 
-    public void generateExcuse(String excuseType) {
+    public void generateExcuse(Scenario scenario) {
         // TODO: Write generateExcuse method
     }
 
