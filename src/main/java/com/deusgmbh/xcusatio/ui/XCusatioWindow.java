@@ -1,6 +1,7 @@
 package com.deusgmbh.xcusatio.ui;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
@@ -37,7 +38,7 @@ public class XCusatioWindow extends Application {
     private Dashboard dashboard;
     private Editor editor;
     private ProfileSettings profileSettings;
-    private ArrayList<Scenario> scenarioList;
+    private List<Scenario> scenarioList;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -59,6 +60,7 @@ public class XCusatioWindow extends Application {
 
         stage.show();
     }
+
     private BorderPane initMainStage(Stage stage) {
         main = new BorderPane();
         Scene scene = new Scene(main);
@@ -72,7 +74,7 @@ public class XCusatioWindow extends Application {
         return main;
     }
 
-    public void registerScenarioButtonActionEvent(Consumer<String> generateExcuse) {
+    public void registerScenarioButtonActionEvent(Consumer<Scenario> generateExcuse) {
         dashboard.createScenarioButtons(scenarioList, generateExcuse);
     }
 
@@ -104,7 +106,7 @@ public class XCusatioWindow extends Application {
         return this.dashboard.getMoodFawnToggle();
     }
 
-    public void setScenarios(ArrayList<Scenario> scenarioList) {
+    public void setScenarios(List<Scenario> scenarioList) {
         this.scenarioList = scenarioList;
     }
 

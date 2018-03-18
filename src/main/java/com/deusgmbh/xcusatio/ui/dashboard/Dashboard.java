@@ -1,6 +1,7 @@
 package com.deusgmbh.xcusatio.ui.dashboard;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
@@ -62,13 +63,13 @@ public class Dashboard extends BorderPane {
         this.setCenter(leftPane);
     }
 
-    public void createScenarioButtons(ArrayList<Scenario> scenarioList, Consumer<String> generateExcuse) {
+    public void createScenarioButtons(List<Scenario> scenarioList, Consumer<Scenario> generateExcuse) {
         scenarioList.stream().forEach(scenario -> {
             Button tmpBtn = new Button(scenario.getUIName());
             tmpBtn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(final ActionEvent e) {
-                    generateExcuse.accept(scenario.getScenarioType());
+                    generateExcuse.accept(scenario);
                 }
             });
             scenarioButtonPane.getChildren().add(tmpBtn);
