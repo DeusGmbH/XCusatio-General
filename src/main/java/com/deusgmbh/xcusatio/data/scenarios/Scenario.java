@@ -1,10 +1,16 @@
+
 package com.deusgmbh.xcusatio.data.scenarios;
 
+/**
+ * 
+ * @author Tobias.Schmidt@de.ibm.com
+ *
+ */
 public class Scenario {
     // following Section is only for UI-testing-purposes and can be deleted
     // afterwards
     private String UIName;
-    private String scenarioType;
+    private ScenarioType scenarioType;
 
     public Scenario(String name) {
         this.UIName = name;
@@ -18,12 +24,16 @@ public class Scenario {
         return this.UIName;
     }
 
-    public void setScenarioType(String type) {
+    public void setScenarioType(ScenarioType type) {
         this.scenarioType = type;
     }
 
-    public String getScenarioType() {
+    public ScenarioType getScenarioType() {
         return scenarioType;
+    }
+  
+   public enum ScenarioType {
+        WheelOfFurtune, ThumbGesture, LateArrival, DelayedSubmission
     }
 
 }
