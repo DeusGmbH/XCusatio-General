@@ -1,6 +1,9 @@
 package com.deusgmbh.xcusatio.controller;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
+
+import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 
 /**
  * This class handles inputs of the userinterface via an event listener
@@ -16,4 +19,13 @@ public class MainController {
     public MainController() {
     }
 
+    public void generateExcuse(String excuseType) {
+        // TODO: Write generateExcuse method
+    }
+
+    public ArrayList<Scenario> getScenarioList() {
+        ArrayList<Scenario> scenarioList = new ArrayList<Scenario>();
+        // TODO Get all scenarios
+        return scenarioList;
+    }
 }
