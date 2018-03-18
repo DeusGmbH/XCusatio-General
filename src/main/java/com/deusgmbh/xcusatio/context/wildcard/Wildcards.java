@@ -1,6 +1,8 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 
@@ -30,5 +32,9 @@ public class Wildcards {
             source = wildcard.replace(source, wildcardContext);
         }
         return source;
+    }
+
+    public List<String> getNames() {
+        return wildcards.stream().map(Wildcard::getIdentifier).collect(Collectors.toList());
     }
 }
