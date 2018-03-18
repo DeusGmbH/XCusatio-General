@@ -10,6 +10,7 @@ import java.util.Set;
 public class UserSettings {
     // TODO: What kind of data does the calendar API need? And how can this be
     // represented here?
+    // some kind of config json and refresh token
     private String googleCalendar;
 
     private int age;
