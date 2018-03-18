@@ -17,11 +17,18 @@ public class Wildcards {
     private void addTemperatureWildcard() {
         wildcards.add(new Wildcard("$temperature$") {
             @Override
-            public String replaceWildcard(String source, WildcardContext wildcardContext) {
+            public String replace(String source, WildcardContext wildcardContext) {
                 String temperatureText = wildcardContext.getWeather().getTemperature() + " C";
                 source.replaceAll("$temperature$", temperatureText);
                 return source;
             }
         });
+    }
+
+    public String replace(String source, WildcardContext wildcardContext) {
+        for (Wildcard wildcard : wildcards) {
+            source = wildcard.replace(source, wildcardContext);
+        }
+        return source;
     }
 }
