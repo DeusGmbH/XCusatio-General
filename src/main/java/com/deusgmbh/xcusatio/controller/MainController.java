@@ -22,6 +22,10 @@ public class MainController {
         wildcards = new Wildcards();
     }
 
+    public void generateExcuse(Scenario scenario) {
+        // TODO: Write generateExcuse method
+    }
+  
     public List<String> getWildcardNames() {
         return wildcards.getNames();
     }
@@ -30,7 +34,7 @@ public class MainController {
         // TODO: Write generateExcuse method
     }
 
-    public List<Scenario> getScenarioList() {
+    public List<Scenario> getScenarios() {
         List<Scenario> scenarioList = new ArrayList<Scenario>();
         // TODO Get all scenarios
         return scenarioList;
