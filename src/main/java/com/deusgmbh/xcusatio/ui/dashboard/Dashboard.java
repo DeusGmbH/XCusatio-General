@@ -1,7 +1,13 @@
 package com.deusgmbh.xcusatio.ui.dashboard;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
+import com.deusgmbh.xcusatio.data.scenarios.Scenario;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -21,7 +27,7 @@ public class Dashboard extends BorderPane {
 
     private HBox scenarioButtonPane;
     private QuickSettingsPane quickSettingsPane;
-    private ExcusePane excusePane;
+    private ReactionPane reactionPane;
     private BorderPane innerPane;
 
     public Dashboard() {
@@ -30,11 +36,13 @@ public class Dashboard extends BorderPane {
         quickSettingsPane = new QuickSettingsPane();
         quickSettingsPane.prefWidthProperty().bind(this.widthProperty().multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
 
-        excusePane = new ExcusePane();
+        reactionPane = new ReactionPane();
 
+        // innerPane for designing reasons for giving right side all height of
+        // dashboard
         innerPane = new BorderPane();
         innerPane.setBottom(this.scenarioButtonPane);
-        innerPane.setCenter(this.excusePane);
+        innerPane.setCenter(this.reactionPane);
 
         this.setRight(this.quickSettingsPane);
         this.setCenter(innerPane);
@@ -45,21 +53,29 @@ public class Dashboard extends BorderPane {
         scenarioButtonPane.prefHeightProperty()
                 .bind(this.heightProperty().multiply(SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER));
         scenarioButtonPane.setStyle("-fx-border-color: " + SCENARIO_BUTTON_PANE_BACKGROUND_BORDER_COLOR);
-
     }
 
-    public HBox getScenarioButtonPane() {
-        return this.scenarioButtonPane;
+    public void createScenarioButtons(ArrayList<Scenario> scenarioList, Consumer<String> generateExcuse) {
+        scenarioList.stream().forEach(scenario -> {
+            Button tmpBtn = new Button(scenario.getUIName());
+            tmpBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(final ActionEvent e) {
+                    generateExcuse.accept(scenario.getScenarioType());
+                }
+            });
+            scenarioButtonPane.getChildren().add(tmpBtn);
+        });
     }
 
     public void setExcuseLabel(String excuse) {
-        this.excusePane = new ExcusePane(excuse);
-        innerPane.setCenter(excusePane);
+        this.reactionPane = new ReactionPane(excuse);
+        innerPane.setCenter(reactionPane);
     }
 
     public void setThumbGesture(int value) {
-        this.excusePane = new ExcusePane(value);
-        innerPane.setCenter(excusePane);
+        this.reactionPane = new ReactionPane(value);
+        innerPane.setCenter(reactionPane);
     }
 
     public void setRUList(ArrayList<String> ruList) {
