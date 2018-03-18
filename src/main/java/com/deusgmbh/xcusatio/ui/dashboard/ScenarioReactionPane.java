@@ -14,18 +14,18 @@ import javafx.scene.layout.VBox;
  *
  */
 
-public class ReactionPane extends VBox {
+public class ScenarioReactionPane extends VBox {
     // TODO: Change
     private static final String DEFAULT_OUTPUT = "Hier könnte Ihre Ausrede stehen";
 
     private ExcusePane excusePane;
     private ThumbGesturePane thumbGesturePane;
 
-    public ReactionPane() {
+    public ScenarioReactionPane() {
         this(DEFAULT_OUTPUT);
     }
 
-    public ReactionPane(String excuse) {
+    public ScenarioReactionPane(String excuse) {
         this.setAlignment(Pos.CENTER);
 
         excusePane = new ExcusePane(excuse);
@@ -34,7 +34,7 @@ public class ReactionPane extends VBox {
         this.getChildren().add(excusePane);
     }
 
-    public ReactionPane(int thumbGestureValue) {
+    public ScenarioReactionPane(int thumbGestureValue) {
         this.setAlignment(Pos.CENTER);
 
         thumbGesturePane = new ThumbGesturePane(thumbGestureValue);

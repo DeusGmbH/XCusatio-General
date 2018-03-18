@@ -29,7 +29,7 @@ public class Dashboard extends BorderPane {
     private static final String SCENARIO_BUTTON_PANE_BACKGROUND_BORDER_COLOR = "#000000";
 
     private HBox scenarioButtonPane;
-    private ReactionPane reactionPane;
+    private ScenarioReactionPane reactionPane;
     private QuickSettingsPane quickSettingsPane;
     private RecentlyUsedPane recentlyUsedPane;
     private BorderPane leftPane;
@@ -41,7 +41,7 @@ public class Dashboard extends BorderPane {
                 .bind(this.heightProperty().multiply(SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER));
         scenarioButtonPane.setStyle("-fx-border-color: " + SCENARIO_BUTTON_PANE_BACKGROUND_BORDER_COLOR);
 
-        reactionPane = new ReactionPane();
+        reactionPane = new ScenarioReactionPane();
 
         quickSettingsPane = new QuickSettingsPane();
         quickSettingsPane.prefWidthProperty().bind(this.widthProperty().multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
@@ -77,12 +77,12 @@ public class Dashboard extends BorderPane {
     }
 
     public void setExcuseLabel(String excuse) {
-        this.reactionPane = new ReactionPane(excuse);
+        this.reactionPane = new ScenarioReactionPane(excuse);
         leftPane.setCenter(reactionPane);
     }
 
     public void setThumbGesture(int value) {
-        this.reactionPane = new ReactionPane(value);
+        this.reactionPane = new ScenarioReactionPane(value);
         leftPane.setCenter(reactionPane);
     }
 

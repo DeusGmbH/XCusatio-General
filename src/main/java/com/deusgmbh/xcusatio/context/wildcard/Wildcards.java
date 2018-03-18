@@ -1,5 +1,6 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ public class Wildcards {
     private Set<Wildcard> wildcards;
 
     public Wildcards() {
+        wildcards = new HashSet<Wildcard>();
         addTemperatureWildcard();
     }
 
