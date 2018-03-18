@@ -62,13 +62,13 @@ public class XCusatioWindow extends Application {
         stage.show();
     }
 
-    public void createScenarioButtons(ArrayList<Scenario> scenarioList, Consumer<String> generateExcuse) {
+    public void createScenarioButtons(ArrayList<Scenario> scenarioList, Consumer<Scenario> generateExcuse) {
         scenarioList.stream().forEach(scenario -> {
             Button tmpBtn = new Button(scenario.getUIName());
             tmpBtn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(final ActionEvent e) {
-                    generateExcuse.accept(scenario.getScenarioType());
+                    generateExcuse.accept(scenario);
                 }
             });
             dashboard.getScenarioButtonPane().getChildren().add(tmpBtn);
