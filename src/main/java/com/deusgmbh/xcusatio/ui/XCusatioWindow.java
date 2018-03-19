@@ -28,8 +28,8 @@ public class XCusatioWindow extends Application {
     private static final int WINDOW_DEF_WIDTH = 800;
     private static final int WINDOW_DEF_HEIGHT = 600;
 
-    private static final double NAVIGATION_PANEL_WIDTH_MULTIPLIER = 0.1;
-    private static final String DASHBOARD_TAB_NAME = "Zurück";
+    private static final double NAVIGATION_PANEL_WIDTH_MULTIPLIER = 0.11;
+    private static final String DASHBOARD_TAB_NAME = "Generator";
     private static final String EDITOR_TAB_NAME = "Editor";
     private static final String PROFILE_SETTINGS_TAB_NAME = "Profile";
 

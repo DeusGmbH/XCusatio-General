@@ -1,6 +1,9 @@
 package com.deusgmbh.xcusatio.ui.editor;
 
-import javafx.scene.layout.HBox;
+import com.deusgmbh.xcusatio.data.excuses.Excuse;
+import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
+
+import javafx.scene.control.TabPane;
 
 /**
  * 
@@ -11,8 +14,16 @@ import javafx.scene.layout.HBox;
  *
  */
 
-public class Editor extends HBox {
-    public Editor() {
+public class Editor extends TabPane {
+    private EditorTab excuseEditor;
+    private EditorTab lecturerEditor;
 
+    public Editor() {
+        excuseEditor = new EditorTab<Excuse>("Ausreden");
+        lecturerEditor = new EditorTab<Lecturer>("Dozenten");
+
+        this.getTabs().add(excuseEditor);
+        this.getTabs().add(lecturerEditor);
+        this.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
     }
 }
