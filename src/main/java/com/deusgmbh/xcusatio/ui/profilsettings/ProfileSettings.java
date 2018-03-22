@@ -7,12 +7,12 @@ import javafx.scene.layout.VBox;
  * This is the ProfileSettings class for the User Interface. This class creates
  * the ProfileSettings tab with all of its components
  * 
- * @author Pascal.Schroeder@de.ibm.com
+ * @author Lars.Dittert@de.ibm.com
  *
  */
 
 public class ProfileSettings extends VBox {
-    public ProfileSettings() {
+	public ProfileSettings() {
 
-    }
+	}
 }
