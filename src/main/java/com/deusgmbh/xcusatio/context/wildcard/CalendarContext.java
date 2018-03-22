@@ -1,8 +1,7 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
-public class RNVContext {
+public class CalendarContext {
     /**
-     * Line descriptor delayTime delayCause
      * 
      */
 }
