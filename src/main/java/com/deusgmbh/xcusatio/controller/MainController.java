@@ -1,7 +1,6 @@
 package com.deusgmbh.xcusatio.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
@@ -46,14 +45,6 @@ public class MainController {
         List<Scenario> scenarioList = new ArrayList<Scenario>();
         // TODO Get all scenarios
         return scenarioList;
-    }
-
-    public HashMap<String, String> getExcuseTableColumns() {
-        return Excuse.getRequiredTableColumns();
-    }
-
-    public HashMap<String, String> getLeturerTableColumns() {
-        return Lecturer.getRequiredTableColumns();
     }
 
     public List<Excuse> getExcuses() {
@@ -118,6 +109,18 @@ public class MainController {
 
     public void addLecturer(Lecturer lecturer) {
         // TODO: Write addLecturer method (via StorageUnit)
+        // should end with following line:
+        // this.updateLecturerTable.accept(TODO: fill in new lecturerList);
+    }
+
+    public void editExcuse(Excuse oldExcuseObj, Excuse editedExcuseObj) {
+        // TODO: Write editExcuse method (via StorateUnit)
+        // should end with following line:
+        // this.updateExcuseTable.accept(TODO: fill in new excuseList)
+    }
+
+    public void editLecturer(Lecturer oldLecturerObj, Lecturer editedLecturerObj) {
+        // TODO: Write editLecturer method (via StorateUnit)
         // should end with following line:
         // this.updateLecturerTable.accept(TODO: fill in new lecturerList);
     }

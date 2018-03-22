@@ -1,7 +1,6 @@
 package com.deusgmbh.xcusatio.data.excuses;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;;
 
@@ -11,10 +10,6 @@ import java.util.Set;;
  *
  */
 public class Excuse {
-    private static final String REQ_COLUMN_TEXT_VARNAME = "text";
-    private static final String REQ_COLUMN_TAGS_VARNAME = "tags";
-    private static final String REQ_COLUMN_TEXT_TITLE = "Ausrede";
-    private static final String REQ_COLUMN_TAGS_TITLE = "Tags";
 
     private String text;
     private Set<String> tags;
@@ -82,12 +77,4 @@ public class Excuse {
     public void setNegativeRatings(int negativeRatings) {
         this.negativeRatings = negativeRatings;
     }
-
-    public static HashMap<String, String> getRequiredTableColumns() {
-        HashMap<String, String> requiredColumns = new HashMap<String, String>();
-        requiredColumns.put(REQ_COLUMN_TEXT_VARNAME, REQ_COLUMN_TEXT_TITLE);
-        requiredColumns.put(REQ_COLUMN_TAGS_VARNAME, REQ_COLUMN_TAGS_TITLE);
-        return requiredColumns;
-    }
-
 }

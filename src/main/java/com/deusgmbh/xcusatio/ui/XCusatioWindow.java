@@ -1,8 +1,8 @@
 package com.deusgmbh.xcusatio.ui;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
@@ -80,14 +80,6 @@ public class XCusatioWindow extends Application {
         dashboard.createScenarioButtons(scenarioList, generateExcuse);
     }
 
-    public void registerExcuseTableColumns(HashMap<String, String> excuseTableColumnList) {
-        editor.setExcuseTableColumns(excuseTableColumnList);
-    }
-
-    public void registerLecturerTableColumns(HashMap<String, String> lecturerTableColumnList) {
-        editor.setLecturerTableColumns(lecturerTableColumnList);
-    }
-
     public void registerExcuseTableContent(List<Excuse> excuseList) {
         editor.setExcuseTableContent(excuseList);
     }
@@ -110,6 +102,14 @@ public class XCusatioWindow extends Application {
 
     public void registerAddLecturerEvent(Consumer<Lecturer> addLecturer) {
         editor.registerRemoveLecturerEvent(addLecturer);
+    }
+
+    public void registerEditExcuseEvent(BiConsumer<Excuse, Excuse> editExcuse) {
+        editor.registerEditExcuseEvent(editExcuse);
+    }
+
+    public void registerEditLecturerEvent(BiConsumer<Lecturer, Lecturer> editLecturer) {
+        editor.registerEditLecturerEvent(editLecturer);
     }
 
     public void setExcuseLabel(String excuse) {

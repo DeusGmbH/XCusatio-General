@@ -1,13 +1,13 @@
 package com.deusgmbh.xcusatio.ui.editor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
+import com.deusgmbh.xcusatio.ui.editor.excuse.ExcuseEditorTab;
+import com.deusgmbh.xcusatio.ui.editor.lecturer.LecturerEditorTab;
 
 import javafx.scene.control.TabPane;
 
@@ -21,27 +21,20 @@ import javafx.scene.control.TabPane;
  */
 
 public class Editor extends TabPane {
-    private static final String DEFAULT_LECTURER_NAME = "Name des Dozenten";
-    private static final String DEFAULT_EXCUSE_TEXT = "Ausrede";
+    private static final String EXCUSE_TAB_TITLE = "Ausreden";
+    private static final String LECTURER_TAB_TITLE = "Dozenten";
 
-    private EditorTab<Excuse> excuseEditor;
-    private EditorTab<Lecturer> lecturerEditor;
+    private ExcuseEditorTab excuseEditor;
+    private LecturerEditorTab lecturerEditor;
 
     public Editor() {
-        excuseEditor = new EditorTab<Excuse>("Ausreden");
-        lecturerEditor = new EditorTab<Lecturer>("Dozenten");
+        excuseEditor = new ExcuseEditorTab(EXCUSE_TAB_TITLE);
+        lecturerEditor = new LecturerEditorTab(LECTURER_TAB_TITLE);
 
         this.getTabs().add(excuseEditor);
         this.getTabs().add(lecturerEditor);
+
         this.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-    }
-
-    public void setExcuseTableColumns(HashMap<String, String> excuseTableColumnList) {
-        excuseEditor.setTableColumns(excuseTableColumnList);
-    }
-
-    public void setLecturerTableColumns(HashMap<String, String> lecturerTableColumnList) {
-        lecturerEditor.setTableColumns(lecturerTableColumnList);
     }
 
     public void setExcuseTableContent(List<Excuse> excuseList) {
@@ -61,12 +54,19 @@ public class Editor extends TabPane {
     }
 
     public void registerAddExcuseEvent(Consumer<Excuse> addExcuse) {
-        Excuse newExcuse = new Excuse(DEFAULT_EXCUSE_TEXT, new HashSet<String>());
-        excuseEditor.registerAddEntryEvent(addExcuse, newExcuse);
+        excuseEditor.registerAddEntryEvent(addExcuse);
     }
 
     public void registerAddLecturerEvent(Consumer<Lecturer> addLecturer) {
-        Lecturer newLecturer = new Lecturer(DEFAULT_LECTURER_NAME, new ArrayList<String>(), new HashSet<String>());
-        lecturerEditor.registerAddEntryEvent(addLecturer, newLecturer);
+        lecturerEditor.registerAddEntryEvent(addLecturer);
     }
+
+    public void registerEditExcuseEvent(BiConsumer<Excuse, Excuse> editExcuse) {
+        excuseEditor.registerChangeEntryEvent(editExcuse);
+    }
+
+    public void registerEditLecturerEvent(BiConsumer<Lecturer, Lecturer> editLecturer) {
+        lecturerEditor.registerChangeEntryEvent(editLecturer);
+    }
+
 }

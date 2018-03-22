@@ -1,6 +1,5 @@
 package com.deusgmbh.xcusatio.data.lecturer;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -10,12 +9,6 @@ import java.util.Set;
  *
  */
 public class Lecturer {
-    private static final String REQ_COLUMN_NAME_VARNAME = "name";
-    private static final String REQ_COLUMN_LECTURES_VARNAME = "lectures";
-    private static final String REQ_COLUMN_TAGS_VARNAME = "tags";
-    private static final String REQ_COLUMN_NAME_TITLE = "Name";
-    private static final String REQ_COLUMN_LECTURES_TITLE = "Vorlesungen";
-    private static final String REQ_COLUMN_TAGS_TITLE = "Tags";
 
     private String name;
     private List<String> lectures;
@@ -51,13 +44,4 @@ public class Lecturer {
     public void setTags(Set<String> tags) {
         this.tags = tags;
     }
-
-    public static HashMap<String, String> getRequiredTableColumns() {
-        HashMap<String, String> requiredColumns = new HashMap<String, String>();
-        requiredColumns.put(REQ_COLUMN_NAME_VARNAME, REQ_COLUMN_NAME_TITLE);
-        requiredColumns.put(REQ_COLUMN_LECTURES_VARNAME, REQ_COLUMN_LECTURES_TITLE);
-        requiredColumns.put(REQ_COLUMN_TAGS_VARNAME, REQ_COLUMN_TAGS_TITLE);
-        return requiredColumns;
-    }
-
 }
