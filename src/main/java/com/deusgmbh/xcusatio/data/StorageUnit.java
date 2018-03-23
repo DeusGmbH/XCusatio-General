@@ -2,10 +2,16 @@ package com.deusgmbh.xcusatio.data;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.thoughtworks.xstream.XStream;
 
+/**
+ * 
+ * @author Tobias.Schmidt@de.ibm.com
+ *
+ */
 public class StorageUnit<T> {
     private static final Logger LOGGER = Logger.getLogger(StorageUnit.class.getName());
     protected final String path;
@@ -22,34 +28,8 @@ public class StorageUnit<T> {
         this("");
     }
 
-    /**
-     * Adds a unit to the units array
-     * 
-     * @param unit
-     * @return <b>this</b>
-     */
-    public StorageUnit<T> add(T unit) {
-        units.add(unit);
-        return this;
-    }
-
-    /**
-     * 
-     * @param unit
-     * @return <b>this</b>
-     */
-    public StorageUnit<T> remove(T unit) {
-        // TODO: implement
-        return this;
-    }
-
-    /**
-     * 
-     * @param id
-     * @return element with id
-     */
-    public T get(int id) {
-        return units.get(id);
+    public List<T> getUnits() {
+        return this.units;
     }
 
     /**

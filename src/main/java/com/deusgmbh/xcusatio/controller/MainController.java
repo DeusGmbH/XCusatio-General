@@ -1,6 +1,10 @@
 package com.deusgmbh.xcusatio.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
+import com.deusgmbh.xcusatio.data.scenarios.Scenario;
+import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
 
 /**
  * This class handles inputs of the userinterface via an event listener
@@ -12,8 +16,27 @@ import java.util.logging.Logger;
  */
 public class MainController {
     private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
+    private Wildcards wildcards;
 
     public MainController() {
+        wildcards = new Wildcards();
     }
 
+    public void generateExcuse(Scenario scenario) {
+        // TODO: Write generateExcuse method
+    }
+  
+    public List<String> getWildcardNames() {
+        return wildcards.getNames();
+    }
+    
+    public void generateExcuse(String excuseType) {
+        // TODO: Write generateExcuse method
+    }
+
+    public List<Scenario> getScenarios() {
+        List<Scenario> scenarioList = new ArrayList<Scenario>();
+        // TODO Get all scenarios
+        return scenarioList;
+    }
 }
