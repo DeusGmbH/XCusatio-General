@@ -104,11 +104,11 @@ public class XCusatioWindow extends Application {
         editor.registerRemoveLecturerEvent(addLecturer);
     }
 
-    public void registerEditExcuseEvent(BiConsumer<Excuse, Excuse> editExcuse) {
+    public void registerEditExcuseEvent(BiConsumer<Integer, Excuse> editExcuse) {
         editor.registerEditExcuseEvent(editExcuse);
     }
 
-    public void registerEditLecturerEvent(BiConsumer<Lecturer, Lecturer> editLecturer) {
+    public void registerEditLecturerEvent(BiConsumer<Integer, Lecturer> editLecturer) {
         editor.registerEditLecturerEvent(editLecturer);
     }
 

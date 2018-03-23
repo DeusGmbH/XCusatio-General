@@ -20,7 +20,7 @@ public class LecturerEditEntryPane extends EditEntryPane {
     private static final String LECTURER_LECTURES_LABEL_TEXT = "Vorlesungen: ";
     private static final String TAGS_LABEL_TEXT = "Tags:";
 
-    private Lecturer oldLecturerObj;
+    private int oldLecturerObjID;
 
     private TextField lecturerNameTextfield;
 
@@ -28,13 +28,13 @@ public class LecturerEditEntryPane extends EditEntryPane {
         super();
     }
 
-    public LecturerEditEntryPane(Lecturer Lecturer) {
+    public LecturerEditEntryPane(int lecturerID, Lecturer lecturer) {
         this();
-        createEditForm(Lecturer);
+        createEditForm(lecturerID, lecturer);
     }
 
-    public void createEditForm(Lecturer originalLecturer) {
-        this.oldLecturerObj = originalLecturer;
+    public void createEditForm(int originalLecturerID, Lecturer originalLecturer) {
+        this.oldLecturerObjID = originalLecturerID;
 
         BorderPane lecturerNameBox = createLecturerTextBox(originalLecturer.getName());
         BorderPane lecturerLecturesBox = createLecturerLecturesBox(originalLecturer.getLectures());
@@ -74,7 +74,7 @@ public class LecturerEditEntryPane extends EditEntryPane {
         return tagsBox;
     }
 
-    public void createEditBtnAction(BiConsumer<Lecturer, Lecturer> editEntry) {
+    public void createEditBtnAction(BiConsumer<Integer, Lecturer> editEntry) {
         super.submitEditedEntryBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -84,7 +84,7 @@ public class LecturerEditEntryPane extends EditEntryPane {
                 // of tags box
                 Lecturer editedLecturerObj = new Lecturer(lecturerNameTextfield.getText(), newLecturerLectures,
                         newLecturerTags);
-                editEntry.accept(oldLecturerObj, editedLecturerObj);
+                editEntry.accept(oldLecturerObjID, editedLecturerObj);
             }
         });
     }

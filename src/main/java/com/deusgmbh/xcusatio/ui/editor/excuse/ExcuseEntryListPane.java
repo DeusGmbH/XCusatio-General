@@ -2,6 +2,7 @@ package com.deusgmbh.xcusatio.ui.editor.excuse;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
@@ -26,6 +27,7 @@ public class ExcuseEntryListPane extends EntryListPane {
     // TableView to the parent class?
     // (Generic Type which is first declared with the constructor.)
     // So we could also bring the setTableColumns method to parent class
+    public List<Excuse> entryList;
     private TableView<Excuse> entryTable;
 
     public ExcuseEntryListPane() {
@@ -54,7 +56,8 @@ public class ExcuseEntryListPane extends EntryListPane {
     }
 
     public void setTableContent(List<Excuse> entryList) {
-        entryTable.setItems((ObservableList<Excuse>) FXCollections.observableArrayList(entryList));
+        this.entryList = entryList;
+        entryTable.setItems((ObservableList<Excuse>) FXCollections.observableArrayList(this.entryList));
     }
 
     public void createRemoveEntryListener(Consumer<Excuse> removeEntry) {
@@ -76,10 +79,10 @@ public class ExcuseEntryListPane extends EntryListPane {
         });
     }
 
-    public void registerOnSelectEntryEvent(Consumer<Excuse> selectEntryEvent) {
+    public void registerOnSelectEntryEvent(BiConsumer<Integer, Excuse> selectEntryEvent) {
         entryTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                selectEntryEvent.accept(newSelection);
+                selectEntryEvent.accept(this.entryList.indexOf(newSelection), newSelection);
             }
         });
     }

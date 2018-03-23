@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
@@ -26,6 +27,7 @@ public class LecturerEntryListPane extends EntryListPane {
     private static final String REQ_COLUMN_TAGS_TITLE = "Tags";
     protected static final String NEW_LECTURER_DEFAULT_TEXT = "Dozentenname";
 
+    public List<Lecturer> entryList;
     private TableView<Lecturer> entryTable;
 
     public LecturerEntryListPane() {
@@ -55,7 +57,8 @@ public class LecturerEntryListPane extends EntryListPane {
     }
 
     public void setTableContent(List<Lecturer> entryList) {
-        entryTable.setItems((ObservableList<Lecturer>) FXCollections.observableArrayList(entryList));
+        this.entryList = entryList;
+        entryTable.setItems((ObservableList<Lecturer>) FXCollections.observableArrayList(this.entryList));
     }
 
     public void createRemoveEntryListener(Consumer<Lecturer> removeEntry) {
@@ -78,10 +81,10 @@ public class LecturerEntryListPane extends EntryListPane {
         });
     }
 
-    public void registerOnSelectEntryEvent(Consumer<Lecturer> selectEntryEvent) {
+    public void registerOnSelectEntryEvent(BiConsumer<Integer, Lecturer> selectEntryEvent) {
         entryTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                selectEntryEvent.accept(newSelection);
+                selectEntryEvent.accept(this.entryList.indexOf(newSelection), newSelection);
             }
         });
     }

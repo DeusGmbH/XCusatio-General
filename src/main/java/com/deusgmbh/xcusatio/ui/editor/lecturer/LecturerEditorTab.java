@@ -31,11 +31,11 @@ public class LecturerEditorTab extends EditorTab {
         entryListPane.createAddEntryListener(addEntry);
     }
 
-    public void registerChangeEntryEvent(BiConsumer<Lecturer, Lecturer> editEntry) {
+    public void registerChangeEntryEvent(BiConsumer<Integer, Lecturer> editEntry) {
         editEntryPane.createEditBtnAction(editEntry);
     }
 
-    private void createEditForm(Lecturer selectedExcuse) {
-        editEntryPane.createEditForm(selectedExcuse);
+    private void createEditForm(int selectedLecturerID, Lecturer selectedExcuse) {
+        editEntryPane.createEditForm(selectedLecturerID, selectedExcuse);
     }
 }

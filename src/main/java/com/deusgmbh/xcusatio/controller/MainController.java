@@ -113,13 +113,13 @@ public class MainController {
         // this.updateLecturerTable.accept(TODO: fill in new lecturerList);
     }
 
-    public void editExcuse(Excuse oldExcuseObj, Excuse editedExcuseObj) {
+    public void editExcuse(int excuseID, Excuse editedExcuseObj) {
         // TODO: Write editExcuse method (via StorateUnit)
         // should end with following line:
         // this.updateExcuseTable.accept(TODO: fill in new excuseList)
     }
 
-    public void editLecturer(Lecturer oldLecturerObj, Lecturer editedLecturerObj) {
+    public void editLecturer(int lecturerID, Lecturer editedLecturerObj) {
         // TODO: Write editLecturer method (via StorateUnit)
         // should end with following line:
         // this.updateLecturerTable.accept(TODO: fill in new lecturerList);

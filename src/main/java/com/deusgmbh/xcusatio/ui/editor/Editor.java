@@ -61,11 +61,11 @@ public class Editor extends TabPane {
         lecturerEditor.registerAddEntryEvent(addLecturer);
     }
 
-    public void registerEditExcuseEvent(BiConsumer<Excuse, Excuse> editExcuse) {
+    public void registerEditExcuseEvent(BiConsumer<Integer, Excuse> editExcuse) {
         excuseEditor.registerChangeEntryEvent(editExcuse);
     }
 
-    public void registerEditLecturerEvent(BiConsumer<Lecturer, Lecturer> editLecturer) {
+    public void registerEditLecturerEvent(BiConsumer<Integer, Lecturer> editLecturer) {
         lecturerEditor.registerChangeEntryEvent(editLecturer);
     }
 
