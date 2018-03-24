@@ -1,6 +1,7 @@
 package com.deusgmbh.xcusatio.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
@@ -9,6 +10,8 @@ import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
+import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 
 /**
  * This class handles inputs of the userinterface via an event listener
@@ -37,7 +40,7 @@ public class MainController {
     }
 
     public List<Scenario> getScenarios() {
-        List<Scenario> scenarioList = new ArrayList<Scenario>();
+        List<Scenario> scenarioList = new ArrayList<>();
         // TODO Get all scenarios and write into this list
         return scenarioList;
     }
@@ -45,15 +48,17 @@ public class MainController {
     public List<Excuse> getExcuses() {
         // TODO Write "real" method for getting excuses;
         // Following method is only for testing reasons => to replace!!
-        List<String> tag1 = new ArrayList<String>();
-        tag1.add("Late");
-        tag1.add("OPNV");
-        List<String> tag2 = new ArrayList<String>();
-        tag2.add("Project");
-        tag2.add("Weather");
-        Excuse excuse1 = new Excuse("Die Bahn kam zu spät", tag1);
-        Excuse excuse2 = new Excuse("Der Regen hat unser Projekt zerstört", tag2);
-        List<Excuse> excusesList = new ArrayList<Excuse>();
+        List<Tag> tag1 = new ArrayList<>();
+        tag1.add(Tag.TRAIN);
+        tag1.add(Tag.MALE);
+        tag1.add(Tag.FEMALE);
+        List<Tag> tag2 = new ArrayList<>();
+        tag2.add(Tag.RANNY);
+        tag2.add(Tag.MALE);
+        tag2.add(Tag.FEMALE);
+        Excuse excuse1 = new Excuse("Die Bahn kam zu spät", ScenarioType.LATE_ARRIVAL, tag1);
+        Excuse excuse2 = new Excuse("Der Regen hat unser Projekt zerstört", ScenarioType.DELAYED_SUBMISSION, tag2);
+        List<Excuse> excusesList = new ArrayList<>();
         excusesList.add(excuse1);
         excusesList.add(excuse2);
         return excusesList;
@@ -62,39 +67,30 @@ public class MainController {
     public List<Lecturer> getLecturers() {
         // TODO Write "real" method for getting excuses;
         // Following method is only for testing reasons => to replace!!
-        List<String> tag1 = new ArrayList<String>();
-        tag1.add("humor");
-        tag1.add("aggressive");
-        List<String> lectures1 = new ArrayList<String>();
+        List<Tag> tag1 = new ArrayList<>();
+        tag1.add(Tag.FUNNY);
+        tag1.add(Tag.AGGRESSIVE);
+        List<String> lectures1 = new ArrayList<>();
         lectures1.add("Algorithmen");
         lectures1.add("Statistik");
         lectures1.add("Logik");
         lectures1.add("Lineare Algebra");
         lectures1.add("Analysis");
-        List<String> tag2 = new ArrayList<String>();
-        tag2.add("fawn");
-        List<String> lectures2 = new ArrayList<String>();
+        List<Tag> tag2 = new ArrayList<>();
+        tag2.add(Tag.SUCKUP);
+        List<String> lectures2 = new ArrayList<>();
         lectures2.add("C");
         lectures2.add("Softwareengineering");
         Lecturer lecturer1 = new Lecturer("Stroetmann", lectures1, tag1);
         Lecturer lecturer2 = new Lecturer("Kruse", lectures2, tag2);
-        List<Lecturer> lecturerList = new ArrayList<Lecturer>();
+        List<Lecturer> lecturerList = new ArrayList<>();
         lecturerList.add(lecturer1);
         lecturerList.add(lecturer2);
         return lecturerList;
     }
 
-    public List<String> getTags() {
-        List<String> tags = new ArrayList<String>();
-        // TODO Get all tags and write into this set
-        // Following section is only for testing purposes, can be deleted
-        // afterwards
-        tags.add("Weather");
-        tags.add("OPNV");
-        tags.add("Late");
-        tags.add("Project");
-
-        return tags;
+    public List<Tag> getTags() {
+        return Arrays.asList(Tag.values());
     }
 
     public List<String> getWildcardNames() {

@@ -18,9 +18,4 @@ public class Scenario {
     public ScenarioType getScenarioType() {
         return scenarioType;
     }
-
-    public enum ScenarioType {
-        WheelOfFortune, ThumbGesture, LateArrival, DelayedSubmission
-    }
-
 }
