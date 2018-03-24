@@ -82,6 +82,9 @@ public class ProfileSettings extends BorderPane {
 				// mainPane.setCenter(paneToFocus);
 			}
 		});
+		GridPane.setConstraints(sex, 0, 0);
+		// GridPane.setConstraints(male, 1, 0);
+		GridPane.setConstraints(female, 2, 0);
 		gridPane.getChildren().addAll(age, sex, location, calendar, ageChoiceBox, male, female, address,
 				calendarButton);
 	}
