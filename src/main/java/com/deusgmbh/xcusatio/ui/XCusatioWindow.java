@@ -29,8 +29,8 @@ import javafx.stage.Stage;
 
 public class XCusatioWindow extends Application {
     private static final String WINDOW_TITLE = "Deus GmbH - xCusatio";
-    private static final int WINDOW_DEF_WIDTH = 800;
-    private static final int WINDOW_DEF_HEIGHT = 600;
+    private static final int WINDOW_DEF_WIDTH = 1280;
+    private static final int WINDOW_DEF_HEIGHT = 720;
 
     private static final double NAVIGATION_PANEL_WIDTH_MULTIPLIER = 0.11;
     private static final String DASHBOARD_TAB_NAME = "Generator";
@@ -61,6 +61,7 @@ public class XCusatioWindow extends Application {
 
         main.setLeft(navigationPanel);
         main.setCenter(dashboard);
+
         stage.show();
     }
 

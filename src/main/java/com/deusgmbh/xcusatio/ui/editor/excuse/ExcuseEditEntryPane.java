@@ -12,6 +12,7 @@ import com.deusgmbh.xcusatio.ui.utility.TextFieldAddBox;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.layout.ColumnConstraints;
 
 /**
  * 
@@ -49,6 +50,13 @@ public class ExcuseEditEntryPane extends EditEntryPane {
         this.oldExcuseObjID = excuseID;
         this.oldExcuseObj = excuse;
 
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(25);
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setPercentWidth(70);
+
+        this.getColumnConstraints().addAll(col1, col2);
+
         Label lastUsedLabel = new Label(LAST_USED_LABEL_TEXT);
         Label excuseContentLabel = new Label(EXCUSE_CONTENT_LABEL_TEXT);
         Label tagsLabel = new Label(TAGS_LABEL_TEXT);
@@ -58,6 +66,8 @@ public class ExcuseEditEntryPane extends EditEntryPane {
         this.excuseTextField = new TextFieldAddBox(excuse.getText(), wildcardSetSupplier.get());
         this.tagsListCellView = new DoubleListView<String>(excuse.getTags(),
                 super.removeFromAllTagsList(excuse.getTags()));
+
+        excuseTextField.prefWidthProperty().bind(this.widthProperty().multiply(0.6));
 
         super.addNodesToPane(lastUsedLabel, lastUsedResponseLabel, excuseContentLabel, excuseTextField, tagsLabel,
                 tagsListCellView);

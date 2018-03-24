@@ -35,8 +35,10 @@ public class TextFieldAddBox extends BorderPane {
 
     public TextFieldAddBox(String text, ObservableList<String> possibleAddsList) {
         textField = new TextField(text);
+        textField.prefWidthProperty().bind(this.widthProperty().multiply(TEXT_FIELD_WIDTH_MULTIPLIER));
         textField.maxWidthProperty().bind(this.widthProperty().multiply(TEXT_FIELD_WIDTH_MULTIPLIER));
         addBox = new ListView<String>(possibleAddsList);
+        addBox.prefWidthProperty().bind(this.widthProperty().multiply(ADD_BOX_WIDTH_MULTIPLIER));
         addBox.maxWidthProperty().bind(this.widthProperty().multiply(ADD_BOX_WIDTH_MULTIPLIER));
         addBox.setPrefHeight(possibleAddsList.size() * CELL_SIZE);
 
@@ -53,7 +55,7 @@ public class TextFieldAddBox extends BorderPane {
         @Override
         public void handle(ActionEvent event) {
             if (addBox.getSelectionModel() != null) {
-                textField.setText(textField.getText() + " $" + addBox.getSelectionModel().getSelectedItem() + " ");
+                textField.setText(textField.getText() + " " + addBox.getSelectionModel().getSelectedItem() + " ");
             }
         }
     };

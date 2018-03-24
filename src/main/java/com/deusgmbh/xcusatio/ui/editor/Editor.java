@@ -36,6 +36,7 @@ public class Editor extends TabPane {
     public Editor() {
         excuseEditor = new ExcuseEditorTab(EXCUSE_TAB_TITLE);
         lecturerEditor = new LecturerEditorTab(LECTURER_TAB_TITLE);
+        excuseEditor.editor.maxWidthProperty().bind(this.widthProperty().multiply(0.9));
 
         this.getTabs().add(excuseEditor);
         this.getTabs().add(lecturerEditor);
