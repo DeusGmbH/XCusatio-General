@@ -1,9 +1,7 @@
 package com.deusgmbh.xcusatio.controller;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
@@ -23,8 +21,8 @@ import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 public class MainController {
     private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
     private Wildcards wildcards;
-    private Consumer<List<Excuse>> updateExcuseTable;
-    private Consumer<List<Lecturer>> updateLecturerTable;
+    private Consumer<List<Excuse>> triggerExcuseTableUpdate;
+    private Consumer<List<Lecturer>> triggerLecturerTableUpdate;
 
     public MainController() {
         wildcards = new Wildcards();
@@ -32,10 +30,6 @@ public class MainController {
 
     public void generateExcuse(Scenario scenario) {
         // TODO: Write generateExcuse method
-    }
-
-    public List<String> getWildcardNames() {
-        return wildcards.getNames();
     }
 
     public void generateExcuse(String excuseType) {
@@ -51,10 +45,10 @@ public class MainController {
     public List<Excuse> getExcuses() {
         // TODO Write "real" method for getting excuses;
         // Following method is only for testing reasons => to replace!!
-        HashSet<String> tag1 = new HashSet<String>();
+        List<String> tag1 = new ArrayList<String>();
         tag1.add("Late");
         tag1.add("OPNV");
-        HashSet<String> tag2 = new HashSet<String>();
+        List<String> tag2 = new ArrayList<String>();
         tag2.add("Project");
         tag2.add("Weather");
         Excuse excuse1 = new Excuse("Die Bahn kam zu spät", tag1);
@@ -68,7 +62,7 @@ public class MainController {
     public List<Lecturer> getLecturers() {
         // TODO Write "real" method for getting excuses;
         // Following method is only for testing reasons => to replace!!
-        HashSet<String> tag1 = new HashSet<String>();
+        List<String> tag1 = new ArrayList<String>();
         tag1.add("humor");
         tag1.add("aggressive");
         List<String> lectures1 = new ArrayList<String>();
@@ -77,7 +71,7 @@ public class MainController {
         lectures1.add("Logik");
         lectures1.add("Lineare Algebra");
         lectures1.add("Analysis");
-        HashSet<String> tag2 = new HashSet<String>();
+        List<String> tag2 = new ArrayList<String>();
         tag2.add("fawn");
         List<String> lectures2 = new ArrayList<String>();
         lectures2.add("C");
@@ -90,71 +84,69 @@ public class MainController {
         return lecturerList;
     }
 
-    public Set<String> getTagsSet() {
-        Set<String> tagsSet = new HashSet<String>();
+    public List<String> getTags() {
+        List<String> tags = new ArrayList<String>();
         // TODO Get all tags and write into this set
         // Following section is only for testing purposes, can be deleted
         // afterwards
-        tagsSet.add("Weather");
-        tagsSet.add("OPNV");
-        tagsSet.add("Late");
-        tagsSet.add("Project");
+        tags.add("Weather");
+        tags.add("OPNV");
+        tags.add("Late");
+        tags.add("Project");
 
-        return tagsSet;
+        return tags;
     }
 
-    public Set<String> getWildcardSet() {
-        Set<String> wildcardSet = new HashSet<String>();
-        // TODO Get all tags and write into this set
-        // Following section is only for testing purposes, can be deleted
-        // afterwards
-        wildcardSet.add("WeatherCondition");
-        wildcardSet.add("Time");
-
-        return wildcardSet;
+    public List<String> getWildcardNames() {
+        return wildcards.getNames();
     }
 
     public void removeExcuse(Excuse excuse) {
         // TODO: Write removeExcuse method (via StorageUnit)
         // should end with following line:
-        // this.updateExcuseTable.accept(TODO: fill in new excuseList);
+        // this.triggerExcuseTableUpdate.accept(TODO: fill in new excuseList);
     }
 
     public void removeLecturer(Lecturer lecturer) {
         // TODO: Write removeLecturer method (via StorageUnit)
         // should end with following line:
-        // this.updateLecturerTable.accept(TODO: fill in new lecturerList);
+        // this.triggerLecturerTableUpdate.accept(TODO: fill in new
+        // lecturerList);
     }
 
     public void addExcuse(Excuse excuse) {
         // TODO: Write addExcuse method (via StorageUnit)
         // should end with following line:
-        // this.updateExcuseTable.accept(TODO: fill in new excuseList);
+        // this.triggerExcuseTableUpdate.accept(TODO: fill in new excuseList);
     }
 
     public void addLecturer(Lecturer lecturer) {
         // TODO: Write addLecturer method (via StorageUnit)
         // should end with following line:
-        // this.updateLecturerTable.accept(TODO: fill in new lecturerList);
+        // this.triggerLecturerTableUpdate.accept(TODO: fill in new
+        // lecturerList);
     }
 
     public void editExcuse(int excuseID, Excuse editedExcuseObj) {
         // TODO: Write editExcuse method (via StorateUnit)
         // should end with following line:
-        // this.updateExcuseTable.accept(TODO: fill in new excuseList)
+        // this.triggerExcuseTableUpdate.accept(TODO: fill in new excuseList)
     }
 
     public void editLecturer(int lecturerID, Lecturer editedLecturerObj) {
         // TODO: Write editLecturer method (via StorateUnit)
         // should end with following line:
-        // this.updateLecturerTable.accept(TODO: fill in new lecturerList);
+        // this.triggerLecturerTableUpdate.accept(TODO: fill in new
+        // lecturerList);
     }
 
-    public void registerUpdateExcuseTableEvent(Consumer<List<Excuse>> updateExcuseTable) {
-        this.updateExcuseTable = updateExcuseTable;
+    public void updateExcuseTable(Consumer<List<Excuse>> updateExcuseTable) {
+        this.triggerExcuseTableUpdate = updateExcuseTable;
+        this.triggerExcuseTableUpdate.accept(getExcuses());
     }
 
-    public void registerUpdateLecturerTableEvent(Consumer<List<Lecturer>> updateLecturerTable) {
-        this.updateLecturerTable = updateLecturerTable;
+    public void updateLecturerTable(Consumer<List<Lecturer>> updateLecturerTable) {
+        this.triggerLecturerTableUpdate = updateLecturerTable;
+        this.triggerLecturerTableUpdate.accept(getLecturers());
     }
 }

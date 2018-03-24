@@ -2,7 +2,6 @@ package com.deusgmbh.xcusatio.ui.editor.lecturer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -17,6 +16,15 @@ import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+/**
+ * 
+ * This class is based on EntryListPane.java and creates a Table for all
+ * Lecturers
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
 
 public class LecturerEntryListPane extends EntryListPane {
     private static final String REQ_COLUMN_NAME_VARNAME = "name";
@@ -75,7 +83,7 @@ public class LecturerEntryListPane extends EntryListPane {
             @Override
             public void handle(final ActionEvent e) {
                 Lecturer newExcuse = new Lecturer(NEW_LECTURER_DEFAULT_TEXT, new ArrayList<String>(),
-                        new HashSet<String>());
+                        new ArrayList<String>());
                 addEntry.accept(newExcuse);
             }
         });

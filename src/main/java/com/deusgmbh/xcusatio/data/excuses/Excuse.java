@@ -1,8 +1,8 @@
 package com.deusgmbh.xcusatio.data.excuses;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;;
+import java.util.List;;
 
 /**
  * 
@@ -12,24 +12,24 @@ import java.util.Set;;
 public class Excuse {
 
     private String text;
-    private Set<String> tags;
+    private List<String> tags;
     private Date lastUsed;
     private int positiveRatings;
     private int negativeRatings;
 
     public Excuse(String text) {
-        this(text, new HashSet<String>());
+        this(text, new ArrayList<String>());
     }
 
-    public Excuse(String text, Set<String> tags) {
+    public Excuse(String text, List<String> tags) {
         this(text, tags, null, 0, 0);
     }
 
-    public Excuse(String text, Set<String> tags, Date lastUsed) {
+    public Excuse(String text, List<String> tags, Date lastUsed) {
         this(text, tags, lastUsed, 0, 0);
     }
 
-    public Excuse(String text, Set<String> tags, Date lastUsed, int positiveRatings, int negativeRatings) {
+    public Excuse(String text, List<String> tags, Date lastUsed, int positiveRatings, int negativeRatings) {
         super();
         this.text = text;
         this.tags = tags;
@@ -46,11 +46,11 @@ public class Excuse {
         this.text = text;
     }
 
-    public Set<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(Set<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 

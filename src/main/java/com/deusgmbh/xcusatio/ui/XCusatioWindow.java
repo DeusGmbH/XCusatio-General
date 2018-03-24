@@ -2,7 +2,6 @@ package com.deusgmbh.xcusatio.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -82,11 +81,11 @@ public class XCusatioWindow extends Application {
         dashboard.createScenarioButtons(scenarioList, generateExcuse);
     }
 
-    public void registerExcuseTableContent(List<Excuse> excuseList) {
+    public void updateExcuseTable(List<Excuse> excuseList) {
         editor.setExcuseTableContent(excuseList);
     }
 
-    public void registerLecturerTableContent(List<Lecturer> lecturerList) {
+    public void updateLecturerTable(List<Lecturer> lecturerList) {
         editor.setLecturerTableContent(lecturerList);
     }
 
@@ -114,11 +113,11 @@ public class XCusatioWindow extends Application {
         editor.registerEditLecturerEvent(editLecturer);
     }
 
-    public void registerTagsSetSupplier(Supplier<Set<String>> tagsSetSupplier) {
+    public void registerTagsSupplier(Supplier<List<String>> tagsSetSupplier) {
         editor.registerTagsSetSupplier(tagsSetSupplier);
     }
 
-    public void registerWildcardSetSupplier(Supplier<Set<String>> wildcardSetSupplier) {
+    public void registerWildcardSupplier(Supplier<List<String>> wildcardSetSupplier) {
         editor.registerWildcardSetSupplier(wildcardSetSupplier);
     }
 

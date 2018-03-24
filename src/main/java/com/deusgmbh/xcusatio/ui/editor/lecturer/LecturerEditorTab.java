@@ -1,13 +1,22 @@
 package com.deusgmbh.xcusatio.ui.editor.lecturer;
 
 import java.util.List;
-import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.ui.editor.EditorTab;
+
+/**
+ * 
+ * This class is based on EditorTab.java and merges the LecturerEntryListPane
+ * and LecturerEditEntryPane (list of Lectures and editor for Lectures) into one
+ * SplitPane
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
 
 public class LecturerEditorTab extends EditorTab {
     private LecturerEntryListPane entryListPane;
@@ -37,7 +46,7 @@ public class LecturerEditorTab extends EditorTab {
         editEntryPane.createEditBtnAction(editEntry);
     }
 
-    public void registerTagsSetSupplier(Supplier<Set<String>> tagsSetSupplier) {
+    public void registerTagsSetSupplier(Supplier<List<String>> tagsSetSupplier) {
         editEntryPane.registerTagsSetSupplier(tagsSetSupplier);
     }
 

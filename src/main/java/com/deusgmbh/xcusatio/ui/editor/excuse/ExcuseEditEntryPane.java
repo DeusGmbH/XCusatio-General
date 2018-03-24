@@ -1,24 +1,33 @@
 package com.deusgmbh.xcusatio.ui.editor.excuse;
 
-import java.util.Set;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.ui.editor.EditEntryPane;
 import com.deusgmbh.xcusatio.ui.utility.DoubleListView;
+import com.deusgmbh.xcusatio.ui.utility.TextFieldAddBox;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 
+/**
+ * 
+ * This class is based on EditEntryPane.java and creates the editForm for the
+ * ExcuseEditor
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
 public class ExcuseEditEntryPane extends EditEntryPane {
     private static final String LAST_USED_LABEL_TEXT = "Zuletzt verwendet:";
     private static final String EXCUSE_CONTENT_LABEL_TEXT = "Ausrede:";
     private static final String TAGS_LABEL_TEXT = "Tags:";
     private static final String DEFAULT_LAST_USED_TEXT = "Bisher nicht benutzt";
 
-    protected Supplier<Set<String>> wildcardSetSupplier;
+    protected Supplier<List<String>> wildcardSetSupplier;
 
     private int oldExcuseObjID;
     private Excuse oldExcuseObj;
@@ -47,7 +56,7 @@ public class ExcuseEditEntryPane extends EditEntryPane {
                 excuse.getLastUsed() != null ? excuse.getLastUsed().toString() : DEFAULT_LAST_USED_TEXT);
         this.excuseTextField = new TextFieldAddBox(excuse.getText(), wildcardSetSupplier.get());
         this.tagsListCellView = new DoubleListView<String>(excuse.getTags(),
-                super.removeFromAllTagsSet(excuse.getTags()));
+                super.removeFromAllTagsList(excuse.getTags()));
 
         super.addNodesToPane(lastUsedLabel, lastUsedResponseLabel, excuseContentLabel, excuseTextField, tagsLabel,
                 tagsListCellView);
@@ -64,7 +73,7 @@ public class ExcuseEditEntryPane extends EditEntryPane {
         });
     }
 
-    public void registerWildcardSetSupplier(Supplier<Set<String>> wildcardSetSupplier) {
+    public void registerWildcardSetSupplier(Supplier<List<String>> wildcardSetSupplier) {
         this.wildcardSetSupplier = wildcardSetSupplier;
     }
 }

@@ -1,7 +1,6 @@
-package com.deusgmbh.xcusatio.ui.editor.excuse;
+package com.deusgmbh.xcusatio.ui.utility;
 
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +11,15 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 
+/**
+ * 
+ * This class creates a TextField and a ListView. You can add entries of the
+ * ListView as String to the TextField for adding important parameters
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
+
 public class TextFieldAddBox extends BorderPane {
     private static final int CELL_SIZE = 30;
     private static final double ADD_BOX_WIDTH_MULTIPLIER = 0.45;
@@ -21,8 +29,8 @@ public class TextFieldAddBox extends BorderPane {
     private TextField textField;
     private ListView<String> addBox;
 
-    public TextFieldAddBox(String text, Set<String> set) {
-        this(text, FXCollections.observableArrayList(new ArrayList<String>(set)));
+    public TextFieldAddBox(String text, List<String> list) {
+        this(text, FXCollections.observableArrayList(list));
     }
 
     public TextFieldAddBox(String text, ObservableList<String> possibleAddsList) {

@@ -1,7 +1,7 @@
 package com.deusgmbh.xcusatio.ui.editor;
 
 import java.util.Arrays;
-import java.util.Set;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
@@ -10,6 +10,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+/**
+ * 
+ * This class is a base class for ExcuseEditEntryPane and LecturerEditEntryPane
+ * and should provide methods, which are the same for both classes
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
+
 public class EditEntryPane extends GridPane {
     private static final String EDITOR_TITLE = "Editor";
     private static final String SUBMIT_EDITED_ENTRY_BTN_LABEL = "Speichern";
@@ -17,7 +26,7 @@ public class EditEntryPane extends GridPane {
     protected Label editorTitleLabel;
     protected Button submitEditedEntryBtn;
 
-    protected Supplier<Set<String>> allTagsSetSupplier;
+    protected Supplier<List<String>> allTagsSetSupplier;
 
     public EditEntryPane() {
         editorTitleLabel = new Label(EDITOR_TITLE);
@@ -39,13 +48,13 @@ public class EditEntryPane extends GridPane {
         this.add(this.submitEditedEntryBtn, 1, (int) Math.ceil(nodesToAdd.length / 2d) + 1);
     }
 
-    protected Set<String> removeFromAllTagsSet(Set<String> setToRemove) {
-        Set<String> reducedSet = this.allTagsSetSupplier.get();
-        reducedSet.removeAll(setToRemove);
+    protected List<String> removeFromAllTagsList(List<String> listToRemove) {
+        List<String> reducedSet = this.allTagsSetSupplier.get();
+        reducedSet.removeAll(listToRemove);
         return reducedSet;
     }
 
-    public void registerTagsSetSupplier(Supplier<Set<String>> tagsSetSupplier) {
+    public void registerTagsSetSupplier(Supplier<List<String>> tagsSetSupplier) {
         this.allTagsSetSupplier = tagsSetSupplier;
     }
 }

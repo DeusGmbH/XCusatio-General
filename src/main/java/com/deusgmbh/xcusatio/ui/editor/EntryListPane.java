@@ -4,6 +4,16 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * 
+ * This class is a base class for ExcuseEntryListPane and LecturerEntryListPane
+ * and should provide the part of the constructor, which is the same for both
+ * classes
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
+
 public class EntryListPane extends VBox {
     protected Button removeSelectedEntry;
     protected Button addEntry;

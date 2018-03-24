@@ -6,6 +6,15 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
+/**
+ * 
+ * This class is used for the DoubleListView.java class. It creates the
+ * ButtonShiftPane, with which you can shift entries between the two lists
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
+
 public class ShiftButtonPane extends VBox {
     private Button shiftLeftToRight;
     private Button shiftRightToLeft;

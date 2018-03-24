@@ -1,7 +1,6 @@
 package com.deusgmbh.xcusatio.ui.editor.excuse;
 
 import java.util.List;
-import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -9,6 +8,15 @@ import java.util.function.Supplier;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.ui.editor.EditorTab;
 
+/**
+ * 
+ * This class is based on EditorTab.java and merges the ExcuseEntryListPane and
+ * ExcuseEditEntryPane (list of Excuses and editor for Excuses) into one
+ * SplitPane
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
 public class ExcuseEditorTab extends EditorTab {
     private ExcuseEntryListPane entryListPane;
     private ExcuseEditEntryPane editEntryPane;
@@ -37,11 +45,11 @@ public class ExcuseEditorTab extends EditorTab {
         editEntryPane.createEditBtnAction(editEntry);
     }
 
-    public void registerTagsSetSupplier(Supplier<Set<String>> tagsSetSupplier) {
+    public void registerTagsSetSupplier(Supplier<List<String>> tagsSetSupplier) {
         editEntryPane.registerTagsSetSupplier(tagsSetSupplier);
     }
 
-    public void registerWildcardSetSupplier(Supplier<Set<String>> wildcardSetSupplier) {
+    public void registerWildcardSetSupplier(Supplier<List<String>> wildcardSetSupplier) {
         editEntryPane.registerWildcardSetSupplier(wildcardSetSupplier);
     }
 

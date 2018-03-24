@@ -13,6 +13,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * 
+ * This class creates a ListView and a TextField. With the Textfield you can add
+ * items to the ListView. Also it provides a method for getting all items of the
+ * ListView
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
+
 public class ListViewTextField extends BorderPane {
     private static final String ADD_ITEM_BUTTON_LABEL = "Hinzufügen";
     private static final String REMOVE_BUTTON_LABEL = "Entfernen";

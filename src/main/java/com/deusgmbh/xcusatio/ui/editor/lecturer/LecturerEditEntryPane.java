@@ -12,6 +12,15 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+/**
+ * 
+ * This class is based on EditEntryPane.java and creates the editForm for the
+ * LecturerEditor
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
+
 public class LecturerEditEntryPane extends EditEntryPane {
     private static final String LECTURER_NAME_LABEL_TEXT = "Name:";
     private static final String LECTURER_LECTURES_LABEL_TEXT = "Vorlesungen: ";
@@ -20,7 +29,7 @@ public class LecturerEditEntryPane extends EditEntryPane {
     private int oldLecturerObjID;
 
     private TextField lecturerNameTextField;
-    private ListViewTextField lecturerLectures;
+    private ListViewTextField lecturerLecturesPane;
     private DoubleListView<String> tagsListCellView;
 
     public LecturerEditEntryPane() {
@@ -40,11 +49,11 @@ public class LecturerEditEntryPane extends EditEntryPane {
         Label tagsLabel = new Label(TAGS_LABEL_TEXT);
 
         this.lecturerNameTextField = new TextField(lecturer.getName());
-        this.lecturerLectures = new ListViewTextField(lecturer.getLectures());
+        this.lecturerLecturesPane = new ListViewTextField(lecturer.getLectures());
         this.tagsListCellView = new DoubleListView<String>(lecturer.getTags(),
-                super.removeFromAllTagsSet(lecturer.getTags()));
+                super.removeFromAllTagsList(lecturer.getTags()));
 
-        super.addNodesToPane(lecturerNameLabel, lecturerNameTextField, lecturerLecturesLabel, lecturerLectures,
+        super.addNodesToPane(lecturerNameLabel, lecturerNameTextField, lecturerLecturesLabel, lecturerLecturesPane,
                 tagsLabel, tagsListCellView);
     }
 
@@ -52,8 +61,8 @@ public class LecturerEditEntryPane extends EditEntryPane {
         super.submitEditedEntryBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                Lecturer editedLecturerObj = new Lecturer(lecturerNameTextField.getText(), lecturerLectures.getItems(),
-                        tagsListCellView.getLeftListItems());
+                Lecturer editedLecturerObj = new Lecturer(lecturerNameTextField.getText(),
+                        lecturerLecturesPane.getItems(), tagsListCellView.getLeftListItems());
                 editEntry.accept(oldLecturerObjID, editedLecturerObj);
             }
         });

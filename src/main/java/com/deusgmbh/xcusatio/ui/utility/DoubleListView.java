@@ -1,8 +1,7 @@
 package com.deusgmbh.xcusatio.ui.utility;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +9,18 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
+
+/**
+ * 
+ * This class creates two ListViews, which can shift Entrys between each other.
+ * Also it provides a method for getting the items of the left ListView
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ * @param <T>
+ *            This type is used for the type of the ListView and it belonging
+ *            items
+ */
 
 public class DoubleListView<T> extends BorderPane {
     private static final double LIST_VIEW_WIDTH_MULTIPLIER = 0.4;
@@ -20,9 +31,8 @@ public class DoubleListView<T> extends BorderPane {
     private ListView<T> rightListView;
     private ShiftButtonPane shiftButtonPane;
 
-    public DoubleListView(Set<T> leftSet, Set<T> rightSet) {
-        this(FXCollections.observableArrayList(new ArrayList<T>(leftSet)),
-                FXCollections.observableArrayList(new ArrayList<T>(rightSet)));
+    public DoubleListView(List<T> leftList, List<T> rightList) {
+        this(FXCollections.observableArrayList(leftList), FXCollections.observableArrayList(rightList));
     }
 
     public DoubleListView(ObservableList<T> leftList, ObservableList<T> rightList) {
@@ -55,7 +65,7 @@ public class DoubleListView<T> extends BorderPane {
         };
     }
 
-    public Set<T> getLeftListItems() {
-        return new HashSet<T>(leftListView.getItems());
+    public List<T> getLeftListItems() {
+        return new ArrayList<T>(leftListView.getItems());
     }
 }

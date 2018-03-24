@@ -16,6 +16,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * 
+ * This class is based on EntryListPane.java and creates a Table for all Excuses
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
+
 public class ExcuseEntryListPane extends EntryListPane {
     private static final String REQ_COLUMN_TEXT_VARNAME = "text";
     private static final String REQ_COLUMN_TAGS_VARNAME = "tags";
@@ -23,10 +31,6 @@ public class ExcuseEntryListPane extends EntryListPane {
     private static final String REQ_COLUMN_TAGS_TITLE = "Tags";
     protected static final String NEW_EXCUSE_DEFAULT_TEXT = "Bitte hier neue Ausrede eingeben";
 
-    // @Tobias: Is there a possibility to bring the table view as protected
-    // TableView to the parent class?
-    // (Generic Type which is first declared with the constructor.)
-    // So we could also bring the setTableColumns method to parent class
     public List<Excuse> entryList;
     private TableView<Excuse> entryTable;
 
