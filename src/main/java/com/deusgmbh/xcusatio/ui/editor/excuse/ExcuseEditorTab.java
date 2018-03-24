@@ -10,9 +10,11 @@ import com.deusgmbh.xcusatio.ui.editor.EditorTab;
 
 /**
  * 
- * This class is based on EditorTab.java and merges the ExcuseEntryListPane and
- * ExcuseEditEntryPane (list of Excuses and editor for Excuses) into one
- * SplitPane
+ * This class merges the list of excuses and the editor for excuses into one
+ * SplitPane. This opens the possibility to see all available excuses, select
+ * one and edit this selected excuse in the EditEntryPane. These classes create
+ * a table of all available entries. You can remove or add an entry. Also you
+ * can select one and edit this in the adjacent EditEntryPane.
  * 
  * @author Pascal.Schroeder@de.ibm.com
  *

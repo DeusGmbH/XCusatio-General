@@ -5,9 +5,11 @@ import javafx.scene.control.Tab;
 
 /**
  * 
- * This class is the base class for ExcuseEditorTab und LecturerEditorTab and
+ * This class is the base class for ExcuseEditorTab and LecturerEditorTab and
  * should provide the part of the constructor, which is for both classes the
- * same
+ * same. These classes merge the list of entries with the edit form of these
+ * into one SplitPane. This opens the possibility to see all available entries,
+ * select one and edit this selected entry in the EditEntryPane.
  * 
  * @author Pascal.Schroeder@de.ibm.com
  *

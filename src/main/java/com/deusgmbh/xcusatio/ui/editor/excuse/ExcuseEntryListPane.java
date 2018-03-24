@@ -18,7 +18,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * 
- * This class is based on EntryListPane.java and creates a Table for all Excuses
+ * This class creates a table of all available excuses. You can remove or add an
+ * entry. Also you can select one and edit this in the adjacent EditEntryPane.
  * 
  * @author Pascal.Schroeder@de.ibm.com
  *

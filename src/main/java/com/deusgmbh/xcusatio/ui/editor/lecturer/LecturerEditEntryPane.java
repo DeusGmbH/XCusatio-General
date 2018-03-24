@@ -14,8 +14,9 @@ import javafx.scene.control.TextField;
 
 /**
  * 
- * This class is based on EditEntryPane.java and creates the editForm for the
- * LecturerEditor
+ * This class creates the editForm for lecturers. It gets the current selected
+ * Entry of the LecturerList and provides fields for editing it. After that you
+ * can save your changes and the Excuse will be updated.
  * 
  * @author Pascal.Schroeder@de.ibm.com
  *

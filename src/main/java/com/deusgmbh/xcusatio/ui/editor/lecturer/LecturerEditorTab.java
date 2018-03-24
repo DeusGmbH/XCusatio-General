@@ -10,9 +10,9 @@ import com.deusgmbh.xcusatio.ui.editor.EditorTab;
 
 /**
  * 
- * This class is based on EditorTab.java and merges the LecturerEntryListPane
- * and LecturerEditEntryPane (list of Lectures and editor for Lectures) into one
- * SplitPane
+ * This class merges the list of lecturers and the editor for lecturers into one
+ * SplitPane. This opens the possibility to see all available lecturers, select
+ * one and edit this selected lecturer in the EditEntryPane.
  * 
  * @author Pascal.Schroeder@de.ibm.com
  *

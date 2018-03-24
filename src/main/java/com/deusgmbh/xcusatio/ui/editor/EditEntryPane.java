@@ -13,7 +13,10 @@ import javafx.scene.layout.GridPane;
 /**
  * 
  * This class is a base class for ExcuseEditEntryPane and LecturerEditEntryPane
- * and should provide methods, which are the same for both classes
+ * and should provide methods, which are the same for both classes. With these
+ * classes an edit form for the selected entry in the EntryListPane is created.
+ * So you can edit this fields and save the changes, which forces an update of
+ * the entries.
  * 
  * @author Pascal.Schroeder@de.ibm.com
  *

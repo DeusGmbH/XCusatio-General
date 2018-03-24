@@ -15,8 +15,9 @@ import javafx.scene.control.Label;
 
 /**
  * 
- * This class is based on EditEntryPane.java and creates the editForm for the
- * ExcuseEditor
+ * This class creates the editForm for excuses. It gets the current selected
+ * Entry of the ExcuseList and provides fields for editing it. After that you
+ * can save your changes and the Excuse will be updated.
  * 
  * @author Pascal.Schroeder@de.ibm.com
  *

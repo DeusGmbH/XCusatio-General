@@ -15,7 +15,12 @@ import javafx.scene.control.TabPane;
 /**
  * 
  * This is the Editor class for the User Interface. This class creates the
- * Editor tab with all of its components
+ * Editor tab with all of its components. This includes an ExcuseEditorTab and
+ * an LecturerEditorTab. In these are each a EntryListPane and an EditEntryPane.
+ * With the EntryListPane you can see all available entries (excuses/lecturers),
+ * add new ones or remove unneeded entries. Also you can edit these in the
+ * EditEntryPane by selecting one and save it, which forces an update of the
+ * entry.
  * 
  * @author Pascal.Schroeder@de.ibm.com
  *
