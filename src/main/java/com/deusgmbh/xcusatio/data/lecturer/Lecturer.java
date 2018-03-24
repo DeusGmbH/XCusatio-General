@@ -1,7 +1,8 @@
 package com.deusgmbh.xcusatio.data.lecturer;
 
 import java.util.List;
-import java.util.Set;
+
+import com.deusgmbh.xcusatio.data.tags.Tag;
 
 /**
  * 
@@ -11,9 +12,9 @@ import java.util.Set;
 public class Lecturer {
     private String name;
     private List<String> lectures;
-    private Set<String> tags;
+    private List<Tag> tags;
 
-    public Lecturer(String name, List<String> lectures, Set<String> tags) {
+    public Lecturer(String name, List<String> lectures, List<Tag> tags) {
         super();
         this.name = name;
         this.lectures = lectures;
@@ -36,11 +37,11 @@ public class Lecturer {
         this.lectures = lectures;
     }
 
-    public Set<String> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<String> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
