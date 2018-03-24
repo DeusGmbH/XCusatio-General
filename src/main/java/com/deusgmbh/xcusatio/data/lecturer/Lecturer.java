@@ -4,17 +4,20 @@ import java.util.List;
 
 import com.deusgmbh.xcusatio.data.tags.Tag;
 
+
 /**
  * 
  * @author Tobias.Schmidt@de.ibm.com
  *
  */
 public class Lecturer {
+
     private String name;
     private List<String> lectures;
     private List<Tag> tags;
 
     public Lecturer(String name, List<String> lectures, List<Tag> tags) {
+
         super();
         this.name = name;
         this.lectures = lectures;
@@ -44,5 +47,4 @@ public class Lecturer {
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
-
 }

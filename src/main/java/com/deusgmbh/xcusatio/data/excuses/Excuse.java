@@ -8,12 +8,14 @@ import java.util.List;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
 import com.deusgmbh.xcusatio.data.tags.Tag;;
 
+
 /**
  * 
  * @author Tobias.Schmidt@de.ibm.com
  *
  */
 public class Excuse {
+
     private String text;
     private List<Tag> tags;
     private Date lastUsed;
@@ -65,6 +67,7 @@ public class Excuse {
     }
 
     public void setTags(List<Tag> tags) {
+
         this.tags = tags;
     }
 
@@ -99,7 +102,6 @@ public class Excuse {
     public void setNegativeRating(int negativeRatings) {
         this.negativeRating = negativeRatings;
     }
-
     public static Comparator<Excuse> byRating = new Comparator<Excuse>() {
         @Override
         public int compare(Excuse e1, Excuse e2) {
