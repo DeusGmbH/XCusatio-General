@@ -1,5 +1,6 @@
 package com.deusgmbh.xcusatio.data.excuses;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;;
@@ -77,4 +78,21 @@ public class Excuse {
         this.negativeRatings = negativeRatings;
     }
 
+    public static Comparator<Excuse> byRating = new Comparator<Excuse>() {
+        @Override
+        public int compare(Excuse e1, Excuse e2) {
+            int ratingE1 = e1.getPositiveRatings() - e1.getNegativeRatings();
+            int ratingE2 = e2.getPositiveRatings() - e2.getNegativeRatings();
+            return ratingE1 - ratingE2;
+        }
+    };
+
+    public static Comparator<Excuse> byLastUsed = new Comparator<Excuse>() {
+        @Override
+        public int compare(Excuse e1, Excuse e2) {
+            Date lastUsedE1 = e1.getLastUsed();
+            Date lastUsedE2 = e2.getLastUsed();
+            return lastUsedE1.compareTo(lastUsedE2);
+        }
+    };
 }

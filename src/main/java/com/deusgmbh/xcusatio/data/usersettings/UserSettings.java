@@ -104,7 +104,7 @@ public class UserSettings {
     }
 
     public enum Sex {
-        Male, Female;
+        MALE, FEMALE;
     }
 
     public enum ExcusesVibesMode {
