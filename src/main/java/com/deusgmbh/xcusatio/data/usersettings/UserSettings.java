@@ -1,7 +1,5 @@
 package com.deusgmbh.xcusatio.data.usersettings;
 
-import java.util.Set;
-
 /**
  * 
  * @author Tobias.Schmidt@de.ibm.com
@@ -19,10 +17,9 @@ public class UserSettings {
     private Address university;
     private ExcusesVibesMode excusesVibesMode;
     private ExcusesVibes excusesVibes;
-    private Set<String> interests;
 
     public UserSettings(String googleCalendar, int age, Sex sex, Address home, Address university,
-            ExcusesVibesMode excusesVibesMode, ExcusesVibes excusesVibes, Set<String> interests) {
+            ExcusesVibesMode excusesVibesMode, ExcusesVibes excusesVibes) {
         super();
         this.googleCalendar = googleCalendar;
         this.home = home;
@@ -31,7 +28,6 @@ public class UserSettings {
         this.sex = sex;
         this.excusesVibesMode = excusesVibesMode;
         this.excusesVibes = excusesVibes;
-        this.interests = interests;
     }
 
     public boolean isValid() {
@@ -79,14 +75,6 @@ public class UserSettings {
         this.sex = sex;
     }
 
-    public Set<String> getInterests() {
-        return interests;
-    }
-
-    public void setInterests(Set<String> interests) {
-        this.interests = interests;
-    }
-
     public ExcusesVibesMode getExcusesVibesMode() {
         return excusesVibesMode;
     }
@@ -104,10 +92,11 @@ public class UserSettings {
     }
 
     public enum Sex {
-        Male, Female;
+        MALE, FEMALE;
     }
 
     public enum ExcusesVibesMode {
         AUTOMATIC, MANUALLY;
     }
+
 }
