@@ -1,16 +1,20 @@
 package com.deusgmbh.xcusatio.ui.profilsettings;
 
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 
 /**
  * 
@@ -21,7 +25,7 @@ import javafx.scene.layout.GridPane;
  *
  */
 
-public class ProfileSettings extends BorderPane {
+public class ProfileSettings extends FlowPane {
 	private static final String AGE_LABEL = "Alter";
 	private static final String SEX_LABEL = "Geschlecht";
 	private static final String LOCATION_LABEL = "Standort";
@@ -34,28 +38,34 @@ public class ProfileSettings extends BorderPane {
 	private static final String AGE_SIXTY_TO_SEVENTYNINE = "60-79";
 	private static final String AGE_EIGHTY_TO_NINETYNINE = "80-99";
 	private static final String DEFAULT_TEXT_TEXTFIELD = "PLZ";
+	private static final String SUBMIT_BUTTON = "Speichern";
+	private static final String TITLE_LABEL = "Profileinstellungen";
 
 	private GridPane gridPane;
 
+	private Label titleLabel;
 	private Label age;
 	private Label sex;
 	private Label location;
 	private Label calendar;
 
 	private ChoiceBox ageChoiceBox;
+	private HBox sexTogglePane;
 
 	private Button calendarButton;
+	private Button submitEditedEntryBtn;
 	private TextField address;
 	private RadioButton male;
 	private RadioButton female;
 
 	public ProfileSettings() {
-		this.setStyle("-fx-border-color: " + PROFILE_SETTINGS_PANE_BORDER_COLOR);
 		gridPane = new GridPane();
+		sexTogglePane = new HBox();
 
 		this.setStyle("-fx-border-color: " + PROFILE_SETTINGS_PANE_BORDER_COLOR);
-		this.setCenter(gridPane);
+		this.gridPane.setStyle("-fx-border-color: " + PROFILE_SETTINGS_PANE_BORDER_COLOR);
 
+		titleLabel = new Label(TITLE_LABEL);
 		age = new Label(AGE_LABEL);
 		sex = new Label(SEX_LABEL);
 		location = new Label(LOCATION_LABEL);
@@ -71,21 +81,28 @@ public class ProfileSettings extends BorderPane {
 		male.setSelected(true);
 		female = new RadioButton();
 		female.setToggleGroup(groupRadio);
+		sexTogglePane.getChildren().addAll(male, female);
 		/* inputPLZ */
 		address = new TextField(DEFAULT_TEXT_TEXTFIELD);
 		/* button */
 		calendarButton = new Button(CALENDAR_BUTTON_LABEL);
+		submitEditedEntryBtn = new Button(SUBMIT_BUTTON);
 
-		calendarButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				// mainPane.setCenter(paneToFocus);
-			}
+		addNodesToPane(age, ageChoiceBox, sex, sexTogglePane, location, address, calendar, calendarButton);
+		this.getChildren().add(gridPane);
+		this.setAlignment(Pos.CENTER);
+	}
+
+	protected void addNodesToPane(Node... nodesToAdd) {
+		gridPane.getChildren().clear();
+		gridPane.add(this.titleLabel, 0, 0);
+		final AtomicInteger counter = new AtomicInteger();
+		Arrays.asList(nodesToAdd).stream().forEach(node -> {
+			int columnIndex = counter.get() % 2;
+			int rowIndex = (int) Math.floor(counter.get() / 2d) + 1;
+			gridPane.add(node, columnIndex, rowIndex);
+			counter.incrementAndGet();
 		});
-		GridPane.setConstraints(sex, 0, 0);
-		// GridPane.setConstraints(male, 1, 0);
-		GridPane.setConstraints(female, 2, 0);
-		gridPane.getChildren().addAll(age, sex, location, calendar, ageChoiceBox, male, female, address,
-				calendarButton);
+		gridPane.add(this.submitEditedEntryBtn, 1, (int) Math.ceil(nodesToAdd.length / 2d) + 1);
 	}
 }
