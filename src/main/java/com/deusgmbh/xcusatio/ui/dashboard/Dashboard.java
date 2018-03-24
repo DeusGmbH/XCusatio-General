@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
-import com.deusgmbh.xcusatio.data.scenarios.Scenario.ScenarioType;
+import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -45,13 +45,16 @@ public class Dashboard extends BorderPane {
     public Dashboard() {
         scenarioButtonPane = new HBox();
         scenarioButtonPane.prefHeightProperty()
-                .bind(this.heightProperty().multiply(SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER));
+                .bind(this.heightProperty()
+                        .multiply(SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER));
         scenarioButtonPane.setStyle("-fx-border-color: " + SCENARIO_BUTTON_PANE_BACKGROUND_BORDER_COLOR);
 
         reactionPane = new ScenarioReactionPane();
 
         quickSettingsPane = new QuickSettingsPane();
-        quickSettingsPane.prefWidthProperty().bind(this.widthProperty().multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
+        quickSettingsPane.prefWidthProperty()
+                .bind(this.widthProperty()
+                        .multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
 
         Separator separator = new Separator();
         separator.setOrientation(Orientation.HORIZONTAL);
@@ -71,16 +74,18 @@ public class Dashboard extends BorderPane {
     }
 
     public void createScenarioButtons(List<Scenario> scenarioList, Consumer<Scenario> generateExcuse) {
-        scenarioList.stream().forEach(scenario -> {
-            Button tmpBtn = new Button(getUINameByType(scenario.getScenarioType()));
-            tmpBtn.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                    generateExcuse.accept(scenario);
-                }
-            });
-            scenarioButtonPane.getChildren().add(tmpBtn);
-        });
+        scenarioList.stream()
+                .forEach(scenario -> {
+                    Button tmpBtn = new Button(getUINameByType(scenario.getScenarioType()));
+                    tmpBtn.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(final ActionEvent e) {
+                            generateExcuse.accept(scenario);
+                        }
+                    });
+                    scenarioButtonPane.getChildren()
+                            .add(tmpBtn);
+                });
     }
 
     public void setExcuseLabel(String excuse) {
@@ -115,13 +120,13 @@ public class Dashboard extends BorderPane {
 
     private static String getUINameByType(ScenarioType scenarioType) {
         switch (scenarioType) {
-        case ThumbGesture:
+        case THUMBGESTURE:
             return THUMB_GESTURE_UI_NAME;
-        case WheelOfFortune:
+        case WHEELOFFORTUNE:
             return WHEEL_OF_FORTUNE_UI_NAME;
-        case LateArrival:
+        case LATE_ARRIVAL:
             return LATE_ARRIVAL_UI_NAME;
-        case DelayedSubmission:
+        case DELAYED_SUBMISSION:
             return DELAYED_SUBMISSION_UI_NAME;
         default:
             return scenarioType.toString();

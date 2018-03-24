@@ -125,7 +125,7 @@ public class ExcuseGenerator {
         Set<Tag> excusesVibeTags = new HashSet<>();
         ExcusesVibes excusesVibes = context.getExcusesVibes();
         if (excusesVibes.isAggresiv()) {
-            excusesVibeTags.add(Tag.AGGRESIV);
+            excusesVibeTags.add(Tag.AGGRESSIVE);
         }
         if (excusesVibes.isFunny()) {
             excusesVibeTags.add(Tag.FUNNY);

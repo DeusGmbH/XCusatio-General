@@ -1,5 +1,5 @@
 package com.deusgmbh.xcusatio.data.scenarios;
 
 public enum ScenarioType {
-    WHEELOFFORTUNE, DELAYEDSUBMISSION, LATEARRIVAL, THUMBGESTURE;
+    WHEELOFFORTUNE, DELAYED_SUBMISSION, LATE_ARRIVAL, THUMBGESTURE;
 }

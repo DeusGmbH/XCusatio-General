@@ -3,7 +3,7 @@ package com.deusgmbh.xcusatio.data.tags;
 public enum Tag {
     MALE,
     FEMALE,
-    AGGRESIV,
+    AGGRESSIVE,
     FUNNY,
     SUCKUP,
     AGE_UNDER_18,
