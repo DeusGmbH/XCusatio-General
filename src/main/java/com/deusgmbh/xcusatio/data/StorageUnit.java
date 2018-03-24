@@ -29,7 +29,6 @@ public class StorageUnit<T> {
 
 	public StorageUnit(String path) throws FileNotFoundException, IOException {
 		this.path = path;
-		this.load();
 	}
 
 	public StorageUnit() throws FileNotFoundException, IOException {
@@ -94,6 +93,21 @@ public class StorageUnit<T> {
 			e.printStackTrace();
 		}
 		LOGGER.info("XML is saved into " + parameterType.getSimpleName() + ".xml");
+		return this;
+	}
+
+	public StorageUnit<T> addUnitToList(T object) {
+		units.add(object);
+		return this;
+	}
+
+	public StorageUnit<T> removeUnitFromList(T object) {
+		units.remove(object);
+		return this;
+	}
+
+	public StorageUnit<T> editUnit(int excuseID, T editedObj) {
+		units.set(excuseID, editedObj);
 		return this;
 	}
 
