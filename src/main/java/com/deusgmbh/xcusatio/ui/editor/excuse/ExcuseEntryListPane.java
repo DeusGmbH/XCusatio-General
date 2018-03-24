@@ -43,7 +43,7 @@ public class ExcuseEntryListPane extends EntryListPane {
         columnList.entrySet().stream().forEach(entry -> {
             TableColumn<Excuse, String> column = new TableColumn<Excuse, String>(entry.getValue().toString());
             column.setCellValueFactory(new PropertyValueFactory<Excuse, String>(entry.getKey().toString()));
-            column.prefWidthProperty().bind(entryTable.widthProperty().multiply(1d / columnList.size()));
+            column.prefWidthProperty().bind(entryTable.widthProperty().multiply(1d / columnList.size()).subtract(1));
             entryTable.getColumns().add(column);
         });
     }

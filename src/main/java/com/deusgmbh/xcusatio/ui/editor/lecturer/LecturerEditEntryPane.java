@@ -1,19 +1,16 @@
 package com.deusgmbh.xcusatio.ui.editor.lecturer;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.function.BiConsumer;
 
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.ui.editor.EditEntryPane;
+import com.deusgmbh.xcusatio.ui.utility.DoubleListView;
+import com.deusgmbh.xcusatio.ui.utility.ListViewTextField;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 
 public class LecturerEditEntryPane extends EditEntryPane {
     private static final String LECTURER_NAME_LABEL_TEXT = "Name:";
@@ -22,7 +19,9 @@ public class LecturerEditEntryPane extends EditEntryPane {
 
     private int oldLecturerObjID;
 
-    private TextField lecturerNameTextfield;
+    private TextField lecturerNameTextField;
+    private ListViewTextField lecturerLectures;
+    private DoubleListView<String> tagsListCellView;
 
     public LecturerEditEntryPane() {
         super();
@@ -33,57 +32,28 @@ public class LecturerEditEntryPane extends EditEntryPane {
         createEditForm(lecturerID, lecturer);
     }
 
-    public void createEditForm(int originalLecturerID, Lecturer originalLecturer) {
-        this.oldLecturerObjID = originalLecturerID;
+    public void createEditForm(int lecturerID, Lecturer lecturer) {
+        this.oldLecturerObjID = lecturerID;
 
-        BorderPane lecturerNameBox = createLecturerTextBox(originalLecturer.getName());
-        BorderPane lecturerLecturesBox = createLecturerLecturesBox(originalLecturer.getLectures());
-        BorderPane tagsBox = createLecturerTagsBox(originalLecturer.getTags());
-        super.getChildren().clear();
-        super.getChildren().addAll(super.editorTitleLabel, lecturerNameBox, lecturerLecturesBox, tagsBox,
-                super.submitEditedEntryBtn);
-    }
-
-    private BorderPane createLecturerTextBox(String name) {
-        BorderPane LecturerContentBox = new BorderPane();
-        Label lecturerContentLabel = new Label(LECTURER_NAME_LABEL_TEXT);
-        this.lecturerNameTextfield = new TextField(name);
-
-        LecturerContentBox.setLeft(lecturerContentLabel);
-        LecturerContentBox.setCenter(this.lecturerNameTextfield);
-        return LecturerContentBox;
-    }
-
-    private BorderPane createLecturerLecturesBox(List<String> lectures) {
-        BorderPane lecturesBox = new BorderPane();
-        Label lecturesLabel = new Label(LECTURER_LECTURES_LABEL_TEXT);
-        // TODO: Add Drag & Drop Boxes
-
-        lecturesBox.setLeft(lecturesLabel);
-        // lecturesBox.setCenter();
-        return lecturesBox;
-    }
-
-    private BorderPane createLecturerTagsBox(Set<String> tags) {
-        BorderPane tagsBox = new BorderPane();
+        Label lecturerNameLabel = new Label(LECTURER_NAME_LABEL_TEXT);
+        Label lecturerLecturesLabel = new Label(LECTURER_LECTURES_LABEL_TEXT);
         Label tagsLabel = new Label(TAGS_LABEL_TEXT);
-        // TODO: Add Drag & Drop Boxes
 
-        tagsBox.setLeft(tagsLabel);
-        // tagsBox.setCenter();
-        return tagsBox;
+        this.lecturerNameTextField = new TextField(lecturer.getName());
+        this.lecturerLectures = new ListViewTextField(lecturer.getLectures());
+        this.tagsListCellView = new DoubleListView<String>(lecturer.getTags(),
+                super.removeFromAllTagsSet(lecturer.getTags()));
+
+        super.addNodesToPane(lecturerNameLabel, lecturerNameTextField, lecturerLecturesLabel, lecturerLectures,
+                tagsLabel, tagsListCellView);
     }
 
     public void createEditBtnAction(BiConsumer<Integer, Lecturer> editEntry) {
         super.submitEditedEntryBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                List<String> newLecturerLectures = new ArrayList<String>();
-                Set<String> newLecturerTags = new HashSet<String>();
-                // TODO: Add reading all lectures out of lectures box & tags out
-                // of tags box
-                Lecturer editedLecturerObj = new Lecturer(lecturerNameTextfield.getText(), newLecturerLectures,
-                        newLecturerTags);
+                Lecturer editedLecturerObj = new Lecturer(lecturerNameTextField.getText(), lecturerLectures.getItems(),
+                        tagsListCellView.getLeftListItems());
                 editEntry.accept(oldLecturerObjID, editedLecturerObj);
             }
         });

@@ -43,6 +43,9 @@ public class XCusatio extends Application {
         mainWindow.registerEditExcuseEvent(mainController::editExcuse);
         mainWindow.registerEditLecturerEvent(mainController::editLecturer);
 
+        mainWindow.registerTagsSetSupplier(mainController::getTagsSet);
+        mainWindow.registerWildcardSetSupplier(mainController::getWildcardSet);
+
         mainController.registerUpdateExcuseTableEvent(mainWindow::registerExcuseTableContent);
         mainController.registerUpdateLecturerTableEvent(mainWindow::registerLecturerTableContent);
 

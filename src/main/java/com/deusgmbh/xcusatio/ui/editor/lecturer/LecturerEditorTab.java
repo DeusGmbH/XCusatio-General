@@ -1,8 +1,10 @@
 package com.deusgmbh.xcusatio.ui.editor.lecturer;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.ui.editor.EditorTab;
@@ -33,6 +35,10 @@ public class LecturerEditorTab extends EditorTab {
 
     public void registerChangeEntryEvent(BiConsumer<Integer, Lecturer> editEntry) {
         editEntryPane.createEditBtnAction(editEntry);
+    }
+
+    public void registerTagsSetSupplier(Supplier<Set<String>> tagsSetSupplier) {
+        editEntryPane.registerTagsSetSupplier(tagsSetSupplier);
     }
 
     private void createEditForm(int selectedLecturerID, Lecturer selectedExcuse) {

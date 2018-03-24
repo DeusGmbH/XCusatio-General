@@ -3,6 +3,7 @@ package com.deusgmbh.xcusatio.controller;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
@@ -43,7 +44,7 @@ public class MainController {
 
     public List<Scenario> getScenarios() {
         List<Scenario> scenarioList = new ArrayList<Scenario>();
-        // TODO Get all scenarios
+        // TODO Get all scenarios and write into this list
         return scenarioList;
     }
 
@@ -51,11 +52,11 @@ public class MainController {
         // TODO Write "real" method for getting excuses;
         // Following method is only for testing reasons => to replace!!
         HashSet<String> tag1 = new HashSet<String>();
-        tag1.add("late");
-        tag1.add("opnv");
+        tag1.add("Late");
+        tag1.add("OPNV");
         HashSet<String> tag2 = new HashSet<String>();
-        tag2.add("project");
-        tag2.add("opnv");
+        tag2.add("Project");
+        tag2.add("Weather");
         Excuse excuse1 = new Excuse("Die Bahn kam zu spät", tag1);
         Excuse excuse2 = new Excuse("Der Regen hat unser Projekt zerstört", tag2);
         List<Excuse> excusesList = new ArrayList<Excuse>();
@@ -87,6 +88,30 @@ public class MainController {
         lecturerList.add(lecturer1);
         lecturerList.add(lecturer2);
         return lecturerList;
+    }
+
+    public Set<String> getTagsSet() {
+        Set<String> tagsSet = new HashSet<String>();
+        // TODO Get all tags and write into this set
+        // Following section is only for testing purposes, can be deleted
+        // afterwards
+        tagsSet.add("Weather");
+        tagsSet.add("OPNV");
+        tagsSet.add("Late");
+        tagsSet.add("Project");
+
+        return tagsSet;
+    }
+
+    public Set<String> getWildcardSet() {
+        Set<String> wildcardSet = new HashSet<String>();
+        // TODO Get all tags and write into this set
+        // Following section is only for testing purposes, can be deleted
+        // afterwards
+        wildcardSet.add("WeatherCondition");
+        wildcardSet.add("Time");
+
+        return wildcardSet;
     }
 
     public void removeExcuse(Excuse excuse) {

@@ -1,8 +1,10 @@
 package com.deusgmbh.xcusatio.ui.editor;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
@@ -69,4 +71,12 @@ public class Editor extends TabPane {
         lecturerEditor.registerChangeEntryEvent(editLecturer);
     }
 
+    public void registerTagsSetSupplier(Supplier<Set<String>> tagsSetSupplier) {
+        excuseEditor.registerTagsSetSupplier(tagsSetSupplier);
+        lecturerEditor.registerTagsSetSupplier(tagsSetSupplier);
+    }
+
+    public void registerWildcardSetSupplier(Supplier<Set<String>> wildcardSetSupplier) {
+        excuseEditor.registerWildcardSetSupplier(wildcardSetSupplier);
+    }
 }
