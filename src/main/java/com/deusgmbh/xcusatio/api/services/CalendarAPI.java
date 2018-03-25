@@ -12,4 +12,7 @@ public class CalendarAPI extends APIService {
         return null;
     }
 
+    // TODO: convert int to string for each time detail, e.g. minutesLeft = 11 -->
+    // "11 Minuten" / 1 --> "1 Minute"
+
 }

@@ -9,6 +9,7 @@ public class WeatherAPI extends APIService {
     @Override
     public WeatherContext get(UserSettings usersettings) {
         // TODO: implement API call and result processing
+        new WeatherContext(11, "Sturmböen", "SE", 15, 8, 34, 0, 2);
         return null;
     }
 
