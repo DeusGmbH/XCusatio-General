@@ -39,6 +39,7 @@ public class CalendarContext extends TimeFormattingUtils {
     }
 
     public int getMinutesPassed() {
+
         return minutesPassed;
     }
 
