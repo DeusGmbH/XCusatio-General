@@ -24,9 +24,32 @@ public class CalendarContext {
 
     public CalendarContext(String lectureName, Lecturer lecturer, String startTimeAsClocktime,
             String endTimeAsClocktime, String minutesLeft, String minutesPassed) {
-        super();
         this.lectureEvent = new LectureEvent(lectureName, lecturer, startTimeAsClocktime, endTimeAsClocktime);
         this.minutesLeft = minutesLeft;
+        this.minutesPassed = minutesPassed;
+    }
+
+    public LectureEvent getLectureEvent() {
+        return lectureEvent;
+    }
+
+    public void setLectureEvent(LectureEvent lectureEvent) {
+        this.lectureEvent = lectureEvent;
+    }
+
+    public String getMinutesLeft() {
+        return minutesLeft;
+    }
+
+    public void setMinutesLeft(String minutesLeft) {
+        this.minutesLeft = minutesLeft;
+    }
+
+    public String getMinutesPassed() {
+        return minutesPassed;
+    }
+
+    public void setMinutesPassed(String minutesPassed) {
         this.minutesPassed = minutesPassed;
     }
 
