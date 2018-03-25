@@ -22,8 +22,8 @@ public class CalendarContext {
         }
     }
 
-    public CalendarContext(String lectureName, Lecturer lecturer, String startTimeInMinutes, String endTimeInMinutes,
-            String startTimeAsClocktime, String endTimeAsClocktime, String minutesLeft, String minutesPassed) {
+    public CalendarContext(String lectureName, Lecturer lecturer, String startTimeAsClocktime,
+            String endTimeAsClocktime, String minutesLeft, String minutesPassed) {
         super();
         this.lectureEvent = new LectureEvent(lectureName, lecturer, startTimeAsClocktime, endTimeAsClocktime);
         this.minutesLeft = minutesLeft;
