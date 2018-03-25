@@ -10,8 +10,24 @@ public class CalendarContext {
     class LectureEvent {
         String lectureName;
         Lecturer lecturer;
-        String startTimeInMinutes;
-        String endTimeinMinutes;
+        String startTimeAsClocktime;
+        String endTimeAsClocktime;
+
+        public LectureEvent(String lectureName, Lecturer lecturer, String startTimeAsClocktime,
+                String endTimeAsClocktime) {
+            this.lectureName = lectureName;
+            this.lecturer = lecturer;
+            this.startTimeAsClocktime = startTimeAsClocktime;
+            this.endTimeAsClocktime = endTimeAsClocktime;
+        }
+    }
+
+    public CalendarContext(String lectureName, Lecturer lecturer, String startTimeInMinutes, String endTimeInMinutes,
+            String startTimeAsClocktime, String endTimeAsClocktime, String minutesLeft, String minutesPassed) {
+        super();
+        this.lectureEvent = new LectureEvent(lectureName, lecturer, startTimeAsClocktime, endTimeAsClocktime);
+        this.minutesLeft = minutesLeft;
+        this.minutesPassed = minutesPassed;
     }
 
 }
