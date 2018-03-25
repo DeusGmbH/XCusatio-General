@@ -6,7 +6,6 @@ public class RNVContext {
 
     private TramDetails tram;
     private TramNews newsEntry; // can be empty if line not affected by any incidents
-
     private String tramStatus;
     private String differenceTimeInMinutes;
 
@@ -43,6 +42,38 @@ public class RNVContext {
         this.tram = tram;
         this.newsEntry = newsEntry;
         this.tramStatus = tramStatus;
+        this.differenceTimeInMinutes = differenceTimeInMinutes;
+    }
+
+    public TramDetails getTram() {
+        return tram;
+    }
+
+    public void setTram(TramDetails tram) {
+        this.tram = tram;
+    }
+
+    public TramNews getNewsEntry() {
+        return newsEntry;
+    }
+
+    public void setNewsEntry(TramNews newsEntry) {
+        this.newsEntry = newsEntry;
+    }
+
+    public String getTramStatus() {
+        return tramStatus;
+    }
+
+    public void setTramStatus(String tramStatus) {
+        this.tramStatus = tramStatus;
+    }
+
+    public String getDifferenceTimeInMinutes() {
+        return differenceTimeInMinutes;
+    }
+
+    public void setDifferenceTimeInMinutes(String differenceTimeInMinutes) {
         this.differenceTimeInMinutes = differenceTimeInMinutes;
     }
 }
