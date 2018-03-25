@@ -1,5 +1,6 @@
 package com.deusgmbh.xcusatio.data.lecturer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -24,6 +25,10 @@ public class Lecturer {
         this.tags = tags;
     }
 
+    public Lecturer(String name) {
+        this(name, new ArrayList<String>(), new ArrayList<Tag>());
+    }
+
     public String getName() {
         return name;
     }
@@ -40,12 +45,22 @@ public class Lecturer {
         this.lectures = lectures;
     }
 
+    public Lecturer addLecture(String lecture) {
+        this.lectures.add(lecture);
+        return this;
+    }
+
     public List<Tag> getTags() {
         return tags;
     }
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Lecturer addTag(Tag tag) {
+        this.tags.add(tag);
+        return this;
     }
 
     public static Predicate<Lecturer> hasLecture(String lecture) {

@@ -30,11 +30,6 @@ public class UserSettings {
         this.excusesVibes = excusesVibes;
     }
 
-    public boolean isValid() {
-        // TODO: check if all values are != null, watch out for nested objects
-        return false;
-    }
-
     public String getGoogleCalendar() {
         return googleCalendar;
     }

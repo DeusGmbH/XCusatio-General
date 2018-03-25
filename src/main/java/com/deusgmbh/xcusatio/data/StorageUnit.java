@@ -17,7 +17,7 @@ import com.thoughtworks.xstream.XStream;
  * @author Lars.Dittert@de.ibm.com
  *
  */
-public class StorageUnit<T> {
+abstract public class StorageUnit<T> {
     private static final Logger LOGGER = Logger.getLogger(StorageUnit.class.getName());
 
     private ArrayList<T> units = new ArrayList<T>();
@@ -27,6 +27,9 @@ public class StorageUnit<T> {
 
     public StorageUnit(Class<T> parameterType) {
         this.parameterType = parameterType;
+
+        // TODO: remove this after testing is done
+        this.reset();
     }
 
     /**
@@ -35,6 +38,10 @@ public class StorageUnit<T> {
      */
     public List<T> get() {
         return this.units;
+    }
+
+    public T get(int id) {
+        return this.units.get(id);
     }
 
     /**
@@ -94,18 +101,39 @@ public class StorageUnit<T> {
         return this;
     }
 
-    public StorageUnit<T> addUnitToList(T object) {
+    public StorageUnit<T> add(T object) {
         units.add(object);
         return this;
     }
 
-    public StorageUnit<T> removeUnitFromList(T object) {
+    public StorageUnit<T> remove(T object) {
         units.remove(object);
         return this;
     }
 
-    public StorageUnit<T> editUnit(int excuseID, T editedObj) {
+    public StorageUnit<T> edit(int excuseID, T editedObj) {
         units.set(excuseID, editedObj);
         return this;
     }
+
+    /**
+     * Replaces all the current content with the default values by using
+     * {@link #addDefaultValues()}. After that this change needs to be persisted
+     * manually by calling {@link #persist()}
+     * 
+     * @returns this
+     */
+    public StorageUnit<T> reset() {
+        this.units = new ArrayList<>();
+        this.addDefaultValues();
+        return this;
+    }
+
+    /**
+     * Adds all default elements to this unit
+     * 
+     * @returns this
+     */
+    abstract public StorageUnit<T> addDefaultValues();
+
 }
