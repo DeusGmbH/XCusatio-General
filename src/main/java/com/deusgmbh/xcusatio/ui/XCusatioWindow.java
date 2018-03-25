@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.tags.Tag;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.deusgmbh.xcusatio.ui.dashboard.Dashboard;
 import com.deusgmbh.xcusatio.ui.editor.Editor;
 import com.deusgmbh.xcusatio.ui.profilsettings.ProfileSettings;
 import com.deusgmbh.xcusatio.ui.utility.ResizeHelper;
+import com.deusgmbh.xcusatio.util.TriConsumer;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -66,7 +69,9 @@ public class XCusatioWindow extends Application {
         windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
 
         navigationPanel = new NavigationPanel();
-        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
+        navigationPanel.prefWidthProperty()
+                .bind(main.widthProperty()
+                        .multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
 
         dashboard = new Dashboard();
         editor = new Editor();
@@ -88,7 +93,8 @@ public class XCusatioWindow extends Application {
         stage.initStyle(StageStyle.UNDECORATED);
 
         Scene scene = new Scene(main);
-        scene.getStylesheets().add(SCENE_STYLESHEET_PATH);
+        scene.getStylesheets()
+                .add(SCENE_STYLESHEET_PATH);
         stage.setWidth(WINDOW_DEF_WIDTH);
         stage.setHeight(WINDOW_DEF_HEIGHT);
         stage.setMinWidth(WINDOW_DEF_WIDTH);
@@ -141,7 +147,8 @@ public class XCusatioWindow extends Application {
         }
     };
 
-    public void registerScenarioButtonActionEvent(Consumer<Scenario> generateExcuse) {
+    public void registerScenarioButtonActionEvent(
+            TriConsumer<Scenario, Consumer<String>, DoubleConsumer> generateExcuse) {
         dashboard.createScenarioButtons(scenarioList, generateExcuse);
     }
 
@@ -215,5 +222,10 @@ public class XCusatioWindow extends Application {
 
     public void setScenarios(List<Scenario> scenarioList) {
         this.scenarioList = scenarioList;
+    }
+
+    public void setQuickSettings(UserSettings userSettings) {
+        // TODO: adjust QuickSettings
+
     }
 }

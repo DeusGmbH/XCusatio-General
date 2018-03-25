@@ -26,8 +26,11 @@ public class Wildcards {
         wildcards.add(new Wildcard("$temperature$") {
             @Override
             public String replace(String source, WildcardContext wildcardContext) {
-                String temperatureText = wildcardContext.getWeather().getTemperature() + " C";
-                source.replaceAll("$temperature$", temperatureText);
+                if (wildcardContext != null) {
+                    String temperatureText = wildcardContext.getWeather()
+                            .getTemperature() + " C";
+                    source.replaceAll("$temperature$", temperatureText);
+                }
                 return source;
             }
         });
@@ -41,6 +44,8 @@ public class Wildcards {
     }
 
     public static List<String> getNames() {
-        return wildcards.stream().map(Wildcard::getIdentifier).collect(Collectors.toList());
+        return wildcards.stream()
+                .map(Wildcard::getIdentifier)
+                .collect(Collectors.toList());
     }
 }

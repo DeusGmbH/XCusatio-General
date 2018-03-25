@@ -1,5 +1,6 @@
 package com.deusgmbh.xcusatio.context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.deusgmbh.xcusatio.context.wildcard.WildcardContext;
@@ -31,6 +32,11 @@ public class Context {
         this.lecturerName = lecturerName;
         this.lecturerTags = lecturerTags;
         this.wildcardData = wildcardData;
+    }
+
+    public Context() {
+        super();
+        this.lecturerTags = new ArrayList<>();
     }
 
     public int getAge() {
