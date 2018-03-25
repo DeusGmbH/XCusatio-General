@@ -4,10 +4,7 @@ package com.deusgmbh.xcusatio.context.wildcard;
  * 
  * @author jan.leiblein@gmail.com
  * 
- * */
-
-import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
-
+ */
 public class CalendarContext extends TimeFormattingUtils {
     private LectureEvent lectureEvent;
     private String minutesLeftText;
@@ -15,9 +12,9 @@ public class CalendarContext extends TimeFormattingUtils {
     private String minutesPassedText;
     private int minutesPassed;
 
-    public CalendarContext(String lectureName, Lecturer lecturer, String startTimeAsClocktime,
-            String endTimeAsClocktime, int minutesLeft, int minutesPassed) {
-        this.lectureEvent = new LectureEvent(lectureName, lecturer, startTimeAsClocktime, endTimeAsClocktime);
+    public CalendarContext(String lectureName, String startTimeAsClocktime, String endTimeAsClocktime, int minutesLeft,
+            int minutesPassed) {
+        this.lectureEvent = new LectureEvent(lectureName, startTimeAsClocktime, endTimeAsClocktime);
         this.minutesLeft = minutesLeft;
         this.minutesPassed = minutesPassed;
     }

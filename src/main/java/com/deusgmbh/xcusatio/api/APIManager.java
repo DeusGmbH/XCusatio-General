@@ -32,6 +32,10 @@ public class APIManager {
     }
 
     public APIDrivenContext getAPIData(UserSettings userSettings) {
+        if (apis == null) {
+            return null;
+        }
+
         // TODO: Maybe some performance optimization is necessary here:
         // investigate Futures and completableFutures
 

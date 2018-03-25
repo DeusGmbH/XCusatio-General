@@ -15,11 +15,11 @@ public class UserSettings {
     private Sex sex;
     private Address home;
     private Address university;
-    private ExcusesVibesMode excusesVibesMode;
+    private ExcuseVibeMode excusesVibesMode;
     private ExcusesVibes excusesVibes;
 
     public UserSettings(String googleCalendar, int age, Sex sex, Address home, Address university,
-            ExcusesVibesMode excusesVibesMode, ExcusesVibes excusesVibes) {
+            ExcuseVibeMode excusesVibesMode, ExcusesVibes excusesVibes) {
         super();
         this.googleCalendar = googleCalendar;
         this.home = home;
@@ -70,11 +70,11 @@ public class UserSettings {
         this.sex = sex;
     }
 
-    public ExcusesVibesMode getExcusesVibesMode() {
+    public ExcuseVibeMode getExcuseVibeMode() {
         return excusesVibesMode;
     }
 
-    public void setExcusesVibesMode(ExcusesVibesMode excusesVibesMode) {
+    public void setExcuseVibeMode(ExcuseVibeMode excusesVibesMode) {
         this.excusesVibesMode = excusesVibesMode;
     }
 
@@ -90,7 +90,7 @@ public class UserSettings {
         MALE, FEMALE;
     }
 
-    public enum ExcusesVibesMode {
+    public enum ExcuseVibeMode {
         AUTOMATIC, MANUALLY;
     }
 

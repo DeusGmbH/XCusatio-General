@@ -42,16 +42,25 @@ public class ExcuseEntryListPane extends EntryListPane {
         entryTable.setEditable(false);
         setTableColumns(getRequiredTableColumns());
 
-        this.getChildren().add(0, entryTable);
+        this.getChildren()
+                .add(0, entryTable);
     }
 
     private void setTableColumns(HashMap<String, String> columnList) {
-        columnList.entrySet().stream().forEach(entry -> {
-            TableColumn<Excuse, String> column = new TableColumn<Excuse, String>(entry.getValue().toString());
-            column.setCellValueFactory(new PropertyValueFactory<Excuse, String>(entry.getKey().toString()));
-            column.prefWidthProperty().bind(entryTable.widthProperty().multiply(1d / columnList.size()).subtract(1));
-            entryTable.getColumns().add(column);
-        });
+        columnList.entrySet()
+                .stream()
+                .forEach(entry -> {
+                    TableColumn<Excuse, String> column = new TableColumn<Excuse, String>(entry.getValue()
+                            .toString());
+                    column.setCellValueFactory(new PropertyValueFactory<Excuse, String>(entry.getKey()
+                            .toString()));
+                    column.prefWidthProperty()
+                            .bind(entryTable.widthProperty()
+                                    .multiply(1d / columnList.size())
+                                    .subtract(1));
+                    entryTable.getColumns()
+                            .add(column);
+                });
     }
 
     private HashMap<String, String> getRequiredTableColumns() {
@@ -70,7 +79,8 @@ public class ExcuseEntryListPane extends EntryListPane {
         super.removeSelectedEntry.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent e) {
-                removeEntry.accept(entryTable.getSelectionModel().getSelectedItem());
+                removeEntry.accept(entryTable.getSelectionModel()
+                        .getSelectedItem());
             }
         });
     }
@@ -79,17 +89,19 @@ public class ExcuseEntryListPane extends EntryListPane {
         super.addEntry.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent e) {
-                Excuse newExcuse = new Excuse(NEW_EXCUSE_DEFAULT_TEXT, ScenarioType.DEFAULT);
+                Excuse newExcuse = new Excuse(NEW_EXCUSE_DEFAULT_TEXT, ScenarioType.LATE_ARRIVAL);
                 addEntry.accept(newExcuse);
             }
         });
     }
 
     public void registerOnSelectEntryEvent(BiConsumer<Integer, Excuse> selectEntryEvent) {
-        entryTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                selectEntryEvent.accept(this.entryList.indexOf(newSelection), newSelection);
-            }
-        });
+        entryTable.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((obs, oldSelection, newSelection) -> {
+                    if (newSelection != null) {
+                        selectEntryEvent.accept(this.entryList.indexOf(newSelection), newSelection);
+                    }
+                });
     }
 }

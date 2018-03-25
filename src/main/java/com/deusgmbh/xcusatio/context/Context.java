@@ -1,10 +1,7 @@
 package com.deusgmbh.xcusatio.context;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.deusgmbh.xcusatio.context.wildcard.APIDrivenContext;
-import com.deusgmbh.xcusatio.data.tags.Tag;
+import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.usersettings.ExcusesVibes;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 
@@ -16,75 +13,68 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 public class Context {
     private int age;
     private Sex sex;
-    private ExcusesVibes excusesVibes;
+    private ExcusesVibes manuellExcusesVibes;
 
-    private String lecturerName;
-    private List<Tag> lecturerTags;
+    private Lecturer lecturer;
 
     private APIDrivenContext apiContext;
 
-    public Context(int age, Sex sex, ExcusesVibes excusesVibes, String lecturerName, List<Tag> lecturerTags,
-            APIDrivenContext apiContext) {
+    public Context(int age, Sex sex, ExcusesVibes excusesVibes, Lecturer lecturer, APIDrivenContext apiContext) {
         super();
         this.age = age;
         this.sex = sex;
-        this.excusesVibes = excusesVibes;
-        this.lecturerName = lecturerName;
-        this.lecturerTags = lecturerTags;
+        this.lecturer = lecturer;
+        this.manuellExcusesVibes = excusesVibes;
         this.apiContext = apiContext;
     }
 
     public Context() {
         super();
-        this.lecturerTags = new ArrayList<>();
     }
 
     public int getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public Context setAge(int age) {
         this.age = age;
+        return this;
     }
 
     public Sex getSex() {
         return sex;
     }
 
-    public void setSex(Sex sex) {
+    public Context setSex(Sex sex) {
         this.sex = sex;
+        return this;
     }
 
-    public ExcusesVibes getExcusesVibes() {
-        return excusesVibes;
+    public ExcusesVibes getManuellExcusesVibes() {
+        return manuellExcusesVibes;
     }
 
-    public void setExcusesVibes(ExcusesVibes excusesVibes) {
-        this.excusesVibes = excusesVibes;
+    public Context setManuellExcusesVibes(ExcusesVibes excusesVibes) {
+        this.manuellExcusesVibes = excusesVibes;
+        return this;
     }
 
-    public String getLecturerName() {
-        return lecturerName;
+    public Lecturer getLecturer() {
+        return lecturer;
     }
 
-    public void setLecturerName(String lecturerName) {
-        this.lecturerName = lecturerName;
-    }
-
-    public List<Tag> getLecturerTags() {
-        return lecturerTags;
-    }
-
-    public void setLecturerTags(List<Tag> lecturerTags) {
-        this.lecturerTags = lecturerTags;
+    public Context setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
+        return this;
     }
 
     public APIDrivenContext getApiContext() {
         return apiContext;
     }
 
-    public void setApiContext(APIDrivenContext apiContext) {
+    public Context setApiContext(APIDrivenContext apiContext) {
         this.apiContext = apiContext;
+        return this;
     }
 
 }

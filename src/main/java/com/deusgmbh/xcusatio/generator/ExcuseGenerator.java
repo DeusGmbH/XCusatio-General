@@ -1,6 +1,7 @@
 package com.deusgmbh.xcusatio.generator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,7 @@ import com.deusgmbh.xcusatio.data.usersettings.ExcusesVibes;
  *
  */
 public class ExcuseGenerator {
+    private final String NO_EXCUSE_FOUND = "Es konnte leider keine Ausrede für dieses Scenario gefunden werden. Im Editor können diese aber hinzugefügt werden.";
 
     public ExcuseGenerator() {
         super();
@@ -54,7 +56,7 @@ public class ExcuseGenerator {
                 .collect(Collectors.toList());
 
         if (finalExcuses.isEmpty()) {
-            return "";
+            return this.NO_EXCUSE_FOUND;
         }
 
         int randomExcuseId = ThreadLocalRandom.current()
@@ -109,8 +111,12 @@ public class ExcuseGenerator {
      */
     private List<Tag> getTags(Context context) {
         List<Tag> tags = new ArrayList<>();
+        if (context == null) {
+            return tags;
+        }
+
         tags.addAll(this.getExcusesVibeTags(context));
-        tags.addAll(context.getLecturerTags());
+        tags.addAll(this.getLecturerTags(context));
         tags.addAll(this.getSexTag(context));
         // add temperature tags
         // add snow tags
@@ -122,12 +128,23 @@ public class ExcuseGenerator {
 
         // add ageGroup tag
 
-        return tags;
+        return tags.stream()
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    private Collection<Tag> getLecturerTags(Context context) {
+        if (context.getLecturer() != null && context.getLecturer()
+                .getTags() != null) {
+            return context.getLecturer()
+                    .getTags();
+        }
+        return new HashSet<>();
     }
 
     private Set<Tag> getExcusesVibeTags(Context context) {
         Set<Tag> excusesVibeTags = new HashSet<>();
-        ExcusesVibes excusesVibes = context.getExcusesVibes();
+        ExcusesVibes excusesVibes = context.getManuellExcusesVibes();
         if (excusesVibes != null) {
             if (excusesVibes.isAggresiv()) {
                 excusesVibeTags.add(Tag.AGGRESSIVE);

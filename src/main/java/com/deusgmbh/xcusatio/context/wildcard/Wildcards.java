@@ -22,13 +22,15 @@ public class Wildcards {
         wildcards.add(new Wildcard("$temperature$") {
             @Override
             public String replace(String source, APIDrivenContext apiContext) {
-                String temperatureText = apiContext.getWeather()
-                        .getTemperature() + " C";
-                source.replaceAll("$temperature$", temperatureText);
-
+                if (apiContext != null) {
+                    String temperatureText = apiContext.getWeather()
+                            .getTemperature() + " C";
+                    source.replaceAll("$temperature$", temperatureText);
+                }
                 return source;
             }
         });
+
     }
 
     public static String replace(String source, APIDrivenContext apiContext) {
