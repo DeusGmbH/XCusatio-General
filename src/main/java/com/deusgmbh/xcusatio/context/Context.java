@@ -1,8 +1,9 @@
 package com.deusgmbh.xcusatio.context;
 
-import java.util.Set;
+import java.util.List;
 
 import com.deusgmbh.xcusatio.context.wildcard.WildcardContext;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.data.usersettings.ExcusesVibes;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 
@@ -15,20 +16,18 @@ public class Context {
     private int age;
     private Sex sex;
     private ExcusesVibes excusesVibes;
-    private Set<String> UserInterests;
 
     private String lecturerName;
-    private Set<String> lecturerTags;
+    private List<Tag> lecturerTags;
 
     private WildcardContext wildcardData;
 
-    public Context(int age, Sex sex, ExcusesVibes excusesVibes, Set<String> userInterests, String lecturerName,
-            Set<String> lecturerTags, WildcardContext wildcardData) {
+    public Context(int age, Sex sex, ExcusesVibes excusesVibes, String lecturerName, List<Tag> lecturerTags,
+            WildcardContext wildcardData) {
         super();
         this.age = age;
         this.sex = sex;
         this.excusesVibes = excusesVibes;
-        UserInterests = userInterests;
         this.lecturerName = lecturerName;
         this.lecturerTags = lecturerTags;
         this.wildcardData = wildcardData;
@@ -58,14 +57,6 @@ public class Context {
         this.excusesVibes = excusesVibes;
     }
 
-    public Set<String> getUserInterests() {
-        return UserInterests;
-    }
-
-    public void setUserInterests(Set<String> userInterests) {
-        UserInterests = userInterests;
-    }
-
     public String getLecturerName() {
         return lecturerName;
     }
@@ -74,11 +65,11 @@ public class Context {
         this.lecturerName = lecturerName;
     }
 
-    public Set<String> getLecturerTags() {
+    public List<Tag> getLecturerTags() {
         return lecturerTags;
     }
 
-    public void setLecturerTags(Set<String> lecturerTags) {
+    public void setLecturerTags(List<Tag> lecturerTags) {
         this.lecturerTags = lecturerTags;
     }
 

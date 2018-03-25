@@ -11,14 +11,18 @@ import java.util.stream.Collectors;
  *
  */
 public class Wildcards {
-    private Set<Wildcard> wildcards;
+    private static Set<Wildcard> wildcards;
 
     public Wildcards() {
+        initialize();
+    }
+
+    public static void initialize() {
         wildcards = new HashSet<Wildcard>();
         addTemperatureWildcard();
     }
 
-    private void addTemperatureWildcard() {
+    private static void addTemperatureWildcard() {
         wildcards.add(new Wildcard("$temperature$") {
             @Override
             public String replace(String source, WildcardContext wildcardContext) {
@@ -29,14 +33,14 @@ public class Wildcards {
         });
     }
 
-    public String replace(String source, WildcardContext wildcardContext) {
+    public static String replace(String source, WildcardContext wildcardContext) {
         for (Wildcard wildcard : wildcards) {
             source = wildcard.replace(source, wildcardContext);
         }
         return source;
     }
 
-    public List<String> getNames() {
+    public static List<String> getNames() {
         return wildcards.stream().map(Wildcard::getIdentifier).collect(Collectors.toList());
     }
 }

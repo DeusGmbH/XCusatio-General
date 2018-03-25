@@ -33,11 +33,17 @@ public class XCusatio extends Application {
         mainWindow.setScenarios(mainController.getScenarios());
         mainWindow.registerScenarioButtonActionEvent(mainController::generateExcuse);
 
-        registerCallbacks();
+        mainController.updateExcuseTable(mainWindow::updateExcuseTable);
+        mainController.updateLecturerTable(mainWindow::updateLecturerTable);
+
+        mainWindow.registerRemoveExcuseEvent(mainController::removeExcuse);
+        mainWindow.registerRemoveLecturerEvent(mainController::removeLecturer);
+        mainWindow.registerAddExcuseEvent(mainController::addExcuse);
+        mainWindow.registerAddLecturerEvent(mainController::addLecturer);
+        mainWindow.registerEditExcuseEvent(mainController::editExcuse);
+        mainWindow.registerEditLecturerEvent(mainController::editLecturer);
+
+        mainWindow.registerTagsSupplier(mainController::getTags);
+        mainWindow.registerWildcardSupplier(mainController::getWildcardNames);
     }
-
-    public void registerCallbacks() {
-
-    }
-
 }

@@ -9,4 +9,8 @@ import com.deusgmbh.xcusatio.data.StorageUnit;
  */
 public class ScenarioManager extends StorageUnit<Scenario> {
 
+    public ScenarioManager(Class<Scenario> parameterType) {
+        super(parameterType);
+    }
+
 }
