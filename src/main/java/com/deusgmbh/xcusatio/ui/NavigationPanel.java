@@ -18,11 +18,10 @@ import javafx.scene.layout.VBox;
 
 public class NavigationPanel extends VBox {
 
-    private static final String NAVIGATION_PANEL_BACKGROUND_COLOR = "#888888";
     private static final double NAVIGATION_PANEL_BUTTON_HEIGHT_MULTIPLIER = 0.1;
 
     public NavigationPanel() {
-        this.setStyle("-fx-background-color: " + NAVIGATION_PANEL_BACKGROUND_COLOR);
+        this.getStyleClass().add("navigation-bar");
     }
 
     public void addNavigationEntry(String text, Node paneToFocus, BorderPane mainPane) {

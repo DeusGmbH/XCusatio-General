@@ -1,5 +1,10 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+/**
+ * 
+ * @author Tobias.Schmidt@de.ibm.com
+ *
+ */
 public class WeatherContext {
     private int temperature;
     private String description;
