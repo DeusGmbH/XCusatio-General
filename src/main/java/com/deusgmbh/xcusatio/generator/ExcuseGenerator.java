@@ -57,7 +57,7 @@ public class ExcuseGenerator {
                 .nextInt(0, finalExcuses.size());
 
         return Wildcards.replace(finalExcuses.get(randomExcuseId)
-                .getText(), context.getWildcardData());
+                .getText(), context.getApiContext());
     }
 
     private List<Excuse> filterByScenario(List<Excuse> excuses, Scenario scenario) {

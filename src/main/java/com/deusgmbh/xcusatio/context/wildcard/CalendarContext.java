@@ -1,5 +1,5 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
-public class NewsContext {
+public class CalendarContext {
 
 }

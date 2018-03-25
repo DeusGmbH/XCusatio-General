@@ -5,19 +5,23 @@ package com.deusgmbh.xcusatio.context.wildcard;
  * @author Tobias.Schmidt@de.ibm.com
  *
  */
-public class WildcardContext {
+public class APIDrivenContext {
 
     private WeatherContext weather;
     private TrafficContext traffic;
     private RNVContext rnv;
-    private NewsContext news;
+    private CalendarContext calendar;
 
-    public WildcardContext(WeatherContext weather, TrafficContext traffic, RNVContext rnv, NewsContext news) {
+    public APIDrivenContext(WeatherContext weather, TrafficContext traffic, RNVContext rnv, CalendarContext calendar) {
         super();
         this.weather = weather;
         this.traffic = traffic;
         this.rnv = rnv;
-        this.news = news;
+        this.calendar = calendar;
+    }
+
+    public APIDrivenContext() {
+        super();
     }
 
     public WeatherContext getWeather() {
@@ -44,12 +48,12 @@ public class WildcardContext {
         this.rnv = rnv;
     }
 
-    public NewsContext getNews() {
-        return news;
+    public CalendarContext getCalendar() {
+        return calendar;
     }
 
-    public void setNews(NewsContext news) {
-        this.news = news;
+    public void setCalendar(CalendarContext calendar) {
+        this.calendar = calendar;
     }
 
 }

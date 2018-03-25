@@ -25,22 +25,25 @@ public class Wildcards {
     private static void addTemperatureWildcard() {
         wildcards.add(new Wildcard("$temperature$") {
             @Override
-            public String replace(String source, WildcardContext wildcardContext) {
-                String temperatureText = wildcardContext.getWeather().getTemperature() + " C";
+            public String replace(String source, APIDrivenContext apiContext) {
+                String temperatureText = apiContext.getWeather()
+                        .getTemperature() + " C";
                 source.replaceAll("$temperature$", temperatureText);
                 return source;
             }
         });
     }
 
-    public static String replace(String source, WildcardContext wildcardContext) {
+    public static String replace(String source, APIDrivenContext apiContext) {
         for (Wildcard wildcard : wildcards) {
-            source = wildcard.replace(source, wildcardContext);
+            source = wildcard.replace(source, apiContext);
         }
         return source;
     }
 
     public static List<String> getNames() {
-        return wildcards.stream().map(Wildcard::getIdentifier).collect(Collectors.toList());
+        return wildcards.stream()
+                .map(Wildcard::getIdentifier)
+                .collect(Collectors.toList());
     }
 }
