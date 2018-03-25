@@ -14,10 +14,6 @@ public class RNVContext extends TimeFormattingUtils {
     private int differenceTimeInMinutes;
     private String differenceTimeInMinutesText;
 
-    enum TramStatus {
-        OK, CANCELLED
-    }
-
     public RNVContext(TramDetails tram, TramNews newsEntry, TramStatus tramStatus, int differenceTimeInMinutes) {
         super();
         this.tram = tram;
