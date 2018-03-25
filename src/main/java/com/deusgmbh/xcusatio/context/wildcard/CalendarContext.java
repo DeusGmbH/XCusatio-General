@@ -1,29 +1,22 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+/**
+ * 
+ * @author jan.leiblein@gmail.com
+ * 
+ * */
+
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 
-public class CalendarContext {
+public class CalendarContext extends TimeFormattingUtils {
     private LectureEvent lectureEvent;
-    private String minutesLeft;
-    private String minutesPassed;
-
-    class LectureEvent {
-        String lectureName;
-        Lecturer lecturer;
-        String startTimeAsClocktime;
-        String endTimeAsClocktime;
-
-        public LectureEvent(String lectureName, Lecturer lecturer, String startTimeAsClocktime,
-                String endTimeAsClocktime) {
-            this.lectureName = lectureName;
-            this.lecturer = lecturer;
-            this.startTimeAsClocktime = startTimeAsClocktime;
-            this.endTimeAsClocktime = endTimeAsClocktime;
-        }
-    }
+    private String minutesLeftText;
+    private int minutesLeft;
+    private String minutesPassedText;
+    private int minutesPassed;
 
     public CalendarContext(String lectureName, Lecturer lecturer, String startTimeAsClocktime,
-            String endTimeAsClocktime, String minutesLeft, String minutesPassed) {
+            String endTimeAsClocktime, int minutesLeft, int minutesPassed) {
         this.lectureEvent = new LectureEvent(lectureName, lecturer, startTimeAsClocktime, endTimeAsClocktime);
         this.minutesLeft = minutesLeft;
         this.minutesPassed = minutesPassed;
@@ -37,20 +30,35 @@ public class CalendarContext {
         this.lectureEvent = lectureEvent;
     }
 
-    public String getMinutesLeft() {
+    public int getMinutesLeft() {
         return minutesLeft;
     }
 
-    public void setMinutesLeft(String minutesLeft) {
+    public void setMinutesLeft(int minutesLeft) {
         this.minutesLeft = minutesLeft;
     }
 
-    public String getMinutesPassed() {
+    public int getMinutesPassed() {
         return minutesPassed;
     }
 
-    public void setMinutesPassed(String minutesPassed) {
+    public void setMinutesPassed(int minutesPassed) {
         this.minutesPassed = minutesPassed;
     }
 
+    public String getMinutesLeftText() {
+        return minutesLeftText;
+    }
+
+    public void setMinutesLeftText() {
+        this.minutesLeftText = formatMinutesAsText(this.minutesLeft);
+    }
+
+    public String getMinutesPassedText() {
+        return minutesPassedText;
+    }
+
+    public void setMinutesPassedText() {
+        this.minutesPassedText = formatMinutesAsText(this.minutesPassed);
+    }
 }

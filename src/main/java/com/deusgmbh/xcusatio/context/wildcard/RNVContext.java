@@ -1,43 +1,24 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
-import java.util.List;
+/**
+ * 
+ * @author jan.leiblein@gmail.com
+ * 
+ */
 
-public class RNVContext {
+public class RNVContext extends TimeFormattingUtils {
 
     private TramDetails tram;
     private TramNews newsEntry; // can be empty if line not affected by any incidents
-    private String tramStatus;
-    private String differenceTimeInMinutes;
+    private TramStatus tramStatus;
+    private int differenceTimeInMinutes;
+    private String differenceTimeInMinutesText;
 
-    class TramDetails {
-        String lineLabel;
-        String firstEndStation;
-        String secondEndstation;
-        List<String> stops;
-
-        public TramDetails(String lineNumber, String firstEndStation, String secondEndstation, List<String> stops) {
-            super();
-            this.lineLabel = lineNumber;
-            this.firstEndStation = firstEndStation;
-            this.secondEndstation = secondEndstation;
-            this.stops = stops;
-        }
+    enum TramStatus {
+        OK, CANCELLED
     }
 
-    class TramNews {
-        String title;
-        String content;
-        List<String> affectedLines;
-
-        public TramNews(String title, String content, List<String> affectedLines) {
-            super();
-            this.title = title;
-            this.content = content;
-            this.affectedLines = affectedLines;
-        }
-    }
-
-    public RNVContext(TramDetails tram, TramNews newsEntry, String tramStatus, String differenceTimeInMinutes) {
+    public RNVContext(TramDetails tram, TramNews newsEntry, TramStatus tramStatus, int differenceTimeInMinutes) {
         super();
         this.tram = tram;
         this.newsEntry = newsEntry;
@@ -61,19 +42,28 @@ public class RNVContext {
         this.newsEntry = newsEntry;
     }
 
-    public String getTramStatus() {
+    public TramStatus getTramStatus() {
         return tramStatus;
     }
 
-    public void setTramStatus(String tramStatus) {
+    public void setTramStatus(TramStatus tramStatus) {
         this.tramStatus = tramStatus;
     }
 
-    public String getDifferenceTimeInMinutes() {
+    public int getDifferenceTimeInMinutes() {
         return differenceTimeInMinutes;
     }
 
-    public void setDifferenceTimeInMinutes(String differenceTimeInMinutes) {
+    public void setDifferenceTimeInMinutes(int differenceTimeInMinutes) {
         this.differenceTimeInMinutes = differenceTimeInMinutes;
     }
+
+    public String getDifferenceTimeInMinutesText() {
+        return this.differenceTimeInMinutesText;
+    }
+
+    public void setDifferenceTimeInMinutesText() {
+        this.differenceTimeInMinutesText = formatMinutesAsText(this.differenceTimeInMinutes);
+    }
+
 }

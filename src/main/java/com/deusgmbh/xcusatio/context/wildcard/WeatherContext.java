@@ -91,5 +91,4 @@ public class WeatherContext {
     public void setRainHourly(int rainHourly) {
         this.rainHourly = rainHourly;
     }
-
 }

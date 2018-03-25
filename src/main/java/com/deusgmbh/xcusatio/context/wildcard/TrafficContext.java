@@ -1,5 +1,11 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+/**
+ * 
+ * @author jan.leiblein@gmail.com
+ * 
+ */
+
 public class TrafficContext {
 
     // incident location + street
@@ -13,43 +19,6 @@ public class TrafficContext {
         this.trafficIncident = trafficIncident;
         this.incidentLocation = incidentLocation;
         this.incidentTimes = incidentTimes;
-    }
-
-    class IncidentDetails {
-        TrafficIncidentType incidentType;
-        String incidentStatus;
-        String incidentDescription;
-
-        public IncidentDetails(TrafficIncidentType incidentType, String incidentStatus, String incidentDescription) {
-            super();
-            this.incidentType = incidentType;
-            this.incidentStatus = incidentStatus;
-            this.incidentDescription = incidentDescription;
-        }
-    }
-
-    class IncidentLocation {
-        String countryOfIncident;
-        String cityOfIncident;
-        String streetOfIncident;
-
-        public IncidentLocation(String countryOfIncident, String cityOfIncident, String streetOfIncident) {
-            super();
-            this.countryOfIncident = countryOfIncident;
-            this.cityOfIncident = cityOfIncident;
-            this.streetOfIncident = streetOfIncident;
-        }
-    }
-
-    class IncidentTimes {
-        private String startTimeOfTrafficIncident;
-        private String endTimeOfTrafficIncident;
-
-        public IncidentTimes(String startTimeOfTrafficIncident, String endTimeOfTrafficIncident) {
-            super();
-            this.startTimeOfTrafficIncident = startTimeOfTrafficIncident;
-            this.endTimeOfTrafficIncident = endTimeOfTrafficIncident;
-        }
     }
 
     enum TrafficIncidentType {
