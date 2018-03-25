@@ -20,7 +20,7 @@ public abstract class Wildcard {
         this.identifier = identifier;
     }
 
-    abstract public String replace(String source, WildcardContext wildcardContext);
+    abstract public String replace(String source, APIDrivenContext apiContext);
 
     public String getIdentifier() {
         return identifier;
