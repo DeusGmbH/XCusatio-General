@@ -29,17 +29,22 @@ public class ScenarioReactionPane extends VBox {
         this.setAlignment(Pos.CENTER);
 
         excusePane = new ExcusePane(excuse);
-        excusePane.prefHeightProperty().bind(this.heightProperty());
+        excusePane.prefHeightProperty()
+                .bind(this.heightProperty());
 
-        this.getChildren().add(excusePane);
+        this.getChildren()
+                .add(excusePane);
     }
 
+    // TODO: @Pascal what is the unit of thumbGestureValue?
     public ScenarioReactionPane(int thumbGestureValue) {
         this.setAlignment(Pos.CENTER);
 
         thumbGesturePane = new ThumbGesturePane(thumbGestureValue);
-        thumbGesturePane.prefHeightProperty().bind(this.heightProperty());
+        thumbGesturePane.prefHeightProperty()
+                .bind(this.heightProperty());
 
-        this.getChildren().add(thumbGesturePane);
+        this.getChildren()
+                .add(thumbGesturePane);
     }
 }
