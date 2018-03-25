@@ -6,11 +6,11 @@ package com.deusgmbh.xcusatio.context.wildcard;
  * 
  */
 
-public class IncidentTimes {
+public class TrafficIncidentTimes {
     private String startTimeOfTrafficIncident;
     private String endTimeOfTrafficIncident;
 
-    public IncidentTimes(String startTimeOfTrafficIncident, String endTimeOfTrafficIncident) {
+    public TrafficIncidentTimes(String startTimeOfTrafficIncident, String endTimeOfTrafficIncident) {
         super();
         this.startTimeOfTrafficIncident = startTimeOfTrafficIncident;
         this.endTimeOfTrafficIncident = endTimeOfTrafficIncident;

@@ -6,12 +6,12 @@ package com.deusgmbh.xcusatio.context.wildcard;
  * 
  */
 
-public class IncidentLocation {
+public class TrafficIncidentLocation {
     String countryOfIncident;
     String cityOfIncident;
     String streetOfIncident;
 
-    public IncidentLocation(String countryOfIncident, String cityOfIncident, String streetOfIncident) {
+    public TrafficIncidentLocation(String countryOfIncident, String cityOfIncident, String streetOfIncident) {
         super();
         this.countryOfIncident = countryOfIncident;
         this.cityOfIncident = cityOfIncident;

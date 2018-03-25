@@ -9,43 +9,39 @@ package com.deusgmbh.xcusatio.context.wildcard;
 public class TrafficContext {
 
     // incident location + street
-    private IncidentDetails trafficIncident;
-    private IncidentLocation incidentLocation;
-    private IncidentTimes incidentTimes;
+    private TrafficIncidentDetails trafficIncident;
+    private TrafficIncidentLocation incidentLocation;
+    private TrafficIncidentTimes incidentTimes;
 
-    public TrafficContext(IncidentDetails trafficIncident, IncidentLocation incidentLocation,
-            IncidentTimes incidentTimes) {
+    public TrafficContext(TrafficIncidentDetails trafficIncident, TrafficIncidentLocation incidentLocation,
+            TrafficIncidentTimes incidentTimes) {
         super();
         this.trafficIncident = trafficIncident;
         this.incidentLocation = incidentLocation;
         this.incidentTimes = incidentTimes;
     }
 
-    enum TrafficIncidentType {
-        ACCIDENT, CONGESTION, DISABLED_VEHICLE, ROAD_HAZARD, CONSTRUCTION, PLANNED_EVENT, MASS_TRANSIT, OTHER_NEWS, WEATHER, MISC, ROAD_CLOSURE, LANE_RESTRICTION
-    }
-
-    public IncidentDetails getTrafficIncident() {
+    public TrafficIncidentDetails getTrafficIncident() {
         return trafficIncident;
     }
 
-    public void setTrafficIncident(IncidentDetails trafficIncident) {
+    public void setTrafficIncident(TrafficIncidentDetails trafficIncident) {
         this.trafficIncident = trafficIncident;
     }
 
-    public IncidentLocation getIncidentLocation() {
+    public TrafficIncidentLocation getIncidentLocation() {
         return incidentLocation;
     }
 
-    public void setIncidentLocation(IncidentLocation incidentLocation) {
+    public void setIncidentLocation(TrafficIncidentLocation incidentLocation) {
         this.incidentLocation = incidentLocation;
     }
 
-    public IncidentTimes getIncidentTimes() {
+    public TrafficIncidentTimes getIncidentTimes() {
         return incidentTimes;
     }
 
-    public void setIncidentTimes(IncidentTimes incidentTimes) {
+    public void setIncidentTimes(TrafficIncidentTimes incidentTimes) {
         this.incidentTimes = incidentTimes;
     }
 }

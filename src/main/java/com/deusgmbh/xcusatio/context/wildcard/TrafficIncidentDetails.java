@@ -8,12 +8,12 @@ package com.deusgmbh.xcusatio.context.wildcard;
 
 import com.deusgmbh.xcusatio.context.wildcard.TrafficContext.TrafficIncidentType;
 
-public class IncidentDetails {
+public class TrafficIncidentDetails {
     TrafficIncidentType incidentType;
     String incidentStatus;
     String incidentDescription;
 
-    public IncidentDetails(TrafficIncidentType incidentType, String incidentStatus, String incidentDescription) {
+    public TrafficIncidentDetails(TrafficIncidentType incidentType, String incidentStatus, String incidentDescription) {
         super();
         this.incidentType = incidentType;
         this.incidentStatus = incidentStatus;
