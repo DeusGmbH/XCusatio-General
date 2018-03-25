@@ -7,6 +7,7 @@ import java.util.function.DoubleConsumer;
 import java.util.logging.Logger;
 
 import com.deusgmbh.xcusatio.context.Context;
+import com.deusgmbh.xcusatio.context.ContextHandler;
 import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.excuses.ExcusesManager;
@@ -37,22 +38,24 @@ public class MainController {
     private ScenarioManager scenarioManager;
     private UserSettingsManager userSettingsManager;
     private ExcuseGenerator excuseGenerator;
+    private ContextHandler contextHandler;
 
     public MainController() {
-        wildcards = new Wildcards();
+        Wildcards.initialize();
         excusesManager = new ExcusesManager();
         lecturerManager = new LecturerManager();
         scenarioManager = new ScenarioManager();
         userSettingsManager = new UserSettingsManager();
         excuseGenerator = new ExcuseGenerator();
+        contextHandler = new ContextHandler();
     }
 
     public void generateExcuse(Scenario scenario, Consumer<String> displayExcuse, DoubleConsumer displayThumbGesture) {
-
+        Context context = contextHandler.buildContext(this.getUserSettings(), this.getLecturers(), scenario);
         if (scenario.isExcuseType()) {
-            displayExcuse.accept(excuseGenerator.getContextBasedExcuse(this.getExcuses(), new Context(), scenario));
+            displayExcuse.accept(excuseGenerator.getContextBasedExcuse(this.getExcuses(), context, scenario));
         } else {
-            displayThumbGesture.accept(excuseGenerator.getThumbGesture(new Context()));
+            displayThumbGesture.accept(excuseGenerator.getThumbGesture(context));
         }
     }
 

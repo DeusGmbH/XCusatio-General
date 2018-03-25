@@ -13,10 +13,6 @@ import java.util.stream.Collectors;
 public class Wildcards {
     private static Set<Wildcard> wildcards;
 
-    public Wildcards() {
-        initialize();
-    }
-
     public static void initialize() {
         wildcards = new HashSet<Wildcard>();
         addTemperatureWildcard();

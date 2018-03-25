@@ -9,8 +9,6 @@ import java.util.Arrays;
  *
  */
 public class Scenario {
-    // following Section is only for UI-testing-purposes and can be deleted
-    // afterwards
     private ScenarioType scenarioType;
 
     public Scenario(ScenarioType type) {
