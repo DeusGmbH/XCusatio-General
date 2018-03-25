@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.EditorTab;
 
 /**
@@ -52,7 +53,7 @@ public class ExcuseEditorTab extends EditorTab {
         editEntryPane.createEditBtnAction(editEntry);
     }
 
-    public void registerTagsSetSupplier(Supplier<List<String>> tagsSetSupplier) {
+    public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         editEntryPane.registerTagsSetSupplier(tagsSetSupplier);
     }
 

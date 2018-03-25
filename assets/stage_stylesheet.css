@@ -1,0 +1,59 @@
+.root {
+	-fx-background-color: #333333;
+}
+
+.label {
+	-fx-text-fill: #FFFFFF;
+	-fx-font-size: 13pt;
+	-fx-padding: 4pt;
+}
+
+.button {
+	-fx-background-color: #333333;
+	-fx-text-fill: #FFFFFF;
+	-fx-font-size: 16pt;
+	-fx-font-weight: bold;
+	-fx-border-radius: 0 0 0 0;
+	-fx-background-radius: 0 0 0 0;
+}
+
+.button:hover {
+	-fx-text-fill: #AAAAAA;
+}
+
+.h1 {
+	-fx-font-size: 30pt;
+	-fx-font-weight: bold;
+	-fx-padding: 14pt;
+}
+
+.h2 {
+	-fx-font-size: 24pt;
+	-fx-font-weight: bold;
+	-fx-padding: 10pt;
+}
+
+.h3 {
+	-fx-font-size: 20pt;
+	-fx-font-weight: bold;
+	-fx-padding: 8pt;
+}
+
+.navigation-bar {
+	-fx-background-color: #444444;
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0, 0, 0);
+}
+
+.window-border {
+	-fx-background-color: #222;
+	-fx-text-fill: #FFFFFF;
+}
+
+.window-border .button {
+	-fx-background-color: #222;
+}
+
+.excuse-quick-settings {
+	-fx-background-color: #444444;
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5.0, 0.0, 0.0, 0.0);
+}

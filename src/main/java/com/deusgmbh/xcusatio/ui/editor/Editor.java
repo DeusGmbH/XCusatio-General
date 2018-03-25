@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.excuse.ExcuseEditorTab;
 import com.deusgmbh.xcusatio.ui.editor.lecturer.LecturerEditorTab;
 
@@ -36,7 +37,6 @@ public class Editor extends TabPane {
     public Editor() {
         excuseEditor = new ExcuseEditorTab(EXCUSE_TAB_TITLE);
         lecturerEditor = new LecturerEditorTab(LECTURER_TAB_TITLE);
-        excuseEditor.editor.maxWidthProperty().bind(this.widthProperty().multiply(0.9));
 
         this.getTabs().add(excuseEditor);
         this.getTabs().add(lecturerEditor);
@@ -76,7 +76,7 @@ public class Editor extends TabPane {
         lecturerEditor.registerChangeEntryEvent(editLecturer);
     }
 
-    public void registerTagsSetSupplier(Supplier<List<String>> tagsSetSupplier) {
+    public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         excuseEditor.registerTagsSetSupplier(tagsSetSupplier);
         lecturerEditor.registerTagsSetSupplier(tagsSetSupplier);
     }

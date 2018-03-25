@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.EditorTab;
 
 /**
@@ -27,7 +28,8 @@ public class LecturerEditorTab extends EditorTab {
         entryListPane = new LecturerEntryListPane();
         entryListPane.registerOnSelectEntryEvent(this::createEditForm);
         editEntryPane = new LecturerEditEntryPane();
-        super.editor.getChildren().addAll(entryListPane, editEntryPane);
+        super.editor.setLeft(entryListPane);
+        super.editor.setCenter(editEntryPane);
     }
 
     public void setTableContent(List<Lecturer> excuseList) {
@@ -46,7 +48,7 @@ public class LecturerEditorTab extends EditorTab {
         editEntryPane.createEditBtnAction(editEntry);
     }
 
-    public void registerTagsSetSupplier(Supplier<List<String>> tagsSetSupplier) {
+    public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         editEntryPane.registerTagsSetSupplier(tagsSetSupplier);
     }
 

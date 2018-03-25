@@ -1,9 +1,12 @@
 package com.deusgmbh.xcusatio.ui.editor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
+
+import com.deusgmbh.xcusatio.data.tags.Tag;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -29,7 +32,7 @@ public class EditEntryPane extends GridPane {
     protected Label editorTitleLabel;
     protected Button submitEditedEntryBtn;
 
-    protected Supplier<List<String>> allTagsSetSupplier;
+    protected Supplier<List<Tag>> allTagsSetSupplier;
 
     public EditEntryPane() {
         editorTitleLabel = new Label(EDITOR_TITLE);
@@ -51,13 +54,13 @@ public class EditEntryPane extends GridPane {
         this.add(this.submitEditedEntryBtn, 1, (int) Math.ceil(nodesToAdd.length / 2d) + 1);
     }
 
-    protected List<String> removeFromAllTagsList(List<String> listToRemove) {
-        List<String> reducedSet = this.allTagsSetSupplier.get();
+    protected List<Tag> removeFromAllTagsList(List<Tag> listToRemove) {
+        List<Tag> reducedSet = new ArrayList<Tag>(this.allTagsSetSupplier.get());
         reducedSet.removeAll(listToRemove);
         return reducedSet;
     }
 
-    public void registerTagsSetSupplier(Supplier<List<String>> tagsSetSupplier) {
+    public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         this.allTagsSetSupplier = tagsSetSupplier;
     }
 }

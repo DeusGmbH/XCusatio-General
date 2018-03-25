@@ -9,14 +9,21 @@ import java.util.function.Supplier;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.dashboard.Dashboard;
 import com.deusgmbh.xcusatio.ui.editor.Editor;
 import com.deusgmbh.xcusatio.ui.profilsettings.ProfileSettings;
+import com.deusgmbh.xcusatio.ui.utility.ResizeHelper;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * 
@@ -31,22 +38,32 @@ public class XCusatioWindow extends Application {
     private static final String WINDOW_TITLE = "Deus GmbH - xCusatio";
     private static final int WINDOW_DEF_WIDTH = 1280;
     private static final int WINDOW_DEF_HEIGHT = 720;
+    private static final int WINDOW_MAX_WIDTH = 1920;
+    private static final int WINDOW_MAX_HEIGHT = 1080;
 
     private static final double NAVIGATION_PANEL_WIDTH_MULTIPLIER = 0.11;
     private static final String DASHBOARD_TAB_NAME = "Generator";
     private static final String EDITOR_TAB_NAME = "Editor";
     private static final String PROFILE_SETTINGS_TAB_NAME = "Profile";
 
+    private static final String SCENE_STYLESHEET_PATH = "file:assets/stage_stylesheet.css";
+
     private BorderPane main;
+    private WindowBorder windowBorder;
     private NavigationPanel navigationPanel;
     private Dashboard dashboard;
     private Editor editor;
     private ProfileSettings profileSettings;
     private List<Scenario> scenarioList;
 
+    private Stage stage;
+
     @Override
     public void start(Stage stage) throws Exception {
-        initMainStage(stage);
+        this.stage = stage;
+        initMainStage(this.stage);
+
+        windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
 
         navigationPanel = new NavigationPanel();
         navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
@@ -59,6 +76,7 @@ public class XCusatioWindow extends Application {
         navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
         navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
 
+        main.setTop(windowBorder);
         main.setLeft(navigationPanel);
         main.setCenter(dashboard);
 
@@ -67,16 +85,61 @@ public class XCusatioWindow extends Application {
 
     private BorderPane initMainStage(Stage stage) {
         main = new BorderPane();
+        stage.initStyle(StageStyle.UNDECORATED);
+
         Scene scene = new Scene(main);
+        scene.getStylesheets().add(SCENE_STYLESHEET_PATH);
         stage.setWidth(WINDOW_DEF_WIDTH);
         stage.setHeight(WINDOW_DEF_HEIGHT);
         stage.setMinWidth(WINDOW_DEF_WIDTH);
         stage.setMinHeight(WINDOW_DEF_HEIGHT);
+        stage.setMaxWidth(WINDOW_MAX_WIDTH);
+        stage.setMaxHeight(WINDOW_MAX_HEIGHT);
         stage.setScene(scene);
         stage.setTitle(WINDOW_TITLE);
+        ResizeHelper.addResizeListener(stage, stage.getMinWidth(), stage.getMinHeight(), stage.getMaxWidth(),
+                stage.getMaxHeight());
 
         return main;
     }
+
+    private EventHandler<ActionEvent> minimizeWindow = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            stage.setIconified(true);
+        }
+    };
+
+    private boolean isFullScreen = false;
+    private EventHandler<ActionEvent> restoreWindow = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            Screen screen = Screen.getPrimary();
+            Rectangle2D bounds = screen.getVisualBounds();
+
+            if (!isFullScreen) {
+                isFullScreen = true;
+                stage.setWidth(bounds.getWidth());
+                stage.setHeight(bounds.getHeight());
+                stage.setX(bounds.getMinX());
+                stage.setY(bounds.getMinY());
+            } else {
+                isFullScreen = false;
+                stage.setWidth(stage.getMinWidth());
+                stage.setHeight(stage.getMinHeight());
+                stage.setX((bounds.getWidth() - stage.getWidth()) / 2);
+                stage.setY((bounds.getHeight() - stage.getHeight()) / 2);
+            }
+            windowBorder.toggleRestoreButton(isFullScreen);
+        }
+    };
+
+    private EventHandler<ActionEvent> closeWindow = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            stage.close();
+        }
+    };
 
     public void registerScenarioButtonActionEvent(Consumer<Scenario> generateExcuse) {
         dashboard.createScenarioButtons(scenarioList, generateExcuse);
@@ -114,7 +177,7 @@ public class XCusatioWindow extends Application {
         editor.registerEditLecturerEvent(editLecturer);
     }
 
-    public void registerTagsSupplier(Supplier<List<String>> tagsSetSupplier) {
+    public void registerTagsSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         editor.registerTagsSetSupplier(tagsSetSupplier);
     }
 

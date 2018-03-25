@@ -35,14 +35,14 @@ public class QuickSettingsPane extends VBox {
     private LabeledToggleSwitch fawnToggle;
 
     public QuickSettingsPane() {
-        this.setStyle("-fx-border-color: " + QUICK_SETTINGS_PANE_BORDER_COLOR);
-
         Label moodRegulatorLabel = new Label(MOOD_REGULATOR_TITLE);
+        moodRegulatorLabel.getStyleClass().add("h3");
         autoMoodToggle = new LabeledToggleSwitch(AUTO_MOOD_TOGGLE_LABEL);
         humorToggle = new LabeledToggleSwitch(MOOD_HUMOR_LABEL);
         aggressionToggle = new LabeledToggleSwitch(MOOD_AGGRESSION_LABEL);
         fawnToggle = new LabeledToggleSwitch(MOOD_FAWN_LABEL);
 
+        this.getStyleClass().add("excuse-quick-settings");
         this.getChildren().addAll(moodRegulatorLabel, autoMoodToggle, humorToggle, aggressionToggle, fawnToggle);
     }
 

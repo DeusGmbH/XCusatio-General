@@ -26,6 +26,7 @@ public class DoubleListView<T> extends BorderPane {
     private static final double LIST_VIEW_WIDTH_MULTIPLIER = 0.4;
     private static final int BUTTON_PANE_WIDTH = 31;
     private static final int CELL_SIZE = 30;
+    private static final int MAX_TABLE_ROW = 8;
 
     private ListView<T> leftListView;
     private ListView<T> rightListView;
@@ -36,12 +37,13 @@ public class DoubleListView<T> extends BorderPane {
     }
 
     public DoubleListView(ObservableList<T> leftList, ObservableList<T> rightList) {
+        int maxListSize = leftList.size() + rightList.size();
         leftListView = new ListView<T>(leftList);
         leftListView.maxWidthProperty().bind(this.widthProperty().multiply(LIST_VIEW_WIDTH_MULTIPLIER));
-        leftListView.setPrefHeight((leftList.size() + rightList.size()) * CELL_SIZE);
+        leftListView.setPrefHeight(maxListSize > MAX_TABLE_ROW ? MAX_TABLE_ROW * CELL_SIZE : maxListSize * CELL_SIZE);
         rightListView = new ListView<T>(rightList);
         rightListView.maxWidthProperty().bind(this.widthProperty().multiply(LIST_VIEW_WIDTH_MULTIPLIER));
-        rightListView.setPrefHeight((leftList.size() + rightList.size()) * CELL_SIZE);
+        rightListView.setPrefHeight(maxListSize > MAX_TABLE_ROW ? MAX_TABLE_ROW * CELL_SIZE : maxListSize * CELL_SIZE);
 
         shiftButtonPane = new ShiftButtonPane(createMoveItemAction(leftListView, rightListView),
                 createMoveItemAction(rightListView, leftListView));
