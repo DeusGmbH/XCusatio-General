@@ -1,9 +1,9 @@
 package com.deusgmbh.xcusatio.data.lecturer;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.deusgmbh.xcusatio.data.tags.Tag;
-
 
 /**
  * 
@@ -46,5 +46,10 @@ public class Lecturer {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public static Predicate<Lecturer> hasLecture(String lecture) {
+        return lecturer -> lecturer.getLectures()
+                .contains(lecture);
     }
 }

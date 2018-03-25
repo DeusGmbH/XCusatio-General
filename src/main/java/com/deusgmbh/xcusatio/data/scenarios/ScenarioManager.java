@@ -4,9 +4,13 @@ import com.deusgmbh.xcusatio.data.StorageUnit;
 
 /**
  * 
- * @author Lars.Dittert@de.ibm.com
+ * @author Tobias.Schmidt@de.ibm.com
  *
  */
 public class ScenarioManager extends StorageUnit<Scenario> {
+
+    public ScenarioManager(Class<Scenario> parameterType) {
+        super(parameterType);
+    }
 
 }
