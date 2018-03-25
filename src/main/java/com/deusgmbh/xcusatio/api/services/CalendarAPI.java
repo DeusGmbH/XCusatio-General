@@ -28,11 +28,12 @@ public class CalendarAPI extends APIService {
         kruse.setTags(tagList);
 
         CalendarContext calendarContext = new CalendarContext("Software Engineering 2", kruse, "9:00 Uhr", "12:15 Uhr",
-                "190 Minuten", "15 Minuten");
+                190, 15);
         return calendarContext;
     }
 
-    // TODO: convert int to string for each time detail, e.g. minutesLeft = 11 -->
+    // TODO: convert int to string for each time detail, e.g. minutesLeft = 11
+    // -->
     // "11 Minuten" / 1 --> "1 Minute"
 
 }
