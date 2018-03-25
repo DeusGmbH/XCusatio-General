@@ -69,9 +69,7 @@ public class XCusatioWindow extends Application {
         windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
 
         navigationPanel = new NavigationPanel();
-        navigationPanel.prefWidthProperty()
-                .bind(main.widthProperty()
-                        .multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
+        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
 
         dashboard = new Dashboard();
         editor = new Editor();
@@ -93,8 +91,7 @@ public class XCusatioWindow extends Application {
         stage.initStyle(StageStyle.UNDECORATED);
 
         Scene scene = new Scene(main);
-        scene.getStylesheets()
-                .add(SCENE_STYLESHEET_PATH);
+        scene.getStylesheets().add(SCENE_STYLESHEET_PATH);
         stage.setWidth(WINDOW_DEF_WIDTH);
         stage.setHeight(WINDOW_DEF_HEIGHT);
         stage.setMinWidth(WINDOW_DEF_WIDTH);
@@ -169,11 +166,11 @@ public class XCusatioWindow extends Application {
     }
 
     public void registerAddExcuseEvent(Consumer<Excuse> removeExcuse) {
-        editor.registerRemoveExcuseEvent(removeExcuse);
+        editor.registerAddExcuseEvent(removeExcuse);
     }
 
     public void registerAddLecturerEvent(Consumer<Lecturer> addLecturer) {
-        editor.registerRemoveLecturerEvent(addLecturer);
+        editor.registerAddLecturerEvent(addLecturer);
     }
 
     public void registerEditExcuseEvent(BiConsumer<Integer, Excuse> editExcuse) {
