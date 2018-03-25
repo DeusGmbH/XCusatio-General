@@ -3,6 +3,7 @@ package com.deusgmbh.xcusatio.ui.editor.lecturer;
 import java.util.function.BiConsumer;
 
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.EditEntryPane;
 import com.deusgmbh.xcusatio.ui.utility.DoubleListView;
 import com.deusgmbh.xcusatio.ui.utility.ListViewTextField;
@@ -31,7 +32,7 @@ public class LecturerEditEntryPane extends EditEntryPane {
 
     private TextField lecturerNameTextField;
     private ListViewTextField lecturerLecturesPane;
-    private DoubleListView<String> tagsListCellView;
+    private DoubleListView<Tag> tagsListCellView;
 
     public LecturerEditEntryPane() {
         super();
@@ -51,7 +52,7 @@ public class LecturerEditEntryPane extends EditEntryPane {
 
         this.lecturerNameTextField = new TextField(lecturer.getName());
         this.lecturerLecturesPane = new ListViewTextField(lecturer.getLectures());
-        this.tagsListCellView = new DoubleListView<String>(lecturer.getTags(),
+        this.tagsListCellView = new DoubleListView<Tag>(lecturer.getTags(),
                 super.removeFromAllTagsList(lecturer.getTags()));
 
         super.addNodesToPane(lecturerNameLabel, lecturerNameTextField, lecturerLecturesLabel, lecturerLecturesPane,

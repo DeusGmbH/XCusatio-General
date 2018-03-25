@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.EditorTab;
 
 /**
@@ -27,8 +28,13 @@ public class ExcuseEditorTab extends EditorTab {
         super(name);
         entryListPane = new ExcuseEntryListPane();
         entryListPane.registerOnSelectEntryEvent(this::createEditForm);
+        entryListPane.minWidthProperty().bind(this.editor.widthProperty().multiply(0.39));
+        entryListPane.maxWidthProperty().bind(this.editor.widthProperty().multiply(0.39));
         editEntryPane = new ExcuseEditEntryPane();
-        super.editor.getItems().addAll(entryListPane, editEntryPane);
+        editEntryPane.minWidthProperty().bind(this.editor.widthProperty().multiply(0.59));
+        editEntryPane.maxWidthProperty().bind(this.editor.widthProperty().multiply(0.59));
+        super.editor.setLeft(entryListPane);
+        super.editor.setCenter(editEntryPane);
     }
 
     public void setTableContent(List<Excuse> excuseList) {
@@ -47,7 +53,7 @@ public class ExcuseEditorTab extends EditorTab {
         editEntryPane.createEditBtnAction(editEntry);
     }
 
-    public void registerTagsSetSupplier(Supplier<List<String>> tagsSetSupplier) {
+    public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         editEntryPane.registerTagsSetSupplier(tagsSetSupplier);
     }
 

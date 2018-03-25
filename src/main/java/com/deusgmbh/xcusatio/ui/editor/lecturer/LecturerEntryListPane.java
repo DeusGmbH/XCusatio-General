@@ -7,6 +7,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.EntryListPane;
 
 import javafx.collections.FXCollections;
@@ -19,8 +20,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * 
- * This class creates a table of all available excuses. You can remove or add an
- * entry. Also you can select one and edit this in the adjacent EditEntryPane.
+ * This class creates a table of all available lecturers. You can remove or add
+ * an entry. Also you can select one and edit this in the adjacent
+ * EditEntryPane.
  * 
  * @author Pascal.Schroeder@de.ibm.com
  *
@@ -51,7 +53,7 @@ public class LecturerEntryListPane extends EntryListPane {
         columnList.entrySet().stream().forEach(entry -> {
             TableColumn<Lecturer, String> column = new TableColumn<Lecturer, String>(entry.getValue().toString());
             column.setCellValueFactory(new PropertyValueFactory<Lecturer, String>(entry.getKey().toString()));
-            column.prefWidthProperty().bind(entryTable.widthProperty().multiply(1d / columnList.size()));
+            column.prefWidthProperty().bind(entryTable.widthProperty().multiply(1d / columnList.size()).subtract(1));
             entryTable.getColumns().add(column);
         });
     }
@@ -83,7 +85,7 @@ public class LecturerEntryListPane extends EntryListPane {
             @Override
             public void handle(final ActionEvent e) {
                 Lecturer newExcuse = new Lecturer(NEW_LECTURER_DEFAULT_TEXT, new ArrayList<String>(),
-                        new ArrayList<String>());
+                        new ArrayList<Tag>());
                 addEntry.accept(newExcuse);
             }
         });

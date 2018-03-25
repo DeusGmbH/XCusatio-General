@@ -6,6 +6,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
+import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
 import com.deusgmbh.xcusatio.ui.editor.EntryListPane;
 
 import javafx.collections.FXCollections;
@@ -78,7 +79,7 @@ public class ExcuseEntryListPane extends EntryListPane {
         super.addEntry.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent e) {
-                Excuse newExcuse = new Excuse(NEW_EXCUSE_DEFAULT_TEXT);
+                Excuse newExcuse = new Excuse(NEW_EXCUSE_DEFAULT_TEXT, ScenarioType.DEFAULT);
                 addEntry.accept(newExcuse);
             }
         });
