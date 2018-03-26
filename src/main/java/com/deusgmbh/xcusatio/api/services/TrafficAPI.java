@@ -17,18 +17,19 @@ public class TrafficAPI extends APIService {
                 "Strasse wegen Baustelle gesperrt");
         TrafficIncidentLocation tri = new TrafficIncidentLocation("DE", "Mannheim", "Seckenheimer Landstr.");
 
-        TrafficIncidentTimes trt = new TrafficIncidentTimes("6:30", "10:30");
+        TrafficIncidentTimes trt = new TrafficIncidentTimes("6:00", "10:30");
 
         TrafficContext trafficContext = new TrafficContext(trd, tri, trt);
 
         return trafficContext;
     }
 
-    public static void main(String[] uranium) {
-        UserSettings userSettings = new UserSettings(null, 0, null, null, null, null, null);
-        TrafficAPI trafficAPI = new TrafficAPI();
-        TrafficContext trafficContext = trafficAPI.get(userSettings);
-        trafficContext.printContextContent();
-    }
+    // public static void main(String[] uranium) {
+    // UserSettings userSettings = new UserSettings(null, 0, null, null, null,
+    // null, null);
+    // TrafficAPI trafficAPI = new TrafficAPI();
+    // TrafficContext trafficContext = trafficAPI.get(userSettings);
+    // trafficContext.printContextContent();
+    // }
 
 }

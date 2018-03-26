@@ -33,11 +33,12 @@ public class RNVAPI extends APIService {
         return rnvContext;
     }
 
-    public static void main(String[] args) {
-        UserSettings userSettings = new UserSettings(null, 0, null, null, null, null, null);
-        RNVAPI rnvapi = new RNVAPI();
-        RNVContext rnvContext = rnvapi.get(userSettings);
-        rnvContext.printContextContent();
-    }
+    // public static void main(String[] args) {
+    // UserSettings userSettings = new UserSettings(null, 0, null, null, null,
+    // null, null);
+    // RNVAPI rnvapi = new RNVAPI();
+    // RNVContext rnvContext = rnvapi.get(userSettings);
+    // rnvContext.printContextContent();
+    // }
 
 }

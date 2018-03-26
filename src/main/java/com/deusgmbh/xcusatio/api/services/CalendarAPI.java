@@ -33,11 +33,13 @@ public class CalendarAPI extends APIService {
         return calendarContext;
     }
 
-    public static void main(String[] args) {
-        UserSettings userSettings = new UserSettings(null, 0, null, null, null, null, null);
-        CalendarAPI calendarAPI = new CalendarAPI();
-        CalendarContext calendarContext = calendarAPI.get(userSettings);
-        calendarContext.printContextContent();
-    }
+    // public static void main(String[] args) {
+    // UserSettings userSettings = new UserSettings(null, 0, null, null, null,
+    // null, null);
+    // CalendarAPI calendarAPI = new CalendarAPI();
+    //
+    // CalendarContext calendarContext = calendarAPI.get(userSettings);
+    // calendarContext.printContextContent();
+    // }
 
 }

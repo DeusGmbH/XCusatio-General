@@ -13,11 +13,12 @@ public class WeatherAPI extends APIService {
         return weatherContext;
     }
 
-    public static void main(String[] plutonium) {
-        UserSettings userSettings = new UserSettings(null, 0, null, null, null, null, null);
-        WeatherAPI weatherAPI = new WeatherAPI();
-        WeatherContext weatherContext = weatherAPI.get(userSettings);
-        weatherContext.printContextContent();
-    }
+    // public static void main(String[] plutonium) {
+    // UserSettings userSettings = new UserSettings(null, 0, null, null, null,
+    // null, null);
+    // WeatherAPI weatherAPI = new WeatherAPI();
+    // WeatherContext weatherContext = weatherAPI.get(userSettings);
+    // weatherContext.printContextContent();
+    // }
 
 }
