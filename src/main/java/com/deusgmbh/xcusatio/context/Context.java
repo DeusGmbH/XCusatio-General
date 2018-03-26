@@ -2,7 +2,7 @@ package com.deusgmbh.xcusatio.context;
 
 import com.deusgmbh.xcusatio.context.wildcard.APIContext;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
-import com.deusgmbh.xcusatio.data.usersettings.ExcusesVibes;
+import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 
 /**
@@ -13,13 +13,13 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 public class Context {
     private int age;
     private Sex sex;
-    private ExcusesVibes manuellExcusesVibes;
+    private ExcuseVibes manuellExcusesVibes;
 
     private Lecturer lecturer;
 
     private APIContext apiContext;
 
-    public Context(int age, Sex sex, ExcusesVibes excusesVibes, Lecturer lecturer, APIContext apiContext) {
+    public Context(int age, Sex sex, ExcuseVibes excusesVibes, Lecturer lecturer, APIContext apiContext) {
         super();
         this.age = age;
         this.sex = sex;
@@ -50,11 +50,11 @@ public class Context {
         return this;
     }
 
-    public ExcusesVibes getManuellExcusesVibes() {
+    public ExcuseVibes getManuellExcusesVibes() {
         return manuellExcusesVibes;
     }
 
-    public Context setManuellExcusesVibes(ExcusesVibes excusesVibes) {
+    public Context setManuellExcusesVibes(ExcuseVibes excusesVibes) {
         this.manuellExcusesVibes = excusesVibes;
         return this;
     }

@@ -13,7 +13,7 @@ import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.tags.Tag;
-import com.deusgmbh.xcusatio.data.usersettings.ExcusesVibes;
+import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
 
 /**
  * 
@@ -21,150 +21,169 @@ import com.deusgmbh.xcusatio.data.usersettings.ExcusesVibes;
  *
  */
 public class ExcuseGenerator {
-	private final String NO_EXCUSE_FOUND = "Es konnte leider keine Ausrede für dieses Scenario gefunden werden. Im Editor können diese aber hinzugefügt werden.";
-	private Wildcards wildcards;
+    private final String NO_EXCUSE_FOUND = "Es konnte leider keine Ausrede für dieses Scenario gefunden werden. Im Editor können diese aber hinzugefügt werden.";
+    private Wildcards wildcards;
 
-	public ExcuseGenerator(Wildcards wildcards) {
-		this.wildcards = wildcards;
-	}
+    public ExcuseGenerator(Wildcards wildcards) {
+        this.wildcards = wildcards;
+    }
 
-	/**
-	 * 
-	 * @param context
-	 * @returns the percentage indicating the approval rate to be displayed
-	 */
-	public double getThumbGesture(Context context) {
-		// TODO: calculate random percantage base on context (e.g. more likely
-		// to be near 1 if context.vibemodes.suckup == true)
-		return Math.random();
-	}
+    /**
+     * 
+     * @param context
+     * @returns the percentage indicating the approval rate to be displayed
+     */
+    public double getThumbGesture(Context context) {
+        // TODO: calculate random percantage base on context (e.g. more likely
+        // to be near 1 if context.vibemodes.suckup == true)
+        return Math.random();
+    }
 
-	public String getContextBasedExcuse(List<Excuse> excuses, Context context, Scenario scenario) {
-		if (excuses == null || excuses.isEmpty()) {
-			throw new IllegalArgumentException("Excuses must not be null and not empty");
-		}
-		if (context == null) {
-			throw new IllegalArgumentException("Context must not be null");
-		}
+    public Excuse getContextBasedExcuse(List<Excuse> excuses, Context context, Scenario scenario) {
+        if (excuses == null || excuses.isEmpty()) {
+            throw new IllegalArgumentException("Excuses must not be null and not empty");
+        }
+        if (context == null) {
+            throw new IllegalArgumentException("Context must not be null");
+        }
+        if (!scenario.isExcuseType()) {
+            throw new IllegalArgumentException("Scenario is not ");
+        }
 
-		int minExcuses = excuses.size() > 8 ? excuses.size() / 2 : 4;
+        int minExcuses = excuses.size() > 8 ? excuses.size() / 2 : 4;
 
-		List<Tag> tags = this.getTags(context);
-		List<Excuse> contextBasedExcuses = filterByTag(
-				filterByValidWildcards(filterByScenario(excuses, scenario), context), tags, minExcuses);
+        List<Tag> tags = this.getTags(context);
+        List<Excuse> contextBasedExcuses = filterByTag(
+                filterByValidWildcards(filterByScenario(excuses, scenario), context), tags, minExcuses);
 
-		List<Excuse> finalExcuses = contextBasedExcuses.stream().sorted(Excuse.byLastUsed)
-				.limit(Math.round(contextBasedExcuses.size() / 2.0)).sorted(Excuse.byRating)
-				.limit(Math.round(contextBasedExcuses.size() / 2.0)).collect(Collectors.toList());
+        List<Excuse> finalExcuses = contextBasedExcuses.stream()
+                .sorted(Excuse.byLastUsed)
+                .limit((int) Math.ceil(contextBasedExcuses.size() / 2.0))
+                .sorted(Excuse.byRating)
+                .collect(Collectors.toList());
 
-		if (finalExcuses.isEmpty()) {
-			return this.NO_EXCUSE_FOUND;
-		}
+        finalExcuses = finalExcuses.stream()
+                .limit((int) Math.ceil(finalExcuses.size() * 0.8))
+                .collect(Collectors.toList());
 
-		int randomExcuseId = ThreadLocalRandom.current().nextInt(0, finalExcuses.size());
+        if (finalExcuses.isEmpty()) {
+            return new Excuse(NO_EXCUSE_FOUND, scenario.getScenarioType());
+        }
 
-		return wildcards.replace(finalExcuses.get(randomExcuseId).getText(), context.getApiContext());
-	}
+        int randomExcuseId = ThreadLocalRandom.current()
+                .nextInt(0, finalExcuses.size());
 
-	private List<Excuse> filterByValidWildcards(List<Excuse> excuses, Context context) {
-		return excuses.stream().filter(excuse -> wildcards.isValidContext(excuse.getText(), context.getApiContext()))
-				.collect(Collectors.toList());
-	}
+        return finalExcuses.get(randomExcuseId);
+    }
 
-	private List<Excuse> filterByScenario(List<Excuse> excuses, Scenario scenario) {
-		return excuses.stream().filter(Excuse.byScenario(scenario)).collect(Collectors.toList());
-	}
+    private List<Excuse> filterByValidWildcards(List<Excuse> excuses, Context context) {
+        return excuses.stream()
+                .filter(excuse -> wildcards.isValidContext(excuse.getText(), context.getApiContext()))
+                .collect(Collectors.toList());
+    }
 
-	/**
-	 * This method filters the given excuses by the given tags in a way that the
-	 * result contains at least n excuses
-	 * 
-	 * @param excuses
-	 *            to be filtered
-	 * @param tags
-	 *            to be filtered by. The first tag in the list has the highest
-	 *            priority and the last one the lowest
-	 * @param n
-	 *            minimal amount of excuses to be returned
-	 * @return filtered excuses
-	 */
-	private List<Excuse> filterByTag(List<Excuse> excuses, List<Tag> tags, int n) {
-		if (tags.isEmpty()) {
-			return excuses;
-		}
+    private List<Excuse> filterByScenario(List<Excuse> excuses, Scenario scenario) {
+        return excuses.stream()
+                .filter(Excuse.byScenario(scenario))
+                .collect(Collectors.toList());
+    }
 
-		List<Excuse> filteredExcuses = excuses.stream().filter(excuse -> excuse.getTags().contains(tags.remove(0)))
-				.collect(Collectors.toList());
+    /**
+     * This method filters the given excuses by the given tags in a way that the
+     * result contains at least n excuses
+     * 
+     * @param excuses
+     *            to be filtered
+     * @param tags
+     *            to be filtered by. The first tag in the list has the highest
+     *            priority and the last one the lowest
+     * @param n
+     *            minimal amount of excuses to be returned
+     * @return filtered excuses
+     */
+    private List<Excuse> filterByTag(List<Excuse> excuses, List<Tag> tags, int n) {
+        if (tags.isEmpty()) {
+            return excuses;
+        }
+        Tag nextTag = tags.remove(0);
+        List<Excuse> filteredExcuses = excuses.stream()
+                .filter(excuse -> excuse.getTags()
+                        .contains(nextTag))
+                .collect(Collectors.toList());
 
-		// make sure that at least n excuses are returned
-		if (filteredExcuses.size() < n) {
-			return excuses;
-		} else {
-			return filterByTag(filteredExcuses, tags, n);
-		}
-	}
+        // make sure that at least n excuses are returned
+        if (filteredExcuses.size() < n) {
+            return excuses;
+        } else {
+            return filterByTag(filteredExcuses, tags, n);
+        }
+    }
 
-	/**
-	 * Generates a list of tags based on context and scenario type
-	 * 
-	 * @return
-	 */
-	private List<Tag> getTags(Context context) {
-		List<Tag> tags = new ArrayList<>();
-		if (context == null) {
-			return tags;
-		}
+    /**
+     * Generates a list of tags based on context and scenario type
+     * 
+     * @return
+     */
+    private List<Tag> getTags(Context context) {
+        List<Tag> tags = new ArrayList<>();
+        if (context == null) {
+            return tags;
+        }
 
-		tags.addAll(this.getExcusesVibeTags(context));
-		tags.addAll(this.getLecturerTags(context));
-		tags.addAll(this.getSexTag(context));
-		// add temperature tags
-		// add snow tags
-		// add rain tags
-		// add windy tag
-		// add train delay tag
-		// add car accident tag
-		// add traffic jam tag
+        tags.addAll(this.getExcusesVibeTags(context));
+        tags.addAll(this.getLecturerTags(context));
+        tags.addAll(this.getSexTag(context));
+        // add temperature tags
+        // add snow tags
+        // add rain tags
+        // add windy tag
+        // add train delay tag
+        // add car accident tag
+        // add traffic jam tag
 
-		// add ageGroup tag
+        // add ageGroup tag
 
-		return tags.stream().distinct().collect(Collectors.toList());
-	}
+        return tags.stream()
+                .distinct()
+                .collect(Collectors.toList());
+    }
 
-	private Collection<Tag> getLecturerTags(Context context) {
-		if (context.getLecturer() != null && context.getLecturer().getTags() != null) {
-			return context.getLecturer().getTags();
-		}
-		return new HashSet<>();
-	}
+    private Collection<Tag> getLecturerTags(Context context) {
+        if (context.getLecturer() != null && context.getLecturer()
+                .getTags() != null) {
+            return context.getLecturer()
+                    .getTags();
+        }
+        return new HashSet<>();
+    }
 
-	private Set<Tag> getExcusesVibeTags(Context context) {
-		Set<Tag> excusesVibeTags = new HashSet<>();
-		ExcusesVibes excusesVibes = context.getManuellExcusesVibes();
-		if (excusesVibes != null) {
-			if (excusesVibes.isAggresiv()) {
-				excusesVibeTags.add(Tag.AGGRESSIVE);
-			}
-			if (excusesVibes.isFunny()) {
-				excusesVibeTags.add(Tag.FUNNY);
-			}
-			if (excusesVibes.isSuckUp()) {
-				excusesVibeTags.add(Tag.SUCKUP);
-			}
-		}
-		return excusesVibeTags;
-	}
+    private Set<Tag> getExcusesVibeTags(Context context) {
+        Set<Tag> excusesVibeTags = new HashSet<>();
+        ExcuseVibes excusesVibes = context.getManuellExcusesVibes();
+        if (excusesVibes != null) {
+            if (excusesVibes.isAggresiv()) {
+                excusesVibeTags.add(Tag.AGGRESSIVE);
+            }
+            if (excusesVibes.isFunny()) {
+                excusesVibeTags.add(Tag.FUNNY);
+            }
+            if (excusesVibes.isSuckUp()) {
+                excusesVibeTags.add(Tag.SUCKUP);
+            }
+        }
+        return excusesVibeTags;
+    }
 
-	private Set<Tag> getSexTag(Context context) {
-		Set<Tag> sexTags = new HashSet<>();
-		if (context.getSex() != null) {
-			switch (context.getSex()) {
-			case MALE:
-				sexTags.add(Tag.MALE);
-			case FEMALE:
-				sexTags.add(Tag.FEMALE);
-			}
-		}
-		return sexTags;
-	}
+    private Set<Tag> getSexTag(Context context) {
+        Set<Tag> sexTags = new HashSet<>();
+        if (context.getSex() != null) {
+            switch (context.getSex()) {
+            case MALE:
+                sexTags.add(Tag.MALE);
+            case FEMALE:
+                sexTags.add(Tag.FEMALE);
+            }
+        }
+        return sexTags;
+    }
 }

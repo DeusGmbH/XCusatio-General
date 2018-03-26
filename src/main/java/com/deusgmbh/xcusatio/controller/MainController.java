@@ -31,101 +31,103 @@ import com.deusgmbh.xcusatio.generator.ExcuseGenerator;
  *
  */
 public class MainController {
-	private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
-	private Consumer<List<Excuse>> triggerExcuseTableUpdate;
-	private Consumer<List<Lecturer>> triggerLecturerTableUpdate;
-	private ExcusesManager excusesManager;
-	private LecturerManager lecturerManager;
-	private ScenarioManager scenarioManager;
-	private UserSettingsManager userSettingsManager;
-	private ExcuseGenerator excuseGenerator;
-	private ContextHandler contextHandler;
-	private Wildcards wildcards;
+    private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
+    private Consumer<List<Excuse>> triggerExcuseTableUpdate;
+    private Consumer<List<Lecturer>> triggerLecturerTableUpdate;
+    private ExcusesManager excusesManager;
+    private LecturerManager lecturerManager;
+    private ScenarioManager scenarioManager;
+    private UserSettingsManager userSettingsManager;
+    private ExcuseGenerator excuseGenerator;
+    private ContextHandler contextHandler;
+    private Wildcards wildcards;
 
-	public MainController() {
-		wildcards = new Wildcards();
-		excusesManager = new ExcusesManager();
-		lecturerManager = new LecturerManager();
-		scenarioManager = new ScenarioManager();
-		userSettingsManager = new UserSettingsManager();
-		excuseGenerator = new ExcuseGenerator(wildcards);
-		contextHandler = new ContextHandler();
-	}
+    public MainController() {
+        wildcards = new Wildcards();
+        excusesManager = new ExcusesManager();
+        lecturerManager = new LecturerManager();
+        scenarioManager = new ScenarioManager();
+        userSettingsManager = new UserSettingsManager();
+        excuseGenerator = new ExcuseGenerator(wildcards);
+        contextHandler = new ContextHandler();
+    }
 
-	public void generateExcuse(Scenario scenario, Consumer<String> displayExcuse, DoubleConsumer displayThumbGesture) {
-		Context context = contextHandler.buildContext(this.getUserSettings(), this.getLecturers(), scenario);
-		if (scenario.isExcuseType()) {
-			displayExcuse.accept(excuseGenerator.getContextBasedExcuse(this.getExcuses(), context, scenario));
-		} else {
-			displayThumbGesture.accept(excuseGenerator.getThumbGesture(context));
-		}
-	}
+    public void generateExcuse(Scenario scenario, Consumer<String> displayExcuse, DoubleConsumer displayThumbGesture) {
+        Context context = contextHandler.buildContext(this.getUserSettings(), this.getLecturers(), scenario);
+        if (scenario.isExcuseType()) {
+            Excuse excuse = excuseGenerator.getContextBasedExcuse(this.getExcuses(), context, scenario);
+            // TODO: save excuse with updated "lastUsedDate"
+            displayExcuse.accept(wildcards.replace(excuse.getText(), context.getApiContext()));
+        } else {
+            displayThumbGesture.accept(excuseGenerator.getThumbGesture(context));
+        }
+    }
 
-	public UserSettings getUserSettings() {
-		return userSettingsManager.get(0);
-	}
+    public UserSettings getUserSettings() {
+        return userSettingsManager.get(0);
+    }
 
-	public List<Scenario> getScenarios() {
-		return scenarioManager.get();
-	}
+    public List<Scenario> getScenarios() {
+        return scenarioManager.get();
+    }
 
-	public List<Excuse> getExcuses() {
-		return this.excusesManager.get();
-	}
+    public List<Excuse> getExcuses() {
+        return this.excusesManager.get();
+    }
 
-	public List<Lecturer> getLecturers() {
-		return this.lecturerManager.get();
-	}
+    public List<Lecturer> getLecturers() {
+        return this.lecturerManager.get();
+    }
 
-	public List<Tag> getTags() {
-		return Arrays.asList(Tag.values());
-	}
+    public List<Tag> getTags() {
+        return Arrays.asList(Tag.values());
+    }
 
-	public List<String> getWildcardNames() {
-		return wildcards.getNames();
-	}
+    public List<String> getWildcardNames() {
+        return wildcards.getNames();
+    }
 
-	public Set<Wildcard> getWildcards() {
-		return wildcards.getWildcards();
-	}
+    public Set<Wildcard> getWildcards() {
+        return wildcards.getWildcards();
+    }
 
-	public void removeExcuse(Excuse excuse) {
-		this.excusesManager.remove(excuse);
-		this.triggerExcuseTableUpdate.accept(this.getExcuses());
-	}
+    public void removeExcuse(Excuse excuse) {
+        this.excusesManager.remove(excuse);
+        this.triggerExcuseTableUpdate.accept(this.getExcuses());
+    }
 
-	public void removeLecturer(Lecturer lecturer) {
-		this.lecturerManager.remove(lecturer);
-		this.triggerLecturerTableUpdate.accept(this.getLecturers());
-	}
+    public void removeLecturer(Lecturer lecturer) {
+        this.lecturerManager.remove(lecturer);
+        this.triggerLecturerTableUpdate.accept(this.getLecturers());
+    }
 
-	public void addExcuse(Excuse excuse) {
-		this.excusesManager.add(excuse);
-		this.triggerExcuseTableUpdate.accept(this.getExcuses());
-	}
+    public void addExcuse(Excuse excuse) {
+        this.excusesManager.add(excuse);
+        this.triggerExcuseTableUpdate.accept(this.getExcuses());
+    }
 
-	public void addLecturer(Lecturer lecturer) {
-		this.lecturerManager.add(lecturer);
-		this.triggerLecturerTableUpdate.accept(this.getLecturers());
-	}
+    public void addLecturer(Lecturer lecturer) {
+        this.lecturerManager.add(lecturer);
+        this.triggerLecturerTableUpdate.accept(this.getLecturers());
+    }
 
-	public void editExcuse(int excuseID, Excuse editedExcuseObj) {
-		this.excusesManager.edit(excuseID, editedExcuseObj);
-		this.triggerExcuseTableUpdate.accept(this.getExcuses());
-	}
+    public void editExcuse(int excuseID, Excuse editedExcuseObj) {
+        this.excusesManager.edit(excuseID, editedExcuseObj);
+        this.triggerExcuseTableUpdate.accept(this.getExcuses());
+    }
 
-	public void editLecturer(int lecturerID, Lecturer editedLecturerObj) {
-		this.lecturerManager.edit(lecturerID, editedLecturerObj);
-		this.triggerLecturerTableUpdate.accept(this.getLecturers());
-	}
+    public void editLecturer(int lecturerID, Lecturer editedLecturerObj) {
+        this.lecturerManager.edit(lecturerID, editedLecturerObj);
+        this.triggerLecturerTableUpdate.accept(this.getLecturers());
+    }
 
-	public void registerUpdateExcuseTable(Consumer<List<Excuse>> updateExcuseTable) {
-		this.triggerExcuseTableUpdate = updateExcuseTable;
-		this.triggerExcuseTableUpdate.accept(this.getExcuses());
-	}
+    public void registerUpdateExcuseTable(Consumer<List<Excuse>> updateExcuseTable) {
+        this.triggerExcuseTableUpdate = updateExcuseTable;
+        this.triggerExcuseTableUpdate.accept(this.getExcuses());
+    }
 
-	public void registerUpdateLecturerTable(Consumer<List<Lecturer>> updateLecturerTable) {
-		this.triggerLecturerTableUpdate = updateLecturerTable;
-		this.triggerLecturerTableUpdate.accept(this.getLecturers());
-	}
+    public void registerUpdateLecturerTable(Consumer<List<Lecturer>> updateLecturerTable) {
+        this.triggerLecturerTableUpdate = updateLecturerTable;
+        this.triggerLecturerTableUpdate.accept(this.getLecturers());
+    }
 }

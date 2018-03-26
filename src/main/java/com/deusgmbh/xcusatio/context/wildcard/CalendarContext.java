@@ -7,9 +7,7 @@ package com.deusgmbh.xcusatio.context.wildcard;
  */
 public class CalendarContext extends TimeFormattingUtils {
     private LectureEvent lectureEvent;
-    private String minutesLeftText;
     private int minutesLeft;
-    private String minutesPassedText;
     private int minutesPassed;
 
     public CalendarContext(String lectureName, String startTimeAsClocktime, String endTimeAsClocktime, int minutesLeft,
@@ -44,18 +42,11 @@ public class CalendarContext extends TimeFormattingUtils {
     }
 
     public String getMinutesLeftText() {
-        return minutesLeftText;
-    }
-
-    public void setMinutesLeftText() {
-        this.minutesLeftText = formatMinutesAsText(this.minutesLeft);
+        return formatMinutesAsText(this.minutesLeft);
     }
 
     public String getMinutesPassedText() {
-        return minutesPassedText;
+        return formatMinutesAsText(this.minutesPassed);
     }
 
-    public void setMinutesPassedText() {
-        this.minutesPassedText = formatMinutesAsText(this.minutesPassed);
-    }
 }

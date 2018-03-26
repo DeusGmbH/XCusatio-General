@@ -16,74 +16,73 @@ public class UserSettings {
     private Address home;
     private Address university;
     private ExcuseVibeMode excusesVibesMode;
-    private ExcusesVibes excusesVibes;
+    private ExcuseVibes excusesVibes;
 
-    public UserSettings(String googleCalendar, int age, Sex sex, Address home, Address university,
-            ExcuseVibeMode excusesVibesMode, ExcusesVibes excusesVibes) {
+    public UserSettings() {
         super();
-        this.googleCalendar = googleCalendar;
-        this.home = home;
-        this.university = university;
-        this.age = age;
-        this.sex = sex;
-        this.excusesVibesMode = excusesVibesMode;
-        this.excusesVibes = excusesVibes;
     }
 
     public String getGoogleCalendar() {
         return googleCalendar;
     }
 
-    public void setGoogleCalendar(String googleCalendar) {
+    public UserSettings setGoogleCalendar(String googleCalendar) {
         this.googleCalendar = googleCalendar;
+        return this;
     }
 
     public Address getHome() {
         return home;
     }
 
-    public void setHome(Address home) {
+    public UserSettings setHome(Address home) {
         this.home = home;
+        return this;
     }
 
     public Address getUniversity() {
         return university;
     }
 
-    public void setUniversity(Address university) {
+    public UserSettings setUniversity(Address university) {
         this.university = university;
+        return this;
     }
 
     public int getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public UserSettings setAge(int age) {
         this.age = age;
+        return this;
     }
 
     public Sex getSex() {
         return sex;
     }
 
-    public void setSex(Sex sex) {
+    public UserSettings setSex(Sex sex) {
         this.sex = sex;
+        return this;
     }
 
     public ExcuseVibeMode getExcuseVibeMode() {
         return excusesVibesMode;
     }
 
-    public void setExcuseVibeMode(ExcuseVibeMode excusesVibesMode) {
+    public UserSettings setExcuseVibeMode(ExcuseVibeMode excusesVibesMode) {
         this.excusesVibesMode = excusesVibesMode;
+        return this;
     }
 
-    public ExcusesVibes getExcusesVibes() {
+    public ExcuseVibes getExcusesVibes() {
         return excusesVibes;
     }
 
-    public void setExcusesVibes(ExcusesVibes excusesVibes) {
+    public UserSettings setExcusesVibes(ExcuseVibes excusesVibes) {
         this.excusesVibes = excusesVibes;
+        return this;
     }
 
     public enum Sex {

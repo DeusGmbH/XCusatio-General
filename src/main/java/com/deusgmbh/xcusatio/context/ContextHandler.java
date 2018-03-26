@@ -30,10 +30,11 @@ public class ContextHandler {
             if (calendar != null && calendar.getLectureEvent() != null) {
                 String lectureName = calendar.getLectureEvent()
                         .getLectureName();
-                context.setLecturer(lecturers.stream()
+                lecturers.stream()
                         .filter(Lecturer.hasLecture(lectureName))
                         .findAny()
-                        .get());
+                        .ifPresent(lecturer -> context.setLecturer(lecturer));
+
             }
         }
         return context;

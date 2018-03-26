@@ -1,9 +1,11 @@
 
 package com.deusgmbh.xcusatio.data.scenarios;
 
-import java.util.List;
-import com.deusgmbh.xcusatio.api.APIService;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import com.deusgmbh.xcusatio.api.APIService;
 
 /**
  * 
@@ -16,10 +18,12 @@ public class Scenario {
 
     public Scenario(ScenarioType type) {
         this.scenarioType = type;
+        this.requiredAPIs = new ArrayList<>();
     }
 
-    public void setScenarioType(ScenarioType type) {
+    public Scenario setScenarioType(ScenarioType type) {
         this.scenarioType = type;
+        return this;
     }
 
     public ScenarioType getScenarioType() {
@@ -30,11 +34,12 @@ public class Scenario {
         return requiredAPIs;
     }
 
-    public void setRequiredAPIs(List<Class<? extends APIService>> requiredAPIs) {
+    public Scenario setRequiredAPIs(List<Class<? extends APIService>> requiredAPIs) {
         this.requiredAPIs = requiredAPIs;
+        return this;
     }
 
-    public Scenario addRequiredAPIs(Class<? extends APIService> requiredAPI) {
+    public Scenario addRequiredAPI(Class<? extends APIService> requiredAPI) {
         this.requiredAPIs.add(requiredAPI);
         return this;
     }
