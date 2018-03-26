@@ -17,7 +17,7 @@ public class TrafficAPI extends APIService {
                 "Strasse wegen Baustelle gesperrt");
         TrafficIncidentLocation tri = new TrafficIncidentLocation("DE", "Mannheim", "Seckenheimer Landstr.");
 
-        TrafficIncidentTimes trt = new TrafficIncidentTimes("6:00", "10:30");
+        TrafficIncidentTimes trt = new TrafficIncidentTimes("6:30", "10:30");
 
         TrafficContext trafficContext = new TrafficContext(trd, tri, trt);
 
