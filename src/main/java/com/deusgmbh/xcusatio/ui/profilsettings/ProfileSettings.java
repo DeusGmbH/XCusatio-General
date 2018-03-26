@@ -1,13 +1,13 @@
 package com.deusgmbh.xcusatio.ui.profilsettings;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -26,83 +26,82 @@ import javafx.scene.layout.HBox;
  */
 
 public class ProfileSettings extends FlowPane {
-	private static final String AGE_LABEL = "Alter";
-	private static final String SEX_LABEL = "Geschlecht";
-	private static final String LOCATION_LABEL = "Standort";
-	private static final String CALENDAR_LABEL = "Google-Kalendar";
-	private static final String CALENDAR_BUTTON_LABEL = "Hinzuf\u00fcgen";
-	private static final String PROFILE_SETTINGS_PANE_BORDER_COLOR = "#000000";
-	private static final String AGE_ZERO_TO_NINETEEN = "0-19";
-	private static final String AGE_TWENTY_TO_THIRTYNINE = "20-39";
-	private static final String AGE_FOURTY_TO_FIFTYNINE = "40-59";
-	private static final String AGE_SIXTY_TO_SEVENTYNINE = "60-79";
-	private static final String AGE_EIGHTY_TO_NINETYNINE = "80-99";
-	private static final String DEFAULT_TEXT_TEXTFIELD = "PLZ";
-	private static final String SUBMIT_BUTTON = "Speichern";
-	private static final String TITLE_LABEL = "Profileinstellungen";
+	private static final String AGE_LABEL_TEXT = "Geburtstag";
+	private static final String SEX_LABEL_TEXT = "Geschlecht";
+	private static final String SEX_MALE_LABEL_TEXT = "m\u00e4nnlich";
+	private static final String SEX_FEMALE_LABEL_TEXT = "weiblich";
+	private static final String LOCATION_LABEL_TEXT = "Standort";
+	private static final String CALENDAR_LABEL_TEXT = "Google-Kalendar";
+	private static final String CALENDAR_BUTTON_LABEL_TEXT = "Hinzuf\u00fcgen";
 
-	private GridPane gridPane;
+	private static final String SUBMIT_BUTTON_LABEL = "Speichern";
+	private static final String TITLE_LABEL_TEXT = "Profileinstellungen";
 
-	private Label titleLabel;
-	private Label age;
-	private Label sex;
-	private Label location;
-	private Label calendar;
+	private GridPane profileFormPane;
 
-	private ChoiceBox ageChoiceBox;
+	private DatePicker birthdayDatePicker;
 	private HBox sexTogglePane;
+	private HBox addressPane;
 
 	private Button calendarButton;
-	private Button submitEditedEntryBtn;
-	private TextField address;
-	private RadioButton male;
-	private RadioButton female;
+	private Button saveProfileBtn;
+	private TextField street;
+	private TextField streetNumber;
+	private TextField postcode;
+	private RadioButton setSexMale;
+	private RadioButton setSexFemale;
 
 	public ProfileSettings() {
-		gridPane = new GridPane();
+		profileFormPane = new GridPane();
 		sexTogglePane = new HBox();
+		addressPane = new HBox();
 
-		this.setStyle("-fx-border-color: " + PROFILE_SETTINGS_PANE_BORDER_COLOR);
-		this.gridPane.setStyle("-fx-border-color: " + PROFILE_SETTINGS_PANE_BORDER_COLOR);
+		Label ageLabel = new Label(AGE_LABEL_TEXT);
+		Label sexLabel = new Label(SEX_LABEL_TEXT);
+		Label sexMaleLabel = new Label(SEX_MALE_LABEL_TEXT);
+		Label sexFemaleLabel = new Label(SEX_FEMALE_LABEL_TEXT);
+		Label locationLabel = new Label(LOCATION_LABEL_TEXT);
+		Label calendarLabel = new Label(CALENDAR_LABEL_TEXT);
 
-		titleLabel = new Label(TITLE_LABEL);
-		age = new Label(AGE_LABEL);
-		sex = new Label(SEX_LABEL);
-		location = new Label(LOCATION_LABEL);
-		calendar = new Label(CALENDAR_LABEL);
+		birthdayDatePicker = new DatePicker();
+		birthdayDatePicker.setShowWeekNumbers(false);
 
-		/* ageChoiceBox */
-		ageChoiceBox = new ChoiceBox(FXCollections.observableArrayList(AGE_ZERO_TO_NINETEEN, AGE_TWENTY_TO_THIRTYNINE,
-				AGE_FOURTY_TO_FIFTYNINE, AGE_SIXTY_TO_SEVENTYNINE, AGE_EIGHTY_TO_NINETYNINE));
-		/* radioButton */
 		ToggleGroup groupRadio = new ToggleGroup();
-		male = new RadioButton();
-		male.setToggleGroup(groupRadio);
-		male.setSelected(true);
-		female = new RadioButton();
-		female.setToggleGroup(groupRadio);
-		sexTogglePane.getChildren().addAll(male, female);
-		/* inputPLZ */
-		address = new TextField(DEFAULT_TEXT_TEXTFIELD);
-		/* button */
-		calendarButton = new Button(CALENDAR_BUTTON_LABEL);
-		submitEditedEntryBtn = new Button(SUBMIT_BUTTON);
+		setSexMale = new RadioButton();
+		setSexMale.setToggleGroup(groupRadio);
+		setSexMale.setSelected(true);
+		setSexFemale = new RadioButton();
+		setSexFemale.setToggleGroup(groupRadio);
+		sexTogglePane.getChildren().addAll(sexMaleLabel, setSexMale, sexFemaleLabel, setSexFemale);
+		street = new TextField(); // ADD DEFAULT STREET --> SUPLIER
+		streetNumber = new TextField(); // SAME LIKE ABOVE
+		postcode = new TextField(); // SAME LIKE ABOVE
+		addressPane.getChildren().addAll(street, streetNumber, postcode);
+		calendarButton = new Button(CALENDAR_BUTTON_LABEL_TEXT);
+		saveProfileBtn = new Button(SUBMIT_BUTTON_LABEL);
 
-		addNodesToPane(age, ageChoiceBox, sex, sexTogglePane, location, address, calendar, calendarButton);
-		this.getChildren().add(gridPane);
+		addNodesToPane(ageLabel, birthdayDatePicker, sexLabel, sexTogglePane, locationLabel, addressPane, calendarLabel,
+				calendarButton);
+		this.getChildren().add(profileFormPane);
 		this.setAlignment(Pos.CENTER);
 	}
 
-	protected void addNodesToPane(Node... nodesToAdd) {
-		gridPane.getChildren().clear();
-		gridPane.add(this.titleLabel, 0, 0);
+	private void addNodesToPane(Node... nodesToAdd) {
+		profileFormPane.getChildren().clear();
+		Label titleLabel = new Label(TITLE_LABEL_TEXT);
+		profileFormPane.add(titleLabel, 0, 0);
 		final AtomicInteger counter = new AtomicInteger();
 		Arrays.asList(nodesToAdd).stream().forEach(node -> {
 			int columnIndex = counter.get() % 2;
 			int rowIndex = (int) Math.floor(counter.get() / 2d) + 1;
-			gridPane.add(node, columnIndex, rowIndex);
+			profileFormPane.add(node, columnIndex, rowIndex);
 			counter.incrementAndGet();
 		});
-		gridPane.add(this.submitEditedEntryBtn, 1, (int) Math.ceil(nodesToAdd.length / 2d) + 1);
+		profileFormPane.add(this.saveProfileBtn, 1, (int) Math.ceil(nodesToAdd.length / 2d) + 1);
+	}
+
+	private LocalDate getDateFromBirthdayPicker() {
+		LocalDate localDate = birthdayDatePicker.getValue();
+		return localDate;
 	}
 }
