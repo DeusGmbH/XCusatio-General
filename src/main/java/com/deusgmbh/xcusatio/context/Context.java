@@ -1,6 +1,6 @@
 package com.deusgmbh.xcusatio.context;
 
-import com.deusgmbh.xcusatio.context.wildcard.APIDrivenContext;
+import com.deusgmbh.xcusatio.context.wildcard.APIContext;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.usersettings.ExcusesVibes;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
@@ -17,9 +17,9 @@ public class Context {
 
     private Lecturer lecturer;
 
-    private APIDrivenContext apiContext;
+    private APIContext apiContext;
 
-    public Context(int age, Sex sex, ExcusesVibes excusesVibes, Lecturer lecturer, APIDrivenContext apiContext) {
+    public Context(int age, Sex sex, ExcusesVibes excusesVibes, Lecturer lecturer, APIContext apiContext) {
         super();
         this.age = age;
         this.sex = sex;
@@ -68,11 +68,11 @@ public class Context {
         return this;
     }
 
-    public APIDrivenContext getApiContext() {
+    public APIContext getApiContext() {
         return apiContext;
     }
 
-    public Context setApiContext(APIDrivenContext apiContext) {
+    public Context setApiContext(APIContext apiContext) {
         this.apiContext = apiContext;
         return this;
     }

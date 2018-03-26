@@ -11,38 +11,54 @@ import java.util.stream.Collectors;
  *
  */
 public class Wildcards {
-    private static Set<Wildcard> wildcards;
+	private Set<Wildcard> wildcards;
 
-    public static void initialize() {
-        wildcards = new HashSet<Wildcard>();
-        addTemperatureWildcard();
-    }
+	public Wildcards() {
+		wildcards = new HashSet<Wildcard>();
+		addTemperatureWildcard();
+	}
 
-    private static void addTemperatureWildcard() {
-        wildcards.add(new Wildcard("$temperature$") {
-            @Override
-            public String replace(String source, APIDrivenContext apiContext) {
-                if (apiContext != null) {
-                    String temperatureText = apiContext.getWeather()
-                            .getTemperature() + " C";
-                    source.replaceAll("$temperature$", temperatureText);
-                }
-                return source;
-            }
-        });
+	private void addTemperatureWildcard() {
+		wildcards.add(new Wildcard("$temperature$", "Wird ersetzt mit der aktuellen Temperatur in °C (Bsp.: '14°C')") {
+			@Override
+			public String replace(String source, APIContext apiContext) {
+				String temperatureText = apiContext.getWeather().getTemperature() + "°C";
+				source.replaceAll("$temperature$", temperatureText);
+				return source;
+			}
 
-    }
+			@Override
+			public boolean isValidContext(APIContext apiContext) {
+				if (apiContext != null) {
+					if (apiContext.getWeather() != null) {
+						return true;
+					}
+				}
+				return false;
+			}
+		});
 
-    public static String replace(String source, APIDrivenContext apiContext) {
-        for (Wildcard wildcard : wildcards) {
-            source = wildcard.replace(source, apiContext);
-        }
-        return source;
-    }
+	}
 
-    public static List<String> getNames() {
-        return wildcards.stream()
-                .map(Wildcard::getIdentifier)
-                .collect(Collectors.toList());
-    }
+	public String replace(String source, APIContext apiContext) {
+		for (Wildcard wildcard : wildcards) {
+			if (source.contains(wildcard.getIdentifier())) {
+				source = wildcard.replace(source, apiContext);
+			}
+		}
+		return source;
+	}
+
+	public boolean isValidContext(String source, APIContext apiContext) {
+		return wildcards.stream().filter(wildcard -> source.contains(wildcard.getIdentifier()))
+				.allMatch(wildcard -> wildcard.isValidContext(apiContext));
+	}
+
+	public List<String> getNames() {
+		return wildcards.stream().map(Wildcard::getIdentifier).collect(Collectors.toList());
+	}
+
+	public Set<Wildcard> getWildcards() {
+		return wildcards;
+	}
 }
