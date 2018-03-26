@@ -9,8 +9,15 @@ public class WeatherAPI extends APIService {
     @Override
     public WeatherContext get(UserSettings usersettings) {
         // TODO: implement API call and result processing
-        new WeatherContext(11, "Sturmböen", "SE", 15, 8, 34, 0, 2);
-        return null;
+        WeatherContext weatherContext = new WeatherContext(11, "Sturmböen", "SE", 15, 8, 34, 0, 2);
+        return weatherContext;
+    }
+
+    public static void main(String[] plutonium) {
+        UserSettings userSettings = new UserSettings(null, 0, null, null, null, null, null);
+        WeatherAPI weatherAPI = new WeatherAPI();
+        WeatherContext weatherContext = weatherAPI.get(userSettings);
+        weatherContext.printContextContent();
     }
 
 }

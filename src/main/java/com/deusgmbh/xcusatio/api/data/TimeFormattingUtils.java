@@ -1,4 +1,4 @@
-package com.deusgmbh.xcusatio.context.wildcard;
+package com.deusgmbh.xcusatio.api.data;
 
 /**
  * 
@@ -13,5 +13,9 @@ public class TimeFormattingUtils {
             return "1 Minute";
         }
         return (String.valueOf(minutes) + " Minuten");
+    }
+    
+    public String formatClocktime(String hh_colon_mm) {
+        return hh_colon_mm + " Uhr";
     }
 }

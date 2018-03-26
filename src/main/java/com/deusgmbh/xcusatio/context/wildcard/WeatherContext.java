@@ -91,4 +91,12 @@ public class WeatherContext {
     public void setRainHourly(int rainHourly) {
         this.rainHourly = rainHourly;
     }
+
+    public void printContextContent() {
+        System.out.println(
+                "WeatherContext:\nTemperature: " + this.getTemperature() + " C\nDesc.: " + this.getDescription()
+                        + "\nWind comes from: " + this.getWindDirection() + "\nMax. T: " + this.getMaxTemparature()
+                        + "\nMin. T: " + this.getMinTemparature() + "\nWind speed: " + this.getWindSpeed()
+                        + "\nSnow hourly: " + this.getSnowHourly() + "\nRain hourly: " + this.getRainHourly());
+    }
 }

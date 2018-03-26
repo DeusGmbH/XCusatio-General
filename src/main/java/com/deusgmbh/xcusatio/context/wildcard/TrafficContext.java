@@ -1,5 +1,9 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+import com.deusgmbh.xcusatio.api.data.TrafficIncidentDetails;
+import com.deusgmbh.xcusatio.api.data.TrafficIncidentLocation;
+import com.deusgmbh.xcusatio.api.data.TrafficIncidentTimes;
+
 /**
  * 
  * @author jan.leiblein@gmail.com
@@ -43,5 +47,16 @@ public class TrafficContext {
 
     public void setIncidentTimes(TrafficIncidentTimes incidentTimes) {
         this.incidentTimes = incidentTimes;
+    }
+
+    public void printContextContent() {
+        System.out.println("TrafficContext:\nType of incident: " + this.getTrafficIncident().getIncidentType()
+                + "\nDescription: " + this.getTrafficIncident().getIncidentDescription() + "\nStatus: "
+                + this.getTrafficIncident().getIncidentStatus() + "\noccured in: "
+                + this.getIncidentLocation().getCountryOfIncident() + ", "
+                + this.getIncidentLocation().getCityOfIncident() + ", "
+                + this.getIncidentLocation().getStreetOfIncident() + "\nStarted: "
+                + this.getIncidentTimes().getStartTimeOfTrafficIncident() + "\nEnd: "
+                + this.getIncidentTimes().getEndTimeOfTrafficIncident());
     }
 }

@@ -1,5 +1,6 @@
 package com.deusgmbh.xcusatio.api.services;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import com.deusgmbh.xcusatio.api.APIService;
@@ -13,11 +14,11 @@ public class CalendarAPI extends APIService {
     @Override
     public CalendarContext get(UserSettings usersettings) {
 
-        List<String> lecturesRead = null;
+        List<String> lecturesRead = new LinkedList<>();
         lecturesRead.add("Software Engineering ");
         lecturesRead.add("Programmieren in C");
 
-        List<Tag> tagList = null;
+        List<Tag> tagList = new LinkedList<>();
         tagList.add(Tag.MALE);
         tagList.add(Tag.AGE_UNDER_50);
         tagList.add(Tag.FUNNY);
@@ -27,9 +28,16 @@ public class CalendarAPI extends APIService {
         kruse.setName("Eckard Kruse");
         kruse.setTags(tagList);
 
-        CalendarContext calendarContext = new CalendarContext("Software Engineering 2", kruse, "9:00 Uhr", "12:15 Uhr",
-                190, 15);
+        CalendarContext calendarContext = new CalendarContext("Software Engineering 2", kruse, "09.00", "12.15", 190,
+                15);
         return calendarContext;
+    }
+
+    public static void main(String[] args) {
+        UserSettings userSettings = new UserSettings(null, 0, null, null, null, null, null);
+        CalendarAPI calendarAPI = new CalendarAPI();
+        CalendarContext calendarContext = calendarAPI.get(userSettings);
+        calendarContext.printContextContent();
     }
 
 }

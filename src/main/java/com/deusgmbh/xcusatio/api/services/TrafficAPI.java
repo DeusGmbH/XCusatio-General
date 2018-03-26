@@ -1,11 +1,11 @@
 package com.deusgmbh.xcusatio.api.services;
 
 import com.deusgmbh.xcusatio.api.APIService;
+import com.deusgmbh.xcusatio.api.data.TrafficIncidentDetails;
+import com.deusgmbh.xcusatio.api.data.TrafficIncidentLocation;
+import com.deusgmbh.xcusatio.api.data.TrafficIncidentTimes;
+import com.deusgmbh.xcusatio.api.data.TrafficIncidentType;
 import com.deusgmbh.xcusatio.context.wildcard.TrafficContext;
-import com.deusgmbh.xcusatio.context.wildcard.TrafficIncidentDetails;
-import com.deusgmbh.xcusatio.context.wildcard.TrafficIncidentLocation;
-import com.deusgmbh.xcusatio.context.wildcard.TrafficIncidentTimes;
-import com.deusgmbh.xcusatio.context.wildcard.TrafficIncidentType;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 public class TrafficAPI extends APIService {
@@ -22,6 +22,13 @@ public class TrafficAPI extends APIService {
         TrafficContext trafficContext = new TrafficContext(trd, tri, trt);
 
         return trafficContext;
+    }
+
+    public static void main(String[] uranium) {
+        UserSettings userSettings = new UserSettings(null, 0, null, null, null, null, null);
+        TrafficAPI trafficAPI = new TrafficAPI();
+        TrafficContext trafficContext = trafficAPI.get(userSettings);
+        trafficContext.printContextContent();
     }
 
 }
