@@ -3,8 +3,12 @@ package com.deusgmbh.xcusatio.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import com.deusgmbh.xcusatio.data.scenarios.Scenario;
+
 import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
+import com.deusgmbh.xcusatio.data.scenarios.Scenario;
+import com.deusgmbh.xcusatio.data.usersettings.Address;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 
 /**
  * This class handles inputs of the userinterface via an event listener
@@ -15,28 +19,36 @@ import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
  *
  */
 public class MainController {
-    private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
-    private Wildcards wildcards;
+	private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
+	private Wildcards wildcards;
 
-    public MainController() {
-        wildcards = new Wildcards();
-    }
+	public MainController() {
+		wildcards = new Wildcards();
+	}
 
-    public void generateExcuse(Scenario scenario) {
-        // TODO: Write generateExcuse method
-    }
-  
-    public List<String> getWildcardNames() {
-        return wildcards.getNames();
-    }
-    
-    public void generateExcuse(String excuseType) {
-        // TODO: Write generateExcuse method
-    }
+	public void generateExcuse(Scenario scenario) {
+		// TODO: Write generateExcuse method
+	}
 
-    public List<Scenario> getScenarios() {
-        List<Scenario> scenarioList = new ArrayList<Scenario>();
-        // TODO Get all scenarios
-        return scenarioList;
-    }
+	public List<String> getWildcardNames() {
+		return wildcards.getNames();
+	}
+
+	public void generateExcuse(String excuseType) {
+		// TODO: Write generateExcuse method
+	}
+
+	public List<Scenario> getScenarios() {
+		List<Scenario> scenarioList = new ArrayList<Scenario>();
+		// TODO Get all scenarios
+		return scenarioList;
+	}
+
+	public UserSettings getUserSettings() {
+		// Following section is only for testing purposes
+		// TODO: getUserSettings from DataStorage
+		UserSettings userSettings = new UserSettings("Olaf", null, 18, Sex.Male,
+				new Address("Strasse", "1", "68165", "Olafhausen", "Germany"), null, null, null);
+		return userSettings;
+	}
 }

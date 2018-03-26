@@ -3,8 +3,10 @@ package com.deusgmbh.xcusatio.ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.deusgmbh.xcusatio.ui.dashboard.Dashboard;
 import com.deusgmbh.xcusatio.ui.editor.Editor;
 import com.deusgmbh.xcusatio.ui.profilsettings.ProfileSettings;
@@ -108,6 +110,10 @@ public class XCusatioWindow extends Application {
 
 	public void setScenarios(List<Scenario> scenarioList) {
 		this.scenarioList = scenarioList;
+	}
+
+	public void registerUserSettingsSupplier(Supplier<UserSettings> userSettingsSupplier) {
+		profileSettings.registerUserSettingsSupplier(userSettingsSupplier);
 	}
 
 }

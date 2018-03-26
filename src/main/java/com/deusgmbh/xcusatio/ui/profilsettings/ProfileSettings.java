@@ -3,6 +3,10 @@ package com.deusgmbh.xcusatio.ui.profilsettings;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
+
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -37,6 +41,8 @@ public class ProfileSettings extends FlowPane {
 	private static final String SUBMIT_BUTTON_LABEL = "Speichern";
 	private static final String TITLE_LABEL_TEXT = "Profileinstellungen";
 
+	private Supplier<UserSettings> userSettingsSupplier;
+
 	private GridPane profileFormPane;
 
 	private DatePicker birthdayDatePicker;
@@ -45,9 +51,10 @@ public class ProfileSettings extends FlowPane {
 
 	private Button calendarButton;
 	private Button saveProfileBtn;
-	private TextField street;
-	private TextField streetNumber;
-	private TextField postcode;
+	private TextField streetNameTextField;
+	private TextField streetNumTextField;
+	private TextField zipTextField;
+	private TextField cityTextField;
 	private RadioButton setSexMale;
 	private RadioButton setSexFemale;
 
@@ -69,14 +76,16 @@ public class ProfileSettings extends FlowPane {
 		ToggleGroup groupRadio = new ToggleGroup();
 		setSexMale = new RadioButton();
 		setSexMale.setToggleGroup(groupRadio);
-		setSexMale.setSelected(true);
+		setSexMale.setSelected(userSettingsSupplier.get().getSex() == Sex.Male);
 		setSexFemale = new RadioButton();
+		setSexFemale.setSelected(userSettingsSupplier.get().getSex() == Sex.Female);
 		setSexFemale.setToggleGroup(groupRadio);
 		sexTogglePane.getChildren().addAll(sexMaleLabel, setSexMale, sexFemaleLabel, setSexFemale);
-		street = new TextField(); // ADD DEFAULT STREET --> SUPLIER
-		streetNumber = new TextField(); // SAME LIKE ABOVE
-		postcode = new TextField(); // SAME LIKE ABOVE
-		addressPane.getChildren().addAll(street, streetNumber, postcode);
+		streetNameTextField = new TextField(userSettingsSupplier.get().getHome().getStreetName());
+		streetNumTextField = new TextField(userSettingsSupplier.get().getHome().getStreetnum());
+		cityTextField = new TextField(userSettingsSupplier.get().getHome().getCity());
+		zipTextField = new TextField(userSettingsSupplier.get().getHome().getZip());
+		addressPane.getChildren().addAll(streetNameTextField, streetNumTextField, cityTextField, zipTextField);
 		calendarButton = new Button(CALENDAR_BUTTON_LABEL_TEXT);
 		saveProfileBtn = new Button(SUBMIT_BUTTON_LABEL);
 
@@ -103,5 +112,9 @@ public class ProfileSettings extends FlowPane {
 	private LocalDate getDateFromBirthdayPicker() {
 		LocalDate localDate = birthdayDatePicker.getValue();
 		return localDate;
+	}
+
+	public void registerUserSettingsSupplier(Supplier<UserSettings> userSettingsSupplier) {
+		this.userSettingsSupplier = userSettingsSupplier;
 	}
 }
