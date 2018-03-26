@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.tags.Tag;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.deusgmbh.xcusatio.ui.dashboard.Dashboard;
 import com.deusgmbh.xcusatio.ui.editor.Editor;
 import com.deusgmbh.xcusatio.ui.profilsettings.ProfileSettings;
 import com.deusgmbh.xcusatio.ui.utility.ResizeHelper;
+import com.deusgmbh.xcusatio.util.TriConsumer;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -141,7 +144,8 @@ public class XCusatioWindow extends Application {
         }
     };
 
-    public void registerScenarioButtonActionEvent(Consumer<Scenario> generateExcuse) {
+    public void registerScenarioButtonActionEvent(
+            TriConsumer<Scenario, Consumer<String>, DoubleConsumer> generateExcuse) {
         dashboard.createScenarioButtons(scenarioList, generateExcuse);
     }
 
@@ -162,11 +166,11 @@ public class XCusatioWindow extends Application {
     }
 
     public void registerAddExcuseEvent(Consumer<Excuse> removeExcuse) {
-        editor.registerRemoveExcuseEvent(removeExcuse);
+        editor.registerAddExcuseEvent(removeExcuse);
     }
 
     public void registerAddLecturerEvent(Consumer<Lecturer> addLecturer) {
-        editor.registerRemoveLecturerEvent(addLecturer);
+        editor.registerAddLecturerEvent(addLecturer);
     }
 
     public void registerEditExcuseEvent(BiConsumer<Integer, Excuse> editExcuse) {
@@ -215,5 +219,10 @@ public class XCusatioWindow extends Application {
 
     public void setScenarios(List<Scenario> scenarioList) {
         this.scenarioList = scenarioList;
+    }
+
+    public void setQuickSettings(UserSettings userSettings) {
+        // TODO: adjust QuickSettings
+
     }
 }

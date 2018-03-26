@@ -8,7 +8,6 @@ import java.util.List;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
 import com.deusgmbh.xcusatio.data.tags.Tag;;
 
-
 /**
  * 
  * @author Tobias.Schmidt@de.ibm.com
@@ -71,6 +70,11 @@ public class Excuse {
         this.tags = tags;
     }
 
+    public Excuse addTag(Tag tag) {
+        this.tags.add(tag);
+        return this;
+    }
+
     public Date getLastUsed() {
         return lastUsed;
     }
@@ -102,6 +106,7 @@ public class Excuse {
     public void setNegativeRating(int negativeRatings) {
         this.negativeRating = negativeRatings;
     }
+
     public static Comparator<Excuse> byRating = new Comparator<Excuse>() {
         @Override
         public int compare(Excuse e1, Excuse e2) {

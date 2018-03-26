@@ -29,6 +29,7 @@ public class Wildcards {
                 String temperatureText = apiContext.getWeather()
                         .getTemperature() + " C";
                 source.replaceAll("$temperature$", temperatureText);
+
                 return source;
             }
         });

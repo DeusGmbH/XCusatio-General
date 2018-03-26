@@ -53,6 +53,10 @@ public class ExcuseGenerator {
                 .limit(Math.round(contextBasedExcuses.size() / 2.0))
                 .collect(Collectors.toList());
 
+        if (finalExcuses.isEmpty()) {
+            return "";
+        }
+
         int randomExcuseId = ThreadLocalRandom.current()
                 .nextInt(0, finalExcuses.size());
 
@@ -107,7 +111,7 @@ public class ExcuseGenerator {
         List<Tag> tags = new ArrayList<>();
         tags.addAll(this.getExcusesVibeTags(context));
         tags.addAll(context.getLecturerTags());
-        tags.add(this.getSexTag(context));
+        tags.addAll(this.getSexTag(context));
         // add temperature tags
         // add snow tags
         // add rain tags
@@ -124,25 +128,30 @@ public class ExcuseGenerator {
     private Set<Tag> getExcusesVibeTags(Context context) {
         Set<Tag> excusesVibeTags = new HashSet<>();
         ExcusesVibes excusesVibes = context.getExcusesVibes();
-        if (excusesVibes.isAggresiv()) {
-            excusesVibeTags.add(Tag.AGGRESSIVE);
-        }
-        if (excusesVibes.isFunny()) {
-            excusesVibeTags.add(Tag.FUNNY);
-        }
-        if (excusesVibes.isSuckUp()) {
-            excusesVibeTags.add(Tag.SUCKUP);
+        if (excusesVibes != null) {
+            if (excusesVibes.isAggresiv()) {
+                excusesVibeTags.add(Tag.AGGRESSIVE);
+            }
+            if (excusesVibes.isFunny()) {
+                excusesVibeTags.add(Tag.FUNNY);
+            }
+            if (excusesVibes.isSuckUp()) {
+                excusesVibeTags.add(Tag.SUCKUP);
+            }
         }
         return excusesVibeTags;
     }
 
-    private Tag getSexTag(Context context) {
-        switch (context.getSex()) {
-        case MALE:
-            return Tag.MALE;
-        case FEMALE:
-            return Tag.FEMALE;
+    private Set<Tag> getSexTag(Context context) {
+        Set<Tag> sexTags = new HashSet<>();
+        if (context.getSex() != null) {
+            switch (context.getSex()) {
+            case MALE:
+                sexTags.add(Tag.MALE);
+            case FEMALE:
+                sexTags.add(Tag.FEMALE);
+            }
         }
-        throw new RuntimeException("User's sex not specified in context");
+        return sexTags;
     }
 }
