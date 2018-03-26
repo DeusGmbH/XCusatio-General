@@ -28,13 +28,8 @@ public class ExcuseEditorTab extends EditorTab {
         super(name);
         entryListPane = new ExcuseEntryListPane();
         entryListPane.registerOnSelectEntryEvent(this::createEditForm);
-        entryListPane.minWidthProperty().bind(this.editor.widthProperty().multiply(0.39));
-        entryListPane.maxWidthProperty().bind(this.editor.widthProperty().multiply(0.39));
         editEntryPane = new ExcuseEditEntryPane();
-        editEntryPane.minWidthProperty().bind(this.editor.widthProperty().multiply(0.59));
-        editEntryPane.maxWidthProperty().bind(this.editor.widthProperty().multiply(0.59));
-        super.editor.setLeft(entryListPane);
-        super.editor.setCenter(editEntryPane);
+        super.editor.getItems().addAll(entryListPane, editEntryPane);
     }
 
     public void setTableContent(List<Excuse> excuseList) {

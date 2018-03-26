@@ -40,6 +40,7 @@ public class ExcuseEntryListPane extends EntryListPane {
         super();
         entryTable = new TableView<Excuse>();
         entryTable.setEditable(false);
+        entryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         setTableColumns(getRequiredTableColumns());
 
         this.getChildren().add(0, entryTable);
@@ -49,7 +50,7 @@ public class ExcuseEntryListPane extends EntryListPane {
         columnList.entrySet().stream().forEach(entry -> {
             TableColumn<Excuse, String> column = new TableColumn<Excuse, String>(entry.getValue().toString());
             column.setCellValueFactory(new PropertyValueFactory<Excuse, String>(entry.getKey().toString()));
-            column.prefWidthProperty().bind(entryTable.widthProperty().multiply(1d / columnList.size()).subtract(1));
+            column.prefWidthProperty().bind(entryTable.widthProperty().multiply(1d / columnList.size()).subtract(20));
             entryTable.getColumns().add(column);
         });
     }

@@ -36,8 +36,10 @@ public class EditEntryPane extends GridPane {
 
     public EditEntryPane() {
         editorTitleLabel = new Label(EDITOR_TITLE);
+        editorTitleLabel.getStyleClass().add("h2");
         submitEditedEntryBtn = new Button(SUBMIT_EDITED_ENTRY_BTN_LABEL);
 
+        this.getStyleClass().add("edit-entry");
         this.add(editorTitleLabel, 0, 0);
     }
 

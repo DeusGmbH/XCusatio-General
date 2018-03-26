@@ -28,8 +28,7 @@ public class LecturerEditorTab extends EditorTab {
         entryListPane = new LecturerEntryListPane();
         entryListPane.registerOnSelectEntryEvent(this::createEditForm);
         editEntryPane = new LecturerEditEntryPane();
-        super.editor.setLeft(entryListPane);
-        super.editor.setCenter(editEntryPane);
+        super.editor.getItems().addAll(entryListPane, editEntryPane);
     }
 
     public void setTableContent(List<Lecturer> excuseList) {

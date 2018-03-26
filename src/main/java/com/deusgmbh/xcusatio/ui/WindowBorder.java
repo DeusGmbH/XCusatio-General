@@ -26,6 +26,8 @@ public class WindowBorder extends HBox {
         fullScreenButton = new Button(FULLSCREEN_BUTTON_UNICODE);
         closeButton = new Button(CLOSE_BUTTON_UNICODE);
 
+        minimizeButton.setMaxHeight(20);
+
         minimizeButton.setOnAction(minimizeWindow);
         fullScreenButton.setOnAction(restoreWindow);
         closeButton.setOnAction(closeWindow);

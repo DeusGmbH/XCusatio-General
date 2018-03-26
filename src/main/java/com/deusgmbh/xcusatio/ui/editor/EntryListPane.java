@@ -2,6 +2,8 @@ package com.deusgmbh.xcusatio.ui.editor;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 /**
@@ -22,8 +24,15 @@ public class EntryListPane extends VBox {
         HBox entryOptionsPane = new HBox();
         removeSelectedEntry = new Button("Entfernen");
         addEntry = new Button("Hinzufügen");
-        entryOptionsPane.getChildren().addAll(removeSelectedEntry, addEntry);
 
-        this.getChildren().add(entryOptionsPane);
+        Pane spacer = new Pane();
+        entryOptionsPane.setHgrow(spacer, Priority.ALWAYS);
+
+        removeSelectedEntry.getStyleClass().add("entry-list-button");
+        addEntry.getStyleClass().add("entry-list-button");
+
+        entryOptionsPane.getChildren().addAll(removeSelectedEntry, spacer, addEntry);
+
+        this.getChildren().addAll(entryOptionsPane);
     }
 }

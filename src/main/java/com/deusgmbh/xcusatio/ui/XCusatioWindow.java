@@ -19,6 +19,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
@@ -36,8 +37,10 @@ import javafx.stage.StageStyle;
 
 public class XCusatioWindow extends Application {
     private static final String WINDOW_TITLE = "Deus GmbH - xCusatio";
+
+    private static final int WINDOW_BORDER_HEIGHT = 40;
     private static final int WINDOW_DEF_WIDTH = 1280;
-    private static final int WINDOW_DEF_HEIGHT = 720;
+    private static final int WINDOW_DEF_HEIGHT = 720 + WINDOW_BORDER_HEIGHT;
     private static final int WINDOW_MAX_WIDTH = 1920;
     private static final int WINDOW_MAX_HEIGHT = 1080;
 
@@ -64,6 +67,7 @@ public class XCusatioWindow extends Application {
         initMainStage(this.stage);
 
         windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
+        windowBorder.setPrefHeight(WINDOW_BORDER_HEIGHT);
 
         navigationPanel = new NavigationPanel();
         navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
@@ -72,15 +76,21 @@ public class XCusatioWindow extends Application {
         editor = new Editor();
         profileSettings = new ProfileSettings();
 
-        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
-        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
-        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
+        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, this::setContent);
+        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, this::setContent);
+        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, this::setContent);
 
-        main.setTop(windowBorder);
+        windowBorder.toFront();
+
         main.setLeft(navigationPanel);
         main.setCenter(dashboard);
+        main.setTop(windowBorder);
 
         stage.show();
+    }
+
+    private void setContent(Node node) {
+        main.setCenter(node);
     }
 
     private BorderPane initMainStage(Stage stage) {

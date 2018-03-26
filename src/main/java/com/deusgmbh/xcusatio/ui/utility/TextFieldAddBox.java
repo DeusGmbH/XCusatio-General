@@ -54,7 +54,7 @@ public class TextFieldAddBox extends BorderPane {
     private EventHandler<ActionEvent> shiftEntryAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-            if (addBox.getSelectionModel() != null) {
+            if (addBox.getSelectionModel() != null && addBox.getSelectionModel().getSelectedItem() != null) {
                 textField.setText(textField.getText() + " " + addBox.getSelectionModel().getSelectedItem() + " ");
             }
         }
