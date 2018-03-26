@@ -79,6 +79,7 @@ public class XCusatioWindow extends Application {
         navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, this::setContent);
         navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, this::setContent);
         navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, this::setContent);
+        navigationPanel.getChildren().get(0).getStyleClass().add("active");
 
         windowBorder.toFront();
 
@@ -90,6 +91,11 @@ public class XCusatioWindow extends Application {
     }
 
     private void setContent(Node node) {
+        navigationPanel.getChildren().stream().forEach(btn -> {
+            if (btn.getStyleClass().get(btn.getStyleClass().size() - 1).equals("active")) {
+                btn.getStyleClass().remove(btn.getStyleClass().size() - 1);
+            }
+        });
         main.setCenter(node);
     }
 

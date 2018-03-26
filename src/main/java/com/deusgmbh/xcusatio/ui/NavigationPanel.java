@@ -34,6 +34,7 @@ public class NavigationPanel extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 setContent.accept(paneToFocus);
+                btn.getStyleClass().add("active");
             }
         });
         this.getChildren().add(btn);
