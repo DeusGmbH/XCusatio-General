@@ -1,6 +1,6 @@
 package com.deusgmbh.xcusatio.data.usersettings;
 
-import java.util.Set;
+import java.time.LocalDate;
 
 /**
  * 
@@ -13,38 +13,30 @@ public class UserSettings {
 	// some kind of config json and refresh token
 	private String googleCalendar;
 
-	private int age;
-	private String userName;
+	private LocalDate birthdate;
 	private Sex sex;
 	private Address home;
 	private ExcusesVibesMode excusesVibesMode;
 	private ExcusesVibes excusesVibes;
-	private Set<String> interests;
 
-	public UserSettings(String userName, String googleCalendar, int age, Sex sex, Address home,
-			ExcusesVibesMode excusesVibesMode, ExcusesVibes excusesVibes, Set<String> interests) {
+	public UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home,
+			ExcusesVibesMode excusesVibesMode, ExcusesVibes excusesVibes) {
 		super();
-		this.userName = userName;
 		this.googleCalendar = googleCalendar;
 		this.home = home;
-		this.age = age;
+		this.birthdate = birthdate;
 		this.sex = sex;
 		this.excusesVibesMode = excusesVibesMode;
 		this.excusesVibes = excusesVibes;
-		this.interests = interests;
+	}
+
+	public UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home) {
+		this(googleCalendar, birthdate, sex, home, ExcusesVibesMode.AUTOMATIC, new ExcusesVibes(false, false, false));
 	}
 
 	public boolean isValid() {
 		// TODO: check if all values are != null, watch out for nested objects
 		return false;
-	}
-
-	public String getUserName() {
-		return this.userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	public String getGoogleCalendar() {
@@ -63,12 +55,12 @@ public class UserSettings {
 		this.home = home;
 	}
 
-	public int getAge() {
-		return age;
+	public LocalDate getAge() {
+		return birthdate;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setAge(LocalDate age) {
+		this.birthdate = age;
 	}
 
 	public Sex getSex() {
@@ -77,14 +69,6 @@ public class UserSettings {
 
 	public void setSex(Sex sex) {
 		this.sex = sex;
-	}
-
-	public Set<String> getInterests() {
-		return interests;
-	}
-
-	public void setInterests(Set<String> interests) {
-		this.interests = interests;
 	}
 
 	public ExcusesVibesMode getExcusesVibesMode() {

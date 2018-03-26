@@ -116,4 +116,8 @@ public class XCusatioWindow extends Application {
 		profileSettings.registerUserSettingsSupplier(userSettingsSupplier);
 	}
 
+	public void registerChangeUserSettingsEvent(Consumer<UserSettings> userSettingsConsumer) {
+		profileSettings.createEditProfileBtnAction(userSettingsConsumer);
+	}
+
 }

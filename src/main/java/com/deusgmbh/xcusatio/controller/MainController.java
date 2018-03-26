@@ -1,5 +1,7 @@
 package com.deusgmbh.xcusatio.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -47,8 +49,15 @@ public class MainController {
 	public UserSettings getUserSettings() {
 		// Following section is only for testing purposes
 		// TODO: getUserSettings from DataStorage
-		UserSettings userSettings = new UserSettings("Olaf", null, 18, Sex.Male,
-				new Address("Strasse", "1", "68165", "Olafhausen", "Germany"), null, null, null);
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+		LocalDate dt = LocalDate.parse("1989-nov-09", dtf);
+		UserSettings userSettings = new UserSettings("", dt, Sex.Male,
+				new Address("Strasse", "1", "68165", "Olafhausen"));
 		return userSettings;
+	}
+
+	public void editUserSettings(UserSettings editedUserSettingsObj) {
+		// TODO: writeEditUserSettings method (via storageUnit)
+
 	}
 }
