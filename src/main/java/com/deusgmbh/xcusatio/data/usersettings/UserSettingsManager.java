@@ -26,7 +26,7 @@ public class UserSettingsManager extends StorageUnit<UserSettings> {
         this.add(new UserSettings().setAge(dt)
                 .setSex(Sex.MALE)
                 .setExcuseVibeMode(ExcuseVibeMode.AUTOMATIC)
-                .setExcusesVibes(new ExcuseVibes(true, false, true))
+                .setExcuseVibes(new ExcuseVibes(true, false, true))
                 .setHome(new Address().setCity("Mannheim")
                         .setZip("68159")
                         .setStreetname("Akademiestr.")

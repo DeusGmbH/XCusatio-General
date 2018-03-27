@@ -1,5 +1,7 @@
 package com.deusgmbh.xcusatio.context;
 
+import java.time.LocalDate;
+
 import com.deusgmbh.xcusatio.context.wildcard.APIContext;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
@@ -11,7 +13,7 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
  *
  */
 public class Context {
-    private int age;
+    private LocalDate age;
     private Sex sex;
     private ExcuseVibes manuellExcusesVibes;
 
@@ -19,7 +21,7 @@ public class Context {
 
     private APIContext apiContext;
 
-    public Context(int age, Sex sex, ExcuseVibes excusesVibes, Lecturer lecturer, APIContext apiContext) {
+    public Context(LocalDate age, Sex sex, ExcuseVibes excusesVibes, Lecturer lecturer, APIContext apiContext) {
         super();
         this.age = age;
         this.sex = sex;
@@ -32,12 +34,12 @@ public class Context {
         super();
     }
 
-    public int getAge() {
+    public LocalDate getAge() {
         return age;
     }
 
-    public Context setAge(int age) {
-        this.age = age;
+    public Context setAge(LocalDate localDate) {
+        this.age = localDate;
         return this;
     }
 

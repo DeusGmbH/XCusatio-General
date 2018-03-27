@@ -17,7 +17,7 @@ public class ContextHandler {
 
         if (userSettings.getExcuseVibeMode()
                 .equals(ExcuseVibeMode.MANUALLY)) {
-            context.setManuellExcusesVibes(userSettings.getExcusesVibes());
+            context.setManuellExcusesVibes(userSettings.getExcuseVibes());
         }
 
         context.setApiContext(new APIManager(scenario).getAPIData(userSettings));
