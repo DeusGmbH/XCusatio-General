@@ -33,6 +33,8 @@ public class XCusatio extends Application {
         mainWindow.setScenarios(mainController.getScenarios());
         mainWindow.setQuickSettings(mainController.getUserSettings());
         mainWindow.registerScenarioButtonActionEvent(mainController::generateExcuse);
+        mainWindow.registerUserSettingsSupplier(mainController::getUserSettings);
+        mainWindow.registerChangeUserSettingsEvent(mainController::editUserSettings);
 
         mainController.registerUpdateExcuseTable(mainWindow::updateExcuseTable);
         mainController.registerUpdateLecturerTable(mainWindow::updateLecturerTable);

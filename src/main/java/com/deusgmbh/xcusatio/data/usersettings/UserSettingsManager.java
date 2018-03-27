@@ -1,7 +1,9 @@
 package com.deusgmbh.xcusatio.data.usersettings;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import com.deusgmbh.xcusatio.data.StorageUnit;
-import com.deusgmbh.xcusatio.data.usersettings.UserSettings.ExcusesVibesMode;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 
 /**
@@ -18,8 +20,9 @@ public class UserSettingsManager extends StorageUnit<UserSettings> {
 
     @Override
     public StorageUnit<UserSettings> addDefaultValues() {
-        this.add(new UserSettings(null, 18, Sex.MALE, null, null, ExcusesVibesMode.AUTOMATIC,
-                new ExcusesVibes(true, false, true)));
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dt = LocalDate.parse("1989-11-09", dtf);
+        this.add(new UserSettings("", dt, Sex.MALE, new Address("Strasse", "1", "68165", "Olafhausen")));
         return this;
     }
 

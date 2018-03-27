@@ -10,24 +10,22 @@ public class Address {
     private String streetnum;
     private String zip;
     private String city;
-    private String province;
     private String country;
 
-    public Address(String streetname, String streetnum, String zip, String city, String province, String country) {
+    public Address(String streetname, String streetnum, String zip, String city, String country) {
         super();
         this.streetname = streetname;
         this.streetnum = streetnum;
         this.zip = zip;
         this.city = city;
-        this.province = province;
         this.country = country;
     }
 
-    public Address(String streetname, String streetnum, String zip, String city, String province) {
-        this(streetname, streetnum, zip, city, province, null);
+    public Address(String streetname, String streetnum, String zip, String city) {
+        this(streetname, streetnum, zip, city, null);
     }
 
-    public String getStreetname() {
+    public String getStreetName() {
         return streetname;
     }
 
@@ -57,14 +55,6 @@ public class Address {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
     }
 
     public String getCountry() {
