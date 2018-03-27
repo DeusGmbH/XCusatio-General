@@ -1,5 +1,7 @@
 package com.deusgmbh.xcusatio.data.usersettings;
 
+import java.time.LocalDate;
+
 /**
  * 
  * @author Tobias.Schmidt@de.ibm.com
@@ -11,15 +13,25 @@ public class UserSettings {
     // some kind of config json and refresh token
     private String googleCalendar;
 
-    private int age;
+    private LocalDate birthdate;
     private Sex sex;
     private Address home;
-    private Address university;
-    private ExcuseVibeMode excusesVibesMode;
-    private ExcuseVibes excusesVibes;
+    private ExcusesVibesMode excusesVibesMode;
+    private ExcusesVibes excusesVibes;
 
-    public UserSettings() {
+    UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home, ExcusesVibesMode excusesVibesMode,
+            ExcusesVibes excusesVibes) {
         super();
+        this.googleCalendar = googleCalendar;
+        this.home = home;
+        this.birthdate = birthdate;
+        this.sex = sex;
+        this.excusesVibesMode = excusesVibesMode;
+        this.excusesVibes = excusesVibes;
+    }
+  
+    public UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home) {
+        this(googleCalendar, birthdate, sex, home, ExcusesVibesMode.AUTOMATIC, new ExcusesVibes(false, false, false));
     }
 
     public String getGoogleCalendar() {
@@ -49,12 +61,12 @@ public class UserSettings {
         return this;
     }
 
-    public int getAge() {
-        return age;
+    public LocalDate getAge() {
+        return birthdate;
     }
 
-    public UserSettings setAge(int age) {
-        this.age = age;
+    public UserSettings setAge(LocalDate age) {
+        this.birthdate = age;
         return this;
     }
 

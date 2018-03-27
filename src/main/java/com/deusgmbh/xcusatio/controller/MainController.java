@@ -94,4 +94,9 @@ public class MainController {
     public Set<Wildcard> getWildcards() {
         return wildcards.getWildcards();
     }
+
+    public void editUserSettings(UserSettings editedUserSettingsObj) {
+        // TODO: writeEditUserSettings method (via storageUnit)
+
+    }
 }

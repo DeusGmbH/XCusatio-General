@@ -151,6 +151,7 @@ public class XCusatioWindow extends Application {
         dashboard.createScenarioButtons(scenarioList, generateExcuse);
     }
 
+
     public void registerTagsSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         editor.registerTagsSetSupplier(tagsSetSupplier);
     }
@@ -190,7 +191,7 @@ public class XCusatioWindow extends Application {
     public void setQuickSettings(UserSettings userSettings) {
         // TODO: adjust QuickSettings
     }
-
+  
     public void registerExcuseSupplier(Supplier<ObservableList<Excuse>> excuseSupplier) {
         this.editor.registerExcuseSupplier(excuseSupplier);
     }
@@ -201,5 +202,13 @@ public class XCusatioWindow extends Application {
 
     public void registerMostRecentlyUsedExcusesSupplier(Supplier<List<Excuse>> mostRecentlyUsedSupplier) {
         this.dashboard.registerMostRecentlyUsedExcusesSupplier(mostRecentlyUsedSupplier);
+    }
+  
+    public void registerUserSettingsSupplier(Supplier<UserSettings> userSettingsSupplier) {
+        profileSettings.registerUserSettingsSupplier(userSettingsSupplier);
+    }
+
+    public void registerChangeUserSettingsEvent(Consumer<UserSettings> userSettingsConsumer) {
+        profileSettings.createEditProfileBtnAction(userSettingsConsumer);
     }
 }

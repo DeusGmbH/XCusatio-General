@@ -26,7 +26,7 @@ public class Address {
         this.country = "germany";
     }
 
-    public String getStreetname() {
+    public String getStreetName() {
         return streetname;
     }
 
