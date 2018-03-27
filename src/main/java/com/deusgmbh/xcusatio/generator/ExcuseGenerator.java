@@ -90,7 +90,7 @@ public class ExcuseGenerator {
 
     /**
      * This method filters the given excuses by the given tags in a way that the
-     * result contains at least n excuses
+     * result contains at least n excuses and
      * 
      * @param excuses
      *            to be filtered
@@ -102,21 +102,9 @@ public class ExcuseGenerator {
      * @return filtered excuses
      */
     private List<Excuse> filterByTag(List<Excuse> excuses, List<Tag> tags, int n) {
-        if (tags.isEmpty()) {
-            return excuses;
-        }
-        Tag nextTag = tags.remove(0);
-        List<Excuse> filteredExcuses = excuses.stream()
-                .filter(excuse -> excuse.getTags()
-                        .contains(nextTag))
+        return excuses.stream()
+                .filter(Excuse.containsAllTags(tags))
                 .collect(Collectors.toList());
-
-        // make sure that at least n excuses are returned
-        if (filteredExcuses.size() < n) {
-            return excuses;
-        } else {
-            return filterByTag(filteredExcuses, tags, n);
-        }
     }
 
     /**

@@ -114,6 +114,11 @@ public class Excuse {
                 .equals(scenario.getScenarioType());
     }
 
+    public static Predicate<Excuse> containsAllTags(List<Tag> tags) {
+        return excuse -> excuse.getTags()
+                .containsAll(tags);
+    }
+
     public static Comparator<Excuse> byRating = new Comparator<Excuse>() {
         @Override
         public int compare(Excuse e1, Excuse e2) {
