@@ -1,13 +1,13 @@
 package com.deusgmbh.xcusatio.ui.editor.excuse;
 
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.EditorTab;
+
+import javafx.collections.ObservableList;
 
 /**
  * 
@@ -27,30 +27,26 @@ public class ExcuseEditorTab extends EditorTab {
     public ExcuseEditorTab(String name) {
         super(name);
         entryListPane = new ExcuseEntryListPane();
-        entryListPane.registerOnSelectEntryEvent(this::createEditForm);
-        entryListPane.minWidthProperty().bind(this.editor.widthProperty().multiply(0.39));
-        entryListPane.maxWidthProperty().bind(this.editor.widthProperty().multiply(0.39));
         editEntryPane = new ExcuseEditEntryPane();
-        editEntryPane.minWidthProperty().bind(this.editor.widthProperty().multiply(0.59));
-        editEntryPane.maxWidthProperty().bind(this.editor.widthProperty().multiply(0.59));
+
+        entryListPane.registerOnSelectEntryEvent(this::createEditForm);
+        entryListPane.registerItemSelectionIdUpdate(editEntryPane::updateSelectionId);
+
+        entryListPane.minWidthProperty()
+                .bind(this.editor.widthProperty()
+                        .multiply(0.39));
+        entryListPane.maxWidthProperty()
+                .bind(this.editor.widthProperty()
+                        .multiply(0.39));
+
+        editEntryPane.minWidthProperty()
+                .bind(this.editor.widthProperty()
+                        .multiply(0.59));
+        editEntryPane.maxWidthProperty()
+                .bind(this.editor.widthProperty()
+                        .multiply(0.59));
         super.editor.setLeft(entryListPane);
         super.editor.setCenter(editEntryPane);
-    }
-
-    public void setTableContent(List<Excuse> excuseList) {
-        entryListPane.setTableContent(excuseList);
-    }
-
-    public void registerRemoveEntryEvent(Consumer<Excuse> removeEntry) {
-        entryListPane.createRemoveEntryListener(removeEntry);
-    }
-
-    public void registerAddEntryEvent(Consumer<Excuse> addEntry) {
-        entryListPane.createAddEntryListener(addEntry);
-    }
-
-    public void registerChangeEntryEvent(BiConsumer<Integer, Excuse> editEntry) {
-        editEntryPane.createEditBtnAction(editEntry);
     }
 
     public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
@@ -61,7 +57,11 @@ public class ExcuseEditorTab extends EditorTab {
         editEntryPane.registerWildcardSetSupplier(wildcardSetSupplier);
     }
 
-    private void createEditForm(int selectedExcuseID, Excuse selectedExcuse) {
-        editEntryPane.createEditForm(selectedExcuseID, selectedExcuse);
+    private void createEditForm(int selectedExcuseID, ObservableList<Excuse> excuses) {
+        editEntryPane.createEditForm(selectedExcuseID, excuses);
+    }
+
+    public void registerExcuseSupplier(Supplier<ObservableList<Excuse>> excuseSupplier) {
+        this.entryListPane.setTableContent(excuseSupplier.get());
     }
 }

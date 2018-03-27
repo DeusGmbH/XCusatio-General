@@ -1,13 +1,13 @@
 package com.deusgmbh.xcusatio.ui.editor.lecturer;
 
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.EditorTab;
+
+import javafx.collections.ObservableList;
 
 /**
  * 
@@ -32,27 +32,16 @@ public class LecturerEditorTab extends EditorTab {
         super.editor.setCenter(editEntryPane);
     }
 
-    public void setTableContent(List<Lecturer> excuseList) {
-        entryListPane.setTableContent(excuseList);
-    }
-
-    public void registerRemoveEntryEvent(Consumer<Lecturer> removeEntry) {
-        entryListPane.createRemoveEntryListener(removeEntry);
-    }
-
-    public void registerAddEntryEvent(Consumer<Lecturer> addEntry) {
-        entryListPane.createAddEntryListener(addEntry);
-    }
-
-    public void registerChangeEntryEvent(BiConsumer<Integer, Lecturer> editEntry) {
-        editEntryPane.createEditBtnAction(editEntry);
-    }
-
     public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         editEntryPane.registerTagsSetSupplier(tagsSetSupplier);
     }
 
-    private void createEditForm(int selectedLecturerID, Lecturer selectedExcuse) {
-        editEntryPane.createEditForm(selectedLecturerID, selectedExcuse);
+    private void createEditForm(int selectedLecturerID, ObservableList<Lecturer> lecturers) {
+        editEntryPane.createEditForm(selectedLecturerID, lecturers);
     }
+
+    public void registerLecturerSupplier(Supplier<ObservableList<Lecturer>> lecturerSupplier) {
+        this.entryListPane.setTableContent(lecturerSupplier.get());
+    }
+
 }

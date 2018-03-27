@@ -24,12 +24,12 @@ public class ExcusesManager extends StorageUnit<Excuse> {
      *            the maximal amount of excuses to return
      * @returns the most recently used excuses.
      */
-    public List<Excuse> getMostRecentlyUsed(int amount) {
+    public List<Excuse> getSortedByLastUsed() {
         return this.get()
                 .stream()
                 .sorted(Excuse.byLastUsed)
-                .limit(amount)
                 .collect(Collectors.toList());
+
     }
 
     @Override

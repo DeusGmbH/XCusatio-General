@@ -1,8 +1,6 @@
 package com.deusgmbh.xcusatio.ui.editor;
 
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
@@ -11,6 +9,7 @@ import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.excuse.ExcuseEditorTab;
 import com.deusgmbh.xcusatio.ui.editor.lecturer.LecturerEditorTab;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.TabPane;
 
 /**
@@ -38,42 +37,12 @@ public class Editor extends TabPane {
         excuseEditor = new ExcuseEditorTab(EXCUSE_TAB_TITLE);
         lecturerEditor = new LecturerEditorTab(LECTURER_TAB_TITLE);
 
-        this.getTabs().add(excuseEditor);
-        this.getTabs().add(lecturerEditor);
+        this.getTabs()
+                .add(excuseEditor);
+        this.getTabs()
+                .add(lecturerEditor);
 
         this.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-    }
-
-    public void setExcuseTableContent(List<Excuse> excuseList) {
-        excuseEditor.setTableContent(excuseList);
-    }
-
-    public void setLecturerTableContent(List<Lecturer> lecturerList) {
-        lecturerEditor.setTableContent(lecturerList);
-    }
-
-    public void registerRemoveExcuseEvent(Consumer<Excuse> removeExcuse) {
-        excuseEditor.registerRemoveEntryEvent(removeExcuse);
-    }
-
-    public void registerRemoveLecturerEvent(Consumer<Lecturer> removeLecturer) {
-        lecturerEditor.registerRemoveEntryEvent(removeLecturer);
-    }
-
-    public void registerAddExcuseEvent(Consumer<Excuse> addExcuse) {
-        excuseEditor.registerAddEntryEvent(addExcuse);
-    }
-
-    public void registerAddLecturerEvent(Consumer<Lecturer> addLecturer) {
-        lecturerEditor.registerAddEntryEvent(addLecturer);
-    }
-
-    public void registerEditExcuseEvent(BiConsumer<Integer, Excuse> editExcuse) {
-        excuseEditor.registerChangeEntryEvent(editExcuse);
-    }
-
-    public void registerEditLecturerEvent(BiConsumer<Integer, Lecturer> editLecturer) {
-        lecturerEditor.registerChangeEntryEvent(editLecturer);
     }
 
     public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
@@ -84,4 +53,13 @@ public class Editor extends TabPane {
     public void registerWildcardSetSupplier(Supplier<List<String>> wildcardSetSupplier) {
         excuseEditor.registerWildcardSetSupplier(wildcardSetSupplier);
     }
+
+    public void registerExcuseSupplier(Supplier<ObservableList<Excuse>> excuseSupplier) {
+        this.excuseEditor.registerExcuseSupplier(excuseSupplier);
+    }
+
+    public void registerLecturerSupplier(Supplier<ObservableList<Lecturer>> lecturerSupplier) {
+        this.lecturerEditor.registerLecturerSupplier(lecturerSupplier);
+    }
+
 }
