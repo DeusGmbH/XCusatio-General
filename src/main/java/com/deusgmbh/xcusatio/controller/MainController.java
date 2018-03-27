@@ -21,43 +21,43 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
  *
  */
 public class MainController {
-	private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
-	private Wildcards wildcards;
+    private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
+    private Wildcards wildcards;
 
-	public MainController() {
-		wildcards = new Wildcards();
-	}
+    public MainController() {
+        wildcards = new Wildcards();
+    }
 
-	public void generateExcuse(Scenario scenario) {
-		// TODO: Write generateExcuse method
-	}
+    public void generateExcuse(Scenario scenario) {
+        // TODO: Write generateExcuse method
+    }
 
-	public List<String> getWildcardNames() {
-		return wildcards.getNames();
-	}
+    public List<String> getWildcardNames() {
+        return wildcards.getNames();
+    }
 
-	public void generateExcuse(String excuseType) {
-		// TODO: Write generateExcuse method
-	}
+    public void generateExcuse(String excuseType) {
+        // TODO: Write generateExcuse method
+    }
 
-	public List<Scenario> getScenarios() {
-		List<Scenario> scenarioList = new ArrayList<Scenario>();
-		// TODO Get all scenarios
-		return scenarioList;
-	}
+    public List<Scenario> getScenarios() {
+        List<Scenario> scenarioList = new ArrayList<Scenario>();
+        // TODO Get all scenarios
+        return scenarioList;
+    }
 
-	public UserSettings getUserSettings() {
-		// Following section is only for testing purposes
-		// TODO: getUserSettings from DataStorage
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-		LocalDate dt = LocalDate.parse("1989-nov-09", dtf);
-		UserSettings userSettings = new UserSettings("", dt, Sex.Male,
-				new Address("Strasse", "1", "68165", "Olafhausen"));
-		return userSettings;
-	}
+    public UserSettings getUserSettings() {
+        // Following section is only for testing purposes
+        // TODO: getUserSettings from DataStorage
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+        LocalDate dt = LocalDate.parse("1989-nov-09", dtf);
+        UserSettings userSettings = new UserSettings("", dt, Sex.Male,
+                new Address("Strasse", "1", "68165", "Olafhausen"));
+        return userSettings;
+    }
 
-	public void editUserSettings(UserSettings editedUserSettingsObj) {
-		// TODO: writeEditUserSettings method (via storageUnit)
+    public void editUserSettings(UserSettings editedUserSettingsObj) {
+        // TODO: writeEditUserSettings method (via storageUnit)
 
-	}
+    }
 }

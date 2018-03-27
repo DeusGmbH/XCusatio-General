@@ -15,31 +15,31 @@ import javafx.stage.Stage;
  *
  */
 public class XCusatio extends Application {
-	private XCusatioWindow mainWindow;
-	private MainController mainController;
+    private XCusatioWindow mainWindow;
+    private MainController mainController;
 
-	public XCusatio() {
-		mainWindow = new XCusatioWindow();
-		mainController = new MainController();
-	}
+    public XCusatio() {
+        mainWindow = new XCusatioWindow();
+        mainController = new MainController();
+    }
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-	@Override
-	public void start(Stage stage) throws Exception {
-		mainWindow.start(stage);
-		mainWindow.setScenarios(mainController.getScenarios());
-		mainWindow.registerScenarioButtonActionEvent(mainController::generateExcuse);
-		mainWindow.registerUserSettingsSupplier(mainController::getUserSettings);
-		mainWindow.registerChangeUserSettingsEvent(mainController::editUserSettings);
+    @Override
+    public void start(Stage stage) throws Exception {
+        mainWindow.start(stage);
+        mainWindow.setScenarios(mainController.getScenarios());
+        mainWindow.registerScenarioButtonActionEvent(mainController::generateExcuse);
+        mainWindow.registerUserSettingsSupplier(mainController::getUserSettings);
+        mainWindow.registerChangeUserSettingsEvent(mainController::editUserSettings);
 
-		registerCallbacks();
-	}
+        registerCallbacks();
+    }
 
-	public void registerCallbacks() {
+    public void registerCallbacks() {
 
-	}
+    }
 
 }
