@@ -10,11 +10,8 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 public class TrafficAPI extends APIService {
 
-    public static void main(String[] selenium) {
-        TrafficAPI trafficAPI = new TrafficAPI();
-        trafficAPI.setBaseUrlText("https://www.google.com");
-        trafficAPI.requestWebsite();
-        trafficAPI.getResponseFromWebsite();
+    public TrafficAPI(String baseUrlText) {
+        setBaseUrlText(baseUrlText);
     }
 
     @Override
@@ -42,12 +39,12 @@ public class TrafficAPI extends APIService {
 
     }
 
-    // public static void main(String[] uranium) {
-    // UserSettings userSettings = new UserSettings(null, 0, null, null, null,
-    // null, null);
-    // TrafficAPI trafficAPI = new TrafficAPI();
-    // TrafficContext trafficContext = trafficAPI.get(userSettings);
-    // trafficContext.printContextContent();
+    // public static void main(String[] selenium) throws MalformedURLException,
+    // IOException {
+    // TrafficAPI trafficAPI = new TrafficAPI(
+    // "https://traffic.cit.api.here.com/traffic/6.2/incidents/xml/8/134/86?app_id=ObXv79Ww3xdQ996uEDLw&app_code=74fsgcSubek54INvT13Rcg");
+    // trafficAPI.requestWebsite();
+    // trafficAPI.getResponseFromWebsite();
     // }
 
 }
