@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.tags.Tag;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.deusgmbh.xcusatio.ui.dashboard.Dashboard;
 import com.deusgmbh.xcusatio.ui.editor.Editor;
 import com.deusgmbh.xcusatio.ui.profilsettings.ProfileSettings;
 import com.deusgmbh.xcusatio.ui.utility.ResizeHelper;
+import com.deusgmbh.xcusatio.util.TriConsumer;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -89,126 +92,6 @@ public class XCusatioWindow extends Application {
 
         stage.show();
     }
-    @Override
-    public void start(Stage stage) throws Exception {
-        this.stage = stage;
-        initMainStage(this.stage);
-
-        windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
-
-        navigationPanel = new NavigationPanel();
-        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
-
-        dashboard = new Dashboard();
-        editor = new Editor();
-        profileSettings = new ProfileSettings();
-
-        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
-        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
-        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
-
-        main.setTop(windowBorder);
-        main.setLeft(navigationPanel);
-        main.setCenter(dashboard);
-
-        stage.show();
-    }
-    @Override
-    public void start(Stage stage) throws Exception {
-        this.stage = stage;
-        initMainStage(this.stage);
-
-        windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
-
-        navigationPanel = new NavigationPanel();
-        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
-
-        dashboard = new Dashboard();
-        editor = new Editor();
-        profileSettings = new ProfileSettings();
-
-        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
-        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
-        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
-
-        main.setTop(windowBorder);
-        main.setLeft(navigationPanel);
-        main.setCenter(dashboard);
-
-        stage.show();
-    }
-    @Override
-    public void start(Stage stage) throws Exception {
-        this.stage = stage;
-        initMainStage(this.stage);
-
-        windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
-
-        navigationPanel = new NavigationPanel();
-        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
-
-        dashboard = new Dashboard();
-        editor = new Editor();
-        profileSettings = new ProfileSettings();
-
-        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
-        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
-        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
-
-        main.setTop(windowBorder);
-        main.setLeft(navigationPanel);
-        main.setCenter(dashboard);
-
-        stage.show();
-    }
-    @Override
-    public void start(Stage stage) throws Exception {
-        this.stage = stage;
-        initMainStage(this.stage);
-
-        windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
-
-        navigationPanel = new NavigationPanel();
-        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
-
-        dashboard = new Dashboard();
-        editor = new Editor();
-        profileSettings = new ProfileSettings();
-
-        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
-        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
-        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
-
-        main.setTop(windowBorder);
-        main.setLeft(navigationPanel);
-        main.setCenter(dashboard);
-
-        stage.show();
-    }
-    @Override
-    public void start(Stage stage) throws Exception {
-        this.stage = stage;
-        initMainStage(this.stage);
-
-        windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
-
-        navigationPanel = new NavigationPanel();
-        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
-
-        dashboard = new Dashboard();
-        editor = new Editor();
-        profileSettings = new ProfileSettings();
-
-        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
-        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
-        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
-
-        main.setTop(windowBorder);
-        main.setLeft(navigationPanel);
-        main.setCenter(dashboard);
-
-        stage.show();
-    }
 
     private void setContent(Node node) {
         navigationPanel.getChildren().stream().forEach(btn -> {
@@ -277,7 +160,8 @@ public class XCusatioWindow extends Application {
         }
     };
 
-    public void registerScenarioButtonActionEvent(Consumer<Scenario> generateExcuse) {
+    public void registerScenarioButtonActionEvent(
+            TriConsumer<Scenario, Consumer<String>, DoubleConsumer> generateExcuse) {
         dashboard.createScenarioButtons(scenarioList, generateExcuse);
     }
 
@@ -351,5 +235,17 @@ public class XCusatioWindow extends Application {
 
     public void setScenarios(List<Scenario> scenarioList) {
         this.scenarioList = scenarioList;
+    }
+
+    public void setQuickSettings(UserSettings userSettings) {
+        // TODO: adjust QuickSettings
+    }
+
+    public void registerUserSettingsSupplier(Supplier<UserSettings> userSettingsSupplier) {
+        profileSettings.registerUserSettingsSupplier(userSettingsSupplier);
+    }
+
+    public void registerChangeUserSettingsEvent(Consumer<UserSettings> userSettingsConsumer) {
+        profileSettings.createEditProfileBtnAction(userSettingsConsumer);
     }
 }
