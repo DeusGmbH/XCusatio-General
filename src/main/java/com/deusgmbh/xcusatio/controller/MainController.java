@@ -1,16 +1,11 @@
 package com.deusgmbh.xcusatio.controller;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.logging.Logger;
 
-import com.deusgmbh.xcusatio.data.usersettings.Address;
-import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 import com.deusgmbh.xcusatio.context.Context;
 import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
@@ -84,7 +79,7 @@ public class MainController {
     public List<String> getWildcardNames() {
         return wildcards.getNames();
     }
-  
+
     public void removeExcuse(Excuse excuse) {
         this.excusesManager.remove(excuse);
         this.triggerExcuseTableUpdate.accept(this.getExcuses());
@@ -123,16 +118,6 @@ public class MainController {
     public void registerUpdateLecturerTable(Consumer<List<Lecturer>> updateLecturerTable) {
         this.triggerLecturerTableUpdate = updateLecturerTable;
         this.triggerLecturerTableUpdate.accept(this.getLecturers());
-    }
-
-    public UserSettings getUserSettings() {
-        // Following section is only for testing purposes
-        // TODO: getUserSettings from DataStorage
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-        LocalDate dt = LocalDate.parse("1989-nov-09", dtf);
-        UserSettings userSettings = new UserSettings("", dt, Sex.Male,
-                new Address("Strasse", "1", "68165", "Olafhausen"));
-        return userSettings;
     }
 
     public void editUserSettings(UserSettings editedUserSettingsObj) {

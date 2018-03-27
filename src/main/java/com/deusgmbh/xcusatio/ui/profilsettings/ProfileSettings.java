@@ -50,6 +50,10 @@ public class ProfileSettings extends FlowPane {
     public ProfileSettings() {
         profileFormPane = new GridPane();
 
+        this.setAlignment(Pos.CENTER);
+    }
+
+    private void createProfileSettingsForm() {
         Label sexLabelTogglePane = new Label(SEX_TOGGLE_PANE_LABEL_TEXT);
         Label ageLabel = new Label(AGE_LABEL_TEXT);
         Label locationLabel = new Label(LOCATION_LABEL_TEXT);
@@ -62,12 +66,12 @@ public class ProfileSettings extends FlowPane {
         birthdayDatePicker.setShowWeekNumbers(false);
 
         calendarButton = new Button(CALENDAR_BUTTON_LABEL_TEXT);
+        // TODO: calendarButton Action
         saveProfileBtn = new Button(SUBMIT_BUTTON_LABEL);
 
         addNodesToPane(ageLabel, birthdayDatePicker, sexLabelTogglePane, sexTogglePane, locationLabel, addressPane,
                 calendarLabel, calendarButton);
         this.getChildren().add(profileFormPane);
-        this.setAlignment(Pos.CENTER);
     }
 
     private void addNodesToPane(Node... nodesToAdd) {
@@ -89,6 +93,7 @@ public class ProfileSettings extends FlowPane {
 
             @Override
             public void handle(ActionEvent arg0) {
+                // TODO: Add undefined calendar string
                 UserSettings editedUserSettingsObj = new UserSettings(null, birthdayDatePicker.getValue(),
                         sexTogglePane.getSex(), addressPane.getAdress());
                 editProfile.accept(editedUserSettingsObj);
@@ -98,5 +103,6 @@ public class ProfileSettings extends FlowPane {
 
     public void registerUserSettingsSupplier(Supplier<UserSettings> userSettingsSupplier) {
         this.userSettingsSupplier = userSettingsSupplier;
+        this.createProfileSettingsForm();
     }
 }

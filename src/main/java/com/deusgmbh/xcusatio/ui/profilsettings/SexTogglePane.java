@@ -22,16 +22,16 @@ public class SexTogglePane extends HBox {
         ToggleGroup groupRadio = new ToggleGroup();
         setSexMale = new RadioButton();
         setSexMale.setToggleGroup(groupRadio);
-        setSexMale.setSelected(userSex == Sex.Male);
+        setSexMale.setSelected(userSex == Sex.MALE);
         setSexFemale = new RadioButton();
-        setSexFemale.setSelected(userSex == Sex.Female);
+        setSexFemale.setSelected(userSex == Sex.FEMALE);
         setSexFemale.setToggleGroup(groupRadio);
         this.getChildren().addAll(sexMaleLabel, setSexMale, sexFemaleLabel, setSexFemale);
 
     }
 
     public Sex getSex() {
-        return setSexMale.isSelected() ? Sex.Male : Sex.Female;
+        return setSexMale.isSelected() ? Sex.MALE : Sex.FEMALE;
     }
 
 }
