@@ -28,7 +28,7 @@ public class CalendarAPI extends APIService {
         kruse.setName("Eckard Kruse");
         kruse.setTags(tagList);
 
-        CalendarContext calendarContext = new CalendarContext("Software Engineering 2", kruse, "09.00", "12.15", 190,
+    CalendarContext calendarContext = new CalendarContext("Software Engineering 2", kruse, "09.00", "12.15", 190,
                 15);
         return calendarContext;
     }
@@ -53,5 +53,4 @@ public class CalendarAPI extends APIService {
     // CalendarContext calendarContext = calendarAPI.get(userSettings);
     // calendarContext.printContextContent();
     // }
-
 }
