@@ -11,40 +11,77 @@ import java.util.stream.Collectors;
  *
  */
 public class Wildcards {
-    private static Set<Wildcard> wildcards;
+    private Set<Wildcard> wildcards;
 
     public Wildcards() {
-        initialize();
-    }
-
-    public static void initialize() {
         wildcards = new HashSet<Wildcard>();
-        addTemperatureWildcard();
+        wildcards.add(getTemperatureWildcard());
+        wildcards.add(getNextWeekDateWildcard());
     }
 
-    private static void addTemperatureWildcard() {
-        wildcards.add(new Wildcard("$temperature$") {
+    private Wildcard getTemperatureWildcard() {
+        return new Wildcard("$temperature$", "Wird ersetzt mit der aktuellen Temperatur in °C (Bsp.: '14°C')") {
             @Override
-            public String replace(String source, APIDrivenContext apiContext) {
+            public String replace(String source, APIContext apiContext) {
                 String temperatureText = apiContext.getWeather()
-                        .getTemperature() + " C";
-                source.replaceAll("$temperature$", temperatureText);
-
+                        .getTemperature() + "°C";
+                source.replaceAll(this.getIdentifier(), temperatureText);
                 return source;
             }
-        });
+
+            @Override
+            public boolean isValidContext(APIContext apiContext) {
+                if (apiContext != null) {
+                    if (apiContext.getWeather() != null) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
     }
 
-    public static String replace(String source, APIDrivenContext apiContext) {
+    private Wildcard getNextWeekDateWildcard() {
+        return new Wildcard("$nextWeekDate$",
+                "Wird mit dem Datum des aktuellen Tages in einer Woche ersetzt (Bspw.: '13.03.2018')") {
+            @Override
+            public String replace(String source, APIContext apiContext) {
+                // TODO: to be implemented
+                return source;
+            }
+
+            @Override
+            public boolean isValidContext(APIContext apiContext) {
+                // TODO: this should actually be true, because this wildcard
+                // doesnt't depend on any apiContext. However, until the replace
+                // method is implemented this has to be false
+                return false;
+            }
+        };
+    }
+
+    public String replace(String source, APIContext apiContext) {
         for (Wildcard wildcard : wildcards) {
-            source = wildcard.replace(source, apiContext);
+            if (source.contains(wildcard.getIdentifier())) {
+                source = wildcard.replace(source, apiContext);
+            }
         }
         return source;
     }
 
-    public static List<String> getNames() {
+    public boolean isValidContext(String source, APIContext apiContext) {
+        return wildcards.stream()
+                .filter(wildcard -> source.contains(wildcard.getIdentifier()))
+                .allMatch(wildcard -> wildcard.isValidContext(apiContext));
+    }
+
+    public List<String> getNames() {
         return wildcards.stream()
                 .map(Wildcard::getIdentifier)
                 .collect(Collectors.toList());
+    }
+
+    public Set<Wildcard> getWildcards() {
+        return wildcards;
     }
 }

@@ -18,7 +18,6 @@ public class Lecturer {
     private List<Tag> tags;
 
     public Lecturer(String name, List<String> lectures, List<Tag> tags) {
-
         super();
         this.name = name;
         this.lectures = lectures;

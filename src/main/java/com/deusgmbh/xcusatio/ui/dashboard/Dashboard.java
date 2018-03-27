@@ -1,10 +1,11 @@
 package com.deusgmbh.xcusatio.ui.dashboard;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
+import java.util.function.Supplier;
 
+import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
 import com.deusgmbh.xcusatio.util.TriConsumer;
@@ -40,9 +41,10 @@ public class Dashboard extends BorderPane {
     private HBox scenarioButtonPane;
     private ScenarioReactionPane reactionPane;
     private QuickSettingsPane quickSettingsPane;
-    private RecentlyUsedPane recentlyUsedPane;
+
     private BorderPane leftPane;
     private BorderPane rightPane;
+    private Supplier<List<Excuse>> mostRecentlyUsedSupplier;
 
     public Dashboard() {
         scenarioButtonPane = new HBox();
@@ -68,10 +70,13 @@ public class Dashboard extends BorderPane {
 
         rightPane = new BorderPane();
         rightPane.setTop(quickSettingsPane);
-        rightPane.setCenter(recentlyUsedPane);
 
         this.setRight(this.quickSettingsPane);
         this.setCenter(leftPane);
+    }
+
+    private void updateRecentlyUsedPane() {
+        rightPane.setCenter(new RecentlyUsedPane(this.mostRecentlyUsedSupplier.get()));
     }
 
     public void createScenarioButtons(List<Scenario> scenarioList,
@@ -85,6 +90,7 @@ public class Dashboard extends BorderPane {
                         public void handle(final ActionEvent e) {
                             generateExcuse.accept(scenario, thisDashboard::setExcuseLabel,
                                     thisDashboard::setThumbGesture);
+
                         }
                     });
                     scenarioButtonPane.getChildren()
@@ -95,16 +101,14 @@ public class Dashboard extends BorderPane {
     public void setExcuseLabel(String excuse) {
         this.reactionPane = new ScenarioReactionPane(excuse);
         leftPane.setCenter(reactionPane);
+        this.updateRecentlyUsedPane();
     }
 
     public void setThumbGesture(double value) {
         // TODO: calculate thumb rotation in steps
         this.reactionPane = new ScenarioReactionPane((int) (value * 180));
         leftPane.setCenter(reactionPane);
-    }
-
-    public void setRUList(ArrayList<String> ruList) {
-        this.recentlyUsedPane.setRUList(ruList);
+        this.updateRecentlyUsedPane();
     }
 
     public boolean getAutoMoodToggle() {
@@ -136,5 +140,10 @@ public class Dashboard extends BorderPane {
         default:
             return scenarioType.toString();
         }
+    }
+
+    public void registerMostRecentlyUsedExcusesSupplier(Supplier<List<Excuse>> mostRecentlyUsedSupplier) {
+        this.mostRecentlyUsedSupplier = mostRecentlyUsedSupplier;
+        this.updateRecentlyUsedPane();
     }
 }

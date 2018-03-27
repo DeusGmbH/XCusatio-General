@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
 
+import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
 import com.deusgmbh.xcusatio.data.tags.Tag;;
 
@@ -107,6 +109,11 @@ public class Excuse {
         this.negativeRating = negativeRatings;
     }
 
+    public static Predicate<Excuse> byScenario(Scenario scenario) {
+        return excuse -> excuse.getScenarioType()
+                .equals(scenario.getScenarioType());
+    }
+
     public static Comparator<Excuse> byRating = new Comparator<Excuse>() {
         @Override
         public int compare(Excuse e1, Excuse e2) {
@@ -121,6 +128,8 @@ public class Excuse {
         public int compare(Excuse e1, Excuse e2) {
             Date lastUsedE1 = e1.getLastUsed();
             Date lastUsedE2 = e2.getLastUsed();
+            lastUsedE1 = lastUsedE1 == null ? new Date(0) : lastUsedE1;
+            lastUsedE2 = lastUsedE2 == null ? new Date(0) : lastUsedE2;
             return lastUsedE1.compareTo(lastUsedE2);
         }
     };
