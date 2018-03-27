@@ -29,14 +29,9 @@ public class UserSettings {
         this.excusesVibesMode = excusesVibesMode;
         this.excusesVibes = excusesVibes;
     }
-
+  
     public UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home) {
         this(googleCalendar, birthdate, sex, home, ExcusesVibesMode.AUTOMATIC, new ExcusesVibes(false, false, false));
-    }
-
-    public boolean isValid() {
-        // TODO: check if all values are != null, watch out for nested objects
-        return false;
     }
 
     public String getGoogleCalendar() {
@@ -88,10 +83,11 @@ public class UserSettings {
     }
 
     public enum Sex {
-        Male, Female;
+        MALE, FEMALE;
     }
 
     public enum ExcusesVibesMode {
         AUTOMATIC, MANUALLY;
     }
+
 }

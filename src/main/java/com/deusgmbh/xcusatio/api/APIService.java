@@ -8,9 +8,5 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
  *
  */
 public abstract class APIService {
-
-    Object executeCall(UserSettings userSettings) {
-        return null;
-    };
-
+    public abstract <T extends Object> T get(UserSettings usersettings);
 }

@@ -3,8 +3,11 @@ package com.deusgmbh.xcusatio.ui.dashboard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
 
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
+import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
+import com.deusgmbh.xcusatio.util.TriConsumer;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,6 +31,12 @@ public class Dashboard extends BorderPane {
     private static final double SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER = 0.25;
     private static final String SCENARIO_BUTTON_PANE_BACKGROUND_BORDER_COLOR = "#000000";
 
+    // TODO: Change ui names; discuss in design review
+    private static final String THUMB_GESTURE_UI_NAME = "Daumengeste";
+    private static final String WHEEL_OF_FORTUNE_UI_NAME = "Glücksrad";
+    private static final String LATE_ARRIVAL_UI_NAME = "Verspätung";
+    private static final String DELAYED_SUBMISSION_UI_NAME = "Projektabgabe";
+
     private HBox scenarioButtonPane;
     private ScenarioReactionPane reactionPane;
     private QuickSettingsPane quickSettingsPane;
@@ -38,13 +47,15 @@ public class Dashboard extends BorderPane {
     public Dashboard() {
         scenarioButtonPane = new HBox();
         scenarioButtonPane.prefHeightProperty()
-                .bind(this.heightProperty().multiply(SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER));
-        scenarioButtonPane.setStyle("-fx-border-color: " + SCENARIO_BUTTON_PANE_BACKGROUND_BORDER_COLOR);
+                .bind(this.heightProperty()
+                        .multiply(SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER));
 
         reactionPane = new ScenarioReactionPane();
 
         quickSettingsPane = new QuickSettingsPane();
-        quickSettingsPane.prefWidthProperty().bind(this.widthProperty().multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
+        quickSettingsPane.prefWidthProperty()
+                .bind(this.widthProperty()
+                        .multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
 
         Separator separator = new Separator();
         separator.setOrientation(Orientation.HORIZONTAL);
@@ -63,17 +74,22 @@ public class Dashboard extends BorderPane {
         this.setCenter(leftPane);
     }
 
-    public void createScenarioButtons(List<Scenario> scenarioList, Consumer<Scenario> generateExcuse) {
-        scenarioList.stream().forEach(scenario -> {
-            Button tmpBtn = new Button(scenario.getUIName());
-            tmpBtn.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                    generateExcuse.accept(scenario);
-                }
-            });
-            scenarioButtonPane.getChildren().add(tmpBtn);
-        });
+    public void createScenarioButtons(List<Scenario> scenarioList,
+            TriConsumer<Scenario, Consumer<String>, DoubleConsumer> generateExcuse) {
+        Dashboard thisDashboard = this;
+        scenarioList.stream()
+                .forEach(scenario -> {
+                    Button tmpBtn = new Button(getUINameByType(scenario.getScenarioType()));
+                    tmpBtn.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(final ActionEvent e) {
+                            generateExcuse.accept(scenario, thisDashboard::setExcuseLabel,
+                                    thisDashboard::setThumbGesture);
+                        }
+                    });
+                    scenarioButtonPane.getChildren()
+                            .add(tmpBtn);
+                });
     }
 
     public void setExcuseLabel(String excuse) {
@@ -81,8 +97,9 @@ public class Dashboard extends BorderPane {
         leftPane.setCenter(reactionPane);
     }
 
-    public void setThumbGesture(int value) {
-        this.reactionPane = new ScenarioReactionPane(value);
+    public void setThumbGesture(double value) {
+        // TODO: calculate thumb rotation in steps
+        this.reactionPane = new ScenarioReactionPane((int) (value * 180));
         leftPane.setCenter(reactionPane);
     }
 
@@ -104,5 +121,20 @@ public class Dashboard extends BorderPane {
 
     public boolean getMoodFawnToggle() {
         return this.quickSettingsPane.getMoodFawnToggle();
+    }
+
+    private static String getUINameByType(ScenarioType scenarioType) {
+        switch (scenarioType) {
+        case THUMBGESTURE:
+            return THUMB_GESTURE_UI_NAME;
+        case WHEELOFFORTUNE:
+            return WHEEL_OF_FORTUNE_UI_NAME;
+        case LATE_ARRIVAL:
+            return LATE_ARRIVAL_UI_NAME;
+        case DELAYED_SUBMISSION:
+            return DELAYED_SUBMISSION_UI_NAME;
+        default:
+            return scenarioType.toString();
+        }
     }
 }

@@ -1,5 +1,10 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+/**
+ * 
+ * @author Tobias.Schmidt@de.ibm.com
+ *
+ */
 public class WeatherContext {
     private int temperature;
     private String description;
@@ -86,5 +91,4 @@ public class WeatherContext {
     public void setRainHourly(int rainHourly) {
         this.rainHourly = rainHourly;
     }
-
 }

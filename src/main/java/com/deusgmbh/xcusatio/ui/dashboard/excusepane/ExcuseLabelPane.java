@@ -23,7 +23,9 @@ public class ExcuseLabelPane extends VBox {
     public ExcuseLabelPane(String output) {
         Label excuseTitleLabel = createCenteredLabel(EXCUSE_TITLE, EXCUSE_TITLE_LABEL_FONT_SIZE,
                 new Insets(5, 0, 20, 0));
+        excuseTitleLabel.getStyleClass().add("h1");
         Label excuseLabel = createCenteredLabel(output, EXCUSE_LABEL_FONT_SIZE, new Insets(10, 0, 15, 0));
+        excuseLabel.getStyleClass().add("h2");
 
         this.getChildren().addAll(excuseTitleLabel, excuseLabel);
     }
