@@ -10,6 +10,13 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 public class TrafficAPI extends APIService {
 
+    public static void main(String[] selenium) {
+        TrafficAPI trafficAPI = new TrafficAPI();
+        trafficAPI.setBaseUrlText("https://www.google.com");
+        trafficAPI.requestWebsite();
+        trafficAPI.getResponseFromWebsite();
+    }
+
     @Override
     public TrafficContext get(UserSettings usersettings) {
 
@@ -22,6 +29,17 @@ public class TrafficAPI extends APIService {
         TrafficContext trafficContext = new TrafficContext(trd, tri, trt);
 
         return trafficContext;
+    }
+
+    @Override
+    public void transmitDataToWebsite() {
+
+    }
+
+    @Override
+    public void extractDesiredInfoFromResponse() {
+        // TODO Auto-generated method stub
+
     }
 
     // public static void main(String[] uranium) {

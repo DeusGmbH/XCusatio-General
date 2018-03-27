@@ -13,6 +13,18 @@ public class WeatherAPI extends APIService {
         return weatherContext;
     }
 
+    @Override
+    public void transmitDataToWebsite() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void extractDesiredInfoFromResponse() {
+        // TODO Auto-generated method stub
+
+    }
+
     // public static void main(String[] plutonium) {
     // UserSettings userSettings = new UserSettings(null, 0, null, null, null,
     // null, null);
