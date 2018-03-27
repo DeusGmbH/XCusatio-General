@@ -83,9 +83,129 @@ public class XCusatioWindow extends Application {
 
         windowBorder.toFront();
 
+        main.setTop(windowBorder);
         main.setLeft(navigationPanel);
         main.setCenter(dashboard);
+
+        stage.show();
+    }
+    @Override
+    public void start(Stage stage) throws Exception {
+        this.stage = stage;
+        initMainStage(this.stage);
+
+        windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
+
+        navigationPanel = new NavigationPanel();
+        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
+
+        dashboard = new Dashboard();
+        editor = new Editor();
+        profileSettings = new ProfileSettings();
+
+        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
+        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
+        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
+
         main.setTop(windowBorder);
+        main.setLeft(navigationPanel);
+        main.setCenter(dashboard);
+
+        stage.show();
+    }
+    @Override
+    public void start(Stage stage) throws Exception {
+        this.stage = stage;
+        initMainStage(this.stage);
+
+        windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
+
+        navigationPanel = new NavigationPanel();
+        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
+
+        dashboard = new Dashboard();
+        editor = new Editor();
+        profileSettings = new ProfileSettings();
+
+        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
+        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
+        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
+
+        main.setTop(windowBorder);
+        main.setLeft(navigationPanel);
+        main.setCenter(dashboard);
+
+        stage.show();
+    }
+    @Override
+    public void start(Stage stage) throws Exception {
+        this.stage = stage;
+        initMainStage(this.stage);
+
+        windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
+
+        navigationPanel = new NavigationPanel();
+        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
+
+        dashboard = new Dashboard();
+        editor = new Editor();
+        profileSettings = new ProfileSettings();
+
+        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
+        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
+        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
+
+        main.setTop(windowBorder);
+        main.setLeft(navigationPanel);
+        main.setCenter(dashboard);
+
+        stage.show();
+    }
+    @Override
+    public void start(Stage stage) throws Exception {
+        this.stage = stage;
+        initMainStage(this.stage);
+
+        windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
+
+        navigationPanel = new NavigationPanel();
+        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
+
+        dashboard = new Dashboard();
+        editor = new Editor();
+        profileSettings = new ProfileSettings();
+
+        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
+        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
+        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
+
+        main.setTop(windowBorder);
+        main.setLeft(navigationPanel);
+        main.setCenter(dashboard);
+
+        stage.show();
+    }
+    @Override
+    public void start(Stage stage) throws Exception {
+        this.stage = stage;
+        initMainStage(this.stage);
+
+        windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
+
+        navigationPanel = new NavigationPanel();
+        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
+
+        dashboard = new Dashboard();
+        editor = new Editor();
+        profileSettings = new ProfileSettings();
+
+        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
+        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
+        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
+
+        main.setTop(windowBorder);
+        main.setLeft(navigationPanel);
+        main.setCenter(dashboard);
 
         stage.show();
     }

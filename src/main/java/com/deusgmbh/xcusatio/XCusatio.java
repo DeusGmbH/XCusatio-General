@@ -31,10 +31,13 @@ public class XCusatio extends Application {
     public void start(Stage stage) throws Exception {
         mainWindow.start(stage);
         mainWindow.setScenarios(mainController.getScenarios());
+        mainWindow.setQuickSettings(mainController.getUserSettings());
         mainWindow.registerScenarioButtonActionEvent(mainController::generateExcuse);
+        mainWindow.registerUserSettingsSupplier(mainController::getUserSettings);
+        mainWindow.registerChangeUserSettingsEvent(mainController::editUserSettings);
 
-        mainController.updateExcuseTable(mainWindow::updateExcuseTable);
-        mainController.updateLecturerTable(mainWindow::updateLecturerTable);
+        mainController.registerUpdateExcuseTable(mainWindow::updateExcuseTable);
+        mainController.registerUpdateLecturerTable(mainWindow::updateLecturerTable);
 
         mainWindow.registerRemoveExcuseEvent(mainController::removeExcuse);
         mainWindow.registerRemoveLecturerEvent(mainController::removeLecturer);

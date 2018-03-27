@@ -1,17 +1,23 @@
 package com.deusgmbh.xcusatio.controller;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
 import java.util.logging.Logger;
 
+import com.deusgmbh.xcusatio.context.Context;
 import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
+import com.deusgmbh.xcusatio.data.excuses.ExcusesManager;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
+import com.deusgmbh.xcusatio.data.lecturer.LecturerManager;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
-import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
+import com.deusgmbh.xcusatio.data.scenarios.ScenarioManager;
 import com.deusgmbh.xcusatio.data.tags.Tag;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettingsManager;
+import com.deusgmbh.xcusatio.generator.ExcuseGenerator;
 
 /**
  * This class handles inputs of the userinterface via an event listener
@@ -26,67 +32,44 @@ public class MainController {
     private Wildcards wildcards;
     private Consumer<List<Excuse>> triggerExcuseTableUpdate;
     private Consumer<List<Lecturer>> triggerLecturerTableUpdate;
+    private ExcusesManager excusesManager;
+    private LecturerManager lecturerManager;
+    private ScenarioManager scenarioManager;
+    private UserSettingsManager userSettingsManager;
+    private ExcuseGenerator excuseGenerator;
 
     public MainController() {
         wildcards = new Wildcards();
+        excusesManager = new ExcusesManager();
+        lecturerManager = new LecturerManager();
+        scenarioManager = new ScenarioManager();
+        userSettingsManager = new UserSettingsManager();
+        excuseGenerator = new ExcuseGenerator();
     }
 
-    public void generateExcuse(Scenario scenario) {
-        // TODO: Write generateExcuse method
+    public void generateExcuse(Scenario scenario, Consumer<String> displayExcuse, DoubleConsumer displayThumbGesture) {
+
+        if (scenario.isExcuseType()) {
+            displayExcuse.accept(excuseGenerator.getContextBasedExcuse(this.getExcuses(), new Context(), scenario));
+        } else {
+            displayThumbGesture.accept(excuseGenerator.getThumbGesture(new Context()));
+        }
     }
 
-    public void generateExcuse(String excuseType) {
-        // TODO: Write generateExcuse method
+    public UserSettings getUserSettings() {
+        return userSettingsManager.get(0);
     }
 
     public List<Scenario> getScenarios() {
-        List<Scenario> scenarioList = new ArrayList<>();
-        // TODO Get all scenarios and write into this list
-        return scenarioList;
+        return scenarioManager.get();
     }
 
     public List<Excuse> getExcuses() {
-        // TODO Write "real" method for getting excuses;
-        // Following method is only for testing reasons => to replace!!
-        List<Tag> tag1 = new ArrayList<>();
-        tag1.add(Tag.TRAIN);
-        tag1.add(Tag.MALE);
-        tag1.add(Tag.FEMALE);
-        List<Tag> tag2 = new ArrayList<>();
-        tag2.add(Tag.RANNY);
-        tag2.add(Tag.MALE);
-        tag2.add(Tag.FEMALE);
-        Excuse excuse1 = new Excuse("Die Bahn kam zu spät", ScenarioType.LATE_ARRIVAL, tag1);
-        Excuse excuse2 = new Excuse("Der Regen hat unser Projekt zerstört", ScenarioType.DELAYED_SUBMISSION, tag2);
-        List<Excuse> excusesList = new ArrayList<>();
-        excusesList.add(excuse1);
-        excusesList.add(excuse2);
-        return excusesList;
+        return this.excusesManager.get();
     }
 
     public List<Lecturer> getLecturers() {
-        // TODO Write "real" method for getting excuses;
-        // Following method is only for testing reasons => to replace!!
-        List<Tag> tag1 = new ArrayList<>();
-        tag1.add(Tag.FUNNY);
-        tag1.add(Tag.AGGRESSIVE);
-        List<String> lectures1 = new ArrayList<>();
-        lectures1.add("Algorithmen");
-        lectures1.add("Statistik");
-        lectures1.add("Logik");
-        lectures1.add("Lineare Algebra");
-        lectures1.add("Analysis");
-        List<Tag> tag2 = new ArrayList<>();
-        tag2.add(Tag.SUCKUP);
-        List<String> lectures2 = new ArrayList<>();
-        lectures2.add("C");
-        lectures2.add("Softwareengineering");
-        Lecturer lecturer1 = new Lecturer("Stroetmann", lectures1, tag1);
-        Lecturer lecturer2 = new Lecturer("Kruse", lectures2, tag2);
-        List<Lecturer> lecturerList = new ArrayList<>();
-        lecturerList.add(lecturer1);
-        lecturerList.add(lecturer2);
-        return lecturerList;
+        return this.lecturerManager.get();
     }
 
     public List<Tag> getTags() {
@@ -98,51 +81,47 @@ public class MainController {
     }
 
     public void removeExcuse(Excuse excuse) {
-        // TODO: Write removeExcuse method (via StorageUnit)
-        // should end with following line:
-        // this.triggerExcuseTableUpdate.accept(TODO: fill in new excuseList);
+        this.excusesManager.remove(excuse);
+        this.triggerExcuseTableUpdate.accept(this.getExcuses());
     }
 
     public void removeLecturer(Lecturer lecturer) {
-        // TODO: Write removeLecturer method (via StorageUnit)
-        // should end with following line:
-        // this.triggerLecturerTableUpdate.accept(TODO: fill in new
-        // lecturerList);
+        this.lecturerManager.remove(lecturer);
+        this.triggerLecturerTableUpdate.accept(this.getLecturers());
     }
 
     public void addExcuse(Excuse excuse) {
-        // TODO: Write addExcuse method (via StorageUnit)
-        // should end with following line:
-        // this.triggerExcuseTableUpdate.accept(TODO: fill in new excuseList);
+        this.excusesManager.add(excuse);
+        this.triggerExcuseTableUpdate.accept(this.getExcuses());
     }
 
     public void addLecturer(Lecturer lecturer) {
-        // TODO: Write addLecturer method (via StorageUnit)
-        // should end with following line:
-        // this.triggerLecturerTableUpdate.accept(TODO: fill in new
-        // lecturerList);
+        this.lecturerManager.add(lecturer);
+        this.triggerLecturerTableUpdate.accept(this.getLecturers());
     }
 
     public void editExcuse(int excuseID, Excuse editedExcuseObj) {
-        // TODO: Write editExcuse method (via StorateUnit)
-        // should end with following line:
-        // this.triggerExcuseTableUpdate.accept(TODO: fill in new excuseList)
+        this.excusesManager.edit(excuseID, editedExcuseObj);
+        this.triggerExcuseTableUpdate.accept(this.getExcuses());
     }
 
     public void editLecturer(int lecturerID, Lecturer editedLecturerObj) {
-        // TODO: Write editLecturer method (via StorateUnit)
-        // should end with following line:
-        // this.triggerLecturerTableUpdate.accept(TODO: fill in new
-        // lecturerList);
+        this.lecturerManager.edit(lecturerID, editedLecturerObj);
+        this.triggerLecturerTableUpdate.accept(this.getLecturers());
     }
 
-    public void updateExcuseTable(Consumer<List<Excuse>> updateExcuseTable) {
+    public void registerUpdateExcuseTable(Consumer<List<Excuse>> updateExcuseTable) {
         this.triggerExcuseTableUpdate = updateExcuseTable;
-        this.triggerExcuseTableUpdate.accept(getExcuses());
+        this.triggerExcuseTableUpdate.accept(this.getExcuses());
     }
 
-    public void updateLecturerTable(Consumer<List<Lecturer>> updateLecturerTable) {
+    public void registerUpdateLecturerTable(Consumer<List<Lecturer>> updateLecturerTable) {
         this.triggerLecturerTableUpdate = updateLecturerTable;
-        this.triggerLecturerTableUpdate.accept(getLecturers());
+        this.triggerLecturerTableUpdate.accept(this.getLecturers());
+    }
+
+    public void editUserSettings(UserSettings editedUserSettingsObj) {
+        // TODO: writeEditUserSettings method (via storageUnit)
+
     }
 }

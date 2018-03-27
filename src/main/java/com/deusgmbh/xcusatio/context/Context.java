@@ -1,8 +1,9 @@
 package com.deusgmbh.xcusatio.context;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.deusgmbh.xcusatio.context.wildcard.WildcardContext;
+import com.deusgmbh.xcusatio.context.wildcard.APIDrivenContext;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.data.usersettings.ExcusesVibes;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
@@ -20,17 +21,22 @@ public class Context {
     private String lecturerName;
     private List<Tag> lecturerTags;
 
-    private WildcardContext wildcardData;
+    private APIDrivenContext apiContext;
 
     public Context(int age, Sex sex, ExcusesVibes excusesVibes, String lecturerName, List<Tag> lecturerTags,
-            WildcardContext wildcardData) {
+            APIDrivenContext apiContext) {
         super();
         this.age = age;
         this.sex = sex;
         this.excusesVibes = excusesVibes;
         this.lecturerName = lecturerName;
         this.lecturerTags = lecturerTags;
-        this.wildcardData = wildcardData;
+        this.apiContext = apiContext;
+    }
+
+    public Context() {
+        super();
+        this.lecturerTags = new ArrayList<>();
     }
 
     public int getAge() {
@@ -73,12 +79,12 @@ public class Context {
         this.lecturerTags = lecturerTags;
     }
 
-    public WildcardContext getWildcardData() {
-        return wildcardData;
+    public APIDrivenContext getApiContext() {
+        return apiContext;
     }
 
-    public void setWildcardData(WildcardContext wildcardData) {
-        this.wildcardData = wildcardData;
+    public void setApiContext(APIDrivenContext apiContext) {
+        this.apiContext = apiContext;
     }
 
 }
