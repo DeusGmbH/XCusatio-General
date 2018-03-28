@@ -10,6 +10,10 @@ import java.util.logging.Logger;
 
 import com.thoughtworks.xstream.XStream;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -49,8 +53,19 @@ abstract public class StorageUnit<T> {
         return this.units;
     }
 
-    public T get(int id) {
-        return this.units.get(id);
+    public ObjectProperty<T> get(int id) {
+        ObjectProperty<T> observableUnit = new SimpleObjectProperty<T>(this.units.get(id));
+        observableUnit.addListener(new ChangeListener<T>() {
+
+            @Override
+            public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
+                // TODO: Persist newValue
+                System.out.println("Changed on " + newValue);
+            }
+
+        });
+
+        return observableUnit;
     }
 
     /**

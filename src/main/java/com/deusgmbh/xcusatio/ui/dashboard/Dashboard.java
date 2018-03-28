@@ -3,13 +3,12 @@ package com.deusgmbh.xcusatio.ui.dashboard;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
-import java.util.function.Supplier;
 
-import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
 import com.deusgmbh.xcusatio.util.TriConsumer;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
@@ -30,7 +29,6 @@ import javafx.scene.layout.HBox;
 public class Dashboard extends BorderPane {
     private static final double QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER = 0.3;
     private static final double SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER = 0.25;
-    private static final String SCENARIO_BUTTON_PANE_BACKGROUND_BORDER_COLOR = "#000000";
 
     // TODO: Change ui names; discuss in design review
     private static final String THUMB_GESTURE_UI_NAME = "Daumengeste";
@@ -44,20 +42,16 @@ public class Dashboard extends BorderPane {
 
     private BorderPane leftPane;
     private BorderPane rightPane;
-    private Supplier<List<Excuse>> mostRecentlyUsedSupplier;
 
     public Dashboard() {
         scenarioButtonPane = new HBox();
         scenarioButtonPane.prefHeightProperty()
-                .bind(this.heightProperty()
-                        .multiply(SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER));
+                .bind(this.heightProperty().multiply(SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER));
 
         reactionPane = new ScenarioReactionPane();
 
         quickSettingsPane = new QuickSettingsPane();
-        quickSettingsPane.prefWidthProperty()
-                .bind(this.widthProperty()
-                        .multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
+        quickSettingsPane.prefWidthProperty().bind(this.widthProperty().multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
 
         Separator separator = new Separator();
         separator.setOrientation(Orientation.HORIZONTAL);
@@ -70,45 +64,37 @@ public class Dashboard extends BorderPane {
 
         rightPane = new BorderPane();
         rightPane.setTop(quickSettingsPane);
+        rightPane.getStyleClass().add("excuse-quick-settings");
 
-        this.setRight(this.quickSettingsPane);
+        this.setRight(this.rightPane);
         this.setCenter(leftPane);
-    }
-
-    private void updateRecentlyUsedPane() {
-        rightPane.setCenter(new RecentlyUsedPane(this.mostRecentlyUsedSupplier.get()));
     }
 
     public void createScenarioButtons(List<Scenario> scenarioList,
             TriConsumer<Scenario, Consumer<String>, DoubleConsumer> generateExcuse) {
         Dashboard thisDashboard = this;
-        scenarioList.stream()
-                .forEach(scenario -> {
-                    Button tmpBtn = new Button(getUINameByType(scenario.getScenarioType()));
-                    tmpBtn.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(final ActionEvent e) {
-                            generateExcuse.accept(scenario, thisDashboard::setExcuseLabel,
-                                    thisDashboard::setThumbGesture);
+        scenarioList.stream().forEach(scenario -> {
+            Button tmpBtn = new Button(getUINameByType(scenario.getScenarioType()));
+            tmpBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(final ActionEvent e) {
+                    generateExcuse.accept(scenario, thisDashboard::setExcuseLabel, thisDashboard::setThumbGesture);
 
-                        }
-                    });
-                    scenarioButtonPane.getChildren()
-                            .add(tmpBtn);
-                });
+                }
+            });
+            scenarioButtonPane.getChildren().add(tmpBtn);
+        });
     }
 
     public void setExcuseLabel(String excuse) {
         this.reactionPane = new ScenarioReactionPane(excuse);
         leftPane.setCenter(reactionPane);
-        this.updateRecentlyUsedPane();
     }
 
     public void setThumbGesture(double value) {
         // TODO: calculate thumb rotation in steps
         this.reactionPane = new ScenarioReactionPane((int) (value * 180));
         leftPane.setCenter(reactionPane);
-        this.updateRecentlyUsedPane();
     }
 
     public boolean getAutoMoodToggle() {
@@ -142,8 +128,7 @@ public class Dashboard extends BorderPane {
         }
     }
 
-    public void registerMostRecentlyUsedExcusesSupplier(Supplier<List<Excuse>> mostRecentlyUsedSupplier) {
-        this.mostRecentlyUsedSupplier = mostRecentlyUsedSupplier;
-        this.updateRecentlyUsedPane();
+    public void registerMostRecentlyUsedExcusesSupplier(ObservableList<String> mostRecentlyUsedObservableList) {
+        rightPane.setCenter(new RecentlyUsedPane(mostRecentlyUsedObservableList));
     }
 }

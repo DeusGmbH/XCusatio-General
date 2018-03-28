@@ -66,7 +66,7 @@ public class UserSettings {
         return this;
     }
 
-    public LocalDate getAge() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
