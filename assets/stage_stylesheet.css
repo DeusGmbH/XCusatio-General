@@ -9,31 +9,31 @@
 }
 
 .button {
-	-fx-background-color: #333333;
+	-fx-background-color: rgba(16, 138, 203, 0.8);
 	-fx-text-fill: #FFFFFF;
 	-fx-font-size: 16pt;
 	-fx-font-weight: bold;
 	-fx-border-radius: 0 0 0 0;
 	-fx-background-radius: 2;
+	-fx-padding: 30px;
+    -fx-border-insets: 20px;
+    -fx-background-insets: 20px;
 }
 
 .button:hover {
 	-fx-text-fill: #AAAAAA;
 }
 
+.navigation-button {
+	-fx-background-color: #333333;
+	-fx-background-radius: 0;
+    -fx-border-insets: 0px;
+    -fx-background-insets: 0px;
+    -fx-padding: 10px;
+}
+
 .active {
 	-fx-background-color: #108ACB;
-}
-
-.navigation-button {
-	-fx-background-radius: 0 0 0 0;
-}
-
-.entry-list-button {
-	-fx-background-color: #444;
-	-fx-padding: 22px;
-    -fx-border-insets: 20px;
-    -fx-background-insets: 20px;
 }
 
 .h1 {
@@ -52,6 +52,15 @@
 	-fx-font-size: 20pt;
 	-fx-font-weight: bold;
 	-fx-padding: 8pt;
+}
+
+.p {
+	-fx-font-size: 14pt;
+	-fx-font-weight: bold;
+}
+
+.toggle-switch {
+	-fx-padding: 2 8 2 8;
 }
 
 .navigation-bar {
@@ -75,6 +84,9 @@
 .window-border .button {
 	-fx-background-color: #222;
 	-fx-font-size: 13pt;
+	-fx-border-insets: 0px;
+    -fx-background-insets: 0px;
+	-fx-padding: 5px;
 }
 
 .tab-pane:top *.tab-header-area {

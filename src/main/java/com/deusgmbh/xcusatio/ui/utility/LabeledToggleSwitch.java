@@ -22,9 +22,11 @@ public class LabeledToggleSwitch extends BorderPane {
 
     public LabeledToggleSwitch(String labelText) {
         label = new Label(labelText);
+        label.getStyleClass().add("p");
         toggleSwitch = new ToggleSwitch();
         this.setLeft(label);
         this.setRight(toggleSwitch);
+        this.getStyleClass().add("toggle-switch");
     }
 
     public void setLabel(String text) {

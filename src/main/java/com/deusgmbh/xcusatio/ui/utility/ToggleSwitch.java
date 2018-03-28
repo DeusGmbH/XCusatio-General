@@ -24,9 +24,9 @@ import javafx.util.Duration;
 public class ToggleSwitch extends Parent {
     private static final int SWITCH_WIDTH = 50;
     private static final int SWITCH_HEIGHT = 25;
-    private static final Color SWITCH_BACKGROUND_COLOR = Color.WHITE;
-    private static final Color SWITCH_STROKE_COLOR = Color.LIGHTGRAY;
-    private static final Color SWITCH_ACTIVATED_COLOR = Color.LIGHTBLUE;
+    private static final Color SWITCH_BACKGROUND_COLOR = Color.web("333");
+    private static final Color SWITCH_STROKE_COLOR = Color.web("666");
+    private static final Color SWITCH_ACTIVATED_COLOR = Color.web("108ACB");
 
     private BooleanProperty isSwitched = new SimpleBooleanProperty(false);
 
