@@ -81,8 +81,9 @@ public class Excuse {
         return lastUsed;
     }
 
-    public void setLastUsed(Date lastUsed) {
+    public Excuse setLastUsed(Date lastUsed) {
         this.lastUsed = lastUsed;
+        return this;
     }
 
     public void increasePositiveRating() {
@@ -110,8 +111,7 @@ public class Excuse {
     }
 
     public static Predicate<Excuse> byScenario(Scenario scenario) {
-        return excuse -> excuse.getScenarioType()
-                .equals(scenario.getScenarioType());
+        return excuse -> excuse.getScenarioType().equals(scenario.getScenarioType());
     }
 
     public static Predicate<Excuse> containsAllTags(List<Tag> tags) {
@@ -135,7 +135,7 @@ public class Excuse {
             Date lastUsedE2 = e2.getLastUsed();
             lastUsedE1 = lastUsedE1 == null ? new Date(0) : lastUsedE1;
             lastUsedE2 = lastUsedE2 == null ? new Date(0) : lastUsedE2;
-            return lastUsedE1.compareTo(lastUsedE2);
+            return lastUsedE2.compareTo(lastUsedE1);
         }
     };
 }

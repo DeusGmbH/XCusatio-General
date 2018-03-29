@@ -1,11 +1,8 @@
 package com.deusgmbh.xcusatio.ui.dashboard;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.deusgmbh.xcusatio.data.excuses.Excuse;
-
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 
 /**
@@ -21,25 +18,13 @@ public class RecentlyUsedPane extends VBox {
 
     // TODO: Not static, but dynamic dependent on the size of this Pane
     private static final int LIMIT_RECENTLY_USED_ENTRIES = 10;
+    private static final int CELL_HEIGHT = 30;
 
-    private List<Excuse> recentlyUsedList;
-
-    public RecentlyUsedPane() {
-        this(new ArrayList<>());
-    }
-
-    public RecentlyUsedPane(List<Excuse> recentlyUsedList) {
-        this.recentlyUsedList = recentlyUsedList;
-
+    public RecentlyUsedPane(ObservableList<String> recentlyUsedList) {
         Label recentlyUsedLabel = new Label(RECENTLY_USED_TITLE);
+        ListView<String> recentlyUsedListView = new ListView<String>(recentlyUsedList);
         this.getChildren()
-                .add(recentlyUsedLabel);
-
-        this.recentlyUsedList.stream()
-                .limit(LIMIT_RECENTLY_USED_ENTRIES)
-                .forEach(excuse -> {
-                    this.getChildren()
-                            .add(new Label(excuse.getText()));
-                });
+                .addAll(recentlyUsedLabel, recentlyUsedListView);
+        recentlyUsedListView.setMaxHeight(LIMIT_RECENTLY_USED_ENTRIES * CELL_HEIGHT);
     }
 }

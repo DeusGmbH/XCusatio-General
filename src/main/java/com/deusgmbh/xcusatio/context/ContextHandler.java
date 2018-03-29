@@ -26,7 +26,7 @@ public class ContextHandler {
      * @return
      */
     public Context buildContext(UserSettings userSettings, List<Lecturer> lecturers, Scenario scenario) {
-        Context context = new Context().setAge(userSettings.getAge())
+        Context context = new Context().setAge(userSettings.getBirthdate())
                 .setSex(userSettings.getSex());
 
         if (userSettings.getExcuseVibeMode()

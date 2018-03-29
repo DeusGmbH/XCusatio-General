@@ -1,11 +1,14 @@
 package com.deusgmbh.xcusatio.data.excuses;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import com.deusgmbh.xcusatio.data.StorageUnit;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
 import com.deusgmbh.xcusatio.data.tags.Tag;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 
 /**
  * 
@@ -14,6 +17,7 @@ import com.deusgmbh.xcusatio.data.tags.Tag;
  */
 
 public class ExcusesManager extends StorageUnit<Excuse> {
+    private ObservableList<String> lastUsedList;
 
     public ExcusesManager() {
         super(Excuse.class);
@@ -24,12 +28,29 @@ public class ExcusesManager extends StorageUnit<Excuse> {
      *            the maximal amount of excuses to return
      * @returns the most recently used excuses.
      */
-    public List<Excuse> getSortedByLastUsed() {
-        return this.get()
+    public ObservableList<String> getSortedByLastUsed() {
+        this.lastUsedList = FXCollections.observableArrayList(this.get()
                 .stream()
                 .sorted(Excuse.byLastUsed)
-                .collect(Collectors.toList());
+                .map(Excuse::getText)
+                .collect(Collectors.toList()));
 
+        this.get()
+                .addListener(new ListChangeListener<Excuse>() {
+                    @Override
+                    public void onChanged(Change<? extends Excuse> c) {
+                        while (c.next()) {
+                            c.getAddedSubList()
+                                    .stream()
+                                    .forEach(addedExcuse -> {
+                                        lastUsedList.remove(addedExcuse.getText());
+                                        lastUsedList.add(0, addedExcuse.getText());
+                                    });
+                        }
+                    }
+                });
+
+        return this.lastUsedList;
     }
 
     @Override

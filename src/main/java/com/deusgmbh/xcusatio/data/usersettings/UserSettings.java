@@ -20,8 +20,8 @@ public class UserSettings {
     private ExcuseVibeMode excuseVibesMode;
     private ExcuseVibes excuseVibes;
 
-    UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home, ExcuseVibeMode excuseVibesMode,
-            ExcuseVibes ExcuseVibes) {
+    public UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home,
+            ExcuseVibeMode excuseVibesMode, ExcuseVibes ExcuseVibes) {
         super();
         this.googleCalendar = googleCalendar;
         this.home = home;
@@ -66,7 +66,7 @@ public class UserSettings {
         return this;
     }
 
-    public LocalDate getAge() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 

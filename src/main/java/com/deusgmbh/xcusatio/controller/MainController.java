@@ -22,6 +22,7 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettingsManager;
 import com.deusgmbh.xcusatio.generator.ExcuseGenerator;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 
 /**
@@ -53,7 +54,8 @@ public class MainController {
     }
 
     public void generateExcuse(Scenario scenario, Consumer<String> displayExcuse, DoubleConsumer displayThumbGesture) {
-        Context context = contextHandler.buildContext(this.getUserSettings(), this.getLecturers(), scenario);
+        Context context = contextHandler.buildContext(this.getUserSettings()
+                .getValue(), this.getLecturers(), scenario);
         if (scenario.isExcuseType()) {
             Excuse excuse = excuseGenerator.getContextBasedExcuse(this.getExcuses(), context, scenario);
 
@@ -63,7 +65,7 @@ public class MainController {
         }
     }
 
-    public UserSettings getUserSettings() {
+    public ObjectProperty<UserSettings> getUserSettings() {
         return userSettingsManager.get(0);
     }
 
@@ -79,7 +81,7 @@ public class MainController {
         return this.lecturerManager.get();
     }
 
-    public List<Excuse> getMostRecentlyUsedExcuses() {
+    public ObservableList<String> getMostRecentlyUsedExcuses() {
         return this.excusesManager.getSortedByLastUsed();
     }
 
@@ -93,10 +95,5 @@ public class MainController {
 
     public Set<Wildcard> getWildcards() {
         return wildcards.getWildcards();
-    }
-
-    public void editUserSettings(UserSettings editedUserSettingsObj) {
-        // TODO: writeEditUserSettings method (via storageUnit)
-
     }
 }

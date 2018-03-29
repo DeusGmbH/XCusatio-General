@@ -23,6 +23,7 @@ import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
 public class ExcuseGenerator {
     private final String NO_EXCUSE_FOUND = "Es konnte leider keine Ausrede für dieses Scenario gefunden werden. Im Editor können diese aber hinzugefügt werden.";
     private Wildcards wildcards;
+    private ObservableList<Excuse> excuseList;
 
     public ExcuseGenerator(Wildcards wildcards) {
         this.wildcards = wildcards;

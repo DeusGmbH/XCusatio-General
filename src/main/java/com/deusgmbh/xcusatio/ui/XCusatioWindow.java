@@ -17,6 +17,8 @@ import com.deusgmbh.xcusatio.ui.utility.ResizeHelper;
 import com.deusgmbh.xcusatio.util.TriConsumer;
 
 import javafx.application.Application;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -68,9 +70,7 @@ public class XCusatioWindow extends Application {
         windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
 
         navigationPanel = new NavigationPanel();
-        navigationPanel.prefWidthProperty()
-                .bind(main.widthProperty()
-                        .multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
+        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
 
         dashboard = new Dashboard();
         editor = new Editor();
@@ -92,8 +92,7 @@ public class XCusatioWindow extends Application {
         stage.initStyle(StageStyle.UNDECORATED);
 
         Scene scene = new Scene(main);
-        scene.getStylesheets()
-                .add(SCENE_STYLESHEET_PATH);
+        scene.getStylesheets().add(SCENE_STYLESHEET_PATH);
         stage.setWidth(WINDOW_DEF_WIDTH);
         stage.setHeight(WINDOW_DEF_HEIGHT);
         stage.setMinWidth(WINDOW_DEF_WIDTH);
@@ -151,7 +150,6 @@ public class XCusatioWindow extends Application {
         dashboard.createScenarioButtons(scenarioList, generateExcuse);
     }
 
-
     public void registerTagsSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         editor.registerTagsSetSupplier(tagsSetSupplier);
     }
@@ -188,10 +186,10 @@ public class XCusatioWindow extends Application {
         this.scenarioList = scenarioList;
     }
 
-    public void setQuickSettings(UserSettings userSettings) {
+    public void setQuickSettings(ObservableValue<UserSettings> userSettings) {
         // TODO: adjust QuickSettings
     }
-  
+
     public void registerExcuseSupplier(Supplier<ObservableList<Excuse>> excuseSupplier) {
         this.editor.registerExcuseSupplier(excuseSupplier);
     }
@@ -200,15 +198,16 @@ public class XCusatioWindow extends Application {
         this.editor.registerLecturerSupplier(lecturerSupplier);
     }
 
-    public void registerMostRecentlyUsedExcusesSupplier(Supplier<List<Excuse>> mostRecentlyUsedSupplier) {
-        this.dashboard.registerMostRecentlyUsedExcusesSupplier(mostRecentlyUsedSupplier);
-    }
-  
-    public void registerUserSettingsSupplier(Supplier<UserSettings> userSettingsSupplier) {
-        profileSettings.registerUserSettingsSupplier(userSettingsSupplier);
+    public void registerMostRecentlyUsedExcusesSupplier(ObservableList<String> mostRecentlyUsedObservableList) {
+        this.dashboard.registerMostRecentlyUsedExcuses(mostRecentlyUsedObservableList);
     }
 
     public void registerChangeUserSettingsEvent(Consumer<UserSettings> userSettingsConsumer) {
         profileSettings.createEditProfileBtnAction(userSettingsConsumer);
+    }
+
+    public void registerUserSettings(ObjectProperty<UserSettings> userSettings) {
+        this.dashboard.registerUserSettings(userSettings);
+        this.profileSettings.registerUserSettings(userSettings);
     }
 }
