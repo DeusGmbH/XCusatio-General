@@ -20,7 +20,7 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 /**
  * 
- * @author Tobias.Schmidt@de.ibm.com
+ * @author Tobias.Schmidt@de.ibm.com, jan.leiblein@gmail.com
  *
  */
 public abstract class APIService {
