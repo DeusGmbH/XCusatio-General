@@ -1,6 +1,7 @@
 package com.deusgmbh.xcusatio.api.services;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,6 +16,8 @@ import com.deusgmbh.xcusatio.data.usersettings.Address;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 public class GeocodeAPI extends APIService {
+
+    private static final Logger LOGGER = Logger.getLogger(GeocodeAPI.class.getName());
 
     private String baseUrlText;
 
@@ -42,7 +45,10 @@ public class GeocodeAPI extends APIService {
         }
         NodeList nodes = responseAsDocument.getElementsByTagName("*");
         for (int i = 0; i < nodes.getLength(); ++i) {
-            System.out.println(nodes.item(i).getNodeName() + ": " + nodes.item(i).getTextContent());
+            System.out.println(nodes.item(i)
+                    .getNodeName() + ": "
+                    + nodes.item(i)
+                            .getTextContent());
         }
 
         Address homeAddress = usersettings.getHome();

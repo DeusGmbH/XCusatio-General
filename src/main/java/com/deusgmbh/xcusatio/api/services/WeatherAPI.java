@@ -1,10 +1,14 @@
 package com.deusgmbh.xcusatio.api.services;
 
+import java.util.logging.Logger;
+
 import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.context.wildcard.WeatherContext;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 public class WeatherAPI extends APIService {
+
+    private static final Logger LOGGER = Logger.getLogger(WeatherAPI.class.getName());
 
     @Override
     public WeatherContext get(UserSettings usersettings) {
