@@ -1,15 +1,12 @@
 package com.deusgmbh.xcusatio.ui.editor.lecturer;
 
-import java.util.function.BiConsumer;
-
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.EditEntryPane;
 import com.deusgmbh.xcusatio.ui.utility.DoubleListView;
 import com.deusgmbh.xcusatio.ui.utility.ListViewTextField;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -28,7 +25,8 @@ public class LecturerEditEntryPane extends EditEntryPane {
     private static final String LECTURER_LECTURES_LABEL_TEXT = "Vorlesungen: ";
     private static final String TAGS_LABEL_TEXT = "Tags:";
 
-    private int oldLecturerObjID;
+    private int lecturerId;
+    private ObservableList<Lecturer> lecturers;
 
     private TextField lecturerNameTextField;
     private ListViewTextField lecturerLecturesPane;
@@ -38,35 +36,36 @@ public class LecturerEditEntryPane extends EditEntryPane {
         super();
     }
 
-    public LecturerEditEntryPane(int lecturerID, Lecturer lecturer) {
+    public LecturerEditEntryPane(int lecturerID, ObservableList<Lecturer> lecturers) {
         this();
-        createEditForm(lecturerID, lecturer);
+        createEditForm(lecturerID, lecturers);
     }
 
-    public void createEditForm(int lecturerID, Lecturer lecturer) {
-        this.oldLecturerObjID = lecturerID;
+    public void createEditForm(int id, ObservableList<Lecturer> lecturersList) {
+        this.lecturerId = id;
+        this.lecturers = lecturersList;
 
         Label lecturerNameLabel = new Label(LECTURER_NAME_LABEL_TEXT);
         Label lecturerLecturesLabel = new Label(LECTURER_LECTURES_LABEL_TEXT);
         Label tagsLabel = new Label(TAGS_LABEL_TEXT);
 
-        this.lecturerNameTextField = new TextField(lecturer.getName());
-        this.lecturerLecturesPane = new ListViewTextField(lecturer.getLectures());
-        this.tagsListCellView = new DoubleListView<Tag>(lecturer.getTags(),
-                super.removeFromAllTagsList(lecturer.getTags()));
+        this.lecturerNameTextField = new TextField(lecturers.get(lecturerId)
+                .getName());
+        this.lecturerLecturesPane = new ListViewTextField(lecturers.get(lecturerId)
+                .getLectures());
+        this.tagsListCellView = new DoubleListView<Tag>(lecturers.get(lecturerId)
+                .getTags(),
+                super.removeFromAllTagsList(lecturers.get(lecturerId)
+                        .getTags()));
 
         super.addNodesToPane(lecturerNameLabel, lecturerNameTextField, lecturerLecturesLabel, lecturerLecturesPane,
                 tagsLabel, tagsListCellView);
     }
 
-    public void createEditBtnAction(BiConsumer<Integer, Lecturer> editEntry) {
-        super.submitEditedEntryBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                Lecturer editedLecturerObj = new Lecturer(lecturerNameTextField.getText(),
-                        lecturerLecturesPane.getItems(), tagsListCellView.getLeftListItems());
-                editEntry.accept(oldLecturerObjID, editedLecturerObj);
-            }
-        });
+    @Override
+    protected void saveChanges() {
+        this.lecturers.set(this.lecturerId, new Lecturer(lecturerNameTextField.getText(),
+                lecturerLecturesPane.getItems(), tagsListCellView.getLeftListItems()));
     }
+
 }

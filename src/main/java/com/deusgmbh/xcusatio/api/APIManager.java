@@ -6,7 +6,7 @@ import com.deusgmbh.xcusatio.api.services.CalendarAPI;
 import com.deusgmbh.xcusatio.api.services.RNVAPI;
 import com.deusgmbh.xcusatio.api.services.TrafficAPI;
 import com.deusgmbh.xcusatio.api.services.WeatherAPI;
-import com.deusgmbh.xcusatio.context.wildcard.APIDrivenContext;
+import com.deusgmbh.xcusatio.context.wildcard.APIContext;
 import com.deusgmbh.xcusatio.context.wildcard.CalendarContext;
 import com.deusgmbh.xcusatio.context.wildcard.RNVContext;
 import com.deusgmbh.xcusatio.context.wildcard.TrafficContext;
@@ -31,7 +31,11 @@ public class APIManager {
         this(scenario.getRequiredAPIs());
     }
 
-    public APIDrivenContext getAPIData(UserSettings userSettings) {
+    public APIContext getAPIData(UserSettings userSettings) {
+        if (apis == null) {
+            return null;
+        }
+
         // TODO: Maybe some performance optimization is necessary here:
         // investigate Futures and completableFutures
 
@@ -40,7 +44,7 @@ public class APIManager {
         RNVContext rnv = calRNVAPI(userSettings);
         CalendarContext calendar = callCalendarAPI(userSettings);
 
-        return new APIDrivenContext(weather, traffic, rnv, calendar);
+        return new APIContext(weather, traffic, rnv, calendar);
     }
 
     private WeatherContext callWeatherAPI(UserSettings userSettings) {

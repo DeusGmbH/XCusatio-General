@@ -5,14 +5,14 @@ package com.deusgmbh.xcusatio.context.wildcard;
  * @author Tobias.Schmidt@de.ibm.com
  *
  */
-public class APIDrivenContext {
+public class APIContext {
 
     private WeatherContext weather;
     private TrafficContext traffic;
     private RNVContext rnv;
     private CalendarContext calendar;
 
-    public APIDrivenContext(WeatherContext weather, TrafficContext traffic, RNVContext rnv, CalendarContext calendar) {
+    public APIContext(WeatherContext weather, TrafficContext traffic, RNVContext rnv, CalendarContext calendar) {
         super();
         this.weather = weather;
         this.traffic = traffic;
@@ -20,7 +20,7 @@ public class APIDrivenContext {
         this.calendar = calendar;
     }
 
-    public APIDrivenContext() {
+    public APIContext() {
         super();
     }
 
