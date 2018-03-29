@@ -2,6 +2,7 @@ package com.deusgmbh.xcusatio.generator;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,8 @@ import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
 
+import javafx.collections.ObservableList;
+
 /**
  * 
  * @author Tobias.Schmidt@de.ibm.com
@@ -23,6 +26,7 @@ import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
 public class ExcuseGenerator {
     private final String NO_EXCUSE_FOUND = "Es konnte leider keine Ausrede für dieses Scenario gefunden werden. Im Editor können diese aber hinzugefügt werden.";
     private Wildcards wildcards;
+    private ObservableList<Excuse> excuseList;
 
     public ExcuseGenerator(Wildcards wildcards) {
         this.wildcards = wildcards;
@@ -39,7 +43,7 @@ public class ExcuseGenerator {
         return Math.random();
     }
 
-    public Excuse getContextBasedExcuse(List<Excuse> excuses, Context context, Scenario scenario) {
+    public Excuse getContextBasedExcuse(ObservableList<Excuse> excuses, Context context, Scenario scenario) {
         if (excuses == null || excuses.isEmpty()) {
             throw new IllegalArgumentException("Excuses must not be null and not empty");
         }
@@ -50,42 +54,52 @@ public class ExcuseGenerator {
             throw new IllegalArgumentException("Scenario is not ");
         }
 
-        int minExcuses = excuses.size() > 8 ? excuses.size() / 2 : 4;
+        this.excuseList = excuses;
+
+        int minExcuses = this.excuseList.size() > 8 ? excuses.size() / 2 : 4;
 
         List<Tag> tags = this.getTags(context);
         List<Excuse> contextBasedExcuses = filterByTag(
-                filterByValidWildcards(filterByScenario(excuses, scenario), context), tags, minExcuses);
+                filterByValidWildcards(filterByScenario(this.excuseList, scenario), context), tags, minExcuses);
 
-        List<Excuse> finalExcuses = contextBasedExcuses.stream()
-                .sorted(Excuse.byLastUsed)
-                .limit((int) Math.ceil(contextBasedExcuses.size() / 2.0))
-                .sorted(Excuse.byRating)
+        List<Excuse> finalExcuses = contextBasedExcuses.stream().sorted(Excuse.byLastUsed)
+                .limit((int) Math.ceil(contextBasedExcuses.size() / 2.0)).sorted(Excuse.byRating)
                 .collect(Collectors.toList());
 
-        finalExcuses = finalExcuses.stream()
-                .limit((int) Math.ceil(finalExcuses.size() * 0.8))
+        finalExcuses = finalExcuses.stream().limit((int) Math.ceil(finalExcuses.size() * 0.8))
                 .collect(Collectors.toList());
 
         if (finalExcuses.isEmpty()) {
             return new Excuse(NO_EXCUSE_FOUND, scenario.getScenarioType());
         }
 
-        int randomExcuseId = ThreadLocalRandom.current()
-                .nextInt(0, finalExcuses.size());
+        int randomExcuseId = ThreadLocalRandom.current().nextInt(0, finalExcuses.size());
+
+        int observableExcuseId = getExcuseIdByExcuse(finalExcuses.get(randomExcuseId));
+        if (observableExcuseId != -1) {
+            this.excuseList.set(observableExcuseId, finalExcuses.get(randomExcuseId).setLastUsed(new Date()));
+            System.out.println(observableExcuseId);
+        }
 
         return finalExcuses.get(randomExcuseId);
     }
 
+    private int getExcuseIdByExcuse(Excuse searchedExcuse) {
+        for (int i = 0; i < this.excuseList.size(); i++) {
+            if (searchedExcuse == excuseList.get(i)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     private List<Excuse> filterByValidWildcards(List<Excuse> excuses, Context context) {
-        return excuses.stream()
-                .filter(excuse -> wildcards.isValidContext(excuse.getText(), context.getApiContext()))
+        return excuses.stream().filter(excuse -> wildcards.isValidContext(excuse.getText(), context.getApiContext()))
                 .collect(Collectors.toList());
     }
 
     private List<Excuse> filterByScenario(List<Excuse> excuses, Scenario scenario) {
-        return excuses.stream()
-                .filter(Excuse.byScenario(scenario))
-                .collect(Collectors.toList());
+        return excuses.stream().filter(Excuse.byScenario(scenario)).collect(Collectors.toList());
     }
 
     /**
@@ -106,9 +120,7 @@ public class ExcuseGenerator {
             return excuses;
         }
         Tag nextTag = tags.remove(0);
-        List<Excuse> filteredExcuses = excuses.stream()
-                .filter(excuse -> excuse.getTags()
-                        .contains(nextTag))
+        List<Excuse> filteredExcuses = excuses.stream().filter(excuse -> excuse.getTags().contains(nextTag))
                 .collect(Collectors.toList());
 
         // make sure that at least n excuses are returned
@@ -143,16 +155,12 @@ public class ExcuseGenerator {
 
         // add ageGroup tag
 
-        return tags.stream()
-                .distinct()
-                .collect(Collectors.toList());
+        return tags.stream().distinct().collect(Collectors.toList());
     }
 
     private Collection<Tag> getLecturerTags(Context context) {
-        if (context.getLecturer() != null && context.getLecturer()
-                .getTags() != null) {
-            return context.getLecturer()
-                    .getTags();
+        if (context.getLecturer() != null && context.getLecturer().getTags() != null) {
+            return context.getLecturer().getTags();
         }
         return new HashSet<>();
     }

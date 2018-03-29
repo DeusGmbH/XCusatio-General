@@ -17,12 +17,16 @@ public class LabeledToggleSwitch extends BorderPane {
     private ToggleSwitch toggleSwitch;
 
     public LabeledToggleSwitch() {
-        this(new String(""));
+        this(new String(""), false);
     }
 
     public LabeledToggleSwitch(String labelText) {
+        this(labelText, false);
+    }
+
+    public LabeledToggleSwitch(String labelText, boolean activatedState) {
         label = new Label(labelText);
-        toggleSwitch = new ToggleSwitch();
+        toggleSwitch = new ToggleSwitch(activatedState);
         this.setLeft(label);
         this.setRight(toggleSwitch);
     }
@@ -33,5 +37,17 @@ public class LabeledToggleSwitch extends BorderPane {
 
     public boolean getToggleState() {
         return toggleSwitch.getToggleState();
+    }
+
+    public void registerChangeUserSettingsAction(Runnable changeUserSettingsAction) {
+        toggleSwitch.registerChangeUserSettignsAction(changeUserSettingsAction);
+    }
+
+    public void setOnChange(Runnable action) {
+        toggleSwitch.setOnChange(action);
+    }
+
+    public void changeClickable() {
+        toggleSwitch.changeClickable();
     }
 }

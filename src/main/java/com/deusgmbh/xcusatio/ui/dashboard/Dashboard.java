@@ -6,8 +6,10 @@ import java.util.function.DoubleConsumer;
 
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.deusgmbh.xcusatio.util.TriConsumer;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -50,9 +52,6 @@ public class Dashboard extends BorderPane {
 
         reactionPane = new ScenarioReactionPane();
 
-        quickSettingsPane = new QuickSettingsPane();
-        quickSettingsPane.prefWidthProperty().bind(this.widthProperty().multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
-
         Separator separator = new Separator();
         separator.setOrientation(Orientation.HORIZONTAL);
 
@@ -63,8 +62,6 @@ public class Dashboard extends BorderPane {
         leftPane.setCenter(this.reactionPane);
 
         rightPane = new BorderPane();
-        rightPane.setTop(quickSettingsPane);
-        rightPane.getStyleClass().add("excuse-quick-settings");
 
         this.setRight(this.rightPane);
         this.setCenter(leftPane);
@@ -128,7 +125,16 @@ public class Dashboard extends BorderPane {
         }
     }
 
-    public void registerMostRecentlyUsedExcusesSupplier(ObservableList<String> mostRecentlyUsedObservableList) {
+    public void registerMostRecentlyUsedExcuses(ObservableList<String> mostRecentlyUsedObservableList) {
         rightPane.setCenter(new RecentlyUsedPane(mostRecentlyUsedObservableList));
     }
+
+    public void registerUserSettings(ObjectProperty<UserSettings> userSettings) {
+        quickSettingsPane = new QuickSettingsPane(userSettings);
+        quickSettingsPane.prefWidthProperty().bind(this.widthProperty().multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
+
+        rightPane.setTop(quickSettingsPane);
+        rightPane.getStyleClass().add("excuse-quick-settings");
+    }
+
 }

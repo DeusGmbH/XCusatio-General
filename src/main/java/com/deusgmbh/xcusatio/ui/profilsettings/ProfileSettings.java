@@ -3,7 +3,6 @@ package com.deusgmbh.xcusatio.ui.profilsettings;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
@@ -37,7 +36,7 @@ public class ProfileSettings extends FlowPane {
     private static final String SUBMIT_BUTTON_LABEL = "Speichern";
     private static final String TITLE_LABEL_TEXT = "Profileinstellungen";
 
-    private Supplier<ObjectProperty<UserSettings>> userSettingsSupplier;
+    private ObjectProperty<UserSettings> userSettings;
 
     private GridPane profileFormPane;
 
@@ -60,12 +59,12 @@ public class ProfileSettings extends FlowPane {
         Label locationLabel = new Label(LOCATION_LABEL_TEXT);
         Label calendarLabel = new Label(CALENDAR_LABEL_TEXT);
 
-        sexTogglePane = new SexTogglePane(userSettingsSupplier.get().getValue().getSex());
-        addressPane = new AddressPane(userSettingsSupplier.get().getValue().getHome());
+        sexTogglePane = new SexTogglePane(userSettings.getValue().getSex());
+        addressPane = new AddressPane(userSettings.getValue().getHome());
 
         birthdayDatePicker = new DatePicker();
         birthdayDatePicker.setShowWeekNumbers(false);
-        birthdayDatePicker.setValue(userSettingsSupplier.get().getValue().getBirthdate());
+        birthdayDatePicker.setValue(userSettings.getValue().getBirthdate());
 
         calendarButton = new Button(CALENDAR_BUTTON_LABEL_TEXT);
         // TODO: calendarButton Action
@@ -95,14 +94,14 @@ public class ProfileSettings extends FlowPane {
 
             @Override
             public void handle(ActionEvent arg0) {
-                userSettingsSupplier.get().set(new UserSettings(null, birthdayDatePicker.getValue(),
-                        sexTogglePane.getSex(), addressPane.getAdress()));
+                userSettings.set(new UserSettings(null, birthdayDatePicker.getValue(), sexTogglePane.getSex(),
+                        addressPane.getAdress()));
             }
         });
     }
 
-    public void registerUserSettingsSupplier(Supplier<ObjectProperty<UserSettings>> userSettingsSupplier) {
-        this.userSettingsSupplier = userSettingsSupplier;
+    public void registerUserSettings(ObjectProperty<UserSettings> userSettings) {
+        this.userSettings = userSettings;
         this.createProfileSettingsForm();
     }
 }

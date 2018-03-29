@@ -22,7 +22,6 @@ public class RecentlyUsedPane extends VBox {
 
     public RecentlyUsedPane(ObservableList<String> recentlyUsedList) {
         Label recentlyUsedLabel = new Label(RECENTLY_USED_TITLE);
-
         ListView<String> recentlyUsedListView = new ListView<String>(recentlyUsedList);
         this.getChildren().addAll(recentlyUsedLabel, recentlyUsedListView);
         recentlyUsedListView.setMaxHeight(LIMIT_RECENTLY_USED_ENTRIES * CELL_HEIGHT);

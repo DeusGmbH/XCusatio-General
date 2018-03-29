@@ -23,7 +23,7 @@ public class UserSettingsManager extends StorageUnit<UserSettings> {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dt = LocalDate.parse("1989-11-09", dtf);
         this.add(new UserSettings().setAge(dt).setSex(Sex.MALE).setExcuseVibeMode(ExcuseVibeMode.AUTOMATIC)
-                .setExcuseVibes(new ExcuseVibes(true, false, true)).setHome(new Address().setCity("Mannheim")
+                .setExcuseVibes(new ExcuseVibes(false, false, true)).setHome(new Address().setCity("Mannheim")
                         .setZip("68159").setStreetname("Akademiestr.").setStreetnum("6")));
         return this;
     }

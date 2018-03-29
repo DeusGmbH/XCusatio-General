@@ -199,14 +199,15 @@ public class XCusatioWindow extends Application {
     }
 
     public void registerMostRecentlyUsedExcusesSupplier(ObservableList<String> mostRecentlyUsedObservableList) {
-        this.dashboard.registerMostRecentlyUsedExcusesSupplier(mostRecentlyUsedObservableList);
-    }
-
-    public void registerUserSettingsSupplier(Supplier<ObjectProperty<UserSettings>> userSettingsSupplier) {
-        profileSettings.registerUserSettingsSupplier(userSettingsSupplier);
+        this.dashboard.registerMostRecentlyUsedExcuses(mostRecentlyUsedObservableList);
     }
 
     public void registerChangeUserSettingsEvent(Consumer<UserSettings> userSettingsConsumer) {
         profileSettings.createEditProfileBtnAction(userSettingsConsumer);
+    }
+
+    public void registerUserSettings(ObjectProperty<UserSettings> userSettings) {
+        this.dashboard.registerUserSettings(userSettings);
+        this.profileSettings.registerUserSettings(userSettings);
     }
 }

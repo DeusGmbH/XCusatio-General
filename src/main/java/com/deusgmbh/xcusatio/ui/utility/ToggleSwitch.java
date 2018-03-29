@@ -30,9 +30,15 @@ public class ToggleSwitch extends Parent {
 
     private BooleanProperty isSwitched = new SimpleBooleanProperty(false);
 
+    private Runnable changeUserSettings;
+
     public ToggleSwitch() {
-        Rectangle background = createBackgroundRectangle();
-        Circle toggleCircle = createToggleCircle();
+        this(false);
+    }
+
+    public ToggleSwitch(boolean activatedState) {
+        Rectangle background = createBackgroundRectangle(activatedState);
+        Circle toggleCircle = createToggleCircle(activatedState);
 
         TranslateTransition translateAnimation = new TranslateTransition(Duration.seconds(0.25));
         FillTransition fillAnimation = new FillTransition(Duration.seconds(0.25));
@@ -40,46 +46,73 @@ public class ToggleSwitch extends Parent {
         fillAnimation.setShape(background);
 
         this.getChildren().addAll(background, toggleCircle);
-        createStateChangeOnClick(isSwitched, translateAnimation, fillAnimation);
+        createStateChangeOnClick(isSwitched, activatedState, translateAnimation, fillAnimation);
 
-        setOnMouseClicked(event -> {
+        this.setOnMouseClicked(event -> {
             isSwitched.set(!isSwitched.get());
+            changeUserSettings.run();
         });
     }
 
-    private Rectangle createBackgroundRectangle() {
+    private Rectangle createBackgroundRectangle(boolean activatedState) {
         Rectangle backgroundRectangle = new Rectangle(SWITCH_WIDTH, SWITCH_HEIGHT);
         backgroundRectangle.setArcWidth(SWITCH_HEIGHT);
         backgroundRectangle.setArcHeight(SWITCH_HEIGHT);
-        backgroundRectangle.setFill(SWITCH_BACKGROUND_COLOR);
+        backgroundRectangle.setFill(activatedState ? SWITCH_ACTIVATED_COLOR : SWITCH_BACKGROUND_COLOR);
         backgroundRectangle.setStroke(SWITCH_STROKE_COLOR);
         return backgroundRectangle;
     }
 
-    private Circle createToggleCircle() {
+    private Circle createToggleCircle(boolean activatedState) {
         Circle toggleCircle = new Circle(SWITCH_HEIGHT / 2);
-        toggleCircle.setCenterX(SWITCH_HEIGHT / 2);
+        toggleCircle.setCenterX(activatedState ? SWITCH_WIDTH - SWITCH_HEIGHT / 2 : SWITCH_HEIGHT / 2);
         toggleCircle.setCenterY(SWITCH_HEIGHT / 2);
         toggleCircle.setFill(Color.WHITE);
         toggleCircle.setStroke(Color.LIGHTGRAY);
         return toggleCircle;
     }
 
-    private void createStateChangeOnClick(BooleanProperty node, TranslateTransition translateAnimation,
-            FillTransition fillAnimation) {
+    private void createStateChangeOnClick(BooleanProperty node, boolean originalState,
+            TranslateTransition translateAnimation, FillTransition fillAnimation) {
         node.addListener((obs, oldState, newState) -> {
             ParallelTransition animation = new ParallelTransition(translateAnimation, fillAnimation);
 
             boolean isOn = newState.booleanValue();
-            translateAnimation.setToX(isOn ? SWITCH_WIDTH / 2 : 0);
-            fillAnimation.setFromValue(isOn ? SWITCH_BACKGROUND_COLOR : SWITCH_ACTIVATED_COLOR);
-            fillAnimation.setToValue(isOn ? SWITCH_ACTIVATED_COLOR : SWITCH_BACKGROUND_COLOR);
+            translateAnimation.setToX(originalState ? (isOn ? -SWITCH_WIDTH / 2 : 0) : (isOn ? SWITCH_WIDTH / 2 : 0));
+            fillAnimation.setFromValue(originalState ? (isOn ? SWITCH_ACTIVATED_COLOR : SWITCH_BACKGROUND_COLOR)
+                    : (isOn ? SWITCH_BACKGROUND_COLOR : SWITCH_ACTIVATED_COLOR));
+            fillAnimation.setToValue(originalState ? (isOn ? SWITCH_BACKGROUND_COLOR : SWITCH_ACTIVATED_COLOR)
+                    : (isOn ? SWITCH_ACTIVATED_COLOR : SWITCH_BACKGROUND_COLOR));
 
             animation.play();
+
         });
     }
 
     public boolean getToggleState() {
         return isSwitched.get();
+    }
+
+    public void registerChangeUserSettignsAction(Runnable changeUserSettingsAction) {
+        this.changeUserSettings = changeUserSettingsAction;
+    }
+
+    public void setOnChange(Runnable action) {
+        this.setOnMouseClicked(event -> {
+            isSwitched.set(!isSwitched.get());
+            changeUserSettings.run();
+            action.run();
+        });
+    }
+
+    public void changeClickable() {
+        if (isSwitched.get()) {
+            this.setOnMouseClicked(null);
+        } else {
+            this.setOnMouseClicked(event -> {
+                isSwitched.set(!isSwitched.get());
+                changeUserSettings.run();
+            });
+        }
     }
 }
