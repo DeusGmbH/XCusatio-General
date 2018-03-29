@@ -7,10 +7,11 @@ package com.deusgmbh.xcusatio.api.data;
 
 public class TrafficIncidentDetails {
     TrafficIncidentType incidentType;
-    String incidentStatus;
+    TrafficIncidentStatus incidentStatus;
     String incidentDescription;
 
-    public TrafficIncidentDetails(TrafficIncidentType incidentType, String incidentStatus, String incidentDescription) {
+    public TrafficIncidentDetails(TrafficIncidentType incidentType, TrafficIncidentStatus incidentStatus,
+            String incidentDescription) {
         super();
         this.incidentType = incidentType;
         this.incidentStatus = incidentStatus;
@@ -25,11 +26,11 @@ public class TrafficIncidentDetails {
         this.incidentType = incidentType;
     }
 
-    public String getIncidentStatus() {
+    public TrafficIncidentStatus getIncidentStatus() {
         return incidentStatus;
     }
 
-    public void setIncidentStatus(String incidentStatus) {
+    public void setIncidentStatus(TrafficIncidentStatus incidentStatus) {
         this.incidentStatus = incidentStatus;
     }
 

@@ -1,5 +1,7 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+import java.util.logging.Logger;
+
 import com.deusgmbh.xcusatio.api.data.TrafficIncidentDetails;
 import com.deusgmbh.xcusatio.api.data.TrafficIncidentLocation;
 import com.deusgmbh.xcusatio.api.data.TrafficIncidentTimes;
@@ -12,7 +14,8 @@ import com.deusgmbh.xcusatio.api.data.TrafficIncidentTimes;
 
 public class TrafficContext {
 
-    // incident location + street
+    private static final Logger LOGGER = Logger.getLogger(TrafficContext.class.getName());
+
     private TrafficIncidentDetails trafficIncident;
     private TrafficIncidentLocation incidentLocation;
     private TrafficIncidentTimes incidentTimes;
@@ -49,8 +52,8 @@ public class TrafficContext {
         this.incidentTimes = incidentTimes;
     }
 
-    public void printContextContent() {
-        System.out.println("TrafficContext:\nType of incident: " + this.getTrafficIncident().getIncidentType()
+    public void logContextContent() {
+        LOGGER.info("TrafficContext:\nType of incident: " + this.getTrafficIncident().getIncidentType()
                 + "\nDescription: " + this.getTrafficIncident().getIncidentDescription() + "\nStatus: "
                 + this.getTrafficIncident().getIncidentStatus() + "\noccured in: "
                 + this.getIncidentLocation().getCountryOfIncident() + ", "

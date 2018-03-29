@@ -1,5 +1,7 @@
 package com.deusgmbh.xcusatio.api.data;
 
+import java.util.Date;
+
 /**
  * 
  * @author jan.leiblein@gmail.com
@@ -11,17 +13,18 @@ import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 public class LectureEvent extends TimeFormattingUtils {
     String lectureName;
     Lecturer lecturer;
+    Date startTime;
+    Date endTime;
     String startTimeAsClocktimeText;
     String endTimeAsClocktimeText;
     double startTimeAsClocktime;
     double endTimeAsClocktime;
 
-    public LectureEvent(String lectureName, Lecturer lecturer, String startTimeAsClocktimeText,
-            String endTimeAsClocktimeText) {
+    public LectureEvent(String lectureName, Lecturer lecturer, Date startTime, Date endTime) {
         this.lectureName = lectureName;
         this.lecturer = lecturer;
-        this.startTimeAsClocktimeText = startTimeAsClocktimeText;
-        this.endTimeAsClocktimeText = endTimeAsClocktimeText;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public String getLectureName() {
@@ -44,20 +47,20 @@ public class LectureEvent extends TimeFormattingUtils {
         return startTimeAsClocktimeText;
     }
 
-    public void setStartTimeAsClocktimeText(String startTimeAsClocktimeText) {
-        this.startTimeAsClocktimeText = startTimeAsClocktimeText;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public String getEndTimeAsClocktimeText() {
-        return endTimeAsClocktimeText;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
-    public void setEndTimeAsClocktimeText(String endTimeAsClocktimeText) {
-        this.endTimeAsClocktimeText = endTimeAsClocktimeText;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public double getStartTimeAsClocktime() {
-        return startTimeAsClocktime;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public void setStartTimeAsClocktime(double startTimeAsClocktime) {

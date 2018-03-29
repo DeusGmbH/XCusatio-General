@@ -9,10 +9,10 @@ package com.deusgmbh.xcusatio.api.data;
 import java.util.List;
 
 public class TramDetails {
-    String lineLabel;
-    String firstEndStation;
-    String secondEndstation;
-    List<String> stops;
+    private String lineLabel;
+    private String firstEndStation;
+    private String secondEndstation;
+    private List<String> stops;
 
     public TramDetails(String lineNumber, String firstEndStation, String secondEndstation, List<String> stops) {
         super();

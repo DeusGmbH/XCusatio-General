@@ -1,11 +1,15 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+import java.util.logging.Logger;
+
 /**
  * 
  * @author Tobias.Schmidt@de.ibm.com
  *
  */
 public class WeatherContext {
+    private static final Logger LOGGER = Logger.getLogger(WeatherContext.class.getName());
+
     private int temperature;
     private String description;
     private String windDirection;
@@ -92,11 +96,10 @@ public class WeatherContext {
         this.rainHourly = rainHourly;
     }
 
-    public void printContextContent() {
-        System.out.println(
-                "WeatherContext:\nTemperature: " + this.getTemperature() + " C\nDesc.: " + this.getDescription()
-                        + "\nWind comes from: " + this.getWindDirection() + "\nMax. T: " + this.getMaxTemparature()
-                        + "\nMin. T: " + this.getMinTemparature() + "\nWind speed: " + this.getWindSpeed()
-                        + "\nSnow hourly: " + this.getSnowHourly() + "\nRain hourly: " + this.getRainHourly());
+    public void logContextContent() {
+        LOGGER.info("WeatherContext:\nTemperature: " + this.getTemperature() + " C\nDesc.: " + this.getDescription()
+                + "\nWind comes from: " + this.getWindDirection() + "\nMax. T: " + this.getMaxTemparature()
+                + "\nMin. T: " + this.getMinTemparature() + "\nWind speed: " + this.getWindSpeed() + "\nSnow hourly: "
+                + this.getSnowHourly() + "\nRain hourly: " + this.getRainHourly());
     }
 }

@@ -1,5 +1,7 @@
 package com.deusgmbh.xcusatio.api.data;
 
+import java.util.Date;
+
 /**
  * 
  * @author jan.leiblein@gmail.com
@@ -7,29 +9,31 @@ package com.deusgmbh.xcusatio.api.data;
  */
 
 public class TrafficIncidentTimes extends TimeFormattingUtils {
-    private String startTimeOfTrafficIncident;
-    private String endTimeOfTrafficIncident;
+    private Date startTimeOfTrafficIncident;
+    private Date endTimeOfTrafficIncident;
 
-    public TrafficIncidentTimes(String startTimeOfTrafficIncident, String endTimeOfTrafficIncident) {
+    public TrafficIncidentTimes(Date startTimeOfTrafficIncident, Date endTimeOfTrafficIncident) {
         super();
-        this.startTimeOfTrafficIncident = formatClocktime(startTimeOfTrafficIncident);
-        this.endTimeOfTrafficIncident = formatClocktime(endTimeOfTrafficIncident);
+        // TODO keep in mind that String of API call has to be converted to Date
+        // somewhere in the TrafficAPI class
+        this.startTimeOfTrafficIncident = startTimeOfTrafficIncident;
+        this.endTimeOfTrafficIncident = endTimeOfTrafficIncident;
     }
 
-    public String getStartTimeOfTrafficIncident() {
+    public Date getStartTimeOfTrafficIncident() {
         return startTimeOfTrafficIncident;
     }
 
-    public void setStartTimeOfTrafficIncident(String startTimeOfTrafficIncident) {
-        this.startTimeOfTrafficIncident = formatClocktime(startTimeOfTrafficIncident);
+    public void setStartTimeOfTrafficIncident(Date startTimeOfTrafficIncident) {
+        this.startTimeOfTrafficIncident = startTimeOfTrafficIncident;
     }
 
-    public String getEndTimeOfTrafficIncident() {
+    public Date getEndTimeOfTrafficIncident() {
         return endTimeOfTrafficIncident;
     }
 
-    public void setEndTimeOfTrafficIncident(String endTimeOfTrafficIncident) {
-        this.endTimeOfTrafficIncident = formatClocktime(endTimeOfTrafficIncident);
+    public void setEndTimeOfTrafficIncident(Date endTimeOfTrafficIncident) {
+        this.endTimeOfTrafficIncident = endTimeOfTrafficIncident;
     }
 
 }

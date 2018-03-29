@@ -1,5 +1,7 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+import java.util.logging.Logger;
+
 import com.deusgmbh.xcusatio.api.data.TimeFormattingUtils;
 import com.deusgmbh.xcusatio.api.data.TramDetails;
 import com.deusgmbh.xcusatio.api.data.TramNews;
@@ -12,6 +14,8 @@ import com.deusgmbh.xcusatio.api.data.TramStatus;
  */
 
 public class RNVContext extends TimeFormattingUtils {
+
+    private static final Logger LOGGER = Logger.getLogger(RNVContext.class.getName());
 
     private TramDetails tram;
     private TramNews newsEntry; // can be empty if line not affected by any
@@ -69,12 +73,12 @@ public class RNVContext extends TimeFormattingUtils {
         this.differenceTimeInMinutesText = formatMinutesAsText(this.differenceTimeInMinutes);
     }
 
-    public void printContextContent() {
-        System.out.println("RNVContext:\nTram No. " + this.tram.getLineLabel() + "\nFrom: "
-                + this.tram.getFirstEndStation() + "\nTo: " + this.tram.getSecondEndstation() + "\n("
-                + this.tram.getStops().size() + " stops)\n" + this.newsEntry.getTitle() + ": "
-                + this.newsEntry.getContent() + ", affecting " + this.newsEntry.getAffectedLines().size()
-                + "lines.\nStatus of tram: " + this.tramStatus + "\nTram delay: " + this.differenceTimeInMinutesText);
+    public void logContextContent() {
+        LOGGER.info("RNVContext:\nTram No. " + this.tram.getLineLabel() + "\nFrom: " + this.tram.getFirstEndStation()
+                + "\nTo: " + this.tram.getSecondEndstation() + "\n(" + this.tram.getStops().size() + " stops)\n"
+                + this.newsEntry.getTitle() + ": " + this.newsEntry.getContent() + ", affecting "
+                + this.newsEntry.getAffectedLines().size() + "lines.\nStatus of tram: " + this.tramStatus
+                + "\nTram delay: " + this.differenceTimeInMinutesText);
     }
 
 }

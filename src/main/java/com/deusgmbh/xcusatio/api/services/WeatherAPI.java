@@ -30,7 +30,7 @@ public class WeatherAPI extends APIService {
     // null, null);
     // WeatherAPI weatherAPI = new WeatherAPI();
     // WeatherContext weatherContext = weatherAPI.get(userSettings);
-    // weatherContext.printContextContent();
+    // weatherContext.logContextContent();
     // }
 
 }

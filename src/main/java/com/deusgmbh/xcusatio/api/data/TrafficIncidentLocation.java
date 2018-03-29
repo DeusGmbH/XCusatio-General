@@ -7,15 +7,17 @@ package com.deusgmbh.xcusatio.api.data;
  */
 
 public class TrafficIncidentLocation {
-    String countryOfIncident;
-    String cityOfIncident;
-    String streetOfIncident;
 
-    public TrafficIncidentLocation(String countryOfIncident, String cityOfIncident, String streetOfIncident) {
+    private GeocodeData geocodeDataOfIncident;
+    private String countryOfIncident;
+    private String cityOfIncident;
+    private String streetOfIncident;
+
+    public TrafficIncidentLocation(GeocodeData geocodeDataOfIncident) {
         super();
-        this.countryOfIncident = countryOfIncident;
-        this.cityOfIncident = cityOfIncident;
-        this.streetOfIncident = streetOfIncident;
+        this.countryOfIncident = geocodeDataOfIncident.getAddress().getCountry();
+        this.cityOfIncident = geocodeDataOfIncident.getAddress().getCity();
+        this.streetOfIncident = geocodeDataOfIncident.getAddress().getStreetname();
     }
 
     public String getCountryOfIncident() {
@@ -40,6 +42,14 @@ public class TrafficIncidentLocation {
 
     public void setStreetOfIncident(String streetOfIncident) {
         this.streetOfIncident = streetOfIncident;
+    }
+
+    public GeocodeData getGeocodeDataOfIncident() {
+        return geocodeDataOfIncident;
+    }
+
+    public void setGeocodeDataOfIncident(GeocodeData geocodeDataOfIncident) {
+        this.geocodeDataOfIncident = geocodeDataOfIncident;
     }
 
 }

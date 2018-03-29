@@ -1,7 +1,10 @@
 package com.deusgmbh.xcusatio.api.services;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.context.wildcard.CalendarContext;
@@ -10,6 +13,8 @@ import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 public class CalendarAPI extends APIService {
+
+    private final static Logger LOGGER = Logger.getLogger(CalendarAPI.class.getName());
 
     @Override
     public CalendarContext get(UserSettings usersettings) {
@@ -28,7 +33,16 @@ public class CalendarAPI extends APIService {
         kruse.setName("Eckard Kruse");
         kruse.setTags(tagList);
 
-        CalendarContext calendarContext = new CalendarContext("Software Engineering 2", kruse, "09.00", "12.15", 190,
+        String dateFormat = "MM/dd/yyyy hh:mm:ss";
+        Date startTime = null, endTime = null;
+        try {
+            startTime = new SimpleDateFormat(dateFormat).parse("03/27/2018 09:00:00");
+            endTime = new SimpleDateFormat(dateFormat).parse("03/27/2018 12:15:00");
+        } catch (Exception e) {
+            LOGGER.info("parsed wrong date format, " + e.getMessage());
+        }
+
+        CalendarContext calendarContext = new CalendarContext("Software Engineering 2", kruse, startTime, endTime, 190,
                 15);
         return calendarContext;
     }
@@ -51,7 +65,7 @@ public class CalendarAPI extends APIService {
     // CalendarAPI calendarAPI = new CalendarAPI();
     //
     // CalendarContext calendarContext = calendarAPI.get(userSettings);
-    // calendarContext.printContextContent();
+    // calendarContext.logContextContent();
     // }
 
 }

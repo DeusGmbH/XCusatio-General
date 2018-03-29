@@ -5,12 +5,19 @@ import com.deusgmbh.xcusatio.data.usersettings.Address;
 public class GeocodeData {
 
     private Address address;
-    private double[] coordinates;
+    private double[] addressSpotCoordinates;
+    private double[][] boundingBoxCoordinates;
 
-    public GeocodeData(Address address, double[] coordinates) {
+    public GeocodeData(Address address, double[] addressSpotCoordinates, double[][] boundingBoxCoordinates) {
         super();
         this.address = address;
-        this.coordinates = coordinates;
+        this.addressSpotCoordinates = addressSpotCoordinates;
+        this.boundingBoxCoordinates = boundingBoxCoordinates;
+    }
+
+    public GeocodeData(Address address) {
+        super();
+        this.address = address;
     }
 
     public Address getAddress() {
@@ -21,12 +28,20 @@ public class GeocodeData {
         this.address = address;
     }
 
-    public double[] getCoordinates() {
-        return coordinates;
+    public double[] getAddressSpotCoordinates() {
+        return addressSpotCoordinates;
     }
 
-    public void setCoordinates(double[] coordinates) {
-        this.coordinates = coordinates;
+    public void setAddressSpotCoordinates(double[] addressSpotCoordinates) {
+        this.addressSpotCoordinates = addressSpotCoordinates;
+    }
+
+    public double[][] getBoundingBoxCoordinates() {
+        return boundingBoxCoordinates;
+    }
+
+    public void setBoundingBoxCoordinates(double[][] boundingBoxCoordinates) {
+        this.boundingBoxCoordinates = boundingBoxCoordinates;
     }
 
 }

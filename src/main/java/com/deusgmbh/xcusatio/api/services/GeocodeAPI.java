@@ -67,11 +67,11 @@ public class GeocodeAPI extends APIService {
     }
 
     /* for testing purposes */
-    public static void main(String[] gold) throws IOException {
-        GeocodeAPI gApi = new GeocodeAPI(
-                "https://geocoder.cit.api.here.com/6.2/geocode.json?app_id=ObXv79Ww3xdQ996uEDLw&app_code=74fsgcSubek54INvT13Rcg&searchtext=6+Coblitzallee+Mannheim+68163+DE");
-        gApi.get(null);
-
-    }
+    // public static void main(String[] gold) throws IOException {
+    // GeocodeAPI gApi = new GeocodeAPI(
+    // "https://geocoder.cit.api.here.com/6.2/geocode.json?app_id=ObXv79Ww3xdQ996uEDLw&app_code=74fsgcSubek54INvT13Rcg&searchtext=6+Coblitzallee+Mannheim+68163+DE");
+    // gApi.get(null);
+    //
+    // }
 
 }
