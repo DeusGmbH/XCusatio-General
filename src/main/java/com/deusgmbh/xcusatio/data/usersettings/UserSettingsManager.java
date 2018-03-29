@@ -7,6 +7,11 @@ import com.deusgmbh.xcusatio.data.StorageUnit;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.ExcuseVibeMode;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
 /**
  * 
  * @author Tobias.Schmidt@de.ibm.com
@@ -14,7 +19,6 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
  */
 
 public class UserSettingsManager extends StorageUnit<UserSettings> {
-
     public UserSettingsManager() {
         super(UserSettings.class);
     }
@@ -26,12 +30,30 @@ public class UserSettingsManager extends StorageUnit<UserSettings> {
         this.add(new UserSettings().setAge(dt)
                 .setSex(Sex.MALE)
                 .setExcuseVibeMode(ExcuseVibeMode.AUTOMATIC)
-                .setExcuseVibes(new ExcuseVibes(true, false, true))
+                .setExcuseVibes(new ExcuseVibes(false, false, true))
                 .setHome(new Address().setCity("Mannheim")
                         .setZip("68159")
                         .setStreetname("Akademiestr.")
                         .setStreetnum("6")));
         return this;
+    }
+
+    public ObjectProperty<UserSettings> get(int id) {
+        ObjectProperty<UserSettings> observableUnit = new SimpleObjectProperty<UserSettings>(this.get()
+                .get(id));
+        UserSettingsManager thisManager = this;
+        observableUnit.addListener(new ChangeListener<UserSettings>() {
+
+            @Override
+            public void changed(ObservableValue<? extends UserSettings> observable, UserSettings oldValue,
+                    UserSettings newValue) {
+                thisManager.get()
+                        .set(id, newValue);
+            }
+
+        });
+
+        return observableUnit;
     }
 
 }

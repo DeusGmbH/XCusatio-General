@@ -35,11 +35,10 @@ public class XCusatio extends Application {
         mainWindow.registerExcuseSupplier(mainController::getExcuses);
         mainWindow.registerLecturerSupplier(mainController::getLecturers);
         mainWindow.registerScenarioButtonActionEvent(mainController::generateExcuse);
-        mainWindow.registerUserSettingsSupplier(mainController::getUserSettings);
-        mainWindow.registerChangeUserSettingsEvent(mainController::editUserSettings);
 
         mainWindow.registerTagsSupplier(mainController::getTags);
         mainWindow.registerWildcardSupplier(mainController::getWildcardNames);
-        mainWindow.registerMostRecentlyUsedExcusesSupplier(mainController::getMostRecentlyUsedExcuses);
+        mainWindow.registerMostRecentlyUsedExcusesSupplier(mainController.getMostRecentlyUsedExcuses());
+        mainWindow.registerUserSettings(mainController.getUserSettings());
     }
 }

@@ -1,9 +1,11 @@
 package com.deusgmbh.xcusatio.ui.dashboard;
 
-import java.util.ArrayList;
-
+import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings.ExcuseVibeMode;
 import com.deusgmbh.xcusatio.ui.utility.LabeledToggleSwitch;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -22,28 +24,59 @@ public class QuickSettingsPane extends VBox {
     private static final String MOOD_HUMOR_LABEL = "Humor";
     private static final String MOOD_AGGRESSION_LABEL = "Aggression";
     private static final String MOOD_FAWN_LABEL = "Schleimen";
-    private static final String QUICK_SETTINGS_PANE_BORDER_COLOR = "#000000";
-
-    private VBox moodRegulatorPane;
-    private VBox recentlyUsedPane;
-
-    private ArrayList<String> recentlyUsedList;
 
     private LabeledToggleSwitch autoMoodToggle;
     private LabeledToggleSwitch humorToggle;
     private LabeledToggleSwitch aggressionToggle;
     private LabeledToggleSwitch fawnToggle;
 
-    public QuickSettingsPane() {
-        Label moodRegulatorLabel = new Label(MOOD_REGULATOR_TITLE);
-        moodRegulatorLabel.getStyleClass().add("h3");
-        autoMoodToggle = new LabeledToggleSwitch(AUTO_MOOD_TOGGLE_LABEL);
-        humorToggle = new LabeledToggleSwitch(MOOD_HUMOR_LABEL);
-        aggressionToggle = new LabeledToggleSwitch(MOOD_AGGRESSION_LABEL);
-        fawnToggle = new LabeledToggleSwitch(MOOD_FAWN_LABEL);
+    private ObjectProperty<UserSettings> userSettings;
 
-        this.getStyleClass().add("excuse-quick-settings");
-        this.getChildren().addAll(moodRegulatorLabel, autoMoodToggle, humorToggle, aggressionToggle, fawnToggle);
+    public QuickSettingsPane(ObjectProperty<UserSettings> userSettings) {
+        this.userSettings = userSettings;
+
+        Label moodRegulatorLabel = new Label(MOOD_REGULATOR_TITLE);
+        moodRegulatorLabel.getStyleClass()
+                .add("h3");
+        autoMoodToggle = new LabeledToggleSwitch(AUTO_MOOD_TOGGLE_LABEL, userSettings.getValue()
+                .getExcuseVibeMode() == ExcuseVibeMode.AUTOMATIC ? true : false);
+        humorToggle = new LabeledToggleSwitch(MOOD_HUMOR_LABEL, userSettings.getValue()
+                .getExcuseVibes()
+                .isFunny(), !autoMoodToggle.getToggleState());
+        aggressionToggle = new LabeledToggleSwitch(MOOD_AGGRESSION_LABEL, userSettings.getValue()
+                .getExcuseVibes()
+                .isAggresiv(), !autoMoodToggle.getToggleState());
+        fawnToggle = new LabeledToggleSwitch(MOOD_FAWN_LABEL, userSettings.getValue()
+                .getExcuseVibes()
+                .isSuckUp(), !autoMoodToggle.getToggleState());
+
+        autoMoodToggle.setOnChange(this::deactivateToggles);
+        registerChangeUserSettingsEvents();
+
+        this.getChildren()
+                .addAll(moodRegulatorLabel, autoMoodToggle, humorToggle, aggressionToggle, fawnToggle);
+    }
+
+    private void registerChangeUserSettingsEvents() {
+        autoMoodToggle.registerChangeUserSettingsAction(this::changeUserSettings);
+        humorToggle.registerChangeUserSettingsAction(this::changeUserSettings);
+        aggressionToggle.registerChangeUserSettingsAction(this::changeUserSettings);
+        fawnToggle.registerChangeUserSettingsAction(this::changeUserSettings);
+    }
+
+    private void deactivateToggles() {
+        humorToggle.changeClickable();
+        aggressionToggle.changeClickable();
+        fawnToggle.changeClickable();
+    }
+
+    private void changeUserSettings() {
+        UserSettings oldValue = this.userSettings.getValue();
+        ExcuseVibes newExcuseVibes = new ExcuseVibes(this.aggressionToggle.getToggleState(),
+                this.humorToggle.getToggleState(), this.fawnToggle.getToggleState());
+        this.userSettings.set(new UserSettings(oldValue.getGoogleCalendar(), oldValue.getBirthdate(), oldValue.getSex(),
+                oldValue.getHome(),
+                autoMoodToggle.getToggleState() ? ExcuseVibeMode.AUTOMATIC : ExcuseVibeMode.MANUALLY, newExcuseVibes));
     }
 
     public boolean getAutoMoodToggle() {

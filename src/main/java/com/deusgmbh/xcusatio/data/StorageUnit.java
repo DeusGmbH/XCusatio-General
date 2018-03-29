@@ -49,10 +49,6 @@ abstract public class StorageUnit<T> {
         return this.units;
     }
 
-    public T get(int id) {
-        return this.units.get(id);
-    }
-
     /**
      * Loads XML file from path if present and parses it into the units array
      * 
