@@ -9,8 +9,22 @@ import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.ExcuseVibeMode;
 
+/**
+ * 
+ * @author tobias.schmidt@de.ibm.com
+ *
+ */
 public class ContextHandler {
 
+    /**
+     * This method creates a new context object out of data from userSettings
+     * the lecturers and the data from the apis specified in the scenario object
+     * 
+     * @param userSettings
+     * @param lecturers
+     * @param scenario
+     * @return
+     */
     public Context buildContext(UserSettings userSettings, List<Lecturer> lecturers, Scenario scenario) {
         Context context = new Context().setAge(userSettings.getAge())
                 .setSex(userSettings.getSex());
@@ -34,7 +48,6 @@ public class ContextHandler {
                         .filter(Lecturer.hasLecture(lectureName))
                         .findAny()
                         .ifPresent(lecturer -> context.setLecturer(lecturer));
-
             }
         }
         return context;
