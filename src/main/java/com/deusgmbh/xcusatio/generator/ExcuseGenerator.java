@@ -15,6 +15,8 @@ import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
 
+import javafx.collections.ObservableList;
+
 /**
  * 
  * @author Tobias.Schmidt@de.ibm.com
