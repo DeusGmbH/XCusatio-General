@@ -30,12 +30,7 @@ public class LabeledToggleSwitch extends BorderPane {
 
     public LabeledToggleSwitch(String labelText, boolean activatedState, boolean clickable) {
         label = new Label(labelText);
-<<<<<<< HEAD
-        label.getStyleClass().add("p");
-        toggleSwitch = new ToggleSwitch();
-=======
         toggleSwitch = new ToggleSwitch(activatedState, clickable);
->>>>>>> refs/remotes/origin/master
         this.setLeft(label);
         this.setRight(toggleSwitch);
         this.getStyleClass().add("toggle-switch");

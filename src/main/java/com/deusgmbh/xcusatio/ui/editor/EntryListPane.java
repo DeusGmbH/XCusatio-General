@@ -1,43 +1,3 @@
-<<<<<<< HEAD
-package com.deusgmbh.xcusatio.ui.editor;
-
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-
-/**
- * 
- * This class is a base class for ExcuseEntryListPane and LecturerEntryListPane
- * and should provide the part of the constructor, which is the same for both
- * classes. This
- * 
- * @author Pascal.Schroeder@de.ibm.com
- *
- */
-
-public class EntryListPane extends VBox {
-    protected Button removeSelectedEntry;
-    protected Button addEntry;
-
-    public EntryListPane() {
-        HBox entryOptionsPane = new HBox();
-        removeSelectedEntry = new Button("Entfernen");
-        addEntry = new Button("Hinzufügen");
-
-        Pane spacer = new Pane();
-        entryOptionsPane.setHgrow(spacer, Priority.ALWAYS);
-
-        removeSelectedEntry.getStyleClass().add("entry-list-button");
-        addEntry.getStyleClass().add("entry-list-button");
-
-        entryOptionsPane.getChildren().addAll(removeSelectedEntry, spacer, addEntry);
-
-        this.getChildren().addAll(entryOptionsPane);
-    }
-}
-=======
 package com.deusgmbh.xcusatio.ui.editor;
 
 import java.util.HashMap;
@@ -54,6 +14,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 /**
@@ -67,64 +29,59 @@ import javafx.scene.layout.VBox;
  */
 
 public abstract class EntryListPane<T> extends VBox {
-    protected Button removeEntryButton;
-    protected Button addEntryButton;
     protected TableView<T> entryTable;
+    protected Button addEntryButton;
+    protected Button removeSelectedEntryButton;
     private Consumer<IntUnaryOperator> itemSelectionIdUpdateEvent;
 
     public EntryListPane() {
         HBox entryOptionsPane = new HBox();
-        removeEntryButton = new Button("Entfernen");
-        addEntryButton = new Button("Hinzufügen");
-        entryOptionsPane.getChildren()
-                .addAll(removeEntryButton, addEntryButton);
-
-        this.getChildren()
-                .add(entryOptionsPane);
 
         entryTable = new TableView<>();
         entryTable.setEditable(false);
+        entryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         this.setTableColumns(this.getRequiredTableColumns());
 
+        removeSelectedEntryButton = new Button("Entfernen");
+        addEntryButton = new Button("Hinzufügen");
+
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        removeSelectedEntryButton.getStyleClass().add("entry-list-button");
+        addEntryButton.getStyleClass().add("entry-list-button");
+
+        entryOptionsPane.getChildren().addAll(removeSelectedEntryButton, spacer, addEntryButton);
+
+        this.getChildren().addAll(entryTable, entryOptionsPane);
+
         this.createRemoveEntryButtonListener();
         this.createAddEntryButtonListener();
-
-        this.getChildren()
-                .add(0, entryTable);
     }
 
     private void setTableColumns(HashMap<String, String> columnList) {
-        columnList.entrySet()
-                .stream()
-                .forEach(entry -> {
-                    TableColumn<T, String> column = new TableColumn<T, String>(entry.getValue()
-                            .toString());
-                    column.setCellValueFactory(new PropertyValueFactory<T, String>(entry.getKey()
-                            .toString()));
-                    column.prefWidthProperty()
-                            .bind(entryTable.widthProperty()
-                                    .multiply(1d / columnList.size())
-                                    .subtract(1));
-                    entryTable.getColumns()
-                            .add(column);
-                });
+        columnList.entrySet().stream().forEach(entry -> {
+            TableColumn<T, String> column = new TableColumn<T, String>(entry.getValue().toString());
+            column.setCellValueFactory(new PropertyValueFactory<T, String>(entry.getKey().toString()));
+            column.prefWidthProperty().bind(entryTable.widthProperty().multiply(1d / columnList.size()).subtract(40));
+            entryTable.getColumns().add(column);
+        });
     }
 
     public void setTableContent(ObservableList<T> entryList) {
 
         entryTable.setItems(entryList);
-        entryTable.getItems()
-                .addListener(new ListChangeListener<T>() {
-                    @Override
-                    public void onChanged(javafx.collections.ListChangeListener.Change<? extends T> c) {
-                        while (c.next()) {
-                            if (c.wasPermutated()) {
-                                itemSelectionIdUpdateEvent.accept(c::getPermutation);
-                            }
-                        }
+        entryTable.getItems().addListener(new ListChangeListener<T>() {
+            @Override
+            public void onChanged(javafx.collections.ListChangeListener.Change<? extends T> c) {
+                while (c.next()) {
+                    if (c.wasPermutated()) {
+                        itemSelectionIdUpdateEvent.accept(c::getPermutation);
                     }
-                });
+                }
+            }
+        });
     }
 
     public void registerItemSelectionIdUpdate(Consumer<IntUnaryOperator> itemSelectionIdUpdateEvent) {
@@ -132,35 +89,28 @@ public abstract class EntryListPane<T> extends VBox {
     }
 
     private void createRemoveEntryButtonListener() {
-        removeEntryButton.setOnAction(new EventHandler<ActionEvent>() {
+        removeSelectedEntryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent e) {
-                entryTable.getItems()
-                        .remove(entryTable.getSelectionModel()
-                                .getSelectedIndex());
+                entryTable.getItems().remove(entryTable.getSelectionModel().getSelectedIndex());
             }
         });
     }
 
     public void registerOnSelectEntryEvent(BiConsumer<Integer, ObservableList<T>> selectEntryEvent) {
-        entryTable.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((obs, oldSelection, newSelection) -> {
-                    if (newSelection != null) {
-                        selectEntryEvent.accept(entryTable.getSelectionModel()
-                                .getSelectedIndex(), entryTable.getItems());
-                    }
-                });
+        entryTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                selectEntryEvent.accept(entryTable.getSelectionModel().getSelectedIndex(), entryTable.getItems());
+            }
+        });
     }
 
     private void createAddEntryButtonListener() {
         this.addEntryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent e) {
-                entryTable.getItems()
-                        .add(createNewItem());
-                entryTable.getSelectionModel()
-                        .selectLast();
+                entryTable.getItems().add(createNewItem());
+                entryTable.getSelectionModel().selectLast();
             }
         });
     }
@@ -169,4 +119,3 @@ public abstract class EntryListPane<T> extends VBox {
 
     abstract protected T createNewItem();
 }
->>>>>>> refs/remotes/origin/master
