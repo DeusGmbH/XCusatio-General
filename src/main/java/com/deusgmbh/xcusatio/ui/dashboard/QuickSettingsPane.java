@@ -36,20 +36,25 @@ public class QuickSettingsPane extends VBox {
         this.userSettings = userSettings;
 
         Label moodRegulatorLabel = new Label(MOOD_REGULATOR_TITLE);
-        moodRegulatorLabel.getStyleClass().add("h3");
-        autoMoodToggle = new LabeledToggleSwitch(AUTO_MOOD_TOGGLE_LABEL,
-                userSettings.getValue().getExcuseVibeMode() == ExcuseVibeMode.AUTOMATIC ? true : false);
-        humorToggle = new LabeledToggleSwitch(MOOD_HUMOR_LABEL, userSettings.getValue().getExcuseVibes().isFunny(),
-                !autoMoodToggle.getToggleState());
-        aggressionToggle = new LabeledToggleSwitch(MOOD_AGGRESSION_LABEL,
-                userSettings.getValue().getExcuseVibes().isAggresiv(), !autoMoodToggle.getToggleState());
-        fawnToggle = new LabeledToggleSwitch(MOOD_FAWN_LABEL, userSettings.getValue().getExcuseVibes().isSuckUp(),
-                !autoMoodToggle.getToggleState());
+        moodRegulatorLabel.getStyleClass()
+                .add("h3");
+        autoMoodToggle = new LabeledToggleSwitch(AUTO_MOOD_TOGGLE_LABEL, userSettings.getValue()
+                .getExcuseVibeMode() == ExcuseVibeMode.AUTOMATIC ? true : false);
+        humorToggle = new LabeledToggleSwitch(MOOD_HUMOR_LABEL, userSettings.getValue()
+                .getExcuseVibes()
+                .isFunny(), !autoMoodToggle.getToggleState());
+        aggressionToggle = new LabeledToggleSwitch(MOOD_AGGRESSION_LABEL, userSettings.getValue()
+                .getExcuseVibes()
+                .isAggresiv(), !autoMoodToggle.getToggleState());
+        fawnToggle = new LabeledToggleSwitch(MOOD_FAWN_LABEL, userSettings.getValue()
+                .getExcuseVibes()
+                .isSuckUp(), !autoMoodToggle.getToggleState());
 
         autoMoodToggle.setOnChange(this::deactivateToggles);
         registerChangeUserSettingsEvents();
 
-        this.getChildren().addAll(moodRegulatorLabel, autoMoodToggle, humorToggle, aggressionToggle, fawnToggle);
+        this.getChildren()
+                .addAll(moodRegulatorLabel, autoMoodToggle, humorToggle, aggressionToggle, fawnToggle);
     }
 
     private void registerChangeUserSettingsEvents() {

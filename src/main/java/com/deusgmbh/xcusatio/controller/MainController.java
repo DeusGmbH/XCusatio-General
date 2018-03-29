@@ -54,7 +54,8 @@ public class MainController {
     }
 
     public void generateExcuse(Scenario scenario, Consumer<String> displayExcuse, DoubleConsumer displayThumbGesture) {
-        Context context = contextHandler.buildContext(this.getUserSettings().getValue(), this.getLecturers(), scenario);
+        Context context = contextHandler.buildContext(this.getUserSettings()
+                .getValue(), this.getLecturers(), scenario);
         if (scenario.isExcuseType()) {
             Excuse excuse = excuseGenerator.getContextBasedExcuse(this.getExcuses(), context, scenario);
 
