@@ -22,7 +22,11 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
  * 
  * @author Tobias.Schmidt@de.ibm.com, jan.leiblein@gmail.com
  *
+ * 
+ *
  */
+
+// TODO refactoring, simplify access to APIs
 public abstract class APIService {
 
     private static final Logger LOGGER = Logger.getLogger(APIService.class.getName());
@@ -67,6 +71,7 @@ public abstract class APIService {
         return (this.connection.getResponseCode() == HttpURLConnection.HTTP_OK);
     }
 
+    // TODO simplify
     private void readResponseStream() throws IOException, ParserConfigurationException, SAXException {
         InputStream inputStream = new BufferedInputStream(this.connection.getInputStream());
         // this.responseAsText = inputStreamToString(inputStream);
@@ -74,7 +79,7 @@ public abstract class APIService {
         inputStream.close();
     }
 
-    /* in production */
+    // TODO use JSON instead
     private NodeList getXMLTreeFrom(InputStream inputStream)
             throws IOException, ParserConfigurationException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

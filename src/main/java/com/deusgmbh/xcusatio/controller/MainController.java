@@ -119,4 +119,9 @@ public class MainController {
         this.triggerLecturerTableUpdate = updateLecturerTable;
         this.triggerLecturerTableUpdate.accept(this.getLecturers());
     }
+
+    public void editUserSettings(UserSettings editedUserSettingsObj) {
+        // TODO: writeEditUserSettings method (via storageUnit)
+
+    }
 }

@@ -223,6 +223,13 @@ public class XCusatioWindow extends Application {
 
     public void setQuickSettings(UserSettings userSettings) {
         // TODO: adjust QuickSettings
+    }
+  
+     public void registerUserSettingsSupplier(Supplier<UserSettings> userSettingsSupplier) {
+        profileSettings.registerUserSettingsSupplier(userSettingsSupplier);
+    }
 
+    public void registerChangeUserSettingsEvent(Consumer<UserSettings> userSettingsConsumer) {
+        profileSettings.createEditProfileBtnAction(userSettingsConsumer);
     }
 }

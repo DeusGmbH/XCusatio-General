@@ -67,5 +67,4 @@ public class CalendarAPI extends APIService {
     // CalendarContext calendarContext = calendarAPI.get(userSettings);
     // calendarContext.logContextContent();
     // }
-
 }

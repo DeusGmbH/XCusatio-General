@@ -52,7 +52,7 @@ public class GeocodeAPI extends APIService {
         }
 
         Address homeAddress = usersettings.getHome();
-        String addressAsText = homeAddress.getStreetnum() + "+" + homeAddress.getStreetname() + "+"
+        String addressAsText = homeAddress.getStreetnum() + "+" + homeAddress.getStreetName() + "+"
                 + homeAddress.getCity() + "+" + homeAddress.getCountry();
 
         return null;

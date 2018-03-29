@@ -15,9 +15,12 @@ public class TrafficIncidentLocation {
 
     public TrafficIncidentLocation(GeocodeData geocodeDataOfIncident) {
         super();
-        this.countryOfIncident = geocodeDataOfIncident.getAddress().getCountry();
-        this.cityOfIncident = geocodeDataOfIncident.getAddress().getCity();
-        this.streetOfIncident = geocodeDataOfIncident.getAddress().getStreetname();
+        this.countryOfIncident = geocodeDataOfIncident.getAddress()
+                .getCountry();
+        this.cityOfIncident = geocodeDataOfIncident.getAddress()
+                .getCity();
+        this.streetOfIncident = geocodeDataOfIncident.getAddress()
+                .getStreetName();
     }
 
     public String getCountryOfIncident() {
