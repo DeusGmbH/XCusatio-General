@@ -27,18 +27,32 @@ public class ToggleSwitch extends Parent {
     private static final Color SWITCH_BACKGROUND_COLOR = Color.WHITE;
     private static final Color SWITCH_STROKE_COLOR = Color.LIGHTGRAY;
     private static final Color SWITCH_ACTIVATED_COLOR = Color.LIGHTBLUE;
+    private static final Color UNCLICKABLE_BACKGROUND_COLOR = Color.GRAY;
+    private static final Color SWITCH_UNCLICKABLE_COLOR = Color.LIGHTGRAY;
+    private static final Color SWITCH_BACKGROUND = Color.WHITE;
 
     private BooleanProperty isSwitched = new SimpleBooleanProperty(false);
+    private BooleanProperty clickable = new SimpleBooleanProperty(false);
+
+    private Rectangle background;
+    private Circle toggleCircle;
 
     private Runnable changeUserSettings;
 
     public ToggleSwitch() {
-        this(false);
+        this(false, true);
     }
 
     public ToggleSwitch(boolean activatedState) {
-        Rectangle background = createBackgroundRectangle(activatedState);
-        Circle toggleCircle = createToggleCircle(activatedState);
+        this(activatedState, true);
+    }
+
+    public ToggleSwitch(boolean activatedState, boolean clickable) {
+        this.isSwitched = new SimpleBooleanProperty(activatedState);
+        this.clickable = new SimpleBooleanProperty(clickable);
+
+        background = createBackgroundRectangle(activatedState);
+        toggleCircle = createToggleCircle(activatedState);
 
         TranslateTransition translateAnimation = new TranslateTransition(Duration.seconds(0.25));
         FillTransition fillAnimation = new FillTransition(Duration.seconds(0.25));
@@ -52,6 +66,8 @@ public class ToggleSwitch extends Parent {
             isSwitched.set(!isSwitched.get());
             changeUserSettings.run();
         });
+
+        setClickable(clickable);
     }
 
     private Rectangle createBackgroundRectangle(boolean activatedState) {
@@ -78,10 +94,10 @@ public class ToggleSwitch extends Parent {
             ParallelTransition animation = new ParallelTransition(translateAnimation, fillAnimation);
 
             boolean isOn = newState.booleanValue();
-            translateAnimation.setToX(originalState ? (isOn ? -SWITCH_WIDTH / 2 : 0) : (isOn ? SWITCH_WIDTH / 2 : 0));
-            fillAnimation.setFromValue(originalState ? (isOn ? SWITCH_ACTIVATED_COLOR : SWITCH_BACKGROUND_COLOR)
+            translateAnimation.setToX(originalState ? (isOn ? 0 : -SWITCH_WIDTH / 2) : (isOn ? SWITCH_WIDTH / 2 : 0));
+            fillAnimation.setFromValue(originalState ? (isOn ? SWITCH_BACKGROUND_COLOR : SWITCH_ACTIVATED_COLOR)
                     : (isOn ? SWITCH_BACKGROUND_COLOR : SWITCH_ACTIVATED_COLOR));
-            fillAnimation.setToValue(originalState ? (isOn ? SWITCH_BACKGROUND_COLOR : SWITCH_ACTIVATED_COLOR)
+            fillAnimation.setToValue(originalState ? (isOn ? SWITCH_ACTIVATED_COLOR : SWITCH_BACKGROUND_COLOR)
                     : (isOn ? SWITCH_ACTIVATED_COLOR : SWITCH_BACKGROUND_COLOR));
 
             animation.play();
@@ -106,13 +122,22 @@ public class ToggleSwitch extends Parent {
     }
 
     public void changeClickable() {
-        if (isSwitched.get()) {
-            this.setOnMouseClicked(null);
-        } else {
+        setClickable(!this.clickable.get());
+    }
+
+    public void setClickable(boolean value) {
+        this.clickable.set(value);
+        if (this.clickable.get()) {
             this.setOnMouseClicked(event -> {
                 isSwitched.set(!isSwitched.get());
                 changeUserSettings.run();
             });
+            background.setFill(this.isSwitched.get() ? SWITCH_ACTIVATED_COLOR : SWITCH_BACKGROUND_COLOR);
+            toggleCircle.setFill(SWITCH_BACKGROUND);
+        } else {
+            this.setOnMouseClicked(null);
+            background.setFill(UNCLICKABLE_BACKGROUND_COLOR);
+            toggleCircle.setFill(SWITCH_UNCLICKABLE_COLOR);
         }
     }
 }

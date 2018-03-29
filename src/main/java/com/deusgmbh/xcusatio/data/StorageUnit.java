@@ -59,8 +59,7 @@ abstract public class StorageUnit<T> {
 
             @Override
             public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
-                // TODO: Persist newValue
-                System.out.println("Changed on " + newValue);
+                units.set(id, newValue);
             }
 
         });
