@@ -210,3 +210,38 @@
 .table-view > .virtual-flow > .scroll-bar > .decrement-button {
     -fx-opacity: 0;
 }
+
+.list-view {
+  -fx-background-insets: 10;
+  -fx-padding: 10;
+}
+
+.excuse-quick-settings .scroll-bar:vertical,
+.excuse-quick-settings .scroll-bar:vertical > .track,
+.excuse-quick-settings .scroll-bar:vertical > .track-background, 
+.excuse-quick-settings .scroll-bar:horizontal,
+.excuse-quick-settings .scroll-bar:horizontal > .track,
+.excuse-quick-settings .scroll-bar:horizontal > .track-background ,
+.excuse-quick-settings .corner {
+    -fx-background-color: #444;
+}
+
+.excuse-quick-settings .scroll-bar > .increment-button, 
+.excuse-quick-settings .scroll-bar > .decrement-button {
+    -fx-opacity: 0;
+}
+
+.list-cell {
+	-fx-background-color: #444;
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+}
+
+.list-cell:odd {
+	-fx-background-color: #444;
+	-fx-text-fill: white;
+}
+
+.list-cell:hover {
+    -fx-background-color: #444;
+}
