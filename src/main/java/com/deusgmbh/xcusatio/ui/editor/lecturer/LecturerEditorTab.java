@@ -26,11 +26,16 @@ public class LecturerEditorTab extends EditorTab {
     public LecturerEditorTab(String name) {
         super(name);
         entryListPane = new LecturerEntryListPane();
-        entryListPane.registerOnSelectEntryEvent(this::createEditForm);
+																	   
         editEntryPane = new LecturerEditEntryPane();
-        super.editor.getItems()
-                .addAll(entryListPane, editEntryPane);
+							   
+													  
 
+        entryListPane.registerOnSelectEntryEvent(this::createEditForm);
+        entryListPane.registerItemSelectionIdUpdate(editEntryPane::updateSelectionId);
+
+        super.editor.getItems()
+            .addAll(entryListPane, editEntryPane);
     }
 
     public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
@@ -43,7 +48,6 @@ public class LecturerEditorTab extends EditorTab {
 
     public void registerLecturerSupplier(Supplier<ObservableList<Lecturer>> lecturerSupplier) {
         this.entryListPane.setTableContent(lecturerSupplier.get());
-
     }
 
 }

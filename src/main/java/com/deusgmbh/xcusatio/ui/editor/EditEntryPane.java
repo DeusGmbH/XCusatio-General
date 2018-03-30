@@ -7,7 +7,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntUnaryOperator;
 import java.util.function.Supplier;
 
-import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 
 import javafx.collections.ObservableList;
@@ -20,8 +19,8 @@ import javafx.scene.layout.GridPane;
 
 /**
  * 
- * This class is a base class for ExcuseEditEntryPane and LecturerEditEntryPane
- * and should provide methods, which are the same for both classes. With these
+ * This class is a base class for TEditEntryPane and LecturerEditEntryPane and
+ * should provide methods, which are the same for both classes. With these
  * classes an edit form for the selected entry in the EntryListPane is created.
  * So you can edit this fields and save the changes, which forces an update of
  * the entries.
@@ -30,7 +29,7 @@ import javafx.scene.layout.GridPane;
  *
  */
 
-public abstract class EditEntryPane extends GridPane {
+public abstract class EditEntryPane<T> extends GridPane {
     private static final String EDITOR_TITLE = "Editor";
     private static final String SUBMIT_EDITED_ENTRY_BTN_LABEL = "Speichern";
 
@@ -38,7 +37,7 @@ public abstract class EditEntryPane extends GridPane {
     protected Button submitEditedEntryBtn;
 
     protected int selectedItemId;
-    protected ObservableList<Excuse> editableItems;
+    protected ObservableList<T> editableItems;
 
     protected Supplier<List<Tag>> allTagsSetSupplier;
 

@@ -29,6 +29,8 @@ import javafx.scene.layout.VBox;
  */
 
 public abstract class EntryListPane<T> extends VBox {
+									   
+									
     protected TableView<T> entryTable;
     protected Button addEntryButton;
     protected Button removeSelectedEntryButton;
@@ -36,6 +38,13 @@ public abstract class EntryListPane<T> extends VBox {
 
     public EntryListPane() {
         HBox entryOptionsPane = new HBox();
+													
+												   
+									  
+														   
+
+						  
+									   
 
         entryTable = new TableView<>();
         entryTable.setEditable(false);
@@ -44,7 +53,7 @@ public abstract class EntryListPane<T> extends VBox {
         this.setTableColumns(this.getRequiredTableColumns());
 
         removeSelectedEntryButton = new Button("Entfernen");
-        addEntryButton = new Button("Hinzufügen");
+        addEntryButton = new Button("HinzufÃ¼gen");
 
         Pane spacer = new Pane();
         HBox.setHgrow(spacer, Priority.ALWAYS);
