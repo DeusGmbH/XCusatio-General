@@ -17,6 +17,7 @@ import javafx.collections.ObservableList;
  */
 
 public class ExcusesManager extends StorageUnit<Excuse> {
+    private static final long MAX_RECENTLY_USED_LIST_SIZE = 10;
     private ObservableList<String> lastUsedList;
 
     public ExcusesManager() {

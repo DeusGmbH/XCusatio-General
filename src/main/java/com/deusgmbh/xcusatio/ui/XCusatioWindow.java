@@ -18,11 +18,11 @@ import com.deusgmbh.xcusatio.util.TriConsumer;
 
 import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
@@ -40,8 +40,10 @@ import javafx.stage.StageStyle;
 
 public class XCusatioWindow extends Application {
     private static final String WINDOW_TITLE = "Deus GmbH - xCusatio";
+
+    private static final int WINDOW_BORDER_HEIGHT = 40;
     private static final int WINDOW_DEF_WIDTH = 1280;
-    private static final int WINDOW_DEF_HEIGHT = 720;
+    private static final int WINDOW_DEF_HEIGHT = 720 + WINDOW_BORDER_HEIGHT;
     private static final int WINDOW_MAX_WIDTH = 1920;
     private static final int WINDOW_MAX_HEIGHT = 1080;
 
@@ -68,17 +70,26 @@ public class XCusatioWindow extends Application {
         initMainStage(this.stage);
 
         windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
+        windowBorder.setPrefHeight(WINDOW_BORDER_HEIGHT);
 
         navigationPanel = new NavigationPanel();
-        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
+        navigationPanel.prefWidthProperty()
+                .bind(main.widthProperty()
+                        .multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
 
         dashboard = new Dashboard();
         editor = new Editor();
         profileSettings = new ProfileSettings();
 
-        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
-        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
-        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
+        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, this::setContent);
+        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, this::setContent);
+        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, this::setContent);
+        navigationPanel.getChildren()
+                .get(0)
+                .getStyleClass()
+                .add("active");
+
+        windowBorder.toFront();
 
         main.setTop(windowBorder);
         main.setLeft(navigationPanel);
@@ -87,12 +98,29 @@ public class XCusatioWindow extends Application {
         stage.show();
     }
 
+    private void setContent(Node node) {
+        navigationPanel.getChildren()
+                .stream()
+                .forEach(btn -> {
+                    if (btn.getStyleClass()
+                            .get(btn.getStyleClass()
+                                    .size() - 1)
+                            .equals("active")) {
+                        btn.getStyleClass()
+                                .remove(btn.getStyleClass()
+                                        .size() - 1);
+                    }
+                });
+        main.setCenter(node);
+    }
+
     private BorderPane initMainStage(Stage stage) {
         main = new BorderPane();
         stage.initStyle(StageStyle.UNDECORATED);
 
         Scene scene = new Scene(main);
-        scene.getStylesheets().add(SCENE_STYLESHEET_PATH);
+        scene.getStylesheets()
+                .add(SCENE_STYLESHEET_PATH);
         stage.setWidth(WINDOW_DEF_WIDTH);
         stage.setHeight(WINDOW_DEF_HEIGHT);
         stage.setMinWidth(WINDOW_DEF_WIDTH);
@@ -184,10 +212,6 @@ public class XCusatioWindow extends Application {
 
     public void setScenarios(List<Scenario> scenarioList) {
         this.scenarioList = scenarioList;
-    }
-
-    public void setQuickSettings(ObservableValue<UserSettings> userSettings) {
-        // TODO: adjust QuickSettings
     }
 
     public void registerExcuseSupplier(Supplier<ObservableList<Excuse>> excuseSupplier) {

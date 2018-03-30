@@ -18,13 +18,17 @@ public class RecentlyUsedPane extends VBox {
 
     // TODO: Not static, but dynamic dependent on the size of this Pane
     private static final int LIMIT_RECENTLY_USED_ENTRIES = 10;
-    private static final int CELL_HEIGHT = 30;
+    private static final int CELL_HEIGHT = 34;
 
     public RecentlyUsedPane(ObservableList<String> recentlyUsedList) {
         Label recentlyUsedLabel = new Label(RECENTLY_USED_TITLE);
+        recentlyUsedLabel.getStyleClass()
+                .add("h3");
         ListView<String> recentlyUsedListView = new ListView<String>(recentlyUsedList);
         this.getChildren()
                 .addAll(recentlyUsedLabel, recentlyUsedListView);
-        recentlyUsedListView.setMaxHeight(LIMIT_RECENTLY_USED_ENTRIES * CELL_HEIGHT);
+        recentlyUsedListView.prefHeightProperty()
+                .bind(this.heightProperty()
+                        .multiply(0.85));
     }
 }

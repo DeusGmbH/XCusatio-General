@@ -36,7 +36,7 @@ public class Dashboard extends BorderPane {
     private static final String THUMB_GESTURE_UI_NAME = "Daumengeste";
     private static final String WHEEL_OF_FORTUNE_UI_NAME = "Glücksrad";
     private static final String LATE_ARRIVAL_UI_NAME = "Verspätung";
-    private static final String DELAYED_SUBMISSION_UI_NAME = "Projektabgabe";
+    private static final String DELAYED_SUBMISSION_UI_NAME = "Abgabe";
 
     private HBox scenarioButtonPane;
     private ScenarioReactionPane reactionPane;
@@ -48,7 +48,8 @@ public class Dashboard extends BorderPane {
     public Dashboard() {
         scenarioButtonPane = new HBox();
         scenarioButtonPane.prefHeightProperty()
-                .bind(this.heightProperty().multiply(SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER));
+                .bind(this.heightProperty()
+                        .multiply(SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER));
 
         reactionPane = new ScenarioReactionPane();
 
@@ -70,17 +71,24 @@ public class Dashboard extends BorderPane {
     public void createScenarioButtons(List<Scenario> scenarioList,
             TriConsumer<Scenario, Consumer<String>, DoubleConsumer> generateExcuse) {
         Dashboard thisDashboard = this;
-        scenarioList.stream().forEach(scenario -> {
-            Button tmpBtn = new Button(getUINameByType(scenario.getScenarioType()));
-            tmpBtn.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                    generateExcuse.accept(scenario, thisDashboard::setExcuseLabel, thisDashboard::setThumbGesture);
+        scenarioList.stream()
+                .forEach(scenario -> {
+                    Button tmpBtn = new Button(getUINameByType(scenario.getScenarioType()));
+                    tmpBtn.prefWidthProperty()
+                            .bind(this.widthProperty()
+                                    .multiply(1d / scenarioList.size()));
 
-                }
-            });
-            scenarioButtonPane.getChildren().add(tmpBtn);
-        });
+                    tmpBtn.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(final ActionEvent e) {
+                            generateExcuse.accept(scenario, thisDashboard::setExcuseLabel,
+                                    thisDashboard::setThumbGesture);
+
+                        }
+                    });
+                    scenarioButtonPane.getChildren()
+                            .add(tmpBtn);
+                });
     }
 
     public void setExcuseLabel(String excuse) {
@@ -131,10 +139,13 @@ public class Dashboard extends BorderPane {
 
     public void registerUserSettings(ObjectProperty<UserSettings> userSettings) {
         quickSettingsPane = new QuickSettingsPane(userSettings);
-        quickSettingsPane.prefWidthProperty().bind(this.widthProperty().multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
+        quickSettingsPane.prefWidthProperty()
+                .bind(this.widthProperty()
+                        .multiply(QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER));
 
         rightPane.setTop(quickSettingsPane);
-        rightPane.getStyleClass().add("excuse-quick-settings");
+        rightPane.getStyleClass()
+                .add("excuse-quick-settings");
     }
 
 }

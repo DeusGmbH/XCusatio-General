@@ -31,7 +31,6 @@ public class XCusatio extends Application {
     public void start(Stage stage) throws Exception {
         mainWindow.start(stage);
         mainWindow.setScenarios(mainController.getScenarios());
-        mainWindow.setQuickSettings(mainController.getUserSettings());
         mainWindow.registerExcuseSupplier(mainController::getExcuses);
         mainWindow.registerLecturerSupplier(mainController::getLecturers);
         mainWindow.registerScenarioButtonActionEvent(mainController::generateExcuse);

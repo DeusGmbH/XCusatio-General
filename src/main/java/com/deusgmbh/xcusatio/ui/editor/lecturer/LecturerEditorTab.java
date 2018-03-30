@@ -26,13 +26,16 @@ public class LecturerEditorTab extends EditorTab {
     public LecturerEditorTab(String name) {
         super(name);
         entryListPane = new LecturerEntryListPane();
+																	   
         editEntryPane = new LecturerEditEntryPane();
+							   
+													  
 
         entryListPane.registerOnSelectEntryEvent(this::createEditForm);
         entryListPane.registerItemSelectionIdUpdate(editEntryPane::updateSelectionId);
 
-        super.editor.setLeft(entryListPane);
-        super.editor.setCenter(editEntryPane);
+        super.editor.getItems()
+            .addAll(entryListPane, editEntryPane);
     }
 
     public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
