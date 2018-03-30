@@ -49,39 +49,52 @@ public abstract class EntryListPane<T> extends VBox {
         Pane spacer = new Pane();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        removeSelectedEntryButton.getStyleClass().add("entry-list-button");
-        addEntryButton.getStyleClass().add("entry-list-button");
+        removeSelectedEntryButton.getStyleClass()
+                .add("entry-list-button");
+        addEntryButton.getStyleClass()
+                .add("entry-list-button");
 
-        entryOptionsPane.getChildren().addAll(removeSelectedEntryButton, spacer, addEntryButton);
+        entryOptionsPane.getChildren()
+                .addAll(removeSelectedEntryButton, spacer, addEntryButton);
 
-        this.getChildren().addAll(entryTable, entryOptionsPane);
+        this.getChildren()
+                .addAll(entryTable, entryOptionsPane);
 
         this.createRemoveEntryButtonListener();
         this.createAddEntryButtonListener();
     }
 
     private void setTableColumns(HashMap<String, String> columnList) {
-        columnList.entrySet().stream().forEach(entry -> {
-            TableColumn<T, String> column = new TableColumn<T, String>(entry.getValue().toString());
-            column.setCellValueFactory(new PropertyValueFactory<T, String>(entry.getKey().toString()));
-            column.prefWidthProperty().bind(entryTable.widthProperty().multiply(1d / columnList.size()).subtract(40));
-            entryTable.getColumns().add(column);
-        });
+        columnList.entrySet()
+                .stream()
+                .forEach(entry -> {
+                    TableColumn<T, String> column = new TableColumn<T, String>(entry.getValue()
+                            .toString());
+                    column.setCellValueFactory(new PropertyValueFactory<T, String>(entry.getKey()
+                            .toString()));
+                    column.prefWidthProperty()
+                            .bind(entryTable.widthProperty()
+                                    .multiply(1d / columnList.size())
+                                    .subtract(40));
+                    entryTable.getColumns()
+                            .add(column);
+                });
     }
 
     public void setTableContent(ObservableList<T> entryList) {
 
         entryTable.setItems(entryList);
-        entryTable.getItems().addListener(new ListChangeListener<T>() {
-            @Override
-            public void onChanged(javafx.collections.ListChangeListener.Change<? extends T> c) {
-                while (c.next()) {
-                    if (c.wasPermutated()) {
-                        itemSelectionIdUpdateEvent.accept(c::getPermutation);
+        entryTable.getItems()
+                .addListener(new ListChangeListener<T>() {
+                    @Override
+                    public void onChanged(javafx.collections.ListChangeListener.Change<? extends T> c) {
+                        while (c.next()) {
+                            if (c.wasPermutated()) {
+                                itemSelectionIdUpdateEvent.accept(c::getPermutation);
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
     }
 
     public void registerItemSelectionIdUpdate(Consumer<IntUnaryOperator> itemSelectionIdUpdateEvent) {
@@ -92,25 +105,32 @@ public abstract class EntryListPane<T> extends VBox {
         removeSelectedEntryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent e) {
-                entryTable.getItems().remove(entryTable.getSelectionModel().getSelectedIndex());
+                entryTable.getItems()
+                        .remove(entryTable.getSelectionModel()
+                                .getSelectedIndex());
             }
         });
     }
 
     public void registerOnSelectEntryEvent(BiConsumer<Integer, ObservableList<T>> selectEntryEvent) {
-        entryTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                selectEntryEvent.accept(entryTable.getSelectionModel().getSelectedIndex(), entryTable.getItems());
-            }
-        });
+        entryTable.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((obs, oldSelection, newSelection) -> {
+                    if (newSelection != null) {
+                        selectEntryEvent.accept(entryTable.getSelectionModel()
+                                .getSelectedIndex(), entryTable.getItems());
+                    }
+                });
     }
 
     private void createAddEntryButtonListener() {
         this.addEntryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent e) {
-                entryTable.getItems().add(createNewItem());
-                entryTable.getSelectionModel().selectLast();
+                entryTable.getItems()
+                        .add(createNewItem());
+                entryTable.getSelectionModel()
+                        .selectLast();
             }
         });
     }

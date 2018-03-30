@@ -33,7 +33,8 @@ public class ExcuseEditorTab extends EditorTab {
         entryListPane.registerOnSelectEntryEvent(this::createEditForm);
         entryListPane.registerItemSelectionIdUpdate(editEntryPane::updateSelectionId);
 
-        super.editor.getItems().addAll(entryListPane, editEntryPane);
+        super.editor.getItems()
+                .addAll(entryListPane, editEntryPane);
     }
 
     public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {

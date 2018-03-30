@@ -22,9 +22,13 @@ public class RecentlyUsedPane extends VBox {
 
     public RecentlyUsedPane(ObservableList<String> recentlyUsedList) {
         Label recentlyUsedLabel = new Label(RECENTLY_USED_TITLE);
-        recentlyUsedLabel.getStyleClass().add("h3");
+        recentlyUsedLabel.getStyleClass()
+                .add("h3");
         ListView<String> recentlyUsedListView = new ListView<String>(recentlyUsedList);
-        this.getChildren().addAll(recentlyUsedLabel, recentlyUsedListView);
-        recentlyUsedListView.prefHeightProperty().bind(this.heightProperty().multiply(0.85));
+        this.getChildren()
+                .addAll(recentlyUsedLabel, recentlyUsedListView);
+        recentlyUsedListView.prefHeightProperty()
+                .bind(this.heightProperty()
+                        .multiply(0.85));
     }
 }

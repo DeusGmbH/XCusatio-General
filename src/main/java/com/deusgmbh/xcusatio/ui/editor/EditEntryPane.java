@@ -44,23 +44,28 @@ public abstract class EditEntryPane extends GridPane {
 
     public EditEntryPane() {
         editorTitleLabel = new Label(EDITOR_TITLE);
-        editorTitleLabel.getStyleClass().add("h2");
+        editorTitleLabel.getStyleClass()
+                .add("h2");
         submitEditedEntryBtn = new Button(SUBMIT_EDITED_ENTRY_BTN_LABEL);
 
-        this.getStyleClass().add("edit-entry");
+        this.getStyleClass()
+                .add("edit-entry");
         this.add(editorTitleLabel, 0, 0);
     }
 
     protected void addNodesToPane(Node... nodesToAdd) {
-        this.getChildren().clear();
+        this.getChildren()
+                .clear();
         this.add(this.editorTitleLabel, 0, 0);
         final AtomicInteger counter = new AtomicInteger();
-        Arrays.asList(nodesToAdd).stream().forEach(node -> {
-            int columnIndex = counter.get() % 2;
-            int rowIndex = (int) Math.floor(counter.get() / 2d) + 1;
-            this.add(node, columnIndex, rowIndex);
-            counter.incrementAndGet();
-        });
+        Arrays.asList(nodesToAdd)
+                .stream()
+                .forEach(node -> {
+                    int columnIndex = counter.get() % 2;
+                    int rowIndex = (int) Math.floor(counter.get() / 2d) + 1;
+                    this.add(node, columnIndex, rowIndex);
+                    counter.incrementAndGet();
+                });
         this.add(this.submitEditedEntryBtn, 1, (int) Math.ceil(nodesToAdd.length / 2d) + 1);
     }
 

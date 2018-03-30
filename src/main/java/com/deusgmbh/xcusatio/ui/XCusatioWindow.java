@@ -73,7 +73,9 @@ public class XCusatioWindow extends Application {
         windowBorder.setPrefHeight(WINDOW_BORDER_HEIGHT);
 
         navigationPanel = new NavigationPanel();
-        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
+        navigationPanel.prefWidthProperty()
+                .bind(main.widthProperty()
+                        .multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
 
         dashboard = new Dashboard();
         editor = new Editor();
@@ -82,7 +84,10 @@ public class XCusatioWindow extends Application {
         navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, this::setContent);
         navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, this::setContent);
         navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, this::setContent);
-        navigationPanel.getChildren().get(0).getStyleClass().add("active");
+        navigationPanel.getChildren()
+                .get(0)
+                .getStyleClass()
+                .add("active");
 
         windowBorder.toFront();
 
@@ -94,11 +99,18 @@ public class XCusatioWindow extends Application {
     }
 
     private void setContent(Node node) {
-        navigationPanel.getChildren().stream().forEach(btn -> {
-            if (btn.getStyleClass().get(btn.getStyleClass().size() - 1).equals("active")) {
-                btn.getStyleClass().remove(btn.getStyleClass().size() - 1);
-            }
-        });
+        navigationPanel.getChildren()
+                .stream()
+                .forEach(btn -> {
+                    if (btn.getStyleClass()
+                            .get(btn.getStyleClass()
+                                    .size() - 1)
+                            .equals("active")) {
+                        btn.getStyleClass()
+                                .remove(btn.getStyleClass()
+                                        .size() - 1);
+                    }
+                });
         main.setCenter(node);
     }
 
@@ -107,7 +119,8 @@ public class XCusatioWindow extends Application {
         stage.initStyle(StageStyle.UNDECORATED);
 
         Scene scene = new Scene(main);
-        scene.getStylesheets().add(SCENE_STYLESHEET_PATH);
+        scene.getStylesheets()
+                .add(SCENE_STYLESHEET_PATH);
         stage.setWidth(WINDOW_DEF_WIDTH);
         stage.setHeight(WINDOW_DEF_HEIGHT);
         stage.setMinWidth(WINDOW_DEF_WIDTH);

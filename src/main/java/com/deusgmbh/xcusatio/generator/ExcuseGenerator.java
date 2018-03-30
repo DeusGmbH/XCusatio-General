@@ -78,7 +78,6 @@ public class ExcuseGenerator {
         int observableExcuseId = getExcuseIdByExcuse(finalExcuses.get(randomExcuseId));
         if (observableExcuseId != -1) {
             this.excuseList.set(observableExcuseId, finalExcuses.get(randomExcuseId).setLastUsed(new Date()));
-            System.out.println(observableExcuseId);
         }
 
         return finalExcuses.get(randomExcuseId);

@@ -28,7 +28,8 @@ public class LecturerEditorTab extends EditorTab {
         entryListPane = new LecturerEntryListPane();
         entryListPane.registerOnSelectEntryEvent(this::createEditForm);
         editEntryPane = new LecturerEditEntryPane();
-        super.editor.getItems().addAll(entryListPane, editEntryPane);
+        super.editor.getItems()
+                .addAll(entryListPane, editEntryPane);
 
     }
 
