@@ -16,77 +16,97 @@ public class UserSettings {
     private LocalDate birthdate;
     private Sex sex;
     private Address home;
-    private ExcusesVibesMode excusesVibesMode;
-    private ExcusesVibes excusesVibes;
+    private Address university;
+    private ExcuseVibeMode excuseVibesMode;
+    private ExcuseVibes excuseVibes;
 
-    UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home, ExcusesVibesMode excusesVibesMode,
-            ExcusesVibes excusesVibes) {
+    public UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home,
+            ExcuseVibeMode excuseVibesMode, ExcuseVibes ExcuseVibes) {
         super();
         this.googleCalendar = googleCalendar;
         this.home = home;
         this.birthdate = birthdate;
         this.sex = sex;
-        this.excusesVibesMode = excusesVibesMode;
-        this.excusesVibes = excusesVibes;
+        this.excuseVibesMode = excuseVibesMode;
+        this.excuseVibes = ExcuseVibes;
     }
-  
+
     public UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home) {
-        this(googleCalendar, birthdate, sex, home, ExcusesVibesMode.AUTOMATIC, new ExcusesVibes(false, false, false));
+        this(googleCalendar, birthdate, sex, home, ExcuseVibeMode.AUTOMATIC, new ExcuseVibes(false, false, false));
+    }
+
+    public UserSettings() {
+        super();
     }
 
     public String getGoogleCalendar() {
         return googleCalendar;
     }
 
-    public void setGoogleCalendar(String googleCalendar) {
+    public UserSettings setGoogleCalendar(String googleCalendar) {
         this.googleCalendar = googleCalendar;
+        return this;
     }
 
     public Address getHome() {
         return home;
     }
 
-    public void setHome(Address home) {
+    public UserSettings setHome(Address home) {
         this.home = home;
+        return this;
     }
 
-    public LocalDate getAge() {
+    public Address getUniversity() {
+        return this.university;
+    }
+
+    public UserSettings setUniversity(Address university) {
+        this.university = university;
+        return this;
+    }
+
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setAge(LocalDate age) {
+    public UserSettings setAge(LocalDate age) {
         this.birthdate = age;
+        return this;
     }
 
     public Sex getSex() {
         return sex;
     }
 
-    public void setSex(Sex sex) {
+    public UserSettings setSex(Sex sex) {
         this.sex = sex;
+        return this;
     }
 
-    public ExcusesVibesMode getExcusesVibesMode() {
-        return excusesVibesMode;
+    public ExcuseVibeMode getExcuseVibeMode() {
+        return excuseVibesMode;
     }
 
-    public void setExcusesVibesMode(ExcusesVibesMode excusesVibesMode) {
-        this.excusesVibesMode = excusesVibesMode;
+    public UserSettings setExcuseVibeMode(ExcuseVibeMode ExcuseVibesMode) {
+        this.excuseVibesMode = ExcuseVibesMode;
+        return this;
     }
 
-    public ExcusesVibes getExcusesVibes() {
-        return excusesVibes;
+    public ExcuseVibes getExcuseVibes() {
+        return excuseVibes;
     }
 
-    public void setExcusesVibes(ExcusesVibes excusesVibes) {
-        this.excusesVibes = excusesVibes;
+    public UserSettings setExcuseVibes(ExcuseVibes excuseVibes) {
+        this.excuseVibes = excuseVibes;
+        return this;
     }
 
     public enum Sex {
         MALE, FEMALE;
     }
 
-    public enum ExcusesVibesMode {
+    public enum ExcuseVibeMode {
         AUTOMATIC, MANUALLY;
     }
 

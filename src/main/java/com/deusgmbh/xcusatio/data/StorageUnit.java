@@ -6,11 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import com.thoughtworks.xstream.XStream;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 
 /**
  * 
@@ -20,7 +22,7 @@ import com.thoughtworks.xstream.XStream;
 abstract public class StorageUnit<T> {
     private static final Logger LOGGER = Logger.getLogger(StorageUnit.class.getName());
 
-    private ArrayList<T> units = new ArrayList<T>();
+    private ObservableList<T> units = FXCollections.observableArrayList();
     private XStream xstream;
 
     private Class<T> parameterType;
@@ -30,18 +32,21 @@ abstract public class StorageUnit<T> {
 
         // TODO: remove this after testing is done
         this.reset();
+
+        this.units.addListener(new ListChangeListener<T>() {
+            @Override
+            public void onChanged(javafx.collections.ListChangeListener.Change<? extends T> c) {
+                System.out.println("Changed on " + c.toString());
+            }
+        });
     }
 
     /**
      * 
      * @returns all elements managed by this class
      */
-    public List<T> get() {
+    public ObservableList<T> get() {
         return this.units;
-    }
-
-    public T get(int id) {
-        return this.units.get(id);
     }
 
     /**
@@ -65,7 +70,7 @@ abstract public class StorageUnit<T> {
                 stringBuilder.append(ls);
             }
 
-            units = (ArrayList<T>) xstream.fromXML(stringBuilder.toString());
+            units = (ObservableList<T>) xstream.fromXML(stringBuilder.toString());
         } finally {
             reader.close();
         }
@@ -124,7 +129,7 @@ abstract public class StorageUnit<T> {
      * @returns this
      */
     public StorageUnit<T> reset() {
-        this.units = new ArrayList<>();
+        this.units = FXCollections.observableArrayList();
         this.addDefaultValues();
         return this;
     }

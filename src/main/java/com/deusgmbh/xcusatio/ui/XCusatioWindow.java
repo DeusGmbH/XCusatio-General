@@ -1,8 +1,6 @@
 package com.deusgmbh.xcusatio.ui;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.Supplier;
@@ -19,6 +17,9 @@ import com.deusgmbh.xcusatio.ui.utility.ResizeHelper;
 import com.deusgmbh.xcusatio.util.TriConsumer;
 
 import javafx.application.Application;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -149,38 +150,6 @@ public class XCusatioWindow extends Application {
         dashboard.createScenarioButtons(scenarioList, generateExcuse);
     }
 
-    public void updateExcuseTable(List<Excuse> excuseList) {
-        editor.setExcuseTableContent(excuseList);
-    }
-
-    public void updateLecturerTable(List<Lecturer> lecturerList) {
-        editor.setLecturerTableContent(lecturerList);
-    }
-
-    public void registerRemoveExcuseEvent(Consumer<Excuse> removeExcuse) {
-        editor.registerRemoveExcuseEvent(removeExcuse);
-    }
-
-    public void registerRemoveLecturerEvent(Consumer<Lecturer> addLecturer) {
-        editor.registerRemoveLecturerEvent(addLecturer);
-    }
-
-    public void registerAddExcuseEvent(Consumer<Excuse> removeExcuse) {
-        editor.registerAddExcuseEvent(removeExcuse);
-    }
-
-    public void registerAddLecturerEvent(Consumer<Lecturer> addLecturer) {
-        editor.registerAddLecturerEvent(addLecturer);
-    }
-
-    public void registerEditExcuseEvent(BiConsumer<Integer, Excuse> editExcuse) {
-        editor.registerEditExcuseEvent(editExcuse);
-    }
-
-    public void registerEditLecturerEvent(BiConsumer<Integer, Lecturer> editLecturer) {
-        editor.registerEditLecturerEvent(editLecturer);
-    }
-
     public void registerTagsSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         editor.registerTagsSetSupplier(tagsSetSupplier);
     }
@@ -195,10 +164,6 @@ public class XCusatioWindow extends Application {
 
     public void setThumbGesture(int value) {
         this.dashboard.setThumbGesture(value);
-    }
-
-    public void setRUList(ArrayList<String> ruList) {
-        this.dashboard.setRUList(ruList);
     }
 
     public boolean getAutoMoodToggle() {
@@ -221,15 +186,28 @@ public class XCusatioWindow extends Application {
         this.scenarioList = scenarioList;
     }
 
-    public void setQuickSettings(UserSettings userSettings) {
+    public void setQuickSettings(ObservableValue<UserSettings> userSettings) {
         // TODO: adjust QuickSettings
     }
-  
-     public void registerUserSettingsSupplier(Supplier<UserSettings> userSettingsSupplier) {
-        profileSettings.registerUserSettingsSupplier(userSettingsSupplier);
+
+    public void registerExcuseSupplier(Supplier<ObservableList<Excuse>> excuseSupplier) {
+        this.editor.registerExcuseSupplier(excuseSupplier);
+    }
+
+    public void registerLecturerSupplier(Supplier<ObservableList<Lecturer>> lecturerSupplier) {
+        this.editor.registerLecturerSupplier(lecturerSupplier);
+    }
+
+    public void registerMostRecentlyUsedExcusesSupplier(ObservableList<String> mostRecentlyUsedObservableList) {
+        this.dashboard.registerMostRecentlyUsedExcuses(mostRecentlyUsedObservableList);
     }
 
     public void registerChangeUserSettingsEvent(Consumer<UserSettings> userSettingsConsumer) {
         profileSettings.createEditProfileBtnAction(userSettingsConsumer);
+    }
+
+    public void registerUserSettings(ObjectProperty<UserSettings> userSettings) {
+        this.dashboard.registerUserSettings(userSettings);
+        this.profileSettings.registerUserSettings(userSettings);
     }
 }

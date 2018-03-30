@@ -5,12 +5,12 @@ package com.deusgmbh.xcusatio.data.usersettings;
  * @author Tobias.Schmidt@de.ibm.com
  *
  */
-public class ExcusesVibes {
+public class ExcuseVibes {
     private boolean aggresiv;
     private boolean funny;
     private boolean suckUp; // einschleimen
 
-    public ExcusesVibes(boolean aggresiv, boolean funny, boolean suckUp) {
+    public ExcuseVibes(boolean aggresiv, boolean funny, boolean suckUp) {
         super();
 
         this.aggresiv = aggresiv;

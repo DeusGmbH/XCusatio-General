@@ -33,7 +33,7 @@ public class TrafficAPI extends APIService {
         TrafficIncidentDetails trd = new TrafficIncidentDetails(TrafficIncidentType.CONSTRUCTION,
                 TrafficIncidentStatus.ACTIVE, "Strasse wegen Baustelle gesperrt");
         TrafficIncidentLocation tri = new TrafficIncidentLocation(
-                new GeocodeData(new Address("Coblitzallee", "6", "68163", "Mannheim", "Deutschland")));
+                new GeocodeData(new Address("Coblitzallee", "6", "68163", "Mannheim")));
         String dateFormat = "MM/dd/yyyy hh:mm:ss";
         Date startTime = null, endTime = null;
         try {
