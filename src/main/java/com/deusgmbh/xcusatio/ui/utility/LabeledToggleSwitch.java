@@ -33,6 +33,7 @@ public class LabeledToggleSwitch extends BorderPane {
         toggleSwitch = new ToggleSwitch(activatedState, clickable);
         this.setLeft(label);
         this.setRight(toggleSwitch);
+        this.getStyleClass().add("toggle-switch");
     }
 
     public void setLabel(String text) {
