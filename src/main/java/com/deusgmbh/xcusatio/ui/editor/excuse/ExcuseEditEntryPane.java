@@ -25,7 +25,7 @@ import javafx.scene.control.Label;
  * @author Pascal.Schroeder@de.ibm.com
  *
  */
-public class ExcuseEditEntryPane extends EditEntryPane {
+public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
     private static final String LAST_USED_LABEL_TEXT = "Zuletzt verwendet:";
     private static final String EXCUSE_CONTENT_LABEL_TEXT = "Ausrede:";
     private static final String EXCUSE_TYPE_LABEL_TEXT = "Ausredentyp:";
