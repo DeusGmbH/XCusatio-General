@@ -43,6 +43,7 @@ public class ExcuseGenerator {
     }
 
     public Excuse getContextBasedExcuse(List<Excuse> excuses, Context context, Scenario scenario) {
+        // List<Excuse> excuses = (List<Excuse>) originalExcuses;
         if (excuses == null || excuses.isEmpty()) {
             throw new IllegalArgumentException("Excuses must not be null and not empty");
         }
@@ -53,14 +54,12 @@ public class ExcuseGenerator {
             throw new IllegalArgumentException("Scenario is not ");
         }
 
-        int minExcuses = excuses.size() > 8 ? excuses.size() / 2 : 4;
-
         List<Tag> tags = this.getTags(context);
         List<Excuse> contextBasedExcuses = filterByTag(
-                filterByValidWildcards(filterByScenario(excuses, scenario), context), tags, minExcuses);
+                filterByValidWildcards(filterByScenario(excuses, scenario), context), tags);
 
         List<Excuse> finalExcuses = contextBasedExcuses.stream()
-                .sorted(Excuse.byLastUsed)
+                .sorted(Excuse.byLastUsed.reversed())
                 .limit((int) Math.ceil(contextBasedExcuses.size() / 2.0))
                 .sorted(Excuse.byRating)
                 .collect(Collectors.toList());
@@ -92,19 +91,15 @@ public class ExcuseGenerator {
     }
 
     /**
-     * This method filters the given excuses by the given tags in a way that the
-     * result contains at least n excuses and
+     * Filters all excuses by the tags
      * 
      * @param excuses
      *            to be filtered
      * @param tags
-     *            to be filtered by. The first tag in the list has the highest
-     *            priority and the last one the lowest
-     * @param n
-     *            minimal amount of excuses to be returned
-     * @return filtered excuses
+     *            to be filtered by
+     * @return all excuses that contain all the giving tags
      */
-    private List<Excuse> filterByTag(List<Excuse> excuses, List<Tag> tags, int n) {
+    private List<Excuse> filterByTag(List<Excuse> excuses, List<Tag> tags) {
         return excuses.stream()
                 .filter(Excuse.containsAllTags(tags))
                 .collect(Collectors.toList());
@@ -171,8 +166,10 @@ public class ExcuseGenerator {
             switch (context.getSex()) {
             case MALE:
                 sexTags.add(Tag.MALE);
+                break;
             case FEMALE:
                 sexTags.add(Tag.FEMALE);
+                break;
             }
         }
         return sexTags;

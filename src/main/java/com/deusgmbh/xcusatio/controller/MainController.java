@@ -1,6 +1,7 @@
 package com.deusgmbh.xcusatio.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -58,7 +59,7 @@ public class MainController {
                 .getValue(), this.getLecturers(), scenario);
         if (scenario.isExcuseType()) {
             Excuse excuse = excuseGenerator.getContextBasedExcuse(this.getExcuses(), context, scenario);
-
+            this.excusesManager.applyFor(excuse, e -> e.setLastUsed(new Date()));
             displayExcuse.accept(wildcards.replace(excuse.getText(), context.getApiContext()));
         } else {
             displayThumbGesture.accept(excuseGenerator.getThumbGesture(context));
@@ -82,7 +83,7 @@ public class MainController {
     }
 
     public ObservableList<String> getMostRecentlyUsedExcuses() {
-        return this.excusesManager.getSortedByLastUsed();
+        return this.excusesManager.getMostRecentlyUsed();
     }
 
     public List<Tag> getTags() {
