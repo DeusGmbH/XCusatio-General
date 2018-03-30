@@ -1,20 +1,70 @@
 package com.deusgmbh.xcusatio.api.services;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.context.wildcard.CalendarContext;
+import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 public class CalendarAPI extends APIService {
 
+    private final static Logger LOGGER = Logger.getLogger(CalendarAPI.class.getName());
+
     @Override
     public CalendarContext get(UserSettings usersettings) {
-        CalendarContext calendarContext = new CalendarContext("Software Engineering 2", "9:00 Uhr", "12:15 Uhr", 190,
+
+        List<String> lecturesRead = new LinkedList<>();
+        lecturesRead.add("Software Engineering ");
+        lecturesRead.add("Programmieren in C");
+
+        List<Tag> tagList = new LinkedList<>();
+        tagList.add(Tag.MALE);
+        tagList.add(Tag.AGE_UNDER_50);
+        tagList.add(Tag.FUNNY);
+
+        Lecturer kruse = new Lecturer(null, null, null);
+        kruse.setLectures(lecturesRead);
+        kruse.setName("Eckard Kruse");
+        kruse.setTags(tagList);
+
+        String dateFormat = "MM/dd/yyyy hh:mm:ss";
+        Date startTime = null, endTime = null;
+        try {
+            startTime = new SimpleDateFormat(dateFormat).parse("03/27/2018 09:00:00");
+            endTime = new SimpleDateFormat(dateFormat).parse("03/27/2018 12:15:00");
+        } catch (Exception e) {
+            LOGGER.info("parsed wrong date format, " + e.getMessage());
+        }
+
+        CalendarContext calendarContext = new CalendarContext("Software Engineering 2", kruse, startTime, endTime, 190,
                 15);
         return calendarContext;
     }
 
-    // TODO: convert int to string for each time detail, e.g. minutesLeft = 11
-    // -->
-    // "11 Minuten" / 1 --> "1 Minute"
+    @Override
+    public void transmitDataToWebsite() {
+        // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void extractDesiredInfoFromResponse() {
+        // TODO Auto-generated method stub
+
+    }
+
+    // public static void main(String[] args) {
+    // UserSettings userSettings = new UserSettings(null, 0, null, null, null,
+    // null, null);
+    // CalendarAPI calendarAPI = new CalendarAPI();
+    //
+    // CalendarContext calendarContext = calendarAPI.get(userSettings);
+    // calendarContext.logContextContent();
+    // }
 }

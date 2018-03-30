@@ -72,7 +72,6 @@ public abstract class EntryListPane<T> extends VBox {
     }
 
     public void setTableContent(ObservableList<T> entryList) {
-
         entryTable.setItems(entryList);
         entryTable.getItems()
                 .addListener(new ListChangeListener<T>() {

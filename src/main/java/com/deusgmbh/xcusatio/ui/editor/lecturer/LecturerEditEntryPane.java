@@ -20,13 +20,10 @@ import javafx.scene.control.TextField;
  *
  */
 
-public class LecturerEditEntryPane extends EditEntryPane {
+public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
     private static final String LECTURER_NAME_LABEL_TEXT = "Name:";
     private static final String LECTURER_LECTURES_LABEL_TEXT = "Vorlesungen: ";
     private static final String TAGS_LABEL_TEXT = "Tags:";
-
-    private int lecturerId;
-    private ObservableList<Lecturer> lecturers;
 
     private TextField lecturerNameTextField;
     private ListViewTextField lecturerLecturesPane;
@@ -42,20 +39,20 @@ public class LecturerEditEntryPane extends EditEntryPane {
     }
 
     public void createEditForm(int id, ObservableList<Lecturer> lecturersList) {
-        this.lecturerId = id;
-        this.lecturers = lecturersList;
+        this.selectedItemId = id;
+        this.editableItems = lecturersList;
 
         Label lecturerNameLabel = new Label(LECTURER_NAME_LABEL_TEXT);
         Label lecturerLecturesLabel = new Label(LECTURER_LECTURES_LABEL_TEXT);
         Label tagsLabel = new Label(TAGS_LABEL_TEXT);
 
-        this.lecturerNameTextField = new TextField(lecturers.get(lecturerId)
+        this.lecturerNameTextField = new TextField(editableItems.get(selectedItemId)
                 .getName());
-        this.lecturerLecturesPane = new ListViewTextField(lecturers.get(lecturerId)
+        this.lecturerLecturesPane = new ListViewTextField(editableItems.get(selectedItemId)
                 .getLectures());
-        this.tagsListCellView = new DoubleListView<Tag>(lecturers.get(lecturerId)
+        this.tagsListCellView = new DoubleListView<Tag>(editableItems.get(selectedItemId)
                 .getTags(),
-                super.removeFromAllTagsList(lecturers.get(lecturerId)
+                super.removeFromAllTagsList(editableItems.get(selectedItemId)
                         .getTags()));
 
         super.addNodesToPane(lecturerNameLabel, lecturerNameTextField, lecturerLecturesLabel, lecturerLecturesPane,
@@ -64,7 +61,7 @@ public class LecturerEditEntryPane extends EditEntryPane {
 
     @Override
     protected void saveChanges() {
-        this.lecturers.set(this.lecturerId, new Lecturer(lecturerNameTextField.getText(),
+        this.editableItems.set(this.selectedItemId, new Lecturer(lecturerNameTextField.getText(),
                 lecturerLecturesPane.getItems(), tagsListCellView.getLeftListItems()));
     }
 
