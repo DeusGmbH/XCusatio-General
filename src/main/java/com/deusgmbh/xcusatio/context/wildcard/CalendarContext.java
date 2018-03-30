@@ -1,20 +1,32 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+import java.util.Date;
+import java.util.logging.Logger;
+
+import com.deusgmbh.xcusatio.api.data.LectureEvent;
+import com.deusgmbh.xcusatio.api.data.TimeFormattingUtils;
+import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
+
 /**
  * 
  * @author jan.leiblein@gmail.com
  * 
  */
 public class CalendarContext extends TimeFormattingUtils {
-    private LectureEvent lectureEvent;
-    private int minutesLeft;
-    private int minutesPassed;
+    private static final Logger LOGGER = Logger.getLogger(CalendarContext.class.getName());
 
-    public CalendarContext(String lectureName, String startTimeAsClocktime, String endTimeAsClocktime, int minutesLeft,
-            int minutesPassed) {
-        this.lectureEvent = new LectureEvent(lectureName, startTimeAsClocktime, endTimeAsClocktime);
+    private LectureEvent lectureEvent;
+    private long minutesLeft;
+    private long minutesPassed;
+
+    public CalendarContext(String lectureName, Lecturer lecturer, Date startTime, Date endTime, long minutesPassed,
+            long minutesLeft) {
+        this.lectureEvent = new LectureEvent(lectureName, lecturer, startTime, endTime);
         this.minutesLeft = minutesLeft;
         this.minutesPassed = minutesPassed;
+    }
+
+    public CalendarContext() {
     }
 
     public LectureEvent getLectureEvent() {
@@ -25,20 +37,31 @@ public class CalendarContext extends TimeFormattingUtils {
         this.lectureEvent = lectureEvent;
     }
 
-    public int getMinutesLeft() {
+    public long getMinutesLeft() {
         return minutesLeft;
     }
 
-    public void setMinutesLeft(int minutesLeft) {
+    public void setMinutesLeft(long minutesLeft) {
         this.minutesLeft = minutesLeft;
     }
 
-    public int getMinutesPassed() {
+    public long getMinutesPassed() {
         return minutesPassed;
     }
 
-    public void setMinutesPassed(int minutesPassed) {
+    public void setMinutesPassed(long minutesPassed) {
         this.minutesPassed = minutesPassed;
+    }
+
+    /* formatted printing of context contents for testing purposes only */
+    public void logContextContent() {
+        LOGGER.info("CalendarContext:\n" + this.lectureEvent.getLectureName() + "\nRead by: "
+                + this.lectureEvent.getLecturer()
+                        .getName()
+                + ",\n" + "starts at: " + this.lectureEvent.getStartTime() + "\nends at: "
+                + this.lectureEvent.getEndTime() + "\nPassed already: " + this.minutesPassed + "\nStill to go: "
+                + this.minutesLeft + "\n");
+
     }
 
     public String getMinutesLeftText() {
@@ -48,5 +71,4 @@ public class CalendarContext extends TimeFormattingUtils {
     public String getMinutesPassedText() {
         return formatMinutesAsText(this.minutesPassed);
     }
-
 }

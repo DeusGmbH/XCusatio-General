@@ -26,8 +26,11 @@ public class LecturerEditorTab extends EditorTab {
     public LecturerEditorTab(String name) {
         super(name);
         entryListPane = new LecturerEntryListPane();
-        entryListPane.registerOnSelectEntryEvent(this::createEditForm);
         editEntryPane = new LecturerEditEntryPane();
+
+        entryListPane.registerOnSelectEntryEvent(this::createEditForm);
+        entryListPane.registerItemSelectionIdUpdate(editEntryPane::updateSelectionId);
+
         super.editor.setLeft(entryListPane);
         super.editor.setCenter(editEntryPane);
     }
