@@ -49,27 +49,31 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
     }
 
     public void createEditForm(int id, ObservableList<Excuse> excuseList) {
+        super.createTitleLabel();
+
         this.selectedItemId = id;
         this.editableItems = excuseList;
-
-        Label lastUsedLabel = new Label(LAST_USED_LABEL_TEXT);
-        Label excuseContentLabel = new Label(EXCUSE_CONTENT_LABEL_TEXT);
-        Label excuseTypeLabel = new Label(EXCUSE_TYPE_LABEL_TEXT);
-        Label tagsLabel = new Label(TAGS_LABEL_TEXT);
 
         Label lastUsedResponseLabel = new Label(editableItems.get(id)
                 .getLastUsed() != null ? editableItems.get(id)
                         .getLastUsed()
                         .toString() : DEFAULT_LAST_USED_TEXT);
+
         this.excuseTextField = new TextFieldAddBox(editableItems.get(id)
                 .getText(), wildcardSetSupplier.get());
         this.tagsListCellView = new DoubleListView<Tag>(editableItems.get(id)
                 .getTags(),
                 super.removeFromAllTagsList(editableItems.get(id)
                         .getTags()));
+        this.tagsListCellView.bindWidth(this.widthProperty()
+                .multiply(0.6));
 
         scenarioTypes = Arrays.asList(ScenarioType.values());
-        this.excuseTypeChoiceBox = new ChoiceBox<ScenarioType>(FXCollections.observableArrayList(scenarioTypes));
+
+        this.excuseTypeChoiceBox = new ChoiceBox<ScenarioType>(FXCollections.observableArrayList(scenarioTypes)
+                .filtered(type -> {
+                    return type != ScenarioType.THUMBGESTURE;
+                }));
         excuseTypeChoiceBox.getSelectionModel()
                 .select(scenarioTypes.indexOf(editableItems.get(id)
                         .getScenarioType()));
@@ -78,8 +82,13 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
                 .bind(this.widthProperty()
                         .multiply(0.6));
 
-        super.addNodesToPane(lastUsedLabel, lastUsedResponseLabel, excuseContentLabel, excuseTextField, excuseTypeLabel,
-                excuseTypeChoiceBox, tagsLabel, tagsListCellView);
+        super.addNodeBoxToPane(LAST_USED_LABEL_TEXT, lastUsedResponseLabel);
+        super.addNodeBoxToPane(EXCUSE_CONTENT_LABEL_TEXT, excuseTextField);
+        super.addNodeBoxToPane(EXCUSE_TYPE_LABEL_TEXT, excuseTypeChoiceBox);
+        super.addNodeBoxToPane(TAGS_LABEL_TEXT, tagsListCellView);
+
+        this.setBottom(super.submitEditedEntryBtnPane);
+
     }
 
     public void registerWildcardSetSupplier(Supplier<List<String>> wildcardSetSupplier) {

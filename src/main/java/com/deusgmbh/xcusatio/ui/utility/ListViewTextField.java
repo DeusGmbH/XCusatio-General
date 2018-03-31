@@ -42,7 +42,9 @@ public class ListViewTextField extends BorderPane {
         VBox newItemsPane = new VBox();
 
         availableItemListView = new ListView<String>(availableItemList);
-        availableItemListView.maxWidthProperty().bind(this.widthProperty().multiply(LIST_VIEW_WIDTH_MULTIPLIER));
+        availableItemListView.maxWidthProperty()
+                .bind(this.widthProperty()
+                        .multiply(LIST_VIEW_WIDTH_MULTIPLIER));
         availableItemListView.setPrefHeight(((availableItemList.size() + LIST_VIEW_HEIGHT_ADDITION) * CELL_SIZE));
 
         addItemTextField = new TextField();
@@ -52,8 +54,10 @@ public class ListViewTextField extends BorderPane {
         addItemButton.setOnAction(addItemAction);
         removeItemButton.setOnAction(removeItemAction);
 
-        availableItemsPane.getChildren().addAll(availableItemListView, removeItemButton);
-        newItemsPane.getChildren().addAll(addItemTextField, addItemButton);
+        availableItemsPane.getChildren()
+                .addAll(availableItemListView, removeItemButton);
+        newItemsPane.getChildren()
+                .addAll(addItemTextField, addItemButton);
 
         this.setLeft(availableItemsPane);
         this.setCenter(newItemsPane);
@@ -62,8 +66,12 @@ public class ListViewTextField extends BorderPane {
     private EventHandler<ActionEvent> addItemAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-            if (addItemTextField.getText() != null && addItemTextField.getText() != "") {
-                availableItemListView.getItems().add(addItemTextField.getText());
+            System.out.println(addItemTextField.getText());
+            if (addItemTextField.getText() != null && addItemTextField.getText()
+                    .trim()
+                    .length() > 0) {
+                availableItemListView.getItems()
+                        .add(addItemTextField.getText());
             }
         }
     };
@@ -72,7 +80,9 @@ public class ListViewTextField extends BorderPane {
         @Override
         public void handle(ActionEvent event) {
             if (availableItemListView.getSelectionModel() != null) {
-                availableItemListView.getItems().remove(availableItemListView.getSelectionModel().getSelectedIndex());
+                availableItemListView.getItems()
+                        .remove(availableItemListView.getSelectionModel()
+                                .getSelectedIndex());
             }
         }
     };

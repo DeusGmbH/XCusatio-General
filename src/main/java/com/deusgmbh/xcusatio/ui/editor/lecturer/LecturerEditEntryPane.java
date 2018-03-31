@@ -7,7 +7,6 @@ import com.deusgmbh.xcusatio.ui.utility.DoubleListView;
 import com.deusgmbh.xcusatio.ui.utility.ListViewTextField;
 
 import javafx.collections.ObservableList;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 /**
@@ -39,12 +38,10 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
     }
 
     public void createEditForm(int id, ObservableList<Lecturer> lecturersList) {
+        super.createTitleLabel();
+
         this.selectedItemId = id;
         this.editableItems = lecturersList;
-
-        Label lecturerNameLabel = new Label(LECTURER_NAME_LABEL_TEXT);
-        Label lecturerLecturesLabel = new Label(LECTURER_LECTURES_LABEL_TEXT);
-        Label tagsLabel = new Label(TAGS_LABEL_TEXT);
 
         this.lecturerNameTextField = new TextField(editableItems.get(selectedItemId)
                 .getName());
@@ -55,8 +52,11 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
                 super.removeFromAllTagsList(editableItems.get(selectedItemId)
                         .getTags()));
 
-        super.addNodesToPane(lecturerNameLabel, lecturerNameTextField, lecturerLecturesLabel, lecturerLecturesPane,
-                tagsLabel, tagsListCellView);
+        super.addNodeBoxToPane(LECTURER_NAME_LABEL_TEXT, lecturerNameTextField);
+        super.addNodeBoxToPane(LECTURER_LECTURES_LABEL_TEXT, lecturerLecturesPane);
+        super.addNodeBoxToPane(TAGS_LABEL_TEXT, tagsListCellView);
+
+        this.setBottom(super.submitEditedEntryBtnPane);
     }
 
     @Override

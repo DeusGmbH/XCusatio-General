@@ -5,7 +5,6 @@
 .label {
 	-fx-text-fill: #FFFFFF;
 	-fx-font-size: 13pt;
-	-fx-padding: 4pt;
 }
 
 .button {
@@ -40,6 +39,8 @@
 	-fx-font-size: 30pt;
 	-fx-font-weight: bold;
 	-fx-padding: 14pt;
+	-fx-text-alignment: center;
+	-fx-wrap-text: true;
 }
 
 .h2 {
@@ -57,6 +58,14 @@
 .p {
 	-fx-font-size: 14pt;
 	-fx-font-weight: bold;
+	-fx-padding: 0 20 0 0;
+}
+
+.excuse-label {
+	-fx-font-size: 24px;
+	-fx-padding: 40pt;
+	-fx-wrap-text: true;
+	-fx-text-alignment: center;
 }
 
 .toggle-switch {
@@ -72,6 +81,10 @@
 	-fx-background-color: #444444;
 	-fx-border-color: rgba(0,0,0,0.8);
 	-fx-border-width: 0 0 0 1;
+}
+
+.excuse-quick-settings .label {
+	-fx-padding: 4pt;
 }
 
 .window-border {
@@ -227,7 +240,9 @@
 }
 
 .excuse-quick-settings .scroll-bar > .increment-button, 
-.excuse-quick-settings .scroll-bar > .decrement-button {
+.excuse-quick-settings .scroll-bar > .decrement-button,
+.edit-entry .scroll-bar > .increment-button, 
+.edit-entry .scroll-bar > .decrement-button {
     -fx-opacity: 0;
 }
 
@@ -244,4 +259,82 @@
 
 .list-cell:hover {
     -fx-background-color: #444;
+}
+
+.edit-entry .scroll-bar:vertical,
+.edit-entry .scroll-bar:vertical > .track,
+.edit-entry .scroll-bar:vertical > .track-background,
+.edit-entry .corner {
+	-fx-background-color: #222;
+	-fx-border-color: #999;
+	-fx-border-width: 0;
+}
+
+.edit-entry .scroll-bar:horizontal,
+.edit-entry .scroll-bar:horizontal > .track,
+.edit-entry .scroll-bar:horizontal > .track-background {
+	-fx-background-color: #222;
+	-fx-border-color: #999;
+	-fx-border-width: 0;
+}
+
+.edit-entry .list-view {
+  	-fx-background-color: #222;
+  	-fx-border-color: #777;
+  	-fx-background-insets: 0;
+  	-fx-padding: 1;
+  	-fx-border-width: 1;
+}
+
+.edit-entry .list-cell {
+	-fx-background-color: #222;
+}
+
+.edit-entry .list-cell:hover {
+	-fx-text-fill: #AAA;
+}
+
+.edit-entry .list-cell:selected {
+	-fx-background-color: #444;
+}
+
+.choice-box {
+	-fx-background-color: #222;
+	-fx-border-color: #777;
+}
+
+.choice-box .context-menu {
+	-fx-background-color: #222;
+}
+
+.choice-box .menu-item:focused { 
+	-fx-background-color: #108ACB;
+}
+
+.choice-box > .label {
+	-fx-font-weight: bold;
+}
+
+.choice-box .context-menu .label {
+	-fx-font-weight: bold;
+}
+
+.text-field {
+	-fx-background-color: #222;
+	-fx-border-color: #777;
+	-fx-text-fill: #FFF;
+}
+
+.shift-button {
+	-fx-background-color: #222;
+	-fx-padding: 1;
+	-fx-font-size: 18pt;
+	-fx-font-weight: bold;
+}
+
+.text-field-add-box .text-field {
+	-fx-padding: 4 4 10 4;
+	-fx-background-insets: 0 0 10 0;
+	-fx-border-insets: 0 0 10 0;
+	-fx-font-size: 12pt;
 }
