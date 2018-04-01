@@ -226,10 +226,6 @@ public class XCusatioWindow extends Application {
         this.dashboard.registerMostRecentlyUsedExcuses(mostRecentlyUsedObservableList);
     }
 
-    public void registerChangeUserSettingsEvent(Consumer<UserSettings> userSettingsConsumer) {
-        profileSettings.createEditProfileBtnAction(userSettingsConsumer);
-    }
-
     public void registerUserSettings(ObjectProperty<UserSettings> userSettings) {
         this.dashboard.registerUserSettings(userSettings);
         this.profileSettings.registerUserSettings(userSettings);

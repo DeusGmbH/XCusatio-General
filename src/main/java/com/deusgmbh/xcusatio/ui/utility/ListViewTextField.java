@@ -3,15 +3,18 @@ package com.deusgmbh.xcusatio.ui.utility;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 
 /**
  * 
@@ -26,47 +29,49 @@ import javafx.scene.layout.VBox;
 public class ListViewTextField extends BorderPane {
     private static final String ADD_ITEM_BUTTON_LABEL = "Hinzufügen";
     private static final String REMOVE_BUTTON_LABEL = "Entfernen";
-    private static final double LIST_VIEW_WIDTH_MULTIPLIER = 0.45;
-    private static final int CELL_SIZE = 30;
-    private static final int LIST_VIEW_HEIGHT_ADDITION = 2;
+    private static final double BUTTON_MULTIPLIER = 0.4;
 
     private ListView<String> availableItemListView;
     private TextField addItemTextField;
+    private StackPane addItemPane;
+    private StackPane removeItemPane;
 
     public ListViewTextField(List<String> lectures) {
         this(FXCollections.observableArrayList(lectures));
     }
 
     public ListViewTextField(ObservableList<String> availableItemList) {
-        VBox availableItemsPane = new VBox();
-        VBox newItemsPane = new VBox();
+        HBox availableItemsPane = new HBox();
+        HBox newItemsPane = new HBox();
 
         availableItemListView = new ListView<String>(availableItemList);
-        availableItemListView.maxWidthProperty()
-                .bind(this.widthProperty()
-                        .multiply(LIST_VIEW_WIDTH_MULTIPLIER));
-        availableItemListView.setPrefHeight(((availableItemList.size() + LIST_VIEW_HEIGHT_ADDITION) * CELL_SIZE));
 
         addItemTextField = new TextField();
+
         Button addItemButton = new Button(ADD_ITEM_BUTTON_LABEL);
         Button removeItemButton = new Button(REMOVE_BUTTON_LABEL);
 
         addItemButton.setOnAction(addItemAction);
+        addItemPane = new StackPane(addItemButton);
+        addItemPane.setAlignment(Pos.CENTER);
         removeItemButton.setOnAction(removeItemAction);
+        removeItemPane = new StackPane(removeItemButton);
+        removeItemPane.setAlignment(Pos.CENTER);
 
         availableItemsPane.getChildren()
-                .addAll(availableItemListView, removeItemButton);
+                .addAll(availableItemListView, removeItemPane);
         newItemsPane.getChildren()
-                .addAll(addItemTextField, addItemButton);
+                .addAll(addItemTextField, addItemPane);
 
-        this.setLeft(availableItemsPane);
+        this.setTop(availableItemsPane);
         this.setCenter(newItemsPane);
+        this.getStyleClass()
+                .add("list-view-text-field");
     }
 
     private EventHandler<ActionEvent> addItemAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-            System.out.println(addItemTextField.getText());
             if (addItemTextField.getText() != null && addItemTextField.getText()
                     .trim()
                     .length() > 0) {
@@ -79,7 +84,9 @@ public class ListViewTextField extends BorderPane {
     private EventHandler<ActionEvent> removeItemAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-            if (availableItemListView.getSelectionModel() != null) {
+            if (availableItemListView.getSelectionModel()
+                    .getSelectedItems()
+                    .size() > 0) {
                 availableItemListView.getItems()
                         .remove(availableItemListView.getSelectionModel()
                                 .getSelectedIndex());
@@ -89,6 +96,27 @@ public class ListViewTextField extends BorderPane {
 
     public List<String> getItems() {
         return new ArrayList<String>(availableItemListView.getItems());
+    }
+
+    public void bindSize(DoubleBinding widthProperty, DoubleBinding heightProperty) {
+        availableItemListView.minWidthProperty()
+                .bind(widthProperty.multiply(1 - BUTTON_MULTIPLIER));
+        availableItemListView.maxWidthProperty()
+                .bind(widthProperty.multiply(1 - BUTTON_MULTIPLIER));
+        addItemTextField.minWidthProperty()
+                .bind(widthProperty.multiply(1 - BUTTON_MULTIPLIER));
+        addItemTextField.maxWidthProperty()
+                .bind(widthProperty.multiply(1 - BUTTON_MULTIPLIER));
+        addItemPane.minWidthProperty()
+                .bind(widthProperty.multiply(BUTTON_MULTIPLIER));
+        addItemPane.maxWidthProperty()
+                .bind(widthProperty.multiply(BUTTON_MULTIPLIER));
+        removeItemPane.minWidthProperty()
+                .bind(widthProperty.multiply(BUTTON_MULTIPLIER));
+        removeItemPane.maxWidthProperty()
+                .bind(widthProperty.multiply(BUTTON_MULTIPLIER));
+        availableItemListView.prefHeightProperty()
+                .bind(heightProperty);
     }
 
 }

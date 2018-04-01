@@ -1,21 +1,19 @@
 package com.deusgmbh.xcusatio.ui.profilsettings;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
-
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * 
@@ -35,10 +33,15 @@ public class ProfileSettings extends FlowPane {
 
     private static final String SUBMIT_BUTTON_LABEL = "Speichern";
     private static final String TITLE_LABEL_TEXT = "Profileinstellungen";
+    private static final double PROFILE_FORM_PANE_WIDTH_MULTIPLIER = 0.5;
+    private static final double LABEL_WIDTH_MULTIPLIER = 0.3;
+    protected static final String CALENDAR_CONFIG_TITLE = "Kalender Konfiguration";
+    protected static final double CALENDAR_CONFIG_WIDTH = 800;
+    protected static final double CALENDAR_CONFIG_HEIGHT = 400;
 
     private ObjectProperty<UserSettings> userSettings;
 
-    private GridPane profileFormPane;
+    private VBox profileFormPane;
 
     private SexTogglePane sexTogglePane;
     private AddressPane addressPane;
@@ -48,57 +51,89 @@ public class ProfileSettings extends FlowPane {
     private Button saveProfileBtn;
 
     public ProfileSettings() {
-        profileFormPane = new GridPane();
+        profileFormPane = new VBox();
+        profileFormPane.getStyleClass()
+                .add("profile-settings");
+        profileFormPane.prefWidthProperty()
+                .bind(this.widthProperty()
+                        .multiply(PROFILE_FORM_PANE_WIDTH_MULTIPLIER));
 
         this.setAlignment(Pos.CENTER);
     }
 
     private void createProfileSettingsForm() {
-        Label sexLabelTogglePane = new Label(SEX_TOGGLE_PANE_LABEL_TEXT);
-        Label ageLabel = new Label(AGE_LABEL_TEXT);
-        Label locationLabel = new Label(LOCATION_LABEL_TEXT);
-        Label calendarLabel = new Label(CALENDAR_LABEL_TEXT);
+        Label titleLabel = new Label(TITLE_LABEL_TEXT);
+        titleLabel.getStyleClass()
+                .add("h1");
 
-        sexTogglePane = new SexTogglePane(userSettings.getValue().getSex());
-        addressPane = new AddressPane(userSettings.getValue().getHome());
+        StackPane sexLabel = createFormattedLabel(SEX_TOGGLE_PANE_LABEL_TEXT);
+        StackPane ageLabel = createFormattedLabel(AGE_LABEL_TEXT);
+        StackPane locationLabel = createFormattedLabel(LOCATION_LABEL_TEXT);
+        StackPane calendarLabel = createFormattedLabel(CALENDAR_LABEL_TEXT);
+
+        sexTogglePane = new SexTogglePane(userSettings.getValue()
+                .getSex());
+        addressPane = new AddressPane(userSettings.getValue()
+                .getHome());
 
         birthdayDatePicker = new DatePicker();
         birthdayDatePicker.setShowWeekNumbers(false);
-        birthdayDatePicker.setValue(userSettings.getValue().getBirthdate());
+        birthdayDatePicker.setValue(userSettings.getValue()
+                .getBirthdate());
 
         calendarButton = new Button(CALENDAR_BUTTON_LABEL_TEXT);
+        calendarButton.getStyleClass()
+                .add("calendar-button");
+        calendarButton.setOnAction(openCalendarConfiguartionWindow);
         // TODO: calendarButton Action
         saveProfileBtn = new Button(SUBMIT_BUTTON_LABEL);
+        this.saveProfileBtn.setOnAction(editProfileAction);
+        StackPane saveBtnPane = new StackPane(saveProfileBtn);
+        saveBtnPane.setAlignment(Pos.BOTTOM_RIGHT);
 
-        addNodesToPane(ageLabel, birthdayDatePicker, sexLabelTogglePane, sexTogglePane, locationLabel, addressPane,
-                calendarLabel, calendarButton);
-        this.getChildren().add(profileFormPane);
+        HBox sexPane = new HBox(sexLabel, sexTogglePane);
+        HBox agePane = new HBox(ageLabel, birthdayDatePicker);
+        HBox locationPane = new HBox(locationLabel, addressPane);
+        HBox calendarPane = new HBox(calendarLabel, calendarButton);
+
+        this.profileFormPane.getChildren()
+                .addAll(titleLabel, sexPane, agePane, locationPane, calendarPane, saveBtnPane);
+        this.getChildren()
+                .add(profileFormPane);
     }
 
-    private void addNodesToPane(Node... nodesToAdd) {
-        profileFormPane.getChildren().clear();
-        Label titleLabel = new Label(TITLE_LABEL_TEXT);
-        profileFormPane.add(titleLabel, 0, 0);
-        final AtomicInteger counter = new AtomicInteger();
-        Arrays.asList(nodesToAdd).stream().forEach(node -> {
-            int columnIndex = counter.get() % 2;
-            int rowIndex = (int) Math.floor(counter.get() / 2d) + 1;
-            profileFormPane.add(node, columnIndex, rowIndex);
-            counter.incrementAndGet();
-        });
-        profileFormPane.add(this.saveProfileBtn, 1, (int) Math.ceil(nodesToAdd.length / 2d) + 1);
+    private StackPane createFormattedLabel(String labelContent) {
+        Label label = new Label(labelContent);
+        StackPane labelPane = new StackPane(label);
+
+        labelPane.minWidthProperty()
+                .bind(this.profileFormPane.widthProperty()
+                        .multiply(LABEL_WIDTH_MULTIPLIER));
+        labelPane.maxWidthProperty()
+                .bind(this.profileFormPane.widthProperty()
+                        .multiply(LABEL_WIDTH_MULTIPLIER));
+        labelPane.setAlignment(Pos.CENTER_RIGHT);
+        return labelPane;
     }
 
-    public void createEditProfileBtnAction(Consumer<UserSettings> editProfile) {
-        this.saveProfileBtn.setOnAction(new EventHandler<ActionEvent>() {
+    private EventHandler<ActionEvent> editProfileAction = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent arg0) {
+            userSettings.set(new UserSettings(null, birthdayDatePicker.getValue(), sexTogglePane.getSex(),
+                    addressPane.getAdress()));
+        }
+    };
 
-            @Override
-            public void handle(ActionEvent arg0) {
-                userSettings.set(new UserSettings(null, birthdayDatePicker.getValue(), sexTogglePane.getSex(),
-                        addressPane.getAdress()));
+    private EventHandler<ActionEvent> openCalendarConfiguartionWindow = new EventHandler<ActionEvent>() {
+        public void handle(ActionEvent event) {
+            CalendarConfiguration newWindow = new CalendarConfiguration();
+            try {
+                newWindow.start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
-    }
+        }
+    };
 
     public void registerUserSettings(ObjectProperty<UserSettings> userSettings) {
         this.userSettings = userSettings;

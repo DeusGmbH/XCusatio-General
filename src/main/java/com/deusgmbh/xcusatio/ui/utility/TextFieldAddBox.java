@@ -2,6 +2,7 @@ package com.deusgmbh.xcusatio.ui.utility;
 
 import java.util.List;
 
+import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -79,8 +80,9 @@ public class TextFieldAddBox extends BorderPane {
     private EventHandler<ActionEvent> shiftEntryAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-            if (addBox.getSelectionModel() != null && addBox.getSelectionModel()
-                    .getSelectedItem() != null) {
+            if (addBox.getSelectionModel()
+                    .getSelectedItems()
+                    .size() > 0) {
                 textField.setText(textField.getText() + " " + addBox.getSelectionModel()
                         .getSelectedItem() + " ");
             }
@@ -89,5 +91,10 @@ public class TextFieldAddBox extends BorderPane {
 
     public String getText() {
         return textField.getText();
+    }
+
+    public void bindSize(DoubleBinding doubleBinding) {
+        this.addBox.prefHeightProperty()
+                .bind(doubleBinding);
     }
 }

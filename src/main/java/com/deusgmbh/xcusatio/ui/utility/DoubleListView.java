@@ -24,10 +24,11 @@ import javafx.scene.layout.BorderPane;
  */
 
 public class DoubleListView<T> extends BorderPane {
-    private static final double LIST_VIEW_WIDTH_MULTIPLIER = 0.4;
     private static final int BUTTON_PANE_WIDTH = 31;
     private static final int CELL_SIZE = 30;
     private static final int MAX_TABLE_ROW = 8;
+    private static final double LIST_VIEW_WIDTH_MULTIPLIER = 0.45;
+    private static final double LIST_VIEW_HEIGHT_MULTIPLIER = 0.9;
 
     private ListView<T> leftListView;
     private ListView<T> rightListView;
@@ -73,10 +74,14 @@ public class DoubleListView<T> extends BorderPane {
         return new ArrayList<T>(leftListView.getItems());
     }
 
-    public void bindWidth(DoubleBinding widthProperty) {
+    public void bindSize(DoubleBinding widthProperty, DoubleBinding heightProperty) {
         leftListView.prefWidthProperty()
-                .bind(widthProperty.multiply(0.45));
+                .bind(widthProperty.multiply(LIST_VIEW_WIDTH_MULTIPLIER));
         rightListView.prefWidthProperty()
-                .bind(widthProperty.multiply(0.45));
+                .bind(widthProperty.multiply(LIST_VIEW_WIDTH_MULTIPLIER));
+        leftListView.prefHeightProperty()
+                .bind(heightProperty.multiply(LIST_VIEW_HEIGHT_MULTIPLIER));
+        rightListView.prefHeightProperty()
+                .bind(heightProperty.multiply(LIST_VIEW_HEIGHT_MULTIPLIER));
     }
 }

@@ -106,9 +106,14 @@ public abstract class EntryListPane<T> extends BorderPane {
         removeSelectedEntryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent e) {
-                entryTable.getItems()
-                        .remove(entryTable.getSelectionModel()
-                                .getSelectedIndex());
+                if (entryTable.getSelectionModel()
+                        .getSelectedItems()
+                        .size() > 0) {
+                    entryTable.getItems()
+                            .remove(entryTable.getSelectionModel()
+                                    .getSelectedIndex());
+                }
+
             }
         });
     }

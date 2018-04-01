@@ -31,6 +31,10 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
     private static final String EXCUSE_TYPE_LABEL_TEXT = "Ausredentyp:";
     private static final String TAGS_LABEL_TEXT = "Tags:";
     private static final String DEFAULT_LAST_USED_TEXT = "Bisher nicht benutzt";
+    private static final double TAGS_LIST_WIDTH_PROPERTY = 0.6;
+    private static final double TAGS_LIST_HEIGHT_PROPERTY = 0.4;
+    private static final double EXCUSE_TEXT_FIELD_WIDTH_PROPERTY = 0.6;
+    private static final double EXCUSE_TEXT_FIELD_HEIGHT_MULTIPLIER = 0.15;
 
     private Supplier<List<String>> wildcardSetSupplier;
     private List<ScenarioType> scenarioTypes;
@@ -61,12 +65,16 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
 
         this.excuseTextField = new TextFieldAddBox(editableItems.get(id)
                 .getText(), wildcardSetSupplier.get());
+        this.excuseTextField.bindSize(this.heightProperty()
+                .multiply(EXCUSE_TEXT_FIELD_HEIGHT_MULTIPLIER));
         this.tagsListCellView = new DoubleListView<Tag>(editableItems.get(id)
                 .getTags(),
                 super.removeFromAllTagsList(editableItems.get(id)
                         .getTags()));
-        this.tagsListCellView.bindWidth(this.widthProperty()
-                .multiply(0.6));
+        this.tagsListCellView.bindSize(this.widthProperty()
+                .multiply(TAGS_LIST_WIDTH_PROPERTY),
+                this.heightProperty()
+                        .multiply(TAGS_LIST_HEIGHT_PROPERTY));
 
         scenarioTypes = Arrays.asList(ScenarioType.values());
 
@@ -80,7 +88,7 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
 
         excuseTextField.prefWidthProperty()
                 .bind(this.widthProperty()
-                        .multiply(0.6));
+                        .multiply(EXCUSE_TEXT_FIELD_WIDTH_PROPERTY));
 
         super.addNodeBoxToPane(LAST_USED_LABEL_TEXT, lastUsedResponseLabel);
         super.addNodeBoxToPane(EXCUSE_CONTENT_LABEL_TEXT, excuseTextField);

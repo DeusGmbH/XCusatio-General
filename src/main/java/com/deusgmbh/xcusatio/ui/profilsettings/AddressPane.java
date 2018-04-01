@@ -3,9 +3,9 @@ package com.deusgmbh.xcusatio.ui.profilsettings;
 import com.deusgmbh.xcusatio.data.usersettings.Address;
 
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
-public class AddressPane extends HBox {
+public class AddressPane extends VBox {
     private TextField streetNameTextField;
     private TextField streetNumTextField;
     private TextField zipTextField;
@@ -16,7 +16,8 @@ public class AddressPane extends HBox {
         streetNumTextField = new TextField(userAddress.getStreetnum());
         cityTextField = new TextField(userAddress.getCity());
         zipTextField = new TextField(userAddress.getZip());
-        this.getChildren().addAll(streetNameTextField, streetNumTextField, cityTextField, zipTextField);
+        this.getChildren()
+                .addAll(streetNameTextField, streetNumTextField, cityTextField, zipTextField);
     }
 
     public Address getAdress() {
