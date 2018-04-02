@@ -1,5 +1,9 @@
 package com.deusgmbh.xcusatio.ui.profilsettings;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
+import com.deusgmbh.xcusatio.api.calendar.CalendarAPI;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 import javafx.beans.property.ObjectProperty;
@@ -13,7 +17,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 /**
  * 
@@ -29,7 +32,6 @@ public class ProfileSettings extends FlowPane {
     private static final String AGE_LABEL_TEXT = "Geburtstag";
     private static final String LOCATION_LABEL_TEXT = "Standort";
     private static final String CALENDAR_LABEL_TEXT = "Google-Kalendar";
-    private static final String CALENDAR_BUTTON_LABEL_TEXT = "Hinzuf\u00fcgen";
 
     private static final String SUBMIT_BUTTON_LABEL = "Speichern";
     private static final String TITLE_LABEL_TEXT = "Profileinstellungen";
@@ -38,6 +40,8 @@ public class ProfileSettings extends FlowPane {
     protected static final String CALENDAR_CONFIG_TITLE = "Kalender Konfiguration";
     protected static final double CALENDAR_CONFIG_WIDTH = 800;
     protected static final double CALENDAR_CONFIG_HEIGHT = 400;
+    private static final String CALENDER_BUTTON_REMOVE_TEXT = "Entfernen";
+    private static final String CALENDAR_BUTTON_ADD_TEXT = "Authorisieren";
 
     private ObjectProperty<UserSettings> userSettings;
 
@@ -49,6 +53,7 @@ public class ProfileSettings extends FlowPane {
 
     private Button calendarButton;
     private Button saveProfileBtn;
+    private HBox calendarPane;
 
     public ProfileSettings() {
         profileFormPane = new VBox();
@@ -81,10 +86,8 @@ public class ProfileSettings extends FlowPane {
         birthdayDatePicker.setValue(userSettings.getValue()
                 .getBirthdate());
 
-        calendarButton = new Button(CALENDAR_BUTTON_LABEL_TEXT);
-        calendarButton.getStyleClass()
-                .add("calendar-button");
-        calendarButton.setOnAction(openCalendarConfiguartionWindow);
+        createCalendarButton(CalendarAPI.hasCredentials());
+
         // TODO: calendarButton Action
         saveProfileBtn = new Button(SUBMIT_BUTTON_LABEL);
         this.saveProfileBtn.setOnAction(editProfileAction);
@@ -94,7 +97,7 @@ public class ProfileSettings extends FlowPane {
         HBox sexPane = new HBox(sexLabel, sexTogglePane);
         HBox agePane = new HBox(ageLabel, birthdayDatePicker);
         HBox locationPane = new HBox(locationLabel, addressPane);
-        HBox calendarPane = new HBox(calendarLabel, calendarButton);
+        calendarPane = new HBox(calendarLabel, calendarButton);
 
         this.profileFormPane.getChildren()
                 .addAll(titleLabel, sexPane, agePane, locationPane, calendarPane, saveBtnPane);
@@ -124,14 +127,48 @@ public class ProfileSettings extends FlowPane {
         }
     };
 
-    private EventHandler<ActionEvent> openCalendarConfiguartionWindow = new EventHandler<ActionEvent>() {
+    private void createCalendarButton(boolean existingCalendar) {
+        System.out.println(existingCalendar);
+        calendarButton = new Button();
+        calendarButton.getStyleClass()
+                .add("calendar-button");
+        if (existingCalendar) {
+            calendarButton.setText(CALENDER_BUTTON_REMOVE_TEXT);
+            calendarButton.setOnAction(removeCalendarAuth);
+
+        } else {
+            calendarButton.setText(CALENDAR_BUTTON_ADD_TEXT);
+            calendarButton.setOnAction(authorizeCalendar);
+        }
+    }
+
+    private EventHandler<ActionEvent> removeCalendarAuth = new EventHandler<ActionEvent>() {
         public void handle(ActionEvent event) {
-            CalendarConfiguration newWindow = new CalendarConfiguration();
             try {
-                newWindow.start(new Stage());
-            } catch (Exception e) {
+                CalendarAPI.removeCredentials();
+            } catch (GeneralSecurityException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+            createCalendarButton(CalendarAPI.hasCredentials());
+            calendarPane.getChildren()
+                    .set(1, calendarButton);
+        }
+    };
+
+    private EventHandler<ActionEvent> authorizeCalendar = new EventHandler<ActionEvent>() {
+        public void handle(ActionEvent event) {
+            try {
+                CalendarAPI.authorize();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            createCalendarButton(CalendarAPI.hasCredentials());
+            calendarPane.getChildren()
+                    .set(1, calendarButton);
         }
     };
 
