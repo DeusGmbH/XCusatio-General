@@ -34,6 +34,9 @@ public class TrafficAPI extends APIService {
     private final String JSONOB_LOCATION = "LOCATION";
     private final String JSONOB_LOCATION_DEFINED = "DEFINED";
     private final String JSONOB_DEFINED_ORIGIN = "ORIGIN";
+    private final String JSONOB_ORIGIN_DIRECTION = "DIRECTION";
+    private final String JSONARR_DIRECTION_DESCRIPTION = "DESCRIPTION";
+    private final String JSONSTR_DIRECTION_DESCRIPTION_FIRST = "value";
     private final String JSONOB_ORIGIN_ROADWAY = "ROADWAY";
     private final String JSONARR_ROADWAY_DESCRIPTION = "DESCRIPTION";
     private final String JSONSTR_DESCRIPTION_VALUE = "VALUE";
@@ -135,20 +138,21 @@ public class TrafficAPI extends APIService {
             List<String> endTimes = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_END_TIME);
             endTimes.forEach(s -> System.out.println(s));
 
-            /* get incident location */
+            // TODO 5 get incident location
             List<JSONObject> locationList = goInside(trafficItemList, JSONOB_LOCATION);
             List<JSONObject> definedLocations = goInside(locationList, JSONOB_LOCATION_DEFINED);
             List<JSONObject> locOrigins = goInside(definedLocations, JSONOB_DEFINED_ORIGIN);
-            List<JSONObject> roadways = goInside(locOrigins, JSONOB_ORIGIN_ROADWAY);
-            List<JSONObject> rdWaysDescriptions = new LinkedList<>();
-            for (int i = 0; i < roadways.size(); ++i) {
-                rdWaysDescriptions.addAll(getJSONObjectsFromJSONArray(roadways.get(i), JSONARR_ROADWAY_DESCRIPTION));
-            }
-            List<String> streetNamesOfIncidents = getValuesFromJSONObjects(rdWaysDescriptions,
-                    JSONSTR_INCIDENT_DESCRIPTION_FIRST);
-            streetNamesOfIncidents.forEach(s -> System.out.println(s));
 
-            /* get incident type */
+            List<String> cityNamesOfIncidents = getValuesFromNestedJSONArray(locOrigins, JSONOB_ORIGIN_DIRECTION,
+                    JSONARR_DIRECTION_DESCRIPTION, JSONSTR_DIRECTION_DESCRIPTION_FIRST);
+
+            List<String> streetNamesOfIncidents = getValuesFromNestedJSONArray(locOrigins, JSONOB_ORIGIN_ROADWAY,
+                    JSONARR_ROADWAY_DESCRIPTION, JSONSTR_DIRECTION_DESCRIPTION_FIRST);
+
+            for (int i = 0; i < cityNamesOfIncidents.size(); ++i)
+                for (TrafficIncidentLocation trLoc : this.incidentLocation) {
+                    trLoc = new TrafficIncidentLocation(cityNamesOfIncidents.get(i), streetNamesOfIncidents.get(i));
+                }
 
         } else {
             LOGGER.warning("json response does not contain values for KEY " + JSONOB_TRAFFIC_ITEMS);

@@ -116,6 +116,28 @@ public abstract class APIService {
         return sL;
     }
 
+    /**
+     * 
+     * @param outerJL
+     *            is the list of json objects that contains a json array
+     * @param KEY
+     *            referring to the desired value
+     * @return list of desired string-values with KEY
+     * @throws JSONException
+     */
+    protected List<String> getValuesFromNestedJSONArray(List<JSONObject> outerJL, String KEY, String arrayKEY,
+            String strKEY) throws JSONException {
+        List<JSONObject> outerTmp = goInside(outerJL, KEY);
+        List<JSONObject> innerTmp = new LinkedList<>();
+        for (int i = 0; i < outerTmp.size(); ++i) {
+            innerTmp.addAll(getJSONObjectsFromJSONArray(outerTmp.get(i), arrayKEY));
+        }
+        List<String> result = getValuesFromJSONObjects(innerTmp, strKEY);
+        /* testing purposes */
+        result.forEach(s -> LOGGER.info("Found roadway: " + s));
+        return result;
+    }
+
     public URL getRequestUrl() {
         return requestUrl;
     }
