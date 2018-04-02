@@ -48,6 +48,7 @@ public class RNVAPI extends APIService {
     private List<TramNews> tramNews;
     private List<TramStatus> tramStatus;
     private String universityStationId;
+    private List<String> universityLinesIds;
 
     public RNVAPI() {
         super();
@@ -56,6 +57,8 @@ public class RNVAPI extends APIService {
         this.tramNews = new LinkedList<>();
         this.tramStatus = new LinkedList<>();
         this.universityStationId = DUALE_HOCHSCHULE_STATION_ID;
+        this.universityLinesIds = new LinkedList<>();
+        universityLinesIds.add("5");
     }
 
     @Override
@@ -112,10 +115,20 @@ public class RNVAPI extends APIService {
         System.out.println(this.jsonResponses[0] + "\n" + this.jsonResponses[1] + "\n" + this.jsonResponses[2]);
         extractTramDetails();
 
+        this.tramDetails.forEach(s -> {
+            System.out.println("Home: " + s.getHomeStation() + " Line: " + s.getLineLabel());
+            System.out.println("Stops: ");
+            s.getStops()
+                    .forEach(stop -> System.out.println(stop));
+        });
+
     }
 
+    // TODO refactor, add javadoc
     private void extractTramDetails() throws JSONException {
         List<String> lineLabels = new LinkedList<>();
+        List<Integer> delayTimesOfLine = new LinkedList<>();
+        List<String> stopNamesOfLine = new LinkedList<>();
 
         JSONObject jsonStationsTotal = new JSONObject(this.jsonResponses[0]);
         JSONArray jsonLinesTotal = new JSONArray(this.jsonResponses[1]);
@@ -125,6 +138,119 @@ public class RNVAPI extends APIService {
         // List<JSONArray> allLinesStations =
         // getJSONArraysFromJSONObjects(allLines, this.JSONARR_LINE_IDS);
 
+        lineLabels = findLinesStoppingAt(allLines);
+
+        delayTimesOfLine = getDelayTimes(jsonMonitorTotal);
+        // delayTimesOfLine.forEach(s -> System.out.println(s));
+
+        List<JSONArray> stopsOfLineAsArrays = getStopsOfLine(jsonLinesTotal);
+
+        stopNamesOfLine = mapLineIdsToStationNames(jsonStationsTotal, stopsOfLineAsArrays);
+
+        for (int i = 0; i < lineLabels.size(); ++i) {
+            this.tramDetails.add(new TramDetails(lineLabels.get(i), this.universityStationId, stopNamesOfLine));
+        }
+
+    }
+
+    // TODO refactor, add javadoc
+    private List<String> mapLineIdsToStationNames(JSONObject jsonStationsTotal, List<JSONArray> stopsOfLineAsArrays)
+            throws JSONException {
+        JSONArray allStations = jsonStationsTotal.getJSONArray(JSONARR_STATIONS);
+        List<JSONObject> allStationObjects = getJSONObjectsFromJSONArray(allStations);
+        List<List<String>> idsOfLinesAsText = getValuesFromJSONArrayList(stopsOfLineAsArrays);
+
+        // idsOfLinesAsText.forEach(list -> list.forEach(str ->
+        // System.out.println(str)));
+
+        List<String> allStationNames = new LinkedList<>();
+        List<String> relevantStationNames = new LinkedList<>();
+        try {
+            allStationNames = getValuesFromJSONObjects(allStationObjects, JSONSTR_STATION_NAME);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        allStationObjects.forEach(station -> {
+            for (int stopsArrayIndex = 0; stopsArrayIndex < stopsOfLineAsArrays.size(); ++stopsArrayIndex) {
+                for (int stopIdIndex = 0; stopIdIndex < stopsOfLineAsArrays.get(stopsArrayIndex)
+                        .length(); ++stopIdIndex) {
+                    try {
+                        if (idsOfLinesAsText.get(stopsArrayIndex)
+                                .get(stopIdIndex)
+                                .equals(station.getString(JSONSTR_STATION_ID))) {
+                            try {
+                                relevantStationNames.add(station.getString(JSONSTR_STATION_NAME));
+                            } catch (JSONException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        return relevantStationNames;
+    }
+
+    // TODO refactor, add javadoc
+    private List<JSONArray> getStopsOfLine(JSONArray jsonLinesTotal) throws JSONException {
+        List<JSONObject> stopsOfLine = getJSONObjectsFromJSONArray(jsonLinesTotal);
+        List<JSONArray> stopsOfLineArrays = new LinkedList<>();
+        stopsOfLine.forEach(s -> {
+            try {
+                for (String lineId : this.universityLinesIds) {
+                    if (s.get(JSON_LINE_LABEL)
+                            .equals(lineId)) {
+                        stopsOfLineArrays.add(s.getJSONArray(JSONARR_LINE_IDS));
+                    }
+                }
+
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
+        return stopsOfLineArrays;
+    }
+
+    // TODO refactor, add javadoc
+    private List<Integer> getDelayTimes(JSONObject jsonMonitorTotal) throws JSONException {
+        List<Integer> delayTimes = new LinkedList<>();
+        if (jsonMonitorTotal.has(JSONARR_DEPARTURES_LIST)) {
+            JSONArray listOfDepartures = jsonMonitorTotal.getJSONArray(JSONARR_DEPARTURES_LIST);
+
+            List<JSONObject> departureObjects = getJSONObjectsFromJSONArray(listOfDepartures);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("kk:mm");
+            Date now = new Date();
+            String nowAsText = sdf.format(now);
+
+            departureObjects.forEach(s -> {
+                try {
+                    String timeCut = s.getString(JSONSTR_PLANNED_DEPARTURE)
+                            .substring(0, 5);
+                    Integer timeDiff = Integer.parseInt(s.getString(JSONSTR_DIFFERENCE_TIME));
+                    if (!timeCut.contains(".")) {
+                        delayTimes.add(timeDiff - calculateDiffTimeInMinutes(nowAsText, timeCut));
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            });
+
+        } else {
+            LOGGER.warning(JSONARR_DEPARTURES_LIST + " not contained in " + jsonMonitorTotal.toString());
+        }
+        return delayTimes;
+    }
+
+    private List<String> findLinesStoppingAt(List<JSONObject> allLines) {
+        List<String> lineLabels = new LinkedList<>();
         allLines.forEach(line -> {
             try {
                 JSONArray tmpLineIds = line.getJSONArray(JSONARR_LINE_IDS);
@@ -141,38 +267,7 @@ public class RNVAPI extends APIService {
             }
 
         });
-
-        if (jsonMonitorTotal.has(JSONARR_DEPARTURES_LIST)) {
-            JSONArray listOfDepartures = jsonMonitorTotal.getJSONArray(JSONARR_DEPARTURES_LIST);
-
-            List<JSONObject> departureObjects = getJSONObjectsFromJSONArray(listOfDepartures);
-
-            SimpleDateFormat sdf = new SimpleDateFormat("kk:mm");
-            Date now = new Date();
-            String nowAsText = sdf.format(now);
-
-            departureObjects.forEach(s -> {
-                try {
-                    String timeCut = s.getString(JSONSTR_PLANNED_DEPARTURE)
-                            .substring(0, 5);
-                    if (!timeCut.contains(".")) {
-                        System.out.println(timeCut);
-                    }
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    // } catch (ParseException e) {
-                    // // TODO Auto-generated catch block
-                    // e.printStackTrace();
-                }
-            });
-
-        } else {
-            LOGGER.warning(JSONARR_DEPARTURES_LIST + " not contained in " + jsonMonitorTotal.toString());
-        }
-
-        // List<JSONObject>
-
+        return lineLabels;
     }
 
     private Integer calculateDiffTimeInMinutes(String startTime, String endTime) {
