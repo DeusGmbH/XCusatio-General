@@ -139,6 +139,44 @@ public abstract class APIService {
         return result;
     }
 
+    /**
+     * 
+     * @param jA
+     *            json array to get json objects from
+     * @return list of obtained json objects
+     * @throws JSONException
+     */
+    protected List<JSONObject> getJSONObjectsFromJSONArray(JSONArray jA) throws JSONException {
+        List<JSONObject> jL = new LinkedList<>();
+        for (int i = 0; i < jA.length(); ++i) {
+            jL.add(jA.getJSONObject(i));
+        }
+        return jL;
+    }
+
+    /**
+     * 
+     * @param jL
+     *            list with json objects to retrieve json arrays from
+     * @param KEY
+     *            reffering to the target json array
+     * @return list of these json arrays
+     */
+    protected List<JSONArray> getJSONArraysFromJSONObjects(List<JSONObject> jL, String KEY) {
+        List<JSONArray> jA = new LinkedList<>();
+        jL.forEach(jO -> {
+            if (jO.has(KEY)) {
+                try {
+                    jA.add(jO.getJSONArray(KEY));
+                } catch (JSONException e) {
+                    LOGGER.warning("JSONException while trying to obtain json array from a json object: "
+                            + e.getLocalizedMessage());
+                }
+            }
+        });
+        return jA;
+    }
+
     public URL getRequestUrl() {
         return requestUrl;
     }
