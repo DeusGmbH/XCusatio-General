@@ -21,16 +21,12 @@ public class RNVContext extends TimeFormattingUtils {
     private TramNews newsEntry; // can be empty if line not affected by any
                                 // incidents
     private TramStatus tramStatus;
-    private int differenceTimeInMinutes;
-    private String differenceTimeInMinutesText;
 
     public RNVContext(TramDetails tram, TramNews newsEntry, TramStatus tramStatus, int differenceTimeInMinutes) {
         super();
         this.tram = tram;
         this.newsEntry = newsEntry;
         this.tramStatus = tramStatus;
-        this.differenceTimeInMinutes = differenceTimeInMinutes;
-        this.differenceTimeInMinutesText = formatMinutesAsText(differenceTimeInMinutes);
     }
 
     public TramDetails getTram() {
@@ -57,28 +53,14 @@ public class RNVContext extends TimeFormattingUtils {
         this.tramStatus = tramStatus;
     }
 
-    public int getDifferenceTimeInMinutes() {
-        return differenceTimeInMinutes;
-    }
-
-    public void setDifferenceTimeInMinutes(int differenceTimeInMinutes) {
-        this.differenceTimeInMinutes = differenceTimeInMinutes;
-    }
-
-    public String getDifferenceTimeInMinutesText() {
-        return this.differenceTimeInMinutesText;
-    }
-
-    public void setDifferenceTimeInMinutesText() {
-        this.differenceTimeInMinutesText = formatMinutesAsText(this.differenceTimeInMinutes);
-    }
-
     public void logContextContent() {
         LOGGER.info("RNVContext:\nTram No. " + this.tram.getLineLabel() + "\nFrom: " + this.tram.getFirstEndStation()
-                + "\nTo: " + this.tram.getSecondEndstation() + "\n(" + this.tram.getStops().size() + " stops)\n"
-                + this.newsEntry.getTitle() + ": " + this.newsEntry.getContent() + ", affecting "
-                + this.newsEntry.getAffectedLines().size() + "lines.\nStatus of tram: " + this.tramStatus
-                + "\nTram delay: " + this.differenceTimeInMinutesText);
+                + "\nTo: " + this.tram.getSecondEndstation() + "\n(" + this.tram.getStops()
+                        .size()
+                + " stops)\n" + this.newsEntry.getTitle() + ": " + this.newsEntry.getContent() + ", affecting "
+                + this.newsEntry.getAffectedLines()
+                        .size()
+                + "lines.\nStatus of tram: " + this.tramStatus + "\nTram delay: ");
     }
 
 }
