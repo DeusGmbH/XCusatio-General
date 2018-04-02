@@ -30,6 +30,8 @@ import javafx.scene.layout.Priority;
 
 public abstract class EntryListPane<T> extends BorderPane {
 
+    private static final String ENTRY_LIST_STYLESHEET_PATH = "file:assets/entry_list_pane_stylesheet.css";
+
     protected TableView<T> entryTable;
     protected Button addEntryButton;
     protected Button removeSelectedEntryButton;
@@ -63,6 +65,9 @@ public abstract class EntryListPane<T> extends BorderPane {
 
         this.createRemoveEntryButtonListener();
         this.createAddEntryButtonListener();
+
+        this.getStylesheets()
+                .add(ENTRY_LIST_STYLESHEET_PATH);
     }
 
     private void setTableColumns(HashMap<String, String> columnList) {

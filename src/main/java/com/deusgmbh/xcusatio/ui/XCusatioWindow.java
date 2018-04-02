@@ -39,6 +39,8 @@ import javafx.stage.StageStyle;
  */
 
 public class XCusatioWindow extends Application {
+    private static final String SCENE_STYLESHEET_PATH = "file:assets/stage_stylesheet.css";
+
     private static final String WINDOW_TITLE = "Deus GmbH - xCusatio";
 
     private static final int WINDOW_BORDER_HEIGHT = 40;
@@ -51,8 +53,6 @@ public class XCusatioWindow extends Application {
     private static final String DASHBOARD_TAB_NAME = "Generator";
     private static final String EDITOR_TAB_NAME = "Editor";
     private static final String PROFILE_SETTINGS_TAB_NAME = "Profile";
-
-    private static final String SCENE_STYLESHEET_PATH = "file:assets/stage_stylesheet.css";
 
     private BorderPane main;
     private WindowBorder windowBorder;

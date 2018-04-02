@@ -33,6 +33,8 @@ import javafx.scene.layout.VBox;
  */
 
 public abstract class EditEntryPane<T> extends BorderPane {
+    private static final String EDIT_ENTRY_STYLESHEET_PATH = "file:assets/edit_entry_stylesheet.css";
+
     private static final String EDITOR_TITLE = "Editor";
     private static final String SUBMIT_EDITED_ENTRY_BTN_LABEL = "Speichern";
 
@@ -68,14 +70,14 @@ public abstract class EditEntryPane<T> extends BorderPane {
         submitEditedEntryBtnPane.getChildren()
                 .add(submitEditedEntryBtn);
 
-        this.getStyleClass()
-                .add("edit-entry");
-
         editFormPane = new VBox();
         editFormPane.setPadding(new Insets(15, 0, 0, 0));
 
         this.setCenter(editFormPane);
         this.setTop(editorTitleLabel);
+
+        this.getStylesheets()
+                .add(EDIT_ENTRY_STYLESHEET_PATH);
     }
 
     protected void addNodeBoxToPane(String descriptionText, Parent contentNode) {

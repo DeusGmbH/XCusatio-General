@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
-import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +23,15 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
+
+/**
+ * 
+ * TODO @Jan Aufräumen, für benötigten Nutzen anpassen (nur 1
+ * Event/Parameterübergabe Anzahl Events)...
+ * 
+ * @author Pascal.Schroeder@de.ibm.com, jan.leiblein@gmail.com
+ *
+ */
 
 public class CalendarAPI {
     private static final String APPLICATION_NAME = "Google Calendar API Java Quickstart";
@@ -72,7 +80,7 @@ public class CalendarAPI {
         credentials = credential;
     }
 
-    public static void removeCredentials() throws GeneralSecurityException, IOException {
+    public static void removeCredentials() throws IOException {
         if (delete(DATA_STORE_DIR)) {
             credentials = null;
             DATA_STORE_FACTORY = new FileDataStoreFactory(DATA_STORE_DIR);
@@ -103,31 +111,36 @@ public class CalendarAPI {
     }
 
     public static void getEvents() throws IOException {
-        com.google.api.services.calendar.Calendar service = getCalendarService();
+        try {
+            com.google.api.services.calendar.Calendar service = getCalendarService();
 
-        DateTime now = new DateTime(System.currentTimeMillis());
-        Events events = service.events()
-                .list("primary")
-                .setMaxResults(10)
-                .setTimeMin(now)
-                .setOrderBy("startTime")
-                .setSingleEvents(true)
-                .execute();
-        List<Event> items = events.getItems();
-        if (items.size() == 0) {
-            System.out.println("No upcoming events found.");
-        } else {
-            System.out.println("Upcoming events");
-            for (Event event : items) {
-                DateTime start = event.getStart()
-                        .getDateTime();
-                if (start == null) {
-                    start = event.getStart()
-                            .getDate();
+            DateTime now = new DateTime(System.currentTimeMillis());
+            Events events = service.events()
+                    .list("primary")
+                    .setMaxResults(10)
+                    .setTimeMin(now)
+                    .setOrderBy("startTime")
+                    .setSingleEvents(true)
+                    .execute();
+            List<Event> items = events.getItems();
+            if (items.size() == 0) {
+                System.out.println("No upcoming events found.");
+            } else {
+                System.out.println("Upcoming events");
+                for (Event event : items) {
+                    DateTime start = event.getStart()
+                            .getDateTime();
+                    if (start == null) {
+                        start = event.getStart()
+                                .getDate();
+                    }
+                    System.out.printf("%s (%s)\n", event.getSummary(), start);
                 }
-                System.out.printf("%s (%s)\n", event.getSummary(), start);
             }
+        } catch (Exception e) {
+            System.out.println("No calendar connected");
         }
+
     }
 
 }

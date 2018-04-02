@@ -1,7 +1,6 @@
 package com.deusgmbh.xcusatio.ui.profilsettings;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 
 import com.deusgmbh.xcusatio.api.calendar.CalendarAPI;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
@@ -28,6 +27,8 @@ import javafx.scene.layout.VBox;
  */
 
 public class ProfileSettings extends FlowPane {
+    private static final String PROFILE_SETTINGS_STYLESHEET_PATH = "file:assets/profile_settings_stylesheet.css";
+
     private static final String SEX_TOGGLE_PANE_LABEL_TEXT = "Geschlecht";
     private static final String AGE_LABEL_TEXT = "Geburtstag";
     private static final String LOCATION_LABEL_TEXT = "Standort";
@@ -64,6 +65,8 @@ public class ProfileSettings extends FlowPane {
                         .multiply(PROFILE_FORM_PANE_WIDTH_MULTIPLIER));
 
         this.setAlignment(Pos.CENTER);
+        this.getStylesheets()
+                .add(PROFILE_SETTINGS_STYLESHEET_PATH);
     }
 
     private void createProfileSettingsForm() {
@@ -88,7 +91,6 @@ public class ProfileSettings extends FlowPane {
 
         createCalendarButton(CalendarAPI.hasCredentials());
 
-        // TODO: calendarButton Action
         saveProfileBtn = new Button(SUBMIT_BUTTON_LABEL);
         this.saveProfileBtn.setOnAction(editProfileAction);
         StackPane saveBtnPane = new StackPane(saveProfileBtn);
@@ -116,6 +118,7 @@ public class ProfileSettings extends FlowPane {
                 .bind(this.profileFormPane.widthProperty()
                         .multiply(LABEL_WIDTH_MULTIPLIER));
         labelPane.setAlignment(Pos.CENTER_RIGHT);
+
         return labelPane;
     }
 
@@ -128,7 +131,6 @@ public class ProfileSettings extends FlowPane {
     };
 
     private void createCalendarButton(boolean existingCalendar) {
-        System.out.println(existingCalendar);
         calendarButton = new Button();
         calendarButton.getStyleClass()
                 .add("calendar-button");
@@ -146,11 +148,7 @@ public class ProfileSettings extends FlowPane {
         public void handle(ActionEvent event) {
             try {
                 CalendarAPI.removeCredentials();
-            } catch (GeneralSecurityException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             createCalendarButton(CalendarAPI.hasCredentials());

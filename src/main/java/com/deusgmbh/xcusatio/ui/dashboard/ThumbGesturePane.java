@@ -20,7 +20,7 @@ public class ThumbGesturePane extends BorderPane {
         ImageView thumbGestureImgView = new ImageView(thumbGestureImg);
         thumbGestureImgView.setPreserveRatio(true);
         thumbGestureImgView.setFitHeight(THUMB_GESTURE_HEIGHT);
-        thumbGestureImgView.setRotate(thumbGestureValue);
+        thumbGestureImgView.setRotate(360 - thumbGestureValue);
 
         this.setCenter(thumbGestureImgView);
     }

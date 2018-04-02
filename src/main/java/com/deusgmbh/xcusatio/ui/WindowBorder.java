@@ -29,6 +29,8 @@ public class WindowBorder extends HBox {
 
     public WindowBorder(EventHandler<ActionEvent> minimizeWindow, EventHandler<ActionEvent> restoreWindow,
             EventHandler<ActionEvent> closeWindow) {
+        this.getStylesheets()
+                .add(WINDOW_BORDER_STYLESHEET_PATH);
         this.getStyleClass()
                 .add("window-border");
 
