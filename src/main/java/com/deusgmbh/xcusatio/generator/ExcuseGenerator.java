@@ -13,6 +13,7 @@ import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.tags.Tag;
+import com.deusgmbh.xcusatio.data.tags.Tags;
 import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
 
 import javafx.collections.ObservableList;
@@ -143,32 +144,32 @@ public class ExcuseGenerator {
         return new HashSet<>();
     }
 
-    private Set<Tag> getExcusesVibeTags(Context context) {
+    private Collection<? extends Tag> getExcusesVibeTags(Context context) {
         Set<Tag> excusesVibeTags = new HashSet<>();
         ExcuseVibes excusesVibes = context.getManuellExcusesVibes();
         if (excusesVibes != null) {
             if (excusesVibes.isAggresiv()) {
-                excusesVibeTags.add(Tag.AGGRESSIVE);
+                excusesVibeTags.add(Tags.AGGRESSIVE);
             }
             if (excusesVibes.isFunny()) {
-                excusesVibeTags.add(Tag.FUNNY);
+                excusesVibeTags.add(Tags.FUNNY);
             }
             if (excusesVibes.isSuckUp()) {
-                excusesVibeTags.add(Tag.SUCKUP);
+                excusesVibeTags.add(Tags.SUCKUP);
             }
         }
         return excusesVibeTags;
     }
 
-    private Set<Tag> getSexTag(Context context) {
+    private Collection<? extends Tag> getSexTag(Context context) {
         Set<Tag> sexTags = new HashSet<>();
         if (context.getSex() != null) {
             switch (context.getSex()) {
             case MALE:
-                sexTags.add(Tag.MALE);
+                sexTags.add(Tags.MALE);
                 break;
             case FEMALE:
-                sexTags.add(Tag.FEMALE);
+                sexTags.add(Tags.FEMALE);
                 break;
             }
         }

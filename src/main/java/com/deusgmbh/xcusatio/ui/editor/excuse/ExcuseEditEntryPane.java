@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
-import com.deusgmbh.xcusatio.data.tags.Tag;
+import com.deusgmbh.xcusatio.data.tags.TagText;
 import com.deusgmbh.xcusatio.ui.editor.EditEntryPane;
 import com.deusgmbh.xcusatio.ui.utility.DoubleListView;
 import com.deusgmbh.xcusatio.ui.utility.TextFieldAddBox;
@@ -37,7 +37,7 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
 
     private TextFieldAddBox excuseTextField;
     private ChoiceBox<ScenarioType> excuseTypeChoiceBox;
-    private DoubleListView<Tag> tagsListCellView;
+    private DoubleListView<TagText> tagsListCellView;
 
     public ExcuseEditEntryPane() {
         super();
@@ -63,7 +63,7 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
                         .toString() : DEFAULT_LAST_USED_TEXT);
         this.excuseTextField = new TextFieldAddBox(editableItems.get(id)
                 .getText(), wildcardSetSupplier.get());
-        this.tagsListCellView = new DoubleListView<Tag>(editableItems.get(id)
+        this.tagsListCellView = new DoubleListView<TagText>(editableItems.get(id)
                 .getTags(),
                 super.removeFromAllTagsList(editableItems.get(id)
                         .getTags()));

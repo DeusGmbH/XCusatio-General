@@ -111,7 +111,8 @@ public class Excuse {
     }
 
     public static Predicate<Excuse> byScenario(Scenario scenario) {
-        return excuse -> excuse.getScenarioType().equals(scenario.getScenarioType());
+        return excuse -> excuse.getScenarioType()
+                .equals(scenario.getScenarioType());
     }
 
     public static Predicate<Excuse> containsAllTags(List<Tag> tags) {

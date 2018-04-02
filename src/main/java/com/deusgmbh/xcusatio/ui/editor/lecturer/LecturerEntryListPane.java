@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
-import com.deusgmbh.xcusatio.data.tags.Tag;
+import com.deusgmbh.xcusatio.data.tags.TagText;
 import com.deusgmbh.xcusatio.ui.editor.EntryListPane;
 
 /**
@@ -28,7 +28,7 @@ public class LecturerEntryListPane extends EntryListPane<Lecturer> {
 
     @Override
     protected Lecturer createNewItem() {
-        return new Lecturer(NEW_LECTURER_DEFAULT_TEXT, new ArrayList<String>(), new ArrayList<Tag>());
+        return new Lecturer(NEW_LECTURER_DEFAULT_TEXT, new ArrayList<String>(), new ArrayList<TagText>());
     }
 
     @Override

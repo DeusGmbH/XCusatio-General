@@ -1,7 +1,7 @@
 package com.deusgmbh.xcusatio.ui.editor.lecturer;
 
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
-import com.deusgmbh.xcusatio.data.tags.Tag;
+import com.deusgmbh.xcusatio.data.tags.TagText;
 import com.deusgmbh.xcusatio.ui.editor.EditEntryPane;
 import com.deusgmbh.xcusatio.ui.utility.DoubleListView;
 import com.deusgmbh.xcusatio.ui.utility.ListViewTextField;
@@ -27,7 +27,7 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
 
     private TextField lecturerNameTextField;
     private ListViewTextField lecturerLecturesPane;
-    private DoubleListView<Tag> tagsListCellView;
+    private DoubleListView<TagText> tagsListCellView;
 
     public LecturerEditEntryPane() {
         super();
@@ -50,7 +50,7 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
                 .getName());
         this.lecturerLecturesPane = new ListViewTextField(editableItems.get(selectedItemId)
                 .getLectures());
-        this.tagsListCellView = new DoubleListView<Tag>(editableItems.get(selectedItemId)
+        this.tagsListCellView = new DoubleListView<TagText>(editableItems.get(selectedItemId)
                 .getTags(),
                 super.removeFromAllTagsList(editableItems.get(selectedItemId)
                         .getTags()));
