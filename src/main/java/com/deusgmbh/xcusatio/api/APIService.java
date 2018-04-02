@@ -64,7 +64,7 @@ public abstract class APIService {
         for (JSONObject jO : into) {
             if (jO.has(KEY)) {
                 jL.add(jO.getJSONObject(KEY));
-                System.out.println(KEY + ": " + jO.toString());
+                // System.out.println(KEY + ": " + jO.toString());
             }
         }
         return jL;
@@ -86,7 +86,7 @@ public abstract class APIService {
             List<JSONObject> jL = new LinkedList<>();
             for (int i = 0; i < jA.length(); ++i) {
                 jL.add(jA.getJSONObject(i));
-                System.out.println(KEY + jA.get(i));
+                // System.out.println(KEY + jA.get(i));
             }
             return jL;
         }
@@ -133,8 +133,8 @@ public abstract class APIService {
             innerTmp.addAll(getJSONObjectsFromJSONArray(outerTmp.get(i), arrayKEY));
         }
         List<String> result = getValuesFromJSONObjects(innerTmp, strKEY);
-        /* testing purposes */
-        result.forEach(s -> LOGGER.info("Found roadway: " + s));
+        // testing purposes
+        // result.forEach(s -> System.out.println("Found: " + s));
         return result;
     }
 
