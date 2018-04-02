@@ -3,17 +3,20 @@ package com.deusgmbh.xcusatio.api;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 /**
  * 
- * @author Tobias.Schmidt@de.ibm.com, 
- * jan.leiblein@gmail.com
+ * @author Tobias.Schmidt@de.ibm.com, jan.leiblein@gmail.com
  *
  * 
  *
@@ -44,6 +47,74 @@ public abstract class APIService {
 
     /* differs in terms of data format returned by the call */
     public abstract void getResponseFromWebsite();
+
+    /**
+     * 
+     * @param into
+     *            provides the list to move into in order to get the target list
+     *            of json objects out of it
+     * @param KEY
+     *            represents the key referring to this target list of json
+     *            objects
+     * @return the target list
+     * @throws JSONException
+     */
+    protected List<JSONObject> goInside(List<JSONObject> into, String KEY) throws JSONException {
+        List<JSONObject> jL = new LinkedList<>();
+        for (JSONObject jO : into) {
+            if (jO.has(KEY)) {
+                jL.add(jO.getJSONObject(KEY));
+                System.out.println(KEY + ": " + jO.toString());
+            }
+        }
+        return jL;
+    }
+
+    /**
+     * 
+     * @param jO
+     *            provides the json object that should contain a json array
+     * @param KEY
+     *            is the key referring to this json array
+     * @return a list of all json objects contained in the json array
+     * @throws JSONException
+     */
+    protected List<JSONObject> getJSONObjectsFromJSONArray(JSONObject jO, String KEY) throws JSONException {
+        if (jO.has(KEY)) {
+            JSONArray jA = jO.getJSONArray(KEY);
+
+            List<JSONObject> jL = new LinkedList<>();
+            for (int i = 0; i < jA.length(); ++i) {
+                jL.add(jA.getJSONObject(i));
+                System.out.println(KEY + jA.get(i));
+            }
+            return jL;
+        }
+        LOGGER.warning(KEY + " not contained in JSONObject " + jO.toString());
+        return null;
+    }
+
+    /**
+     * 
+     * @param jL
+     *            list of json objects to retrieve string values from
+     * @param KEY
+     *            of the desired string value
+     * @return list of desired string values
+     * @throws JSONException
+     */
+    protected List<String> getValuesFromJSONObjects(List<JSONObject> jL, String KEY) throws JSONException {
+        List<String> sL = new LinkedList<>();
+        for (JSONObject jO : jL) {
+            if (jO.has(KEY)) {
+                sL.add(jO.getString(KEY));
+            } else {
+                LOGGER.warning(KEY + " not contained in " + jO);
+                return null;
+            }
+        }
+        return sL;
+    }
 
     public URL getRequestUrl() {
         return requestUrl;
