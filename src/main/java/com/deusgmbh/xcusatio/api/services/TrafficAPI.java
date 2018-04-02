@@ -31,6 +31,10 @@ public class TrafficAPI extends APIService {
     private final String JSONARR_TRAFFIC_ITEM = "TRAFFIC_ITEM";
     private final String JSONOB_LOCATION = "LOCATION";
     private final String JSONOB_LOCATION_DEFINED = "DEFINED";
+    private final String JSONOB_LOCATION_INTERSECTION = "INTERSECTION";
+    private final String JSONOB_INTERSECTION_ORIGIN = "ORIGIN";
+    private final String JSONOB_ORIGIN_STREET1 = "STREET1";
+    private final String JSONSTR_STREET1_ADDRESS = "ADDRESS1";
     private final String JSONOB_DEFINED_ORIGIN = "ORIGIN";
     private final String JSONOB_ORIGIN_DIRECTION = "DIRECTION";
     private final String JSONARR_DIRECTION_DESCRIPTION = "DESCRIPTION";
@@ -128,7 +132,7 @@ public class TrafficAPI extends APIService {
         /* check for traffic items */
         if (jsonTotal.has(JSONOB_TRAFFIC_ITEMS)) {
             JSONObject trafficItems = jsonTotal.getJSONObject(JSONOB_TRAFFIC_ITEMS);
-            System.out.println("* " + trafficItems.toString());
+            // System.out.println("* " + trafficItems.toString());
 
             /* get the list of all traffic items */
             List<JSONObject> trafficItemList = getJSONObjectsFromJSONArray(trafficItems, JSONARR_TRAFFIC_ITEM);
@@ -146,11 +150,11 @@ public class TrafficAPI extends APIService {
     private void extractDetailsInformation(List<JSONObject> trafficItemList) throws JSONException {
         // TODO 1 TYPE
         List<String> incidentTypes = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_TYPE);
-        incidentTypes.forEach(s -> System.out.println(s));
+        // incidentTypes.forEach(s -> System.out.println(s));
 
         // TODO 2 STATUS
         List<String> incidentStatus = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_STATUS);
-        incidentStatus.forEach(s -> System.out.println(s));
+        // incidentStatus.forEach(s -> System.out.println(s));
 
         int typesIndex = 0;
         while (typesIndex < incidentTypes.size()) {
@@ -175,34 +179,44 @@ public class TrafficAPI extends APIService {
         List<String> cityNamesOfIncidents = getValuesFromNestedJSONArray(locOrigins, JSONOB_ORIGIN_DIRECTION,
                 JSONARR_DIRECTION_DESCRIPTION, JSONSTR_DIRECTION_DESCRIPTION_FIRST);
 
+        if (cityNamesOfIncidents.isEmpty()) {
+            List<JSONObject> intersections = goInside(locationList, JSONOB_LOCATION_INTERSECTION);
+            List<JSONObject> intersectionsOrigins = goInside(intersections, JSONOB_INTERSECTION_ORIGIN);
+            List<JSONObject> originsStreets = goInside(intersectionsOrigins, JSONOB_ORIGIN_STREET1);
+            cityNamesOfIncidents = getValuesFromJSONObjects(originsStreets, JSONSTR_STREET1_ADDRESS);
+        }
+
         List<String> streetNamesOfIncidents = getValuesFromNestedJSONArray(locOrigins, JSONOB_ORIGIN_ROADWAY,
                 JSONARR_ROADWAY_DESCRIPTION, JSONSTR_DIRECTION_DESCRIPTION_FIRST);
 
+        System.out.println(cityNamesOfIncidents.size());
         for (int i = 0; i < cityNamesOfIncidents.size(); ++i) {
-            for (TrafficIncidentLocation trLoc : this.incidentLocation) {
-                trLoc = new TrafficIncidentLocation(cityNamesOfIncidents.get(i), streetNamesOfIncidents.get(i));
-            }
+            this.incidentLocation
+                    .add(new TrafficIncidentLocation(cityNamesOfIncidents.get(i), streetNamesOfIncidents.get(i)));
+            System.out.println("added " + cityNamesOfIncidents.get(i) + " and " + streetNamesOfIncidents.get(i));
         }
-
-        int locationIndex = 0;
-        while (locationIndex < cityNamesOfIncidents.size()) {
-            this.incidentLocation.add(new TrafficIncidentLocation(cityNamesOfIncidents.get(locationIndex),
-                    streetNamesOfIncidents.get(locationIndex)));
-            ++locationIndex;
-        }
-
-        this.incidentLocation
-                .forEach(loc -> System.out.println(loc.getCityOfIncident() + " : " + loc.getStreetOfIncident()));
+        //
+        // int locationIndex = 0;
+        // while (locationIndex < cityNamesOfIncidents.size()) {
+        // this.incidentLocation.add(new
+        // TrafficIncidentLocation(cityNamesOfIncidents.get(locationIndex),
+        // streetNamesOfIncidents.get(locationIndex)));
+        // ++locationIndex;
+        // }
+        //
+        // this.incidentLocation
+        // .forEach(loc -> System.out.println(loc.getCityOfIncident() + " : " +
+        // loc.getStreetOfIncident()));
     }
 
     private void extractTimesInformation(List<JSONObject> trafficItemList) throws JSONException, ParseException {
         // TODO 4 convert to Date later
         List<String> entryTimes = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_ENTRY_TIME);
-        entryTimes.forEach(s -> System.out.println(s));
+        // entryTimes.forEach(s -> System.out.println(s));
 
         // TODO 5 convert to Date later
         List<String> endTimes = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_END_TIME);
-        endTimes.forEach(s -> System.out.println(s));
+        // endTimes.forEach(s -> System.out.println(s));
 
         int timesIndex = 0;
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
@@ -252,7 +266,7 @@ public class TrafficAPI extends APIService {
         } catch (MalformedURLException e) {
             // TODO: handle exception
         }
-        // System.out.println(getRequestUrl());
+        System.out.println(getRequestUrl());
 
     }
 
@@ -271,6 +285,15 @@ public class TrafficAPI extends APIService {
         System.out.println("#####################################");
         TrafficContext tContext = tApi.get(usersettings);
         System.out.println("#####################################");
+
+        tContext.logContextContent();
+
+        tContext.getIncidentLocation()
+                .forEach(s -> System.out
+                        .println("City: " + s.getCityOfIncident() + " Street: " + s.getStreetOfIncident()));
+
+        tContext.getTrafficIncident()
+                .forEach(s -> System.out.println("Type: " + s.getIncidentType() + " Status: " + s.getIncidentStatus()));
 
         // TrafficContext tContext = tApi.get(usersettings);
         // tContext.logContextContent();
