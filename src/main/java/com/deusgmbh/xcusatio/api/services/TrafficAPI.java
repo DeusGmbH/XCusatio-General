@@ -106,53 +106,67 @@ public class TrafficAPI extends APIService {
     public void extractDesiredInfoFromResponse() throws JSONException {
         getResponseFromWebsite();
         JSONObject jsonTotal = new JSONObject(this.jsonResponse);
+
         if (jsonTotal.has(JSONOB_TRAFFIC_ITEMS)) {
             JSONObject trafficItems = jsonTotal.getJSONObject(JSONOB_TRAFFIC_ITEMS);
             System.out.println("* " + trafficItems.toString());
-            if (trafficItems.has(JSONARR_TRAFFIC_ITEM)) {
-                JSONArray trafficItem = trafficItems.getJSONArray(JSONARR_TRAFFIC_ITEM);
-                List<JSONObject> trafficItemList = new LinkedList<>();
-                for (int i = 0; i < trafficItem.length(); ++i) {
-                    trafficItemList.add(trafficItem.getJSONObject(i));
-                    System.out.println("Traffic item " + trafficItem.get(i));
-                }
 
-                List<JSONObject> locationList = goInside(trafficItemList, JSONOB_LOCATION);
+            /* get the list of all traffic items */
+            List<JSONObject> trafficItemList = getJSONObjectsFromJSONArray(trafficItems, JSONARR_TRAFFIC_ITEM);
 
-                List<JSONObject> definedLocations = goInside(locationList, JSONOB_LOCATION_DEFINED);
+            /*
+             * get 1. item status short description 2. item type description 3.
+             * entry time 4. end time 5. location
+             * 
+             */
 
-                List<JSONObject> locOrigins = goInside(definedLocations, JSONOB_DEFINED_ORIGIN);
+            // TODO 1
+            List<String> shortDescriptions = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_STATUS);
+            shortDescriptions.forEach(s -> System.out.println(s));
 
-                List<JSONObject> roadways = new LinkedList<>();
+            // TODO 2
+            List<String> incidentTypes = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_TYPE);
+            incidentTypes.forEach(s -> System.out.println(s));
 
-                List<String> roadwayDescriptionValues = new LinkedList<>();
-                for (JSONObject rdWay : locOrigins) {
-                    if (rdWay.has(JSONOB_ORIGIN_ROADWAY)) {
-                        roadways.add(rdWay.getJSONObject(JSONOB_ORIGIN_ROADWAY));
-                        System.out.println("Roadway: " + rdWay.toString());
-                        if (roadways.get(0)
-                                .has(JSONSTR_DESCRIPTION_VALUE)) {
-                            roadwayDescriptionValues.add(roadways.get(0)
-                                    .getString(JSONSTR_DESCRIPTION_VALUE));
-                        }
-                    }
-                }
-                for (String rwDescVal : roadwayDescriptionValues) {
-                    System.out.println("Roadway description values: " + rwDescVal);
-                }
+            // TODO 3 convert to Date later
+            List<String> entryTimes = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_ENTRY_TIME);
+            entryTimes.forEach(s -> System.out.println(s));
 
-                List<JSONArray> roadwayDescriptions = new LinkedList<>();
-                for (JSONObject rdWay : roadways) {
-                    if (rdWay.has(JSONARR_ROADWAY_DESCRIPTION)) {
-                        roadwayDescriptions.add(rdWay.getJSONArray(JSONARR_ROADWAY_DESCRIPTION));
-                    }
-                }
+            // TODO 4 convert to Date later
+            List<String> endTimes = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_END_TIME);
+            endTimes.forEach(s -> System.out.println(s));
 
+            /* get incident location */
+            List<JSONObject> locationList = goInside(trafficItemList, JSONOB_LOCATION);
+            List<JSONObject> definedLocations = goInside(locationList, JSONOB_LOCATION_DEFINED);
+            List<JSONObject> locOrigins = goInside(definedLocations, JSONOB_DEFINED_ORIGIN);
+            List<JSONObject> roadways = goInside(locOrigins, JSONOB_ORIGIN_ROADWAY);
+            List<JSONObject> rdWaysDescriptions = new LinkedList<>();
+            for (int i = 0; i < roadways.size(); ++i) {
+                rdWaysDescriptions.addAll(getJSONObjectsFromJSONArray(roadways.get(i), JSONARR_ROADWAY_DESCRIPTION));
             }
+            List<String> streetNamesOfIncidents = getValuesFromJSONObjects(rdWaysDescriptions,
+                    JSONSTR_INCIDENT_DESCRIPTION_FIRST);
+            streetNamesOfIncidents.forEach(s -> System.out.println(s));
 
+            /* get incident type */
+
+        } else {
+            LOGGER.warning("json response does not contain values for KEY " + JSONOB_TRAFFIC_ITEMS);
         }
     }
 
+    /**
+     * 
+     * @param into
+     *            provides the list to move into in order to get the target list
+     *            of json objects out of it
+     * @param KEY
+     *            represents the key referring to this target list of json
+     *            objects
+     * @return the target list
+     * @throws JSONException
+     */
     private List<JSONObject> goInside(List<JSONObject> into, String KEY) throws JSONException {
         List<JSONObject> jL = new LinkedList<>();
         for (JSONObject jO : into) {
@@ -162,6 +176,52 @@ public class TrafficAPI extends APIService {
             }
         }
         return jL;
+    }
+
+    /**
+     * 
+     * @param jO
+     *            provides the json object that should contain a json array
+     * @param KEY
+     *            is the key referring to this json array
+     * @return a list of all json objects contained in the json array
+     * @throws JSONException
+     */
+    private List<JSONObject> getJSONObjectsFromJSONArray(JSONObject jO, String KEY) throws JSONException {
+        if (jO.has(KEY)) {
+            JSONArray jA = jO.getJSONArray(KEY);
+
+            List<JSONObject> jL = new LinkedList<>();
+            for (int i = 0; i < jA.length(); ++i) {
+                jL.add(jA.getJSONObject(i));
+                System.out.println(KEY + jA.get(i));
+            }
+            return jL;
+        }
+        LOGGER.warning(KEY + " not contained in JSONObject " + jO.toString());
+        return null;
+    }
+
+    /**
+     * 
+     * @param jL
+     *            list of json objects to retrieve string values from
+     * @param KEY
+     *            of the desired string value
+     * @return list of desired string values
+     * @throws JSONException
+     */
+    private List<String> getValuesFromJSONObjects(List<JSONObject> jL, String KEY) throws JSONException {
+        List<String> sL = new LinkedList<>();
+        for (JSONObject jO : jL) {
+            if (jO.has(KEY)) {
+                sL.add(jO.getString(KEY));
+            } else {
+                LOGGER.warning(KEY + " not contained in " + jO);
+                return null;
+            }
+        }
+        return sL;
     }
 
     @Override
