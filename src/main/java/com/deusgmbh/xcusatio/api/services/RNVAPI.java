@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -28,11 +31,16 @@ public class RNVAPI extends APIService {
 
     private final String STATIONS_PACKAGE = BASE_URL + "/regions/rnv/modules/stations/packages/1";
     private final String LINES_PACKAGE = BASE_URL + "/regions/rnv/modules/lines/allJourney";
+    private final String STATIONS_MONITOR = BASE_URL + "/regions/rnv/modules/stationmonitor/element?hafasID=";
 
     private final String JSONARR_STATIONS = "stations";
     private final String JSONSTR_STATION_ID = "hafasID";
     private final String JSONSTR_STATION_NAME = "longName";
     private final String JSONARR_LINE_IDS = "lineIDs";
+    private final String JSON_LINE_LABEL = "lineId";
+    private final String JSONARR_DEPARTURES_LIST = "listOfDepartures";
+    private final String JSONSTR_PLANNED_DEPARTURE = "time";
+    private final String JSONSTR_DIFFERENCE_TIME = "differenceTime";
 
     private String[] jsonResponses;
 
@@ -43,7 +51,10 @@ public class RNVAPI extends APIService {
 
     public RNVAPI() {
         super();
-        this.jsonResponses = new String[2];
+        this.jsonResponses = new String[3];
+        this.tramDetails = new LinkedList<>();
+        this.tramNews = new LinkedList<>();
+        this.tramStatus = new LinkedList<>();
         this.universityStationId = DUALE_HOCHSCHULE_STATION_ID;
     }
 
@@ -91,23 +102,105 @@ public class RNVAPI extends APIService {
     @Override
     public void extractDesiredInfoFromResponse() throws JSONException {
         // TODO 1 get tram details: line label, start, end, diffTime
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd+hh:mm:ss");
+        Date now = new Date();
+        String dateText = sdf.format(now);
         getResponseFromSpecificWebsite(STATIONS_PACKAGE, 0);
         getResponseFromSpecificWebsite(LINES_PACKAGE, 1);
+        getResponseFromSpecificWebsite(STATIONS_MONITOR + this.universityStationId + "&time=" + dateText, 2);
 
-        System.out.println(this.jsonResponses[0] + "\n" + this.jsonResponses[1]);
-        getLineLabel();
+        System.out.println(this.jsonResponses[0] + "\n" + this.jsonResponses[1] + "\n" + this.jsonResponses[2]);
+        extractTramDetails();
 
     }
 
-    private void getLineLabel() throws JSONException {
+    private void extractTramDetails() throws JSONException {
+        List<String> lineLabels = new LinkedList<>();
+
         JSONObject jsonStationsTotal = new JSONObject(this.jsonResponses[0]);
         JSONArray jsonLinesTotal = new JSONArray(this.jsonResponses[1]);
+        JSONObject jsonMonitorTotal = new JSONObject(this.jsonResponses[2]);
 
         List<JSONObject> allLines = getJSONObjectsFromJSONArray(jsonLinesTotal);
-        // allLines.forEach(s -> System.out.println(s));
+        // List<JSONArray> allLinesStations =
+        // getJSONArraysFromJSONObjects(allLines, this.JSONARR_LINE_IDS);
 
-        List<JSONArray> allLinesStations = getJSONArraysFromJSONObjects(allLines, this.JSONARR_LINE_IDS);
-        allLinesStations.forEach(s -> System.out.println(s));
+        allLines.forEach(line -> {
+            try {
+                JSONArray tmpLineIds = line.getJSONArray(JSONARR_LINE_IDS);
+                for (int i = 0; i < tmpLineIds.length(); ++i) {
+                    if (tmpLineIds.get(i)
+                            .equals(this.universityStationId)) {
+                        lineLabels.add(line.get(JSON_LINE_LABEL)
+                                .toString());
+                        LOGGER.info("Found common line: " + line.getString(JSON_LINE_LABEL));
+                    }
+                }
+            } catch (JSONException e) {
+                LOGGER.warning("JSONException while processing json array: " + e.getLocalizedMessage());
+            }
+
+        });
+
+        if (jsonMonitorTotal.has(JSONARR_DEPARTURES_LIST)) {
+            JSONArray listOfDepartures = jsonMonitorTotal.getJSONArray(JSONARR_DEPARTURES_LIST);
+
+            List<JSONObject> departureObjects = getJSONObjectsFromJSONArray(listOfDepartures);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("kk:mm");
+            Date now = new Date();
+            String nowAsText = sdf.format(now);
+
+            departureObjects.forEach(s -> {
+                try {
+                    String timeCut = s.getString(JSONSTR_PLANNED_DEPARTURE)
+                            .substring(0, 5);
+                    if (!timeCut.contains(".")) {
+                        System.out.println(timeCut);
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    // } catch (ParseException e) {
+                    // // TODO Auto-generated catch block
+                    // e.printStackTrace();
+                }
+            });
+
+        } else {
+            LOGGER.warning(JSONARR_DEPARTURES_LIST + " not contained in " + jsonMonitorTotal.toString());
+        }
+
+        // List<JSONObject>
+
+    }
+
+    private Integer calculateDiffTimeInMinutes(String startTime, String endTime) {
+        Integer endH = getHours(endTime);
+        Integer endM = getMinutes(endTime);
+        Integer startH = getHours(startTime);
+        Integer startM = getMinutes(startTime);
+
+        if (endH == startH) {
+            return endM - startM;
+        }
+        if (endH - startH < 0) {
+            Integer deltaH = 24 + (endH - startH);
+            return 60 * deltaH + (endM - startM);
+        }
+        Integer deltaH = endH - startH;
+        if (endM - startM < 0) {
+            return 60 * deltaH + (endM - startM);
+        }
+        return 60 * deltaH + (endM - startM);
+    }
+
+    private Integer getHours(String clockTime) {
+        return Integer.parseInt(clockTime.substring(0, 2));
+    }
+
+    private Integer getMinutes(String clockTime) {
+        return Integer.parseInt(clockTime.substring(3, 5));
     }
 
     @Override
@@ -166,6 +259,7 @@ public class RNVAPI extends APIService {
     }
 
     public static void main(String[] aflok) {
+
         RNVAPI rnvapi = new RNVAPI();
         // rnvapi.getResponseFromSpecificWebsite(rnvapi.STATIONS_PACKAGE, 0);
         // rnvapi.getResponseFromSpecificWebsite(rnvapi.LINES_PACKAGE, 1);
