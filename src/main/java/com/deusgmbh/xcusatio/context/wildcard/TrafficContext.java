@@ -1,5 +1,6 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.deusgmbh.xcusatio.api.data.TrafficIncidentDetails;
@@ -14,52 +15,54 @@ import com.deusgmbh.xcusatio.api.data.TrafficIncidentTimes;
 
 public class TrafficContext {
 
-    private static final Logger LOGGER = Logger.getLogger(TrafficContext.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(TrafficContext.class.getName());
 
-    private TrafficIncidentDetails trafficIncident;
-    private TrafficIncidentLocation incidentLocation;
-    private TrafficIncidentTimes incidentTimes;
+	private List<TrafficIncidentDetails> incidentDetails;
+	private List<TrafficIncidentLocation> incidentLocation;
+	private List<TrafficIncidentTimes> incidentTimes;
 
-    public TrafficContext(TrafficIncidentDetails trafficIncident, TrafficIncidentLocation incidentLocation,
-            TrafficIncidentTimes incidentTimes) {
-        super();
-        this.trafficIncident = trafficIncident;
-        this.incidentLocation = incidentLocation;
-        this.incidentTimes = incidentTimes;
-    }
+	public TrafficContext(List<TrafficIncidentDetails> trafficIncident, List<TrafficIncidentLocation> incidentLocation,
+			List<TrafficIncidentTimes> incidentTimes) {
+		super();
+		this.incidentDetails = trafficIncident;
+		this.incidentLocation = incidentLocation;
+		this.incidentTimes = incidentTimes;
+	}
 
-    public TrafficIncidentDetails getTrafficIncident() {
-        return trafficIncident;
-    }
+	public List<TrafficIncidentDetails> getTrafficIncident() {
+		return incidentDetails;
+	}
 
-    public void setTrafficIncident(TrafficIncidentDetails trafficIncident) {
-        this.trafficIncident = trafficIncident;
-    }
+	public void setTrafficIncident(List<TrafficIncidentDetails> trafficIncident) {
+		this.incidentDetails = trafficIncident;
+	}
 
-    public TrafficIncidentLocation getIncidentLocation() {
-        return incidentLocation;
-    }
+	public List<TrafficIncidentLocation> getIncidentLocation() {
+		return incidentLocation;
+	}
 
-    public void setIncidentLocation(TrafficIncidentLocation incidentLocation) {
-        this.incidentLocation = incidentLocation;
-    }
+	public void setIncidentLocation(List<TrafficIncidentLocation> incidentLocation) {
+		this.incidentLocation = incidentLocation;
+	}
 
-    public TrafficIncidentTimes getIncidentTimes() {
-        return incidentTimes;
-    }
+	public List<TrafficIncidentTimes> getIncidentTimes() {
+		return incidentTimes;
+	}
 
-    public void setIncidentTimes(TrafficIncidentTimes incidentTimes) {
-        this.incidentTimes = incidentTimes;
-    }
+	public void setIncidentTimes(List<TrafficIncidentTimes> incidentTimes) {
+		this.incidentTimes = incidentTimes;
+	}
 
-    public void logContextContent() {
-        LOGGER.info("TrafficContext:\nType of incident: " + this.getTrafficIncident().getIncidentType()
-                + "\nDescription: " + this.getTrafficIncident().getIncidentDescription() + "\nStatus: "
-                + this.getTrafficIncident().getIncidentStatus() + "\noccured in: "
-                + this.getIncidentLocation().getCountryOfIncident() + ", "
-                + this.getIncidentLocation().getCityOfIncident() + ", "
-                + this.getIncidentLocation().getStreetOfIncident() + "\nStarted: "
-                + this.getIncidentTimes().getStartTimeOfTrafficIncident() + "\nEnd: "
-                + this.getIncidentTimes().getEndTimeOfTrafficIncident());
-    }
+	public void logContextContent() {
+		System.out.println("Details: ");
+		this.incidentDetails.forEach((s) -> LOGGER.info(
+				s.getIncidentDescription() + ", " + s.getIncidentStatus() + ", " + s.getIncidentType().toString()));
+		System.out.println("Location: ");
+		this.incidentLocation.forEach((s) -> LOGGER.info(s.getStreetOfIncident()));
+		LOGGER.info("Times: ");
+		this.incidentTimes.forEach(s -> LOGGER
+				.info("START: " + s.getStartTimeOfTrafficIncident() + ", END: " + s.getEndTimeOfTrafficIncident()));
+		System.out.println("\n\nSUCCESSFULL.");
+	}
+
 }
