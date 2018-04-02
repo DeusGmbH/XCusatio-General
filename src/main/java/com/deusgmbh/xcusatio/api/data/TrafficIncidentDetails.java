@@ -8,14 +8,11 @@ package com.deusgmbh.xcusatio.api.data;
 public class TrafficIncidentDetails {
     TrafficIncidentType incidentType;
     TrafficIncidentStatus incidentStatus;
-    String incidentDescription;
 
-    public TrafficIncidentDetails(TrafficIncidentType incidentType, TrafficIncidentStatus incidentStatus,
-            String incidentDescription) {
+    public TrafficIncidentDetails(String incidentType, String incidentStatus) {
         super();
-        this.incidentType = incidentType;
-        this.incidentStatus = incidentStatus;
-        this.incidentDescription = incidentDescription;
+        this.incidentType = TrafficIncidentType.valueOf(incidentType.replace(' ', '_'));
+        this.incidentStatus = TrafficIncidentStatus.valueOf(incidentStatus);
     }
 
     public TrafficIncidentType getIncidentType() {
@@ -32,14 +29,6 @@ public class TrafficIncidentDetails {
 
     public void setIncidentStatus(TrafficIncidentStatus incidentStatus) {
         this.incidentStatus = incidentStatus;
-    }
-
-    public String getIncidentDescription() {
-        return incidentDescription;
-    }
-
-    public void setIncidentDescription(String incidentDescription) {
-        this.incidentDescription = incidentDescription;
     }
 
 }
