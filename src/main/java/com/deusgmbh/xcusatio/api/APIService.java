@@ -177,6 +177,27 @@ public abstract class APIService {
         return jA;
     }
 
+    /**
+     * 
+     * @param jAL
+     *            list of json arrays
+     * @return list of lists containing strings
+     * @throws JSONException
+     */
+    protected List<List<String>> getValuesFromJSONArrayList(List<JSONArray> jAL) throws JSONException {
+        List<List<String>> valsL = new LinkedList<>();
+        List<String> vals = new LinkedList<>();
+        for (int i = 0; i < jAL.size(); ++i) {
+            for (int j = 0; j < jAL.get(i)
+                    .length(); ++j) {
+                vals.add(jAL.get(i)
+                        .getString(j));
+            }
+            valsL.add(vals);
+        }
+        return valsL;
+    }
+
     public URL getRequestUrl() {
         return requestUrl;
     }
