@@ -7,7 +7,6 @@ import com.deusgmbh.xcusatio.context.wildcard.WeatherContext;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 public class WeatherAPI extends APIService {
-
     private static final Logger LOGGER = Logger.getLogger(WeatherAPI.class.getName());
 
     @Override
@@ -29,12 +28,22 @@ public class WeatherAPI extends APIService {
 
     }
 
-    // public static void main(String[] plutonium) {
-    // UserSettings userSettings = new UserSettings(null, 0, null, null, null,
-    // null, null);
-    // WeatherAPI weatherAPI = new WeatherAPI();
-    // WeatherContext weatherContext = weatherAPI.get(userSettings);
-    // weatherContext.logContextContent();
-    // }
+    @Override
+    public void printResponse() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void getResponseFromWebsite() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void buildRequestUrl(UserSettings usersettings) {
+        // TODO Auto-generated method stub
+
+    }
 
 }
