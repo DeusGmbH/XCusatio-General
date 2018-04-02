@@ -41,7 +41,7 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
     }
 
     public void createEditForm(int id, ObservableList<Lecturer> lecturersList) {
-        super.createTitleLabel();
+        super.createBaseEditForm();
 
         this.selectedItemId = id;
         this.editableItems = lecturersList;

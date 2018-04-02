@@ -53,7 +53,7 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
     }
 
     public void createEditForm(int id, ObservableList<Excuse> excuseList) {
-        super.createTitleLabel();
+        super.createBaseEditForm();
 
         this.selectedItemId = id;
         this.editableItems = excuseList;

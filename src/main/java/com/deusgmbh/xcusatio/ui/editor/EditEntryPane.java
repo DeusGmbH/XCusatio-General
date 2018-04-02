@@ -48,10 +48,10 @@ public abstract class EditEntryPane<T> extends BorderPane {
     protected Supplier<List<Tag>> allTagsSetSupplier;
 
     public EditEntryPane() {
-        createTitleLabel();
+        createBaseEditForm();
     }
 
-    protected void createTitleLabel() {
+    protected void createBaseEditForm() {
         editorTitleLabel = new Label(EDITOR_TITLE);
         editorTitleLabel.getStyleClass()
                 .add("h2");

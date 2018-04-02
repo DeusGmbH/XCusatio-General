@@ -7,7 +7,9 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
+import com.deusgmbh.xcusatio.controller.MainController;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -34,9 +36,13 @@ import com.google.api.services.calendar.model.Events;
  */
 
 public class CalendarAPI {
-    private static final String APPLICATION_NAME = "Google Calendar API Java Quickstart";
+    private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
+
+    // Name of registered google calendar application
+    private static final String APPLICATION_NAME = "XCUSATIO";
 
     private static final java.io.File DATA_STORE_DIR = new java.io.File("src/main/resources/calendar_api_token");
+    private static final String CLIENT_SECRET_RESOURCE_STRING = "/client_secret.json";
     private static FileDataStoreFactory DATA_STORE_FACTORY;
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static HttpTransport HTTP_TRANSPORT;
@@ -48,7 +54,7 @@ public class CalendarAPI {
         try {
             HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             DATA_STORE_FACTORY = new FileDataStoreFactory(DATA_STORE_DIR);
-            InputStream in = CalendarAPI.class.getResourceAsStream("/client_secret.json");
+            InputStream in = CalendarAPI.class.getResourceAsStream(CLIENT_SECRET_RESOURCE_STRING);
             GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
             if (Arrays.asList(DATA_STORE_DIR.list())
                     .contains("StoredCredential")) {
@@ -76,7 +82,7 @@ public class CalendarAPI {
                         .setAccessType("offline")
                         .build();
         Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
-        System.out.println("Credentials saved to " + DATA_STORE_DIR.getAbsolutePath());
+        LOGGER.info("Credentials saved to " + DATA_STORE_DIR.getAbsolutePath());
         credentials = credential;
     }
 

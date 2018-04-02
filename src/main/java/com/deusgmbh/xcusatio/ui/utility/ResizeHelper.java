@@ -19,18 +19,25 @@ public class ResizeHelper {
     public static void addResizeListener(Stage stage, double minWidth, double minHeight, double maxWidth,
             double maxHeight) {
         ResizeListener resizeListener = new ResizeListener(stage);
-        stage.getScene().addEventHandler(MouseEvent.MOUSE_MOVED, resizeListener);
-        stage.getScene().addEventHandler(MouseEvent.MOUSE_PRESSED, resizeListener);
-        stage.getScene().addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeListener);
-        stage.getScene().addEventHandler(MouseEvent.MOUSE_EXITED, resizeListener);
-        stage.getScene().addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, resizeListener);
+        stage.getScene()
+                .addEventHandler(MouseEvent.MOUSE_MOVED, resizeListener);
+        stage.getScene()
+                .addEventHandler(MouseEvent.MOUSE_PRESSED, resizeListener);
+        stage.getScene()
+                .addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeListener);
+        stage.getScene()
+                .addEventHandler(MouseEvent.MOUSE_EXITED, resizeListener);
+        stage.getScene()
+                .addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, resizeListener);
 
         resizeListener.setMinWidth(minWidth);
         resizeListener.setMinHeight(minHeight);
         resizeListener.setMaxWidth(maxWidth);
         resizeListener.setMaxHeight(maxHeight);
 
-        ObservableList<Node> children = stage.getScene().getRoot().getChildrenUnmodifiable();
+        ObservableList<Node> children = stage.getScene()
+                .getRoot()
+                .getChildrenUnmodifiable();
         for (Node child : children) {
             addListenerDeeply(child, resizeListener);
         }
@@ -59,7 +66,6 @@ public class ResizeHelper {
         private double positionX = 0;
         private double positionY = 0;
 
-        // Max and min sizes for controlled stage
         private double minWidth;
         private double maxWidth;
         private double minHeight;

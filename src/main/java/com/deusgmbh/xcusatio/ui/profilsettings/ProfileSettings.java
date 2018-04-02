@@ -9,6 +9,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -92,7 +94,7 @@ public class ProfileSettings extends FlowPane {
         createCalendarButton(CalendarAPI.hasCredentials());
 
         saveProfileBtn = new Button(SUBMIT_BUTTON_LABEL);
-        this.saveProfileBtn.setOnAction(editProfileAction);
+        this.saveProfileBtn.setOnAction(saveProfileBtnAction);
         StackPane saveBtnPane = new StackPane(saveProfileBtn);
         saveBtnPane.setAlignment(Pos.BOTTOM_RIGHT);
 
@@ -122,7 +124,7 @@ public class ProfileSettings extends FlowPane {
         return labelPane;
     }
 
-    private EventHandler<ActionEvent> editProfileAction = new EventHandler<ActionEvent>() {
+    private EventHandler<ActionEvent> saveProfileBtnAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent arg0) {
             userSettings.set(new UserSettings(null, birthdayDatePicker.getValue(), sexTogglePane.getSex(),
@@ -149,7 +151,9 @@ public class ProfileSettings extends FlowPane {
             try {
                 CalendarAPI.removeCredentials();
             } catch (IOException e) {
-                e.printStackTrace();
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("REMOVING AUTHORIZATION ERROR");
+                alert.setContentText("Your authorization token could not be successfully removed");
             }
             createCalendarButton(CalendarAPI.hasCredentials());
             calendarPane.getChildren()
@@ -162,7 +166,11 @@ public class ProfileSettings extends FlowPane {
             try {
                 CalendarAPI.authorize();
             } catch (IOException e) {
-                e.printStackTrace();
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("AUTHORIZATION ERROR");
+                alert.setContentText("You could not be successfully authorized");
+
+                alert.showAndWait();
             }
             createCalendarButton(CalendarAPI.hasCredentials());
             calendarPane.getChildren()
