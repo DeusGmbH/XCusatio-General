@@ -10,7 +10,6 @@ import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.context.wildcard.CalendarContext;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.tags.Tag;
-import com.deusgmbh.xcusatio.data.tags.Tags;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 public class CalendarAPI extends APIService {
@@ -25,9 +24,9 @@ public class CalendarAPI extends APIService {
         lecturesRead.add("Programmieren in C");
 
         List<Tag> tagList = new LinkedList<>();
-        tagList.add(Tags.MALE);
-        tagList.add(Tags.AGE_UNDER_50);
-        tagList.add(Tags.FUNNY);
+        tagList.add(Tag.MALE);
+        tagList.add(Tag.AGE_UNDER_50);
+        tagList.add(Tag.FUNNY);
 
         Lecturer kruse = new Lecturer(null, null, null);
         kruse.setLectures(lecturesRead);

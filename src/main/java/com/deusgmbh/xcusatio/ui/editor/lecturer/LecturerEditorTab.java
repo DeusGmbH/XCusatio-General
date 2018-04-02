@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
-import com.deusgmbh.xcusatio.data.tags.TagText;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.EditorTab;
 
 import javafx.collections.ObservableList;
@@ -26,19 +26,17 @@ public class LecturerEditorTab extends EditorTab {
     public LecturerEditorTab(String name) {
         super(name);
         entryListPane = new LecturerEntryListPane();
-																	   
+
         editEntryPane = new LecturerEditEntryPane();
-							   
-													  
 
         entryListPane.registerOnSelectEntryEvent(this::createEditForm);
         entryListPane.registerItemSelectionIdUpdate(editEntryPane::updateSelectionId);
 
         super.editor.getItems()
-            .addAll(entryListPane, editEntryPane);
+                .addAll(entryListPane, editEntryPane);
     }
 
-    public void registerTagsSetSupplier(Supplier<List<TagText>> tagsSetSupplier) {
+    public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         editEntryPane.registerTagsSetSupplier(tagsSetSupplier);
     }
 

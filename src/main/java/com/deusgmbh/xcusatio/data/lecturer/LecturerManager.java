@@ -3,7 +3,7 @@ package com.deusgmbh.xcusatio.data.lecturer;
 import java.util.Optional;
 
 import com.deusgmbh.xcusatio.data.StorageUnit;
-import com.deusgmbh.xcusatio.data.tags.TagText;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 
 /**
  * 
@@ -30,13 +30,13 @@ public class LecturerManager extends StorageUnit<Lecturer> {
                 .addLecture("Logik")
                 .addLecture("Lineare Algebra")
                 .addLecture("Analysis")
-                .addTag(TagText.FUNNY)
-                .addTag(TagText.HIGH_TRAFFIC))
+                .addTag(Tag.FUNNY)
+                .addTag(Tag.HIGH_TRAFFIC))
                 .add(new Lecturer("Kruse").addLecture("C")
                         .addLecture("Softwareengineering 1")
                         .addLecture("Softwareengineering 2")
-                        .addTag(TagText.FUNNY)
-                        .addTag(TagText.SUCKUP));
+                        .addTag(Tag.FUNNY)
+                        .addTag(Tag.SUCKUP));
         return this;
     }
 }

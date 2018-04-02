@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntUnaryOperator;
 import java.util.function.Supplier;
 
-import com.deusgmbh.xcusatio.data.tags.TagText;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,7 +39,7 @@ public abstract class EditEntryPane<T> extends GridPane {
     protected int selectedItemId;
     protected ObservableList<T> editableItems;
 
-    protected Supplier<List<TagText>> allTagsSetSupplier;
+    protected Supplier<List<Tag>> allTagsSetSupplier;
 
     public EditEntryPane() {
         editorTitleLabel = new Label(EDITOR_TITLE);
@@ -68,13 +68,13 @@ public abstract class EditEntryPane<T> extends GridPane {
         this.add(this.submitEditedEntryBtn, 1, (int) Math.ceil(nodesToAdd.length / 2d) + 1);
     }
 
-    protected List<TagText> removeFromAllTagsList(List<TagText> listToRemove) {
-        List<TagText> reducedSet = new ArrayList<TagText>(this.allTagsSetSupplier.get());
+    protected List<Tag> removeFromAllTagsList(List<Tag> listToRemove) {
+        List<Tag> reducedSet = new ArrayList<Tag>(this.allTagsSetSupplier.get());
         reducedSet.removeAll(listToRemove);
         return reducedSet;
     }
 
-    public void registerTagsSetSupplier(Supplier<List<TagText>> tagsSetSupplier) {
+    public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         this.allTagsSetSupplier = tagsSetSupplier;
     }
 

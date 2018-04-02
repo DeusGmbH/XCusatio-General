@@ -18,7 +18,7 @@ import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.lecturer.LecturerManager;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioManager;
-import com.deusgmbh.xcusatio.data.tags.TagText;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettingsManager;
 import com.deusgmbh.xcusatio.generator.ExcuseGenerator;
@@ -86,8 +86,8 @@ public class MainController {
         return this.excusesManager.getMostRecentlyUsed();
     }
 
-    public List<TagText> getTags() {
-        return Arrays.asList(TagText.values());
+    public List<Tag> getTags() {
+        return Arrays.asList(Tag.values());
     }
 
     public List<String> getWildcardNames() {

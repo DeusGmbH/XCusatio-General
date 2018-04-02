@@ -1,28 +1,22 @@
 package com.deusgmbh.xcusatio.data.tags;
 
-public class Tag {
-    private TagText text;
+public enum Tag {
+    MALE, FEMALE, AGGRESSIVE, FUNNY, SUCKUP, AGE_UNDER_18, AGE_UNDER_21, AGE_UNDER_30, AGE_UNDER_40, AGE_UNDER_50, AGE_OVER_50, CAT, DOG, FOOTBALL, RAINY, STORM, SNOW, HIGH_TRAFFIC, BICICLE, CAR, TRAIN, BUS;
+
     private String description;
     private TagFilterType filterType;
 
-    public Tag(TagText text, String description, TagFilterType filterType) {
-        super();
-        this.text = text;
+    Tag(TagFilterType filterType, String description) {
         this.description = description;
         this.filterType = filterType;
     }
 
-    public Tag(TagText text) {
-        this(text, null, TagFilterType.BOTH);
+    Tag(TagFilterType filterType) {
+        this(filterType, null);
     }
 
-    public TagText getText() {
-        return text;
-    }
-
-    public Tag setText(TagText text) {
-        this.text = text;
-        return this;
+    Tag() {
+        this(TagFilterType.BOTH, null);
     }
 
     public String getDescription() {
@@ -42,5 +36,4 @@ public class Tag {
         this.filterType = filterType;
         return this;
     }
-
 }

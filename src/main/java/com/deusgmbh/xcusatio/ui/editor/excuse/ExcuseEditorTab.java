@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
-import com.deusgmbh.xcusatio.data.tags.TagText;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.EditorTab;
 
 import javafx.collections.ObservableList;
@@ -37,7 +37,7 @@ public class ExcuseEditorTab extends EditorTab {
                 .addAll(entryListPane, editEntryPane);
     }
 
-    public void registerTagsSetSupplier(Supplier<List<TagText>> tagsSetSupplier) {
+    public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         editEntryPane.registerTagsSetSupplier(tagsSetSupplier);
     }
 

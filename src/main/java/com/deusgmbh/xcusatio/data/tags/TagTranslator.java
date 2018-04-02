@@ -4,15 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TagTranslator {
-    public static String toGerman(TagText tagText) {
-        switch (tagText) {
+    public static String toGerman(Tag tag) {
+        switch (tag) {
         default:
-            return tagText.toString();
+            return tag.toString();
         }
-    }
-
-    private static String toGerman(Tag tag) {
-        return toGerman(tag.getText());
     }
 
     public static List<String> toGerman(List<Tag> tagList) {

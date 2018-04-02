@@ -13,7 +13,6 @@ import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.tags.Tag;
-import com.deusgmbh.xcusatio.data.tags.Tags;
 import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
 
 import javafx.collections.ObservableList;
@@ -55,9 +54,9 @@ public class ExcuseGenerator {
             throw new IllegalArgumentException("Scenario is not ");
         }
 
-        List<Tag> tags = this.getTags(context);
+        List<Tag> Tag = this.getTag(context);
         List<Excuse> contextBasedExcuses = filterByTag(
-                filterByValidWildcards(filterByScenario(excuses, scenario), context), tags);
+                filterByValidWildcards(filterByScenario(excuses, scenario), context), Tag);
 
         List<Excuse> finalExcuses = contextBasedExcuses.stream()
                 .sorted(Excuse.byLastUsed.reversed())
@@ -92,37 +91,37 @@ public class ExcuseGenerator {
     }
 
     /**
-     * Filters all excuses by the tags
+     * Filters all excuses by the Tag
      * 
      * @param excuses
      *            to be filtered
-     * @param tags
+     * @param tag
      *            to be filtered by
-     * @return all excuses that contain all the giving tags
+     * @return all excuses that contain all the giving Tag
      */
-    private List<Excuse> filterByTag(List<Excuse> excuses, List<Tag> tags) {
+    private List<Excuse> filterByTag(List<Excuse> excuses, List<Tag> tag) {
         return excuses.stream()
-                .filter(Excuse.containsAllTags(tags))
+                .filter(Excuse.containsAllTags(tag))
                 .collect(Collectors.toList());
     }
 
     /**
-     * Generates a list of tags based on context and scenario type
+     * Generates a list of Tag based on context and scenario type
      * 
      * @return
      */
-    private List<Tag> getTags(Context context) {
+    private List<Tag> getTag(Context context) {
         List<Tag> tags = new ArrayList<>();
         if (context == null) {
             return tags;
         }
 
-        tags.addAll(this.getExcusesVibeTags(context));
-        tags.addAll(this.getLecturerTags(context));
+        tags.addAll(this.getExcusesVibeTag(context));
+        tags.addAll(this.getLecturerTag(context));
         tags.addAll(this.getSexTag(context));
-        // add temperature tags
-        // add snow tags
-        // add rain tags
+        // add temperature Tag
+        // add snow Tag
+        // add rain Tag
         // add windy tag
         // add train delay tag
         // add car accident tag
@@ -135,7 +134,7 @@ public class ExcuseGenerator {
                 .collect(Collectors.toList());
     }
 
-    private Collection<Tag> getLecturerTags(Context context) {
+    private Collection<Tag> getLecturerTag(Context context) {
         if (context.getLecturer() != null && context.getLecturer()
                 .getTags() != null) {
             return context.getLecturer()
@@ -144,35 +143,35 @@ public class ExcuseGenerator {
         return new HashSet<>();
     }
 
-    private Collection<? extends Tag> getExcusesVibeTags(Context context) {
-        Set<Tag> excusesVibeTags = new HashSet<>();
+    private Collection<? extends Tag> getExcusesVibeTag(Context context) {
+        Set<Tag> excusesVibeTag = new HashSet<>();
         ExcuseVibes excusesVibes = context.getManuellExcusesVibes();
         if (excusesVibes != null) {
             if (excusesVibes.isAggresiv()) {
-                excusesVibeTags.add(Tags.AGGRESSIVE);
+                excusesVibeTag.add(Tag.AGGRESSIVE);
             }
             if (excusesVibes.isFunny()) {
-                excusesVibeTags.add(Tags.FUNNY);
+                excusesVibeTag.add(Tag.FUNNY);
             }
             if (excusesVibes.isSuckUp()) {
-                excusesVibeTags.add(Tags.SUCKUP);
+                excusesVibeTag.add(Tag.SUCKUP);
             }
         }
-        return excusesVibeTags;
+        return excusesVibeTag;
     }
 
     private Collection<? extends Tag> getSexTag(Context context) {
-        Set<Tag> sexTags = new HashSet<>();
+        Set<Tag> sexTag = new HashSet<>();
         if (context.getSex() != null) {
             switch (context.getSex()) {
             case MALE:
-                sexTags.add(Tags.MALE);
+                sexTag.add(Tag.MALE);
                 break;
             case FEMALE:
-                sexTags.add(Tags.FEMALE);
+                sexTag.add(Tag.FEMALE);
                 break;
             }
         }
-        return sexTags;
+        return sexTag;
     }
 }

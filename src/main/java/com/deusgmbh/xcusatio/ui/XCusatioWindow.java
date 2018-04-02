@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
-import com.deusgmbh.xcusatio.data.tags.TagText;
+import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.deusgmbh.xcusatio.ui.dashboard.Dashboard;
 import com.deusgmbh.xcusatio.ui.editor.Editor;
@@ -178,7 +178,7 @@ public class XCusatioWindow extends Application {
         dashboard.createScenarioButtons(scenarioList, generateExcuse);
     }
 
-    public void registerTagsSupplier(Supplier<List<TagText>> tagsSetSupplier) {
+    public void registerTagsSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         editor.registerTagsSetSupplier(tagsSetSupplier);
     }
 
