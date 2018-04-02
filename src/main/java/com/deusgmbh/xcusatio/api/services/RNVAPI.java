@@ -59,12 +59,22 @@ public class RNVAPI extends APIService {
 
     }
 
-    // public static void main(String[] args) {
-    // UserSettings userSettings = new UserSettings(null, 0, null, null, null,
-    // null, null);
-    // RNVAPI rnvapi = new RNVAPI();
-    // RNVContext rnvContext = rnvapi.get(userSettings);
-    // rnvContext.logContextContent();
-    // }
+    @Override
+    public void printResponse() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void getResponseFromWebsite() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void buildRequestUrl(UserSettings usersettings) {
+        // TODO Auto-generated method stub
+
+    }
 
 }
