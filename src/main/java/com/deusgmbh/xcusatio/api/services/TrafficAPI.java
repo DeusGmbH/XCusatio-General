@@ -64,7 +64,9 @@ public class TrafficAPI extends APIService {
     private List<TrafficIncidentTimes> incidentTimes;
 
     public TrafficAPI() {
-
+        this.incidentDetails = new LinkedList<>();
+        this.incidentLocation = new LinkedList<>();
+        this.incidentTimes = new LinkedList<>();
     }
 
     @Override
@@ -79,8 +81,8 @@ public class TrafficAPI extends APIService {
                 "Strasse wegen Baustelle gesperrt"));
 
         List<TrafficIncidentLocation> triList = new LinkedList<>();
-        triList.add(
-                new TrafficIncidentLocation(new GeocodeData(new Address("Coblitzallee", "6", "68163", "Mannheim"))));
+        Address address = new Address("Coblitzallee", "6", "68163", "Mannheim");
+        triList.add(new TrafficIncidentLocation(address.getCity(), address.getStreetName()));
 
         String dateFormat = "MM/dd/yyyy hh:mm:ss";
         Date startTime = null, endTime = null;
@@ -111,7 +113,7 @@ public class TrafficAPI extends APIService {
 
         if (jsonTotal.has(JSONOB_TRAFFIC_ITEMS)) {
             JSONObject trafficItems = jsonTotal.getJSONObject(JSONOB_TRAFFIC_ITEMS);
-            System.out.println("* " + trafficItems.toString());
+            // System.out.println("* " + trafficItems.toString());
 
             /* get the list of all traffic items */
             List<JSONObject> trafficItemList = getJSONObjectsFromJSONArray(trafficItems, JSONARR_TRAFFIC_ITEM);
@@ -149,10 +151,22 @@ public class TrafficAPI extends APIService {
             List<String> streetNamesOfIncidents = getValuesFromNestedJSONArray(locOrigins, JSONOB_ORIGIN_ROADWAY,
                     JSONARR_ROADWAY_DESCRIPTION, JSONSTR_DIRECTION_DESCRIPTION_FIRST);
 
-            for (int i = 0; i < cityNamesOfIncidents.size(); ++i)
+            for (int i = 0; i < cityNamesOfIncidents.size(); ++i) {
                 for (TrafficIncidentLocation trLoc : this.incidentLocation) {
                     trLoc = new TrafficIncidentLocation(cityNamesOfIncidents.get(i), streetNamesOfIncidents.get(i));
                 }
+            }
+
+            int locationIndex = 0;
+            int trafficLocationIndex = 0;
+            while (locationIndex < cityNamesOfIncidents.size()) {
+                this.incidentLocation.add(new TrafficIncidentLocation(cityNamesOfIncidents.get(locationIndex),
+                        streetNamesOfIncidents.get(locationIndex)));
+                ++locationIndex;
+            }
+
+            this.incidentLocation
+                    .forEach(loc -> System.out.println(loc.getCityOfIncident() + " : " + loc.getStreetOfIncident()));
 
         } else {
             LOGGER.warning("json response does not contain values for KEY " + JSONOB_TRAFFIC_ITEMS);
@@ -173,7 +187,7 @@ public class TrafficAPI extends APIService {
             LOGGER.warning("Error getting jsonString from input stream: " + e.getMessage());
         }
         this.jsonResponse = getResponseAsJsonString();
-        System.out.println(this.jsonResponse);
+        // System.out.println(this.jsonResponse);
     }
 
     private void prepareUrlBuild(GeocodeData gcd, UserSettings usersettings) {
@@ -191,14 +205,14 @@ public class TrafficAPI extends APIService {
         GeocodeData gcd = gApi.get(usersettings);
         prepareUrlBuild(gcd, usersettings);
 
-        System.out.println(BASE_URL + mapMediumText + APP_KEYS);
+        // System.out.println(BASE_URL + mapMediumText + APP_KEYS);
 
         try {
             super.setRequestUrl(new URL(BASE_URL + mapMediumText + APP_KEYS));
         } catch (MalformedURLException e) {
             // TODO: handle exception
         }
-        System.out.println(getRequestUrl());
+        // System.out.println(getRequestUrl());
 
     }
 
