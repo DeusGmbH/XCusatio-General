@@ -15,54 +15,54 @@ import com.deusgmbh.xcusatio.api.data.TrafficIncidentTimes;
 
 public class TrafficContext {
 
-	private static final Logger LOGGER = Logger.getLogger(TrafficContext.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TrafficContext.class.getName());
 
-	private List<TrafficIncidentDetails> incidentDetails;
-	private List<TrafficIncidentLocation> incidentLocation;
-	private List<TrafficIncidentTimes> incidentTimes;
+    private List<TrafficIncidentDetails> incidentDetails;
+    private List<TrafficIncidentLocation> incidentLocation;
+    private List<TrafficIncidentTimes> incidentTimes;
 
-	public TrafficContext(List<TrafficIncidentDetails> trafficIncident, List<TrafficIncidentLocation> incidentLocation,
-			List<TrafficIncidentTimes> incidentTimes) {
-		super();
-		this.incidentDetails = trafficIncident;
-		this.incidentLocation = incidentLocation;
-		this.incidentTimes = incidentTimes;
-	}
+    public TrafficContext(List<TrafficIncidentDetails> incidentDetails, List<TrafficIncidentLocation> incidentLocations,
+            List<TrafficIncidentTimes> incidentTimes) {
+        super();
+        this.incidentDetails = incidentDetails;
+        this.incidentLocation = incidentLocations;
+        this.incidentTimes = incidentTimes;
+    }
 
-	public List<TrafficIncidentDetails> getTrafficIncident() {
-		return incidentDetails;
-	}
+    public List<TrafficIncidentDetails> getTrafficIncident() {
+        return incidentDetails;
+    }
 
-	public void setTrafficIncident(List<TrafficIncidentDetails> trafficIncident) {
-		this.incidentDetails = trafficIncident;
-	}
+    public void setTrafficIncident(List<TrafficIncidentDetails> trafficIncident) {
+        this.incidentDetails = trafficIncident;
+    }
 
-	public List<TrafficIncidentLocation> getIncidentLocation() {
-		return incidentLocation;
-	}
+    public List<TrafficIncidentLocation> getIncidentLocation() {
+        return incidentLocation;
+    }
 
-	public void setIncidentLocation(List<TrafficIncidentLocation> incidentLocation) {
-		this.incidentLocation = incidentLocation;
-	}
+    public void setIncidentLocation(List<TrafficIncidentLocation> incidentLocation) {
+        this.incidentLocation = incidentLocation;
+    }
 
-	public List<TrafficIncidentTimes> getIncidentTimes() {
-		return incidentTimes;
-	}
+    public List<TrafficIncidentTimes> getIncidentTimes() {
+        return incidentTimes;
+    }
 
-	public void setIncidentTimes(List<TrafficIncidentTimes> incidentTimes) {
-		this.incidentTimes = incidentTimes;
-	}
+    public void setIncidentTimes(List<TrafficIncidentTimes> incidentTimes) {
+        this.incidentTimes = incidentTimes;
+    }
 
-	public void logContextContent() {
-		System.out.println("Details: ");
-		this.incidentDetails.forEach((s) -> LOGGER.info(
-				s.getIncidentDescription() + ", " + s.getIncidentStatus() + ", " + s.getIncidentType().toString()));
-		System.out.println("Location: ");
-		this.incidentLocation.forEach((s) -> LOGGER.info(s.getStreetOfIncident()));
-		LOGGER.info("Times: ");
-		this.incidentTimes.forEach(s -> LOGGER
-				.info("START: " + s.getStartTimeOfTrafficIncident() + ", END: " + s.getEndTimeOfTrafficIncident()));
-		System.out.println("\n\nSUCCESSFULL.");
-	}
+    public void logContextContent() {
+        System.out.println("Details: ");
+        this.incidentDetails.forEach((s) -> LOGGER.info(s.getIncidentStatus() + ", " + s.getIncidentType()
+                .toString()));
+        System.out.println("Location: ");
+        this.incidentLocation.forEach((s) -> LOGGER.info(s.getStreetOfIncident()));
+        LOGGER.info("Times: ");
+        this.incidentTimes.forEach(s -> LOGGER
+                .info("START: " + s.getStartTimeOfTrafficIncident() + ", END: " + s.getEndTimeOfTrafficIncident()));
+        System.out.println("\n\nSUCCESSFULL.");
+    }
 
 }
