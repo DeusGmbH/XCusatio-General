@@ -13,7 +13,6 @@ import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 public class CalendarAPI extends APIService {
-
     private final static Logger LOGGER = Logger.getLogger(CalendarAPI.class.getName());
 
     @Override
@@ -59,12 +58,21 @@ public class CalendarAPI extends APIService {
 
     }
 
-    // public static void main(String[] args) {
-    // UserSettings userSettings = new UserSettings(null, 0, null, null, null,
-    // null, null);
-    // CalendarAPI calendarAPI = new CalendarAPI();
-    //
-    // CalendarContext calendarContext = calendarAPI.get(userSettings);
-    // calendarContext.logContextContent();
-    // }
+    @Override
+    public void printResponse() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void getResponseFromWebsite() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void buildRequestUrl(UserSettings usersettings) {
+        // TODO Auto-generated method stub
+
+    }
 }
