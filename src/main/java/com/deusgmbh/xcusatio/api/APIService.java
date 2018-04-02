@@ -3,6 +3,7 @@ package com.deusgmbh.xcusatio.api;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -43,7 +44,7 @@ public abstract class APIService {
     public abstract void printResponse();
 
     /* differs in terms of placement of desired info inside XML/JSON */
-    public abstract void extractDesiredInfoFromResponse() throws JSONException;
+    public abstract void extractDesiredInfoFromResponse() throws JSONException, ParseException;
 
     /* differs in terms of data format returned by the call */
     public abstract void getResponseFromWebsite();
