@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
@@ -115,9 +117,20 @@ public class Excuse {
                 .equals(scenario.getScenarioType());
     }
 
-    public static Predicate<Excuse> containsAllTags(List<Tag> tags) {
+    public static Predicate<Excuse> hasContextTagsInExcuse(List<Tag> contextTags) {
+        Set<Tag> inExcuseTags = contextTags.stream()
+                .filter(tag -> tag.inExcuse())
+                .collect(Collectors.toSet());
         return excuse -> excuse.getTags()
-                .containsAll(tags);
+                .containsAll(inExcuseTags);
+    }
+
+    public static Predicate<Excuse> hasExcuseTagsInContext(List<Tag> contextTags) {
+        return excuse -> contextTags.containsAll(excuse.getTags()
+                .stream()
+                .filter(tag -> tag.inContext())
+                .peek(System.out::println)
+                .collect(Collectors.toSet()));
     }
 
     public static Comparator<Excuse> byRating = new Comparator<Excuse>() {

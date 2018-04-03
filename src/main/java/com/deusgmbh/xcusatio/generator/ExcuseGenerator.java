@@ -43,7 +43,6 @@ public class ExcuseGenerator {
     }
 
     public Excuse getContextBasedExcuse(List<Excuse> excuses, Context context, Scenario scenario) {
-        // List<Excuse> excuses = (List<Excuse>) originalExcuses;
         if (excuses == null || excuses.isEmpty()) {
             throw new IllegalArgumentException("Excuses must not be null and not empty");
         }
@@ -54,18 +53,23 @@ public class ExcuseGenerator {
             throw new IllegalArgumentException("Scenario is not ");
         }
 
-        List<Tag> Tag = this.getTag(context);
-        List<Excuse> contextBasedExcuses = filterByTag(
-                filterByValidWildcards(filterByScenario(excuses, scenario), context), Tag);
+        List<Tag> contextTags = this.getContextTag(context);
+        List<Excuse> filteredExcuses = new ExcuseFilter().byScenario(scenario)
+                .byValidWildcard(wildcards, context)
+                .byContextTags(contextTags)
+                .apply(excuses);
 
-        List<Excuse> finalExcuses = contextBasedExcuses.stream()
+        List<Excuse> sortedByLastUsed = filteredExcuses.stream()
                 .sorted(Excuse.byLastUsed.reversed())
-                .limit((int) Math.ceil(contextBasedExcuses.size() / 2.0))
+                .collect(Collectors.toList());
+
+        List<Excuse> sortedByRating = sortedByLastUsed.stream()
+                .limit(getRelativeSize(sortedByLastUsed, 0.5))
                 .sorted(Excuse.byRating)
                 .collect(Collectors.toList());
 
-        finalExcuses = finalExcuses.stream()
-                .limit((int) Math.ceil(finalExcuses.size() * 0.8))
+        List<Excuse> finalExcuses = sortedByRating.stream()
+                .limit(getRelativeSize(sortedByRating, 0.8))
                 .collect(Collectors.toList());
 
         if (finalExcuses.isEmpty()) {
@@ -78,31 +82,8 @@ public class ExcuseGenerator {
         return finalExcuses.get(randomExcuseId);
     }
 
-    private List<Excuse> filterByValidWildcards(List<Excuse> excuses, Context context) {
-        return excuses.stream()
-                .filter(excuse -> wildcards.isValidContext(excuse.getText(), context.getApiContext()))
-                .collect(Collectors.toList());
-    }
-
-    private List<Excuse> filterByScenario(List<Excuse> excuses, Scenario scenario) {
-        return excuses.stream()
-                .filter(Excuse.byScenario(scenario))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Filters all excuses by the Tag
-     * 
-     * @param excuses
-     *            to be filtered
-     * @param tag
-     *            to be filtered by
-     * @return all excuses that contain all the giving Tag
-     */
-    private List<Excuse> filterByTag(List<Excuse> excuses, List<Tag> tag) {
-        return excuses.stream()
-                .filter(Excuse.containsAllTags(tag))
-                .collect(Collectors.toList());
+    private long getRelativeSize(List<Excuse> excuses, double d) {
+        return (int) Math.ceil(excuses.size() * d);
     }
 
     /**
@@ -110,7 +91,7 @@ public class ExcuseGenerator {
      * 
      * @return
      */
-    private List<Tag> getTag(Context context) {
+    private List<Tag> getContextTag(Context context) {
         List<Tag> tags = new ArrayList<>();
         if (context == null) {
             return tags;
