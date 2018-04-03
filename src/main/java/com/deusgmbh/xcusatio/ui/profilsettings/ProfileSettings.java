@@ -1,11 +1,17 @@
 package com.deusgmbh.xcusatio.ui.profilsettings;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import com.deusgmbh.xcusatio.api.calendar.CalendarAPI;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -40,6 +46,7 @@ public class ProfileSettings extends FlowPane {
     private static final String TITLE_LABEL_TEXT = "Profileinstellungen";
     private static final double PROFILE_FORM_PANE_WIDTH_MULTIPLIER = 0.5;
     private static final double LABEL_WIDTH_MULTIPLIER = 0.3;
+    // TODO: Ich bin ein kackspast!!!
     protected static final String CALENDAR_CONFIG_TITLE = "Kalender Konfiguration";
     protected static final double CALENDAR_CONFIG_WIDTH = 800;
     protected static final double CALENDAR_CONFIG_HEIGHT = 400;
@@ -164,13 +171,28 @@ public class ProfileSettings extends FlowPane {
     private EventHandler<ActionEvent> authorizeCalendar = new EventHandler<ActionEvent>() {
         public void handle(ActionEvent event) {
             try {
-                CalendarAPI.authorize();
-            } catch (IOException e) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("AUTHORIZATION ERROR");
-                alert.setContentText("You could not be successfully authorized");
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                Task<Void> task = new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        CalendarAPI.authorize();
+                        return null;
+                    }
+                };
+                executor.submit(task)
+                        .get(30, TimeUnit.SECONDS);
+                executor.shutdown();
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                try {
+                    CalendarAPI.removeCredentials();
+                } catch (IOException e1) {
+                    throw new RuntimeException("AUTHORIZATION PROCESS COULD NOT BE PERFORMED");
+                }
+                Alert authorizationErrorAlert = new Alert(AlertType.ERROR);
+                authorizationErrorAlert.setTitle("AUTHORIZATION ERROR");
+                authorizationErrorAlert.setContentText("You could not be successfully authorized");
 
-                alert.showAndWait();
+                authorizationErrorAlert.showAndWait();
             }
             createCalendarButton(CalendarAPI.hasCredentials());
             calendarPane.getChildren()

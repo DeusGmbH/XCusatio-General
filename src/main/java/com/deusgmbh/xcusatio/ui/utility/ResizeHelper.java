@@ -178,6 +178,5 @@ public class ResizeHelper {
             height = Math.max(height, minHeight);
             stage.setHeight(height);
         }
-
     }
 }

@@ -24,6 +24,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -40,6 +41,7 @@ import javafx.stage.StageStyle;
 
 public class XCusatioWindow extends Application {
     private static final String SCENE_STYLESHEET_PATH = "file:assets/stage_stylesheet.css";
+    private static final String ICON_IMAGE_PATH = "file:src/main/resources/icon.png";
 
     private static final String WINDOW_TITLE = "Deus GmbH - xCusatio";
 
@@ -95,6 +97,8 @@ public class XCusatioWindow extends Application {
         main.setLeft(navigationPanel);
         main.setCenter(dashboard);
 
+        stage.getIcons()
+                .add(new Image(ICON_IMAGE_PATH));
         stage.show();
     }
 

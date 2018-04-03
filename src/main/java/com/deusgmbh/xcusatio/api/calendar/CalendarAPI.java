@@ -84,6 +84,7 @@ public class CalendarAPI {
         Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
         LOGGER.info("Credentials saved to " + DATA_STORE_DIR.getAbsolutePath());
         credentials = credential;
+
     }
 
     public static void removeCredentials() throws IOException {
