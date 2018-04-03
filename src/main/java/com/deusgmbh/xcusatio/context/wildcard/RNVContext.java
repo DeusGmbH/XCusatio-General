@@ -54,10 +54,8 @@ public class RNVContext extends TimeFormattingUtils {
     }
 
     public void logContextContent() {
-        LOGGER.info("RNVContext:\nTram No. " + this.tram.getLineLabel() + "\nFrom: " + this.tram.getFirstEndStation()
-                + "\nTo: " + this.tram.getSecondEndstation() + "\n(" + this.tram.getStops()
-                        .size()
-                + " stops)\n" + this.newsEntry.getTitle() + ": " + this.newsEntry.getContent() + ", affecting "
+        LOGGER.info("RNVContext:\nTram No. " + this.tram.getLineLabel() + "\nFrom: " + "\n(" + this.tram.getStops()
+                .size() + " stops)\n" + this.newsEntry.getTitle() + ": " + this.newsEntry.getContent() + ", affecting "
                 + this.newsEntry.getAffectedLines()
                         .size()
                 + "lines.\nStatus of tram: " + this.tramStatus + "\nTram delay: ");

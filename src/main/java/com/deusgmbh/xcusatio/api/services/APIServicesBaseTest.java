@@ -33,12 +33,26 @@ public class APIServicesBaseTest extends APIService {
                 // TODO Auto-generated method stub
 
             }
+
+            @Override
+            public void buildRequestUrl(UserSettings usersettings) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void printResponse() {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void getResponseFromWebsite() {
+                // TODO Auto-generated method stub
+
+            }
         };
-        apiService.setBaseUrlText(
-                "https://traffic.cit.api.here.com/traffic/6.2/incidents/xml/8/134/86?app_id=ObXv79Ww3xdQ996uEDLw&app_code=74fsgcSubek54INvT13Rcg");
-        apiService.requestWebsite();
-        apiService.getResponseFromWebsite();
-        apiService.extractDesiredInfoFromResponse();
+
     }
 
     @Override
@@ -55,6 +69,24 @@ public class APIServicesBaseTest extends APIService {
 
     @Override
     public void extractDesiredInfoFromResponse() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void buildRequestUrl(UserSettings usersettings) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void printResponse() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void getResponseFromWebsite() {
         // TODO Auto-generated method stub
 
     }

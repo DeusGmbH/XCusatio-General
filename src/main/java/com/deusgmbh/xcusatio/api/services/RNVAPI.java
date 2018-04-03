@@ -104,24 +104,31 @@ public class RNVAPI extends APIService {
 
     @Override
     public void extractDesiredInfoFromResponse() throws JSONException {
+
+        getRelevantRNVAPIPackages();
+
+        System.out.println(this.jsonResponses[0] + "\n" + this.jsonResponses[1] + "\n" + this.jsonResponses[2]);
+
         // TODO 1 get tram details: line label, start, end, diffTime
+        extractTramDetails();
+
+        this.tramDetails.forEach(s -> {
+            System.out.println("Home: " + s.getHomeStation() + " Line: " + s.getLineLabel());
+            System.out.println("Delay at home station: " + s.getDifferenceTimeInMinutes());
+            System.out.println("Number of stops: " + s.getStops()
+                    .size());
+        });
+
+    }
+
+    // add javadoc
+    private void getRelevantRNVAPIPackages() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd+hh:mm:ss");
         Date now = new Date();
         String dateText = sdf.format(now);
         getResponseFromSpecificWebsite(STATIONS_PACKAGE, 0);
         getResponseFromSpecificWebsite(LINES_PACKAGE, 1);
         getResponseFromSpecificWebsite(STATIONS_MONITOR + this.universityStationId + "&time=" + dateText, 2);
-
-        System.out.println(this.jsonResponses[0] + "\n" + this.jsonResponses[1] + "\n" + this.jsonResponses[2]);
-        extractTramDetails();
-
-        this.tramDetails.forEach(s -> {
-            System.out.println("Home: " + s.getHomeStation() + " Line: " + s.getLineLabel());
-            System.out.println("Stops: ");
-            s.getStops()
-                    .forEach(stop -> System.out.println(stop));
-        });
-
     }
 
     // TODO refactor, add javadoc
@@ -149,6 +156,8 @@ public class RNVAPI extends APIService {
 
         for (int i = 0; i < lineLabels.size(); ++i) {
             this.tramDetails.add(new TramDetails(lineLabels.get(i), this.universityStationId, stopNamesOfLine));
+            this.tramDetails.get(i)
+                    .setDifferenceTimeInMinutes(delayTimesOfLine.get(0));
         }
 
     }
@@ -306,7 +315,7 @@ public class RNVAPI extends APIService {
 
     public void getResponseFromSpecificWebsite(String requestUrl, int responseIndex) {
         try {
-            getXMLFromInputStream(requestUrl, responseIndex);
+            getJsonFromInputStream(requestUrl, responseIndex);
             // System.out.println(this.xmlResponse);
         } catch (IOException e) {
             LOGGER.warning("Error getting jsonString from input stream: " + e.getMessage());
@@ -322,7 +331,7 @@ public class RNVAPI extends APIService {
 
     }
 
-    private void getXMLFromInputStream(String requestUrl, int responseIndex) throws IOException {
+    private void getJsonFromInputStream(String requestUrl, int responseIndex) throws IOException {
         URL url = new URL(requestUrl);
         super.setRequestUrl(url);
         StringBuilder sb = new StringBuilder();

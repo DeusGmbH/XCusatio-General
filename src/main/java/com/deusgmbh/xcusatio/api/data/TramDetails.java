@@ -48,4 +48,12 @@ public class TramDetails {
         this.homeStation = homeStation;
     }
 
+    public int getDifferenceTimeInMinutes() {
+        return differenceTimeInMinutes;
+    }
+
+    public void setDifferenceTimeInMinutes(int differenceTimeInMinutes) {
+        this.differenceTimeInMinutes = differenceTimeInMinutes;
+    }
+
 }
