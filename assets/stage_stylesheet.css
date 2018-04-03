@@ -5,7 +5,6 @@
 .label {
 	-fx-text-fill: #FFFFFF;
 	-fx-font-size: 13pt;
-	-fx-padding: 4pt;
 }
 
 .button {
@@ -24,22 +23,12 @@
 	-fx-text-fill: #AAAAAA;
 }
 
-.navigation-button {
-	-fx-background-color: #333333;
-	-fx-background-radius: 0;
-    -fx-border-insets: 0px;
-    -fx-background-insets: 0px;
-    -fx-padding: 10px;
-}
-
-.active {
-	-fx-background-color: #108ACB;
-}
-
 .h1 {
 	-fx-font-size: 30pt;
 	-fx-font-weight: bold;
 	-fx-padding: 14pt;
+	-fx-text-alignment: center;
+	-fx-wrap-text: true;
 }
 
 .h2 {
@@ -57,191 +46,12 @@
 .p {
 	-fx-font-size: 14pt;
 	-fx-font-weight: bold;
+	-fx-padding: 0 20 0 0;
 }
 
-.toggle-switch {
-	-fx-padding: 2 8 2 8;
-}
-
-.navigation-bar {
-	-fx-background-color: #444444;
-	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 3.0, 0.0, 1.0, 0.0);
-}
-
-.excuse-quick-settings {
-	-fx-background-color: #444444;
-	-fx-border-color: rgba(0,0,0,0.8);
-	-fx-border-width: 0 0 0 1;
-}
-
-.window-border {
-	-fx-background-color: #222;
-	-fx-text-fill: #FFFFFF;
-	-fx-border-color: rgba(0,0,0,0.8);
-	-fx-border-width: 0 0 1 0;
-}
-
-.window-border .button {
-	-fx-background-color: #222;
-	-fx-font-size: 13pt;
-	-fx-border-insets: 0px;
-    -fx-background-insets: 0px;
-	-fx-padding: 5px;
-}
-
-.tab-pane:top *.tab-header-area {
-    -fx-padding: 0 0 0 0;
-    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.8), 5.0, 0.0, 1, 0);
-}
-
-.tab-pane .tab-header-area .tab-header-background {
-    -fx-background-color: #444;    
-}
-
-.tab-pane
-{
-    -fx-tab-min-width:100px;
-    -fx-tab-min-height: 35px;
-}
-
-.tab-pane .tab
-{
-    -fx-background-color: #222;
-    -fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.8), 5.0, 0.0, 1, 1);
-    -fx-border-color: #222;
-}
-.tab-pane .tab:selected
-{
-    -fx-background-color: #333;
-    -fx-effect: none;
-    -fx-border-color: #333;
-}
-
-.tab-pane > .tab-header-area > .headers-region > .tab:selected .focus-indicator
-{
-     -fx-border-color: transparent;
-}
-
-.tab .tab-label { 
-    -fx-alignment: CENTER;
-    -fx-text-fill: #FFF;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-}
-
-.tab:hover .tab-label
-{
-    -fx-text-fill: #AAA;
-}
-
-.tab:selected .tab-label { 
-    -fx-text-fill: #FFF;
-}
-
-.split-pane {
-	-fx-background-color: transparent;
-}
-
-.split-pane:horizontal > .split-pane-divider {
-   -fx-background-color: #444;
-   -fx-padding: 3
-}
-
-.table-view {
-   -fx-background-color: transparent;
-   -fx-padding: 30 10 10 30;
-}
-
-.table-view:focused {
-    -fx-background-color: transparent;
-}
-
-.table-view .column-header-background {
-    -fx-background-color: #333;
-    -fx-border-width: 0 0 1 0;
-    -fx-border-color: #E6E6E6
-}
-
-.table-view .column-header {
-    -fx-background-color: transparent;
-}
-
-.table-view .table-cell {
-    -fx-text-fill: #FFF;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-}
-
-.table-row-cell {
-    -fx-background-color: transparent;
-    -fx-table-cell-border-color: transparent;
-}
-
-.table-row-cell:odd { 
-    -fx-background-color: transparent;
-}
-
-.table-row-cell:hover .table-cell{
-    -fx-text-fill: #AAA;
-}
-
-.table-row-cell:selected {
-    -fx-background-color: #444;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
-}
-
-.table-view .column-header-background .filler {
-  -fx-padding: 0;
-}
-
-.table-view > .virtual-flow > .scroll-bar:vertical,
-.table-view > .virtual-flow > .scroll-bar:vertical > .track,
-.table-view > .virtual-flow > .scroll-bar:vertical > .track-background, 
-.table-view > .virtual-flow > .scroll-bar:horizontal,
-.table-view > .virtual-flow > .scroll-bar:horizontal > .track,
-.table-view > .virtual-flow > .scroll-bar:horizontal > .track-background {
-    -fx-background-color: transparent;
-}
-
-
-
-.table-view > .virtual-flow > .scroll-bar > .increment-button, 
-.table-view > .virtual-flow > .scroll-bar > .decrement-button {
-    -fx-opacity: 0;
-}
-
-.list-view {
-  -fx-background-insets: 10;
-  -fx-padding: 10;
-}
-
-.excuse-quick-settings .scroll-bar:vertical,
-.excuse-quick-settings .scroll-bar:vertical > .track,
-.excuse-quick-settings .scroll-bar:vertical > .track-background, 
-.excuse-quick-settings .scroll-bar:horizontal,
-.excuse-quick-settings .scroll-bar:horizontal > .track,
-.excuse-quick-settings .scroll-bar:horizontal > .track-background ,
-.excuse-quick-settings .corner {
-    -fx-background-color: #444;
-}
-
-.excuse-quick-settings .scroll-bar > .increment-button, 
-.excuse-quick-settings .scroll-bar > .decrement-button {
-    -fx-opacity: 0;
-}
-
-.list-cell {
-	-fx-background-color: #444;
-	-fx-text-fill: white;
-	-fx-font-weight: bold;
-}
-
-.list-cell:odd {
-	-fx-background-color: #444;
-	-fx-text-fill: white;
-}
-
-.list-cell:hover {
-    -fx-background-color: #444;
+.excuse-label {
+	-fx-font-size: 24px;
+	-fx-padding: 40pt;
+	-fx-wrap-text: true;
+	-fx-text-alignment: center;
 }

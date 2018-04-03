@@ -26,7 +26,11 @@ public class SexTogglePane extends HBox {
         setSexFemale = new RadioButton();
         setSexFemale.setSelected(userSex == Sex.FEMALE);
         setSexFemale.setToggleGroup(groupRadio);
-        this.getChildren().addAll(sexMaleLabel, setSexMale, sexFemaleLabel, setSexFemale);
+
+        this.getStyleClass()
+                .add("sex-toggle-pane");
+        this.getChildren()
+                .addAll(sexMaleLabel, setSexMale, sexFemaleLabel, setSexFemale);
 
     }
 

@@ -46,6 +46,8 @@ public class ExcuseEditorTab extends EditorTab {
     }
 
     private void createEditForm(int selectedExcuseID, ObservableList<Excuse> excuses) {
+        editEntryPane.getChildren()
+                .clear();
         editEntryPane.createEditForm(selectedExcuseID, excuses);
     }
 
