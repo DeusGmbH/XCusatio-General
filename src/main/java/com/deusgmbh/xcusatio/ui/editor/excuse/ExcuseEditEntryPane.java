@@ -43,18 +43,8 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
     private ChoiceBox<ScenarioType> excuseTypeChoiceBox;
     private DoubleListView<Tag> tagsListCellView;
 
-    public ExcuseEditEntryPane() {
-        super();
-    }
-
-    public ExcuseEditEntryPane(int id, ObservableList<Excuse> excuseList) {
-        this();
-        createEditForm(id, excuseList);
-    }
-
-    public void createEditForm(int id, ObservableList<Excuse> excuseList) {
-        super.createBaseEditForm();
-
+    @Override
+    protected void createCustomizedEditForm(int id, ObservableList<Excuse> excuseList) {
         this.selectedItemId = id;
         this.editableItems = excuseList;
 
@@ -112,4 +102,5 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
                                 editableItems.get(selectedItemId)
                                         .getLastUsed()));
     }
+
 }

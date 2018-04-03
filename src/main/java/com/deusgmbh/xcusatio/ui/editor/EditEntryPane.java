@@ -51,7 +51,18 @@ public abstract class EditEntryPane<T> extends BorderPane {
         createBaseEditForm();
     }
 
-    protected void createBaseEditForm() {
+    public EditEntryPane(int id, ObservableList<T> entryList) {
+        createEditForm(id, entryList);
+    }
+
+    public void createEditForm(int id, ObservableList<T> entryList) {
+        this.createBaseEditForm();
+        this.createCustomizedEditForm(id, entryList);
+    }
+
+    abstract protected void createCustomizedEditForm(int id, ObservableList<T> entryList);
+
+    private void createBaseEditForm() {
         editorTitleLabel = new Label(EDITOR_TITLE);
         editorTitleLabel.getStyleClass()
                 .add("h2");
