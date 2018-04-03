@@ -7,7 +7,6 @@ import com.deusgmbh.xcusatio.ui.utility.DoubleListView;
 import com.deusgmbh.xcusatio.ui.utility.ListViewTextField;
 
 import javafx.collections.ObservableList;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 /**
@@ -24,6 +23,9 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
     private static final String LECTURER_NAME_LABEL_TEXT = "Name:";
     private static final String LECTURER_LECTURES_LABEL_TEXT = "Vorlesungen: ";
     private static final String TAGS_LABEL_TEXT = "Tags:";
+    private static final double RIGHT_EDIT_HALF_MULTIPLIER = 0.6;
+    private static final double LECTURER_LECTURES_LIST_VIEW_HEIGHT_MULTIPLIER = 0.15;
+    private static final double TAGS_LIST_HEIGHT_MULTIPLIER = 0.4;
 
     private TextField lecturerNameTextField;
     private ListViewTextField lecturerLecturesPane;
@@ -38,25 +40,36 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
         createEditForm(lecturerID, lecturers);
     }
 
-    public void createEditForm(int id, ObservableList<Lecturer> lecturersList) {
+    @Override
+    protected void createCustomizedEditForm(int id, ObservableList<Lecturer> lecturersList) {
         this.selectedItemId = id;
         this.editableItems = lecturersList;
 
-        Label lecturerNameLabel = new Label(LECTURER_NAME_LABEL_TEXT);
-        Label lecturerLecturesLabel = new Label(LECTURER_LECTURES_LABEL_TEXT);
-        Label tagsLabel = new Label(TAGS_LABEL_TEXT);
-
         this.lecturerNameTextField = new TextField(editableItems.get(selectedItemId)
                 .getName());
+        this.lecturerNameTextField.prefWidthProperty()
+                .bind(this.widthProperty()
+                        .multiply(RIGHT_EDIT_HALF_MULTIPLIER));
         this.lecturerLecturesPane = new ListViewTextField(editableItems.get(selectedItemId)
                 .getLectures());
+        this.lecturerLecturesPane.bindSize(this.widthProperty()
+                .multiply(RIGHT_EDIT_HALF_MULTIPLIER),
+                this.heightProperty()
+                        .multiply(LECTURER_LECTURES_LIST_VIEW_HEIGHT_MULTIPLIER));
         this.tagsListCellView = new DoubleListView<Tag>(editableItems.get(selectedItemId)
                 .getTags(),
                 super.removeFromAllTagsList(editableItems.get(selectedItemId)
                         .getTags()));
+        this.tagsListCellView.bindSize(this.widthProperty()
+                .multiply(RIGHT_EDIT_HALF_MULTIPLIER),
+                this.heightProperty()
+                        .multiply(TAGS_LIST_HEIGHT_MULTIPLIER));
 
-        super.addNodesToPane(lecturerNameLabel, lecturerNameTextField, lecturerLecturesLabel, lecturerLecturesPane,
-                tagsLabel, tagsListCellView);
+        super.addNodeBoxToPane(LECTURER_NAME_LABEL_TEXT, lecturerNameTextField);
+        super.addNodeBoxToPane(LECTURER_LECTURES_LABEL_TEXT, lecturerLecturesPane);
+        super.addNodeBoxToPane(TAGS_LABEL_TEXT, tagsListCellView);
+
+        this.setBottom(super.submitEditedEntryBtnPane);
     }
 
     @Override

@@ -41,6 +41,8 @@ public class LecturerEditorTab extends EditorTab {
     }
 
     private void createEditForm(int selectedLecturerID, ObservableList<Lecturer> lecturers) {
+        editEntryPane.getChildren()
+                .clear();
         editEntryPane.createEditForm(selectedLecturerID, lecturers);
     }
 

@@ -6,6 +6,15 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
+/**
+ * 
+ * This class creates the top window border with closing, minimizing and
+ * resizing buttons
+ * 
+ * @author Pascal.Schroeder@de.ibm.com
+ *
+ */
+
 public class WindowBorder extends HBox {
     private static final String WINDOW_BORDER_STYLESHEET_PATH = "file:assets/window_border_stylesheet.css";
 
@@ -20,7 +29,10 @@ public class WindowBorder extends HBox {
 
     public WindowBorder(EventHandler<ActionEvent> minimizeWindow, EventHandler<ActionEvent> restoreWindow,
             EventHandler<ActionEvent> closeWindow) {
-        this.getStyleClass().add("window-border");
+        this.getStylesheets()
+                .add(WINDOW_BORDER_STYLESHEET_PATH);
+        this.getStyleClass()
+                .add("window-border");
 
         minimizeButton = new Button(MINIMIZE_BUTTON_UNICODE);
         fullScreenButton = new Button(FULLSCREEN_BUTTON_UNICODE);
@@ -32,7 +44,8 @@ public class WindowBorder extends HBox {
         fullScreenButton.setOnAction(restoreWindow);
         closeButton.setOnAction(closeWindow);
 
-        this.getChildren().addAll(minimizeButton, fullScreenButton, closeButton);
+        this.getChildren()
+                .addAll(minimizeButton, fullScreenButton, closeButton);
         this.setAlignment(Pos.TOP_RIGHT);
 
     }

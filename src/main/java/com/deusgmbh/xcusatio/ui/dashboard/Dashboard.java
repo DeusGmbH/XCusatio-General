@@ -29,13 +29,15 @@ import javafx.scene.layout.HBox;
  */
 
 public class Dashboard extends BorderPane {
+    private static final String QUICK_SETTINGS_STYLESHEET_PATH = "file:assets/quick_settings_stylesheet.css";
+
     private static final double QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER = 0.3;
-    private static final double SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER = 0.25;
+    private static final double SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER = 0.15;
 
     // TODO: Change ui names; discuss in design review
     private static final String THUMB_GESTURE_UI_NAME = "Daumengeste";
-    private static final String WHEEL_OF_FORTUNE_UI_NAME = "Glücksrad";
-    private static final String LATE_ARRIVAL_UI_NAME = "Verspätung";
+    private static final String WHEEL_OF_FORTUNE_UI_NAME = "Gl\u00fccksrad";
+    private static final String LATE_ARRIVAL_UI_NAME = "Versp\u00e4tung";
     private static final String DELAYED_SUBMISSION_UI_NAME = "Abgabe";
 
     private HBox scenarioButtonPane;
@@ -63,6 +65,8 @@ public class Dashboard extends BorderPane {
         leftPane.setCenter(this.reactionPane);
 
         rightPane = new BorderPane();
+        rightPane.getStylesheets()
+                .add(QUICK_SETTINGS_STYLESHEET_PATH);
 
         this.setRight(this.rightPane);
         this.setCenter(leftPane);

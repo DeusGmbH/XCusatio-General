@@ -3,6 +3,7 @@ package com.deusgmbh.xcusatio.ui.utility;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,10 +24,11 @@ import javafx.scene.layout.BorderPane;
  */
 
 public class DoubleListView<T> extends BorderPane {
-    private static final double LIST_VIEW_WIDTH_MULTIPLIER = 0.4;
     private static final int BUTTON_PANE_WIDTH = 31;
     private static final int CELL_SIZE = 30;
     private static final int MAX_TABLE_ROW = 8;
+    private static final double LIST_VIEW_WIDTH_MULTIPLIER = 0.45;
+    private static final double LIST_VIEW_HEIGHT_MULTIPLIER = 0.9;
 
     private ListView<T> leftListView;
     private ListView<T> rightListView;
@@ -39,10 +41,8 @@ public class DoubleListView<T> extends BorderPane {
     public DoubleListView(ObservableList<T> leftList, ObservableList<T> rightList) {
         int maxListSize = leftList.size() + rightList.size();
         leftListView = new ListView<T>(leftList);
-        leftListView.maxWidthProperty().bind(this.widthProperty().multiply(LIST_VIEW_WIDTH_MULTIPLIER));
         leftListView.setPrefHeight(maxListSize > MAX_TABLE_ROW ? MAX_TABLE_ROW * CELL_SIZE : maxListSize * CELL_SIZE);
         rightListView = new ListView<T>(rightList);
-        rightListView.maxWidthProperty().bind(this.widthProperty().multiply(LIST_VIEW_WIDTH_MULTIPLIER));
         rightListView.setPrefHeight(maxListSize > MAX_TABLE_ROW ? MAX_TABLE_ROW * CELL_SIZE : maxListSize * CELL_SIZE);
 
         shiftButtonPane = new ShiftButtonPane(createMoveItemAction(leftListView, rightListView),
@@ -58,10 +58,13 @@ public class DoubleListView<T> extends BorderPane {
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent e) {
-                T selectedItem = moveFrom.getSelectionModel().getSelectedItem();
+                T selectedItem = moveFrom.getSelectionModel()
+                        .getSelectedItem();
                 if (selectedItem != null) {
-                    moveFrom.getItems().remove(selectedItem);
-                    moveTo.getItems().add(selectedItem);
+                    moveFrom.getItems()
+                            .remove(selectedItem);
+                    moveTo.getItems()
+                            .add(selectedItem);
                 }
             }
         };
@@ -69,5 +72,16 @@ public class DoubleListView<T> extends BorderPane {
 
     public List<T> getLeftListItems() {
         return new ArrayList<T>(leftListView.getItems());
+    }
+
+    public void bindSize(DoubleBinding widthProperty, DoubleBinding heightProperty) {
+        leftListView.prefWidthProperty()
+                .bind(widthProperty.multiply(LIST_VIEW_WIDTH_MULTIPLIER));
+        rightListView.prefWidthProperty()
+                .bind(widthProperty.multiply(LIST_VIEW_WIDTH_MULTIPLIER));
+        leftListView.prefHeightProperty()
+                .bind(heightProperty.multiply(LIST_VIEW_HEIGHT_MULTIPLIER));
+        rightListView.prefHeightProperty()
+                .bind(heightProperty.multiply(LIST_VIEW_HEIGHT_MULTIPLIER));
     }
 }

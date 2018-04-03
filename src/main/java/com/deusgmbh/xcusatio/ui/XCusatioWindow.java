@@ -24,6 +24,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -39,6 +40,9 @@ import javafx.stage.StageStyle;
  */
 
 public class XCusatioWindow extends Application {
+    private static final String SCENE_STYLESHEET_PATH = "file:assets/stage_stylesheet.css";
+    private static final String ICON_IMAGE_PATH = "file:src/main/resources/icon.png";
+
     private static final String WINDOW_TITLE = "Deus GmbH - xCusatio";
 
     private static final int WINDOW_BORDER_HEIGHT = 40;
@@ -51,8 +55,6 @@ public class XCusatioWindow extends Application {
     private static final String DASHBOARD_TAB_NAME = "Generator";
     private static final String EDITOR_TAB_NAME = "Editor";
     private static final String PROFILE_SETTINGS_TAB_NAME = "Profile";
-
-    private static final String SCENE_STYLESHEET_PATH = "file:assets/stage_stylesheet.css";
 
     private BorderPane main;
     private WindowBorder windowBorder;
@@ -95,6 +97,8 @@ public class XCusatioWindow extends Application {
         main.setLeft(navigationPanel);
         main.setCenter(dashboard);
 
+        stage.getIcons()
+                .add(new Image(ICON_IMAGE_PATH));
         stage.show();
     }
 
@@ -224,10 +228,6 @@ public class XCusatioWindow extends Application {
 
     public void registerMostRecentlyUsedExcusesSupplier(ObservableList<String> mostRecentlyUsedObservableList) {
         this.dashboard.registerMostRecentlyUsedExcuses(mostRecentlyUsedObservableList);
-    }
-
-    public void registerChangeUserSettingsEvent(Consumer<UserSettings> userSettingsConsumer) {
-        profileSettings.createEditProfileBtnAction(userSettingsConsumer);
     }
 
     public void registerUserSettings(ObjectProperty<UserSettings> userSettings) {
