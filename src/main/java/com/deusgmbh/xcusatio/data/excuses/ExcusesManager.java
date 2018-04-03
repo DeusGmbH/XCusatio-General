@@ -53,7 +53,7 @@ public class ExcusesManager extends StorageUnit<Excuse> {
     @Override
     public ExcusesManager addDefaultValues() {
         // TODO: add more default values
-        this.add(new Excuse("Die Bahn kam zu spät", ScenarioType.LATE_ARRIVAL).addTag(Tag.TRAIN)
+        this.add(new Excuse("Die Bahn kam zu spät", ScenarioType.LATE_ARRIVAL).addTag(Tag.TRAIN_DELAYED)
                 .addTag(Tag.MALE)
                 .addTag(Tag.FEMALE))
                 .add(new Excuse(

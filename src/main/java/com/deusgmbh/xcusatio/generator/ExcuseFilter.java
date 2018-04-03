@@ -1,8 +1,6 @@
 package com.deusgmbh.xcusatio.generator;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.deusgmbh.xcusatio.context.Context;
@@ -13,33 +11,35 @@ import com.deusgmbh.xcusatio.data.tags.Tag;
 
 public class ExcuseFilter {
 
-    private List<Predicate<Excuse>> filter;
+    private List<Excuse> excuses;
 
-    public ExcuseFilter() {
-        filter = new ArrayList<>();
+    public ExcuseFilter(List<Excuse> excuses) {
+        this.excuses = excuses;
     }
 
     public ExcuseFilter byValidWildcard(Wildcards wildcards, Context context) {
-        filter.add(excuse -> wildcards.isValidContext(excuse.getText(), context.getApiContext()));
+        excuses = excuses.stream()
+                .filter(excuse -> wildcards.isValidContext(excuse.getText(), context.getApiContext()))
+                .collect(Collectors.toList());
         return this;
     }
 
     public ExcuseFilter byScenario(Scenario scenario) {
-        filter.add(Excuse.byScenario(scenario));
+        excuses = excuses.stream()
+                .filter(Excuse.byScenario(scenario))
+                .collect(Collectors.toList());
         return this;
     }
 
     public ExcuseFilter byContextTags(List<Tag> contextTags) {
-        filter.add(Excuse.hasContextTagsInExcuse(contextTags));
-        filter.add(Excuse.hasExcuseTagsInContext(contextTags));
+        excuses = excuses.stream()
+                .filter(Excuse.hasContextTagsInExcuse(contextTags))
+                .filter(Excuse.hasExcuseTagsInContext(contextTags))
+                .collect(Collectors.toList());
         return this;
     }
 
-    public List<Excuse> apply(List<Excuse> excuses) {
-        return excuses.stream()
-                .filter(filter.stream()
-                        .reduce(Predicate::and)
-                        .orElse(t -> true))
-                .collect(Collectors.toList());
+    public List<Excuse> get() {
+        return excuses;
     }
 }
