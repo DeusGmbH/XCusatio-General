@@ -2,6 +2,7 @@ package com.deusgmbh.xcusatio.api;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.LinkedList;
@@ -26,17 +27,18 @@ public abstract class APIService {
     private static final Logger LOGGER = Logger.getLogger(APIService.class.getName());
 
     private URL requestUrl;
-    private String responseAsJsonString;
+    // private String responseAsJsonString;
 
-    public void getJsonStringFromInputStream() throws IOException {
-        InputStream is = this.requestUrl.openStream();
-        this.responseAsJsonString = IOUtils.toString(is, "UTF-8");
-        is.close();
+    public String getJsonStringFromInputStream(URL requestUrl) throws IOException {
+        InputStream is = requestUrl.openStream();
+        return IOUtils.toString(is, "UTF-8");
+        // TODO close inputStream ?
     }
 
-    public abstract <T extends Object> T get(UserSettings usersettings);
+    public abstract <T extends Object> T get(UserSettings usersettings)
+            throws IOException, JSONException, ParseException;
 
-    public abstract void buildRequestUrl(UserSettings usersettings);
+    public abstract URL buildRequestUrl(UserSettings usersettings) throws UnsupportedEncodingException, IOException;
 
     public abstract void transmitDataToWebsite();
 
@@ -47,7 +49,9 @@ public abstract class APIService {
     public abstract void extractDesiredInfoFromResponse() throws JSONException, ParseException;
 
     /* differs in terms of data format returned by the call */
-    public abstract void getResponseFromWebsite();
+    public String getResponseFromWebsite(URL requestUrl) throws IOException {
+        return getJsonStringFromInputStream(requestUrl);
+    };
 
     /**
      * 
@@ -206,12 +210,9 @@ public abstract class APIService {
         this.requestUrl = requestUrl;
     }
 
-    public String getResponseAsJsonString() {
-        return responseAsJsonString;
-    }
+    public void printResponse(URL requestUrl) throws IOException {
+        System.out.println(getJsonStringFromInputStream(requestUrl));
 
-    public void setResponseAsJsonString(String responseAsJsonString) {
-        this.responseAsJsonString = responseAsJsonString;
     }
 
 }
