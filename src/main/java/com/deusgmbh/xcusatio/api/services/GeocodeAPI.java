@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.logging.Logger;
 
 import org.json.JSONArray;
@@ -31,38 +32,28 @@ public class GeocodeAPI extends APIService {
     private final String JSON_LONGITUDE = "Longitude";
     private final String BASE_URL = "https://geocoder.api.here.com/6.2/geocode.json?app_id=ObXv79Ww3xdQ996uEDLw&app_code=74fsgcSubek54INvT13Rcg&searchtext=";
 
-    private String jsonResponse;
     private double[][] boundingBoxCoordinates;
     private double[] spotCoordinates;
-    private String quadkey;
-    private int[] mapTilesLowZoom;
-    private int[] mapTilesMediumZoom;
-    private int[] mapTilesHighZoom;
+    private int[] mapTiles;
 
     public GeocodeAPI() {
-        this.boundingBoxCoordinates = new double[2][2];
-        this.spotCoordinates = new double[2];
-        this.quadkey = "";
-        this.mapTilesLowZoom = new int[2];
-        this.mapTilesMediumZoom = new int[2];
-        this.mapTilesHighZoom = new int[2];
     }
 
+    /**
+     * 
+     */
     @Override
-    public void buildRequestUrl(UserSettings usersettings) {
-        Address home = usersettings.getHome();
-        String streetnum = home.getStreetnum();
-        String streetname = home.getStreetName();
-        String city = home.getCity();
-        String zip = home.getZip();
+    public URL buildRequestUrl(UserSettings usersettings) throws UnsupportedEncodingException {
+        Address address = usersettings.getHome();
+        String streetnum = address.getStreetnum();
+        String streetname = address.getStreetName();
+        String city = address.getCity();
+        String zip = address.getZip();
         try {
-            super.setRequestUrl(new URL(
-                    BASE_URL + URLEncoder.encode(streetnum + "+" + streetname + "+" + city + "+" + zip, "UTF-8")));
+            return new URL(
+                    BASE_URL + URLEncoder.encode(streetnum + "+" + streetname + "+" + city + "+" + zip, "UTF-8"));
         } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException("error building geocode request url");
         }
     }
 
@@ -72,12 +63,12 @@ public class GeocodeAPI extends APIService {
 
     }
 
-    @Override
-    public void extractDesiredInfoFromResponse() throws JSONException {
-        // TODO refactor this blown-up shit to some really smaller chunks of
-        // code using a couple of private methods etc.
-        getResponseFromWebsite();
-        JSONObject jsonTotal = new JSONObject(this.jsonResponse);
+    public double[][] extractBoundingBoxCoordinates(URL requestUrl) throws JSONException, IOException {
+        double[][] boundingBoxCoordinates = new double[2][2];
+
+        String jsonResponseString = getResponseFromWebsite(requestUrl);
+        JSONObject jsonTotal = new JSONObject(jsonResponseString);
+        System.out.println(jsonResponseString);
 
         if (jsonTotal.has(JSON_RESPONSE)) {
             JSONObject jsonResponse = jsonTotal.getJSONObject(JSON_RESPONSE);
@@ -93,22 +84,20 @@ public class GeocodeAPI extends APIService {
                             JSONObject jsonMapView = jsonLocation.getJSONObject(JSON_MAPVIEW);
                             if (jsonMapView.has(JSON_TOPLEFT) && jsonMapView.has(JSON_BOTTOMRIGHT)) {
                                 JSONObject jsonTopLeft = jsonMapView.getJSONObject(JSON_TOPLEFT);
+
                                 if (jsonTopLeft.has(JSON_LATITUDE) && jsonTopLeft.has(JSON_LONGITUDE)) {
-                                    this.boundingBoxCoordinates[0][0] = Double
-                                            .parseDouble(jsonTopLeft.get(JSON_LATITUDE)
-                                                    .toString());
-                                    this.boundingBoxCoordinates[0][1] = Double
-                                            .parseDouble(jsonTopLeft.getString(JSON_LONGITUDE)
-                                                    .toString());
+                                    boundingBoxCoordinates[0][0] = Double.parseDouble(jsonTopLeft.get(JSON_LATITUDE)
+                                            .toString());
+                                    boundingBoxCoordinates[0][1] = Double.parseDouble(jsonTopLeft.get(JSON_LONGITUDE)
+                                            .toString());
                                 }
+
                                 JSONObject jsonBottomRight = jsonMapView.getJSONObject(JSON_BOTTOMRIGHT);
                                 if (jsonBottomRight.has(JSON_LATITUDE) && jsonBottomRight.has(JSON_LONGITUDE)) {
-                                    this.boundingBoxCoordinates[1][0] = Double
-                                            .parseDouble(jsonBottomRight.get(JSON_LATITUDE)
-                                                    .toString());
-                                    this.boundingBoxCoordinates[1][1] = Double
-                                            .parseDouble(jsonTopLeft.getString(JSON_LONGITUDE)
-                                                    .toString());
+                                    boundingBoxCoordinates[1][0] = Double.parseDouble(jsonBottomRight.get(JSON_LATITUDE)
+                                            .toString());
+                                    boundingBoxCoordinates[1][1] = Double.parseDouble(jsonTopLeft.get(JSON_LONGITUDE)
+                                            .toString());
                                 }
                             }
                         }
@@ -116,48 +105,27 @@ public class GeocodeAPI extends APIService {
                 }
             }
         }
+        return boundingBoxCoordinates;
     }
 
-    @Override
-    public void printResponse() {
-        try {
-            getJsonStringFromInputStream();
-        } catch (IOException e) {
-            LOGGER.warning("Error getting jsonString from input stream: " + e.getMessage());
-        }
-        String jsonResponse = getResponseAsJsonString();
-        System.out.println(jsonResponse);
-    }
-
-    @Override
-    public void getResponseFromWebsite() {
-        try {
-            getJsonStringFromInputStream();
-        } catch (IOException e) {
-            LOGGER.warning("Error getting jsonString from input stream: " + e.getMessage());
-        }
-        this.jsonResponse = getResponseAsJsonString();
-    }
-
-    private void calculateSpotCoordinates() {
-        this.spotCoordinates[0] = (this.boundingBoxCoordinates[0][0] + this.boundingBoxCoordinates[1][0]) / 2;
-        this.spotCoordinates[1] = (this.boundingBoxCoordinates[0][1] + this.boundingBoxCoordinates[1][1]) / 2;
+    private double[] calculateSpotCoordinates(double[][] boundingBoxCoordinates) {
+        double[] spotCoordinates = new double[2];
+        spotCoordinates[0] = (boundingBoxCoordinates[0][0] + boundingBoxCoordinates[1][0]) / 2;
+        spotCoordinates[1] = (boundingBoxCoordinates[0][1] + boundingBoxCoordinates[1][1]) / 2;
+        return spotCoordinates;
     }
 
     /* currently not in use but might be used later */
-    private void calculateQuadkey(int zoomLevel) {
-        Double spotLatitudeDeg = this.spotCoordinates[0];
-        Double spotLongitudeDeg = this.spotCoordinates[1];
+    private String calculateQuadkey(double[] spotCoordinates, int zoomLevel) {
+        Double spotLatitudeDeg = spotCoordinates[0];
+        Double spotLongitudeDeg = spotCoordinates[1];
         Double spotLatitudeRad = degToRad(spotLatitudeDeg);
-        Double spotLongitudeRad = degToRad(spotLongitudeDeg);
-
         Double n = Math.pow(2, zoomLevel);
         Double xTile = n * ((spotLongitudeDeg + 180) / 360);
         Double yTile = n * (1 - (Math.log(Math.tan(spotLatitudeRad) + 1 / (Math.cos(spotLatitudeRad)) / Math.PI)) / 2);
-
         int xTileInt = (int) Math.round(xTile);
         int yTileInt = (int) Math.round(yTile);
-
+        String quadkey = "";
         for (int i = zoomLevel; i > 0; i--) {
             int digit = 0;
             final int mask = 1 << (i - 1);
@@ -168,16 +136,17 @@ public class GeocodeAPI extends APIService {
                 digit = digit + 2;
             }
 
-            this.quadkey += String.valueOf(digit);
+            quadkey += String.valueOf(digit);
         }
+        return quadkey;
 
     }
 
-    private int[] calculateTiles(double zoomLevel) {
-        double latRad = this.spotCoordinates[0] * Math.PI / 180;
+    private int[] calculateTiles(double[] spotCoordinates, double zoomLevel) {
+        double latRad = spotCoordinates[0] * Math.PI / 180;
         double n = Math.pow(2, zoomLevel);
         int[] mapTiles = new int[2];
-        mapTiles[0] = (int) Math.round(n * ((this.spotCoordinates[1] + 180) / 360));
+        mapTiles[0] = (int) Math.round(n * ((spotCoordinates[1] + 180) / 360));
         mapTiles[1] = (int) Math.round(n * (1 - (Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI)) / 2);
         return mapTiles;
     }
@@ -187,20 +156,27 @@ public class GeocodeAPI extends APIService {
     }
 
     @Override
-    public GeocodeData get(UserSettings usersettings) {
-        this.buildRequestUrl(usersettings);
-        try {
-            this.extractDesiredInfoFromResponse();
-            LOGGER.info("Extracted required information from response");
-        } catch (JSONException e) {
-            LOGGER.warning("JSONException during extracting desired information: " + e.getMessage());
-        }
-        calculateSpotCoordinates();
-        this.mapTilesHighZoom = calculateTiles(8);
-        this.mapTilesMediumZoom = calculateTiles(12);
-        this.mapTilesLowZoom = calculateTiles(16);
-        return new GeocodeData(usersettings.getHome(), this.spotCoordinates, this.mapTilesLowZoom,
-                this.mapTilesMediumZoom, this.mapTilesHighZoom);
+    public GeocodeData get(UserSettings usersettings) throws IOException {
+        URL requestUrl = buildRequestUrl(usersettings);
+        String jsonResponse = getResponseFromWebsite(requestUrl);
+
+        this.boundingBoxCoordinates = extractBoundingBoxCoordinates(requestUrl);
+
+        this.spotCoordinates = calculateSpotCoordinates(boundingBoxCoordinates);
+
+        this.mapTiles = calculateTiles(spotCoordinates, 12); // 12 represents a
+                                                             // medium level of
+                                                             // zoom. in areas
+                                                             // of high traffic
+                                                             // a zoom of 16
+                                                             // still yields
+                                                             // good results.
+                                                             // if the area has
+                                                             // almost no
+                                                             // traffic choose
+                                                             // 8 to get a
+                                                             // wider area
+        return new GeocodeData(usersettings.getHome(), this.spotCoordinates, this.mapTiles);
     }
 
     // https://traffic.cit.api.here.com/traffic/6.0/incidents.json?bbox=52.5311%2C13.3644%3B52.5114%2C13.4035&criticality=minor&app_id=DemoAppId01082013GAL&app_code=AJKnXv84fjrb0KIHawS0Tg
@@ -219,16 +195,24 @@ public class GeocodeAPI extends APIService {
 
         GeocodeAPI gApi = new GeocodeAPI();
 
-        GeocodeData geocodeData = gApi.get(usersettings);
+        try {
+            GeocodeData geocodeData = gApi.get(usersettings);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        gApi.printResponse();
 
-        System.out.println("Spot: " + gApi.spotCoordinates[0] + ", " + gApi.spotCoordinates[1]);
+    }
 
-        System.out.println("High zoom: " + (int) Math.round(gApi.mapTilesHighZoom[0]) + "/"
-                + (int) Math.round(gApi.mapTilesHighZoom[1]));
-        System.out.println("High zoom: " + (int) Math.round(gApi.mapTilesMediumZoom[0]) + "/"
-                + (int) Math.round(gApi.mapTilesMediumZoom[1]));
-        System.out.println("High zoom: " + (int) Math.round(gApi.mapTilesLowZoom[0]) + "/"
-                + (int) Math.round(gApi.mapTilesLowZoom[1]));
+    @Override
+    public void printResponse() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void extractDesiredInfoFromResponse() throws JSONException, ParseException {
+        // TODO Auto-generated method stub
 
     }
 

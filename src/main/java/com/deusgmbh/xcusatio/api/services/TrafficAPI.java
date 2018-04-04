@@ -51,34 +51,40 @@ public class TrafficAPI extends APIService {
 
     private String mapMediumText;
 
-    private List<TrafficIncidentDetails> incidentDetails;
-    private List<TrafficIncidentLocation> incidentLocation;
-    private List<TrafficIncidentTimes> incidentTimes;
+    private List<TrafficIncidentDetails> trafficIncidentDetails;
+    private List<TrafficIncidentLocation> trafficIncidentLocations;
+    private List<TrafficIncidentTimes> trafficIncidentTimes;
 
     public TrafficAPI() {
-        this.incidentDetails = new LinkedList<>();
-        this.incidentLocation = new LinkedList<>();
-        this.incidentTimes = new LinkedList<>();
+
     }
 
+    /**
+     * @throws ParseException
+     * @throws JSONException
+     * 
+     */
     @Override
-    public TrafficContext get(UserSettings usersettings) {
-        /*
-         * creating a dummy context
-         * 
-         * 
-         */
-        this.buildRequestUrl(usersettings);
-        try {
-            this.extractDesiredInfoFromResponse();
-        } catch (JSONException e) {
-            LOGGER.warning("JSONException during processing of api response: " + e.getLocalizedMessage());
-        } catch (ParseException e) {
-            LOGGER.warning("Wrong time format detected while processing entry and end times of incidents: "
-                    + e.getLocalizedMessage());
+    public TrafficContext get(UserSettings usersettings) throws IOException, JSONException, ParseException {
+
+        URL requestUrl = buildRequestUrl(usersettings);
+
+        String jsonResponse = getResponseFromWebsite(requestUrl);
+
+        JSONObject totalJsonObject = new JSONObject(jsonResponse);
+
+        if (totalJsonObject.has(JSONOB_TRAFFIC_ITEMS)) {
+            JSONObject trafficItems = totalJsonObject.getJSONObject(JSONOB_TRAFFIC_ITEMS);
+            List<JSONObject> trafficItemList = getJSONObjectsFromJSONArray(trafficItems, JSONARR_TRAFFIC_ITEM);
+            this.trafficIncidentDetails = extractIncidentDetails(trafficItemList);
+            this.trafficIncidentTimes = extractIncidentTimes(trafficItemList);
+            this.trafficIncidentLocations = extractIncidentLocations(trafficItemList);
+        } else {
+
         }
 
-        return new TrafficContext(this.incidentDetails, this.incidentLocation, this.incidentTimes);
+        return new TrafficContext(this.trafficIncidentDetails, this.trafficIncidentLocations,
+                this.trafficIncidentTimes);
 
     }
 
@@ -87,107 +93,69 @@ public class TrafficAPI extends APIService {
 
     }
 
-    @Override
-    public void extractDesiredInfoFromResponse() throws JSONException, ParseException {
-
-        /* get json response through api call */
-        getResponseFromWebsite();
-        JSONObject jsonTotal = new JSONObject(this.jsonResponse);
-
-        /* check for traffic items */
-        if (jsonTotal.has(JSONOB_TRAFFIC_ITEMS)) {
-            JSONObject trafficItems = jsonTotal.getJSONObject(JSONOB_TRAFFIC_ITEMS);
-            // System.out.println("* " + trafficItems.toString());
-
-            /* get the list of all traffic items */
-            List<JSONObject> trafficItemList = getJSONObjectsFromJSONArray(trafficItems, JSONARR_TRAFFIC_ITEM);
-
-            /* fill context relevant lists */
-            extractDetailsInformation(trafficItemList);
-            extractTimesInformation(trafficItemList);
-            extractIncidentLocation(trafficItemList);
-
-        } else {
-            LOGGER.warning("json response does not contain values for KEY " + JSONOB_TRAFFIC_ITEMS);
-        }
-    }
-
-    private void extractDetailsInformation(List<JSONObject> trafficItemList) throws JSONException {
-        // TODO 1 TYPE
+    /**
+     * 
+     * @param trafficItemList
+     * @return
+     * @throws JSONException
+     */
+    private List<TrafficIncidentDetails> extractIncidentDetails(List<JSONObject> trafficItemList) throws JSONException {
+        List<TrafficIncidentDetails> trafficIncidentDetails = new LinkedList<>();
         List<String> incidentTypes = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_TYPE);
-        // incidentTypes.forEach(s -> System.out.println(s));
-
-        // TODO 2 STATUS
         List<String> incidentStatus = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_STATUS);
-        // incidentStatus.forEach(s -> System.out.println(s));
-
         int typesIndex = 0;
         while (typesIndex < incidentTypes.size()) {
-            this.incidentDetails
+            trafficIncidentDetails
                     .add(new TrafficIncidentDetails(incidentTypes.get(typesIndex), incidentStatus.get(typesIndex)));
             ++typesIndex;
         }
-
+        return trafficIncidentDetails;
     }
 
     /**
      * 
      * @param trafficItemList
      *            contains all of the traffic items received through api call
+     * @return list of traffic incident locations
      * @throws JSONException
      */
-    private void extractIncidentLocation(List<JSONObject> trafficItemList) throws JSONException {
+    private List<TrafficIncidentLocation> extractIncidentLocations(List<JSONObject> trafficItemList)
+            throws JSONException {
+        List<TrafficIncidentLocation> trafficIncidentLocations = new LinkedList<>();
         List<JSONObject> locationList = goInside(trafficItemList, JSONOB_LOCATION);
         List<JSONObject> definedLocations = goInside(locationList, JSONOB_LOCATION_DEFINED);
         List<JSONObject> locOrigins = goInside(definedLocations, JSONOB_DEFINED_ORIGIN);
-
         List<String> cityNamesOfIncidents = getValuesFromNestedJSONArray(locOrigins, JSONOB_ORIGIN_DIRECTION,
                 JSONARR_DIRECTION_DESCRIPTION, JSONSTR_DIRECTION_DESCRIPTION_FIRST);
-
         if (cityNamesOfIncidents.isEmpty()) {
             List<JSONObject> intersections = goInside(locationList, JSONOB_LOCATION_INTERSECTION);
             List<JSONObject> intersectionsOrigins = goInside(intersections, JSONOB_INTERSECTION_ORIGIN);
             List<JSONObject> originsStreets = goInside(intersectionsOrigins, JSONOB_ORIGIN_STREET1);
             cityNamesOfIncidents = getValuesFromJSONObjects(originsStreets, JSONSTR_STREET1_ADDRESS);
         }
-
         List<String> streetNamesOfIncidents = getValuesFromNestedJSONArray(locOrigins, JSONOB_ORIGIN_ROADWAY,
                 JSONARR_ROADWAY_DESCRIPTION, JSONSTR_DIRECTION_DESCRIPTION_FIRST);
 
         for (int i = 0; i < cityNamesOfIncidents.size(); ++i) {
-            this.incidentLocation
+            trafficIncidentLocations
                     .add(new TrafficIncidentLocation(cityNamesOfIncidents.get(i), streetNamesOfIncidents.get(i)));
         }
-        //
-        // int locationIndex = 0;
-        // while (locationIndex < cityNamesOfIncidents.size()) {
-        // this.incidentLocation.add(new
-        // TrafficIncidentLocation(cityNamesOfIncidents.get(locationIndex),
-        // streetNamesOfIncidents.get(locationIndex)));
-        // ++locationIndex;
-        // }
-        //
-        // this.incidentLocation
-        // .forEach(loc -> System.out.println(loc.getCityOfIncident() + " : " +
-        // loc.getStreetOfIncident()));
+        return trafficIncidentLocations;
     }
 
-    private void extractTimesInformation(List<JSONObject> trafficItemList) throws JSONException, ParseException {
-        // TODO 4 convert to Date later
+    private List<TrafficIncidentTimes> extractIncidentTimes(List<JSONObject> trafficItemList)
+            throws JSONException, ParseException {
+        List<TrafficIncidentTimes> trafficIncidentTimes = new LinkedList<>();
         List<String> entryTimes = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_ENTRY_TIME);
-        // entryTimes.forEach(s -> System.out.println(s));
-
-        // TODO 5 convert to Date later
         List<String> endTimes = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_END_TIME);
-        // endTimes.forEach(s -> System.out.println(s));
-
         int timesIndex = 0;
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
         while (timesIndex < entryTimes.size()) {
-            this.incidentTimes.add(new TrafficIncidentTimes(sdf.parse(entryTimes.get(timesIndex)),
+            trafficIncidentTimes.add(new TrafficIncidentTimes(sdf.parse(entryTimes.get(timesIndex)),
                     sdf.parse(endTimes.get(timesIndex))));
             ++timesIndex;
         }
+        return trafficIncidentTimes;
     }
 
     @Override
@@ -196,37 +164,21 @@ public class TrafficAPI extends APIService {
 
     }
 
-    @Override
-    public void getResponseFromWebsite() {
-        try {
-            getJsonStringFromInputStream();
-        } catch (IOException e) {
-            LOGGER.warning("Error getting jsonString from input stream: " + e.getMessage());
-        }
-        this.jsonResponse = getResponseAsJsonString();
-        // System.out.println(this.jsonResponse);
-    }
-
-    private void prepareUrlBuild(GeocodeData gcd, UserSettings usersettings) {
-        int[] mapMedium = gcd.getMapTilesMediumZoom();
-        this.mapMediumText = "12/" + String.valueOf(mapMedium[0]) + "/" + String.valueOf(mapMedium[1]);
+    private String prepareUrlBuild(GeocodeData gcd, UserSettings usersettings) {
+        int[] mapTiles = gcd.getMapTiles();
+        return "12/" + String.valueOf(mapTiles[0]) + "/" + String.valueOf(mapTiles[1]);
     }
 
     @Override
-    public void buildRequestUrl(UserSettings usersettings) {
+    public URL buildRequestUrl(UserSettings usersettings) throws IOException {
         GeocodeAPI gApi = new GeocodeAPI();
         GeocodeData gcd = gApi.get(usersettings);
-        prepareUrlBuild(gcd, usersettings);
-
-        // System.out.println(BASE_URL + mapMediumText + APP_KEYS);
-
+        String mapTiles = prepareUrlBuild(gcd, usersettings);
         try {
-            super.setRequestUrl(new URL(BASE_URL + mapMediumText + APP_KEYS));
+            return new URL(BASE_URL + mapTiles + APP_KEYS);
         } catch (MalformedURLException e) {
-            // TODO: handle exception
+            throw new RuntimeException("error building url");
         }
-        // System.out.println(getRequestUrl());
-
     }
 
     protected void printTrafficIncidentSummary(TrafficContext tContext) {
@@ -269,11 +221,17 @@ public class TrafficAPI extends APIService {
      * 
      * 
      */
-    public static void main(String[] uranium) {
+    public static void main(String[] uranium) throws JSONException, IOException, ParseException {
         TrafficAPI tApi = new TrafficAPI();
         UserSettings usersettings = new UserSettings(null, null, Sex.MALE,
                 new Address("10", "Dalbergstrasse", "68159", "Mannheim"));
         TrafficContext tContext = tApi.get(usersettings);
         tApi.printTrafficIncidentSummary(tContext);
+    }
+
+    @Override
+    public void extractDesiredInfoFromResponse() throws JSONException, ParseException {
+        // TODO Auto-generated method stub
+
     }
 }
