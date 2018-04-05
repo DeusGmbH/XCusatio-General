@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.deusgmbh.xcusatio.data.EnumTranslator;
+
 /**
  * 
  * @author Lars.Dittert@de.ibm.com
@@ -58,10 +60,7 @@ public class Wildcards {
 
 			@Override
 			public boolean isValidContext(APIContext apiContext) {
-				// TODO: this should actually be true, because this wildcard
-				// doesnt't depend on any apiContext. However, until the replace
-				// method is implemented this has to be false
-				return false;
+				return true;
 			}
 		};
 	}
@@ -224,49 +223,9 @@ public class Wildcards {
 
 			@Override
 			public String replace(String source, APIContext apiContext) {
-				String trafficIncidentTyp = apiContext.getTraffic().getTrafficIncident().getIncidentType().toString();
-
-				switch (trafficIncidentTyp) {
-				case "ACCIDENT":
-					trafficIncidentTypGerman = "Unfall";
-					break;
-				case "CONGESTION":
-					trafficIncidentTypGerman = "\u00DCberlastung";
-					break;
-				case "DISABLED_VEHICLE":
-					trafficIncidentTypGerman = "fahrunf\u00E4higes Fahrzeug";
-					break;
-				case "ROAD_HAZARD":
-					trafficIncidentTypGerman = "Gefahrenstelle";
-					break;
-				case "CONSTRUCTION":
-					trafficIncidentTypGerman = "Baustelle";
-					break;
-				case "PLANNED_EVENT":
-					trafficIncidentTypGerman = "geplante Sperrung";
-					break;
-				case "MASS_TRANSIT":
-					trafficIncidentTypGerman = "stockender Verkehr";
-					break;
-				case "OTHER_NEWS":
-					trafficIncidentTypGerman = "anderer Zwischenfall";
-					break;
-				case "WEATHER":
-					trafficIncidentTypGerman = "Wetter";
-					break;
-				case "MISC":
-					trafficIncidentTypGerman = "sonstiges";
-					break;
-				case "ROAD_CLOSURE":
-					trafficIncidentTypGerman = "Stra\u00DFensperrung";
-					break;
-				case "LANE_RESTRICTION":
-					trafficIncidentTypGerman = "Engstelle";
-					break;
-				default:
-					break;
-				}
-				source.replaceAll(this.getIdentifier(), trafficIncidentTypGerman);
+				String trafficIncidentTypeGerman = EnumTranslator
+						.toGerman(apiContext.getTraffic().getTrafficIncident().getIncidentType());
+				source.replaceAll(this.getIdentifier(), trafficIncidentTypeGerman);
 				return source;
 			}
 
