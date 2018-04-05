@@ -31,6 +31,7 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
     private static final String EXCUSE_TYPE_LABEL_TEXT = "Ausredentyp:";
     private static final String TAGS_LABEL_TEXT = "Tags:";
     private static final String DEFAULT_LAST_USED_TEXT = "Bisher nicht benutzt";
+    private static final String EXCUSE_TEXTFIELD_PLACEHOLDER = "Ausrede";
     private static final double TAGS_LIST_WIDTH_PROPERTY = 0.6;
     private static final double TAGS_LIST_HEIGHT_PROPERTY = 0.4;
     private static final double EXCUSE_TEXT_FIELD_WIDTH_PROPERTY = 0.6;
@@ -57,6 +58,7 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
                 .getText(), wildcardSetSupplier.get());
         this.excuseTextField.bindSize(this.heightProperty()
                 .multiply(EXCUSE_TEXT_FIELD_HEIGHT_MULTIPLIER));
+        this.excuseTextField.setPlaceholder(EXCUSE_TEXTFIELD_PLACEHOLDER);
         this.tagsListCellView = new DoubleListView<Tag>(editableItems.get(id)
                 .getTags(),
                 super.removeFromAllTagsList(editableItems.get(id)

@@ -46,7 +46,7 @@ public class XCusatioWindow extends Application {
     private static final String WINDOW_TITLE = "Deus GmbH - xCusatio";
 
     private static final int WINDOW_BORDER_HEIGHT = 40;
-    private static final int WINDOW_DEF_WIDTH = 1280;
+    private static final int WINDOW_DEF_WIDTH = 1310;
     private static final int WINDOW_DEF_HEIGHT = 720 + WINDOW_BORDER_HEIGHT;
     private static final int WINDOW_MAX_WIDTH = 1920;
     private static final int WINDOW_MAX_HEIGHT = 1080;
@@ -54,7 +54,7 @@ public class XCusatioWindow extends Application {
     private static final double NAVIGATION_PANEL_WIDTH_MULTIPLIER = 0.11;
     private static final String DASHBOARD_TAB_NAME = "Generator";
     private static final String EDITOR_TAB_NAME = "Editor";
-    private static final String PROFILE_SETTINGS_TAB_NAME = "Profile";
+    private static final String PROFILE_SETTINGS_TAB_NAME = "Profil";
 
     private BorderPane main;
     private WindowBorder windowBorder;

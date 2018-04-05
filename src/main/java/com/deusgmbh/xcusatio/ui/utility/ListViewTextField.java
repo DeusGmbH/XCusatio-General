@@ -98,6 +98,10 @@ public class ListViewTextField extends BorderPane {
         return new ArrayList<String>(availableItemListView.getItems());
     }
 
+    public void setPlaceholder(String placeholder) {
+        this.addItemTextField.setPromptText(placeholder);
+    }
+
     public void bindSize(DoubleBinding widthProperty, DoubleBinding heightProperty) {
         availableItemListView.minWidthProperty()
                 .bind(widthProperty.multiply(1 - BUTTON_MULTIPLIER));
