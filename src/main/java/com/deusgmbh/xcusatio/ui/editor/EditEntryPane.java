@@ -1,9 +1,7 @@
 package com.deusgmbh.xcusatio.ui.editor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntUnaryOperator;
 import java.util.function.Supplier;
 
@@ -12,10 +10,15 @@ import com.deusgmbh.xcusatio.data.tags.Tag;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 /**
  * 
@@ -29,12 +32,15 @@ import javafx.scene.layout.GridPane;
  *
  */
 
-public abstract class EditEntryPane<T> extends GridPane {
+public abstract class EditEntryPane<T> extends BorderPane {
+    private static final String EDIT_ENTRY_STYLESHEET_PATH = "file:assets/edit_entry_stylesheet.css";
+
     private static final String EDITOR_TITLE = "Editor";
     private static final String SUBMIT_EDITED_ENTRY_BTN_LABEL = "Speichern";
 
     protected Label editorTitleLabel;
-    protected Button submitEditedEntryBtn;
+    protected StackPane submitEditedEntryBtnPane;
+    private VBox editFormPane;
 
     protected int selectedItemId;
     protected ObservableList<T> editableItems;
@@ -42,30 +48,65 @@ public abstract class EditEntryPane<T> extends GridPane {
     protected Supplier<List<Tag>> allTagsSetSupplier;
 
     public EditEntryPane() {
+        createBaseEditForm();
+    }
+
+    public EditEntryPane(int id, ObservableList<T> entryList) {
+        createEditForm(id, entryList);
+    }
+
+    public void createEditForm(int id, ObservableList<T> entryList) {
+        this.createBaseEditForm();
+        this.createCustomizedEditForm(id, entryList);
+    }
+
+    abstract protected void createCustomizedEditForm(int id, ObservableList<T> entryList);
+
+    private void createBaseEditForm() {
         editorTitleLabel = new Label(EDITOR_TITLE);
         editorTitleLabel.getStyleClass()
                 .add("h2");
-        submitEditedEntryBtn = new Button(SUBMIT_EDITED_ENTRY_BTN_LABEL);
+        Button submitEditedEntryBtn = new Button(SUBMIT_EDITED_ENTRY_BTN_LABEL);
+        submitEditedEntryBtn.setOnAction(new EventHandler<ActionEvent>() {
 
-        this.getStyleClass()
-                .add("edit-entry");
-        this.add(editorTitleLabel, 0, 0);
+            @Override
+            public void handle(ActionEvent event) {
+                saveChanges();
+            }
+
+        });
+
+        submitEditedEntryBtnPane = new StackPane();
+        submitEditedEntryBtnPane.setAlignment(Pos.BOTTOM_RIGHT);
+        submitEditedEntryBtnPane.getChildren()
+                .add(submitEditedEntryBtn);
+
+        editFormPane = new VBox();
+        editFormPane.setPadding(new Insets(15, 0, 0, 0));
+
+        this.setCenter(editFormPane);
+        this.setTop(editorTitleLabel);
+
+        this.getStylesheets()
+                .add(EDIT_ENTRY_STYLESHEET_PATH);
     }
 
-    protected void addNodesToPane(Node... nodesToAdd) {
-        this.getChildren()
-                .clear();
-        this.add(this.editorTitleLabel, 0, 0);
-        final AtomicInteger counter = new AtomicInteger();
-        Arrays.asList(nodesToAdd)
-                .stream()
-                .forEach(node -> {
-                    int columnIndex = counter.get() % 2;
-                    int rowIndex = (int) Math.floor(counter.get() / 2d) + 1;
-                    this.add(node, columnIndex, rowIndex);
-                    counter.incrementAndGet();
-                });
-        this.add(this.submitEditedEntryBtn, 1, (int) Math.ceil(nodesToAdd.length / 2d) + 1);
+    protected void addNodeBoxToPane(String descriptionText, Parent contentNode) {
+        HBox nodeBox = new HBox();
+
+        Label descriptionLabel = new Label(descriptionText);
+        descriptionLabel.setAlignment(Pos.CENTER_RIGHT);
+        descriptionLabel.getStyleClass()
+                .add("p");
+        descriptionLabel.prefWidthProperty()
+                .bind(this.widthProperty()
+                        .multiply(0.35));
+
+        nodeBox.getChildren()
+                .addAll(descriptionLabel, contentNode);
+        nodeBox.setPadding(new Insets(10, 5, 10, 0));
+        editFormPane.getChildren()
+                .add(nodeBox);
     }
 
     protected List<Tag> removeFromAllTagsList(List<Tag> listToRemove) {
@@ -76,15 +117,6 @@ public abstract class EditEntryPane<T> extends GridPane {
 
     public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
         this.allTagsSetSupplier = tagsSetSupplier;
-    }
-
-    private void createEditBtnAction() {
-        submitEditedEntryBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                saveChanges();
-            }
-        });
     }
 
     public void updateSelectionId(IntUnaryOperator newIdSupplier) {

@@ -1,0 +1,88 @@
+.profile-settings {
+	-fx-border-color: #555;
+	-fx-background-color: #444;
+}
+
+.label {
+	-fx-font-weight: bold;
+	-fx-padding: 10px;
+	-fx-text-alignment: center;
+}
+
+.text-field {
+	-fx-padding: 9 9 9 9;
+	-fx-background-insets: 5 5 5 25;
+	-fx-border-insets: 5 5 5 25;
+	-fx-background-color: #222;
+	-fx-border-color: #777;
+	-fx-text-fill: #FFF;
+}
+
+.calendar-button {
+	-fx-background-color: transparent;
+	-fx-font-size: 18;
+	-fx-border-insets: 20;
+	-fx-background-insets: 20;
+	-fx-padding: 25;
+}
+
+.remove {
+	-fx-background-color: #8b0000;
+}
+
+.authorize {
+	-fx-background-color: #108ACB;
+}
+
+.sex-toggle-pane {
+	-fx-padding: 5 5 5 25;
+}
+
+.sex-toggle-pane .label {
+	-fx-font-weight: normal;
+}
+
+.radio-button {
+	-fx-padding: 7;
+	-fx-background-insets: 7;
+	-fx-border-insets: 7;
+}
+
+.radio-button .radio {
+    -fx-border-width: 1px;
+    -fx-border-color: #222;
+    -fx-background-color: #EEE;
+    -fx-border-radius: 10px;
+    -fx-padding: 4px;
+}
+.radio-button .radio:selected {
+    -fx-background-color: #EEE;
+}
+.radio-button -radio:armed {
+    -fx-background-color: #EEE;
+}
+.radio-button -radio:determinate {
+    -fx-background-color: #EEE;
+}
+.radio-button -radio:indeterminate {
+    -fx-background-color: #EEE;
+}
+.radio-button .dot {
+    -fx-background-radius: 10px;
+    -fx-padding: 5px;
+}
+
+.date-picker {
+	-fx-background-color: transparent;
+	-fx-background-insets: 5;
+	-fx-border-radius: 5;
+}
+
+.date-picker .arrow-button{
+	-fx-background-insets: 5;
+	-fx-border-insets: 5;
+}
+
+.date-picker-popup .month-year-pane .label {
+    -fx-text-fill: #000;
+}

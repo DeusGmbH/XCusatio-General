@@ -20,8 +20,11 @@ import javafx.scene.layout.VBox;
 public class NavigationPanel extends VBox {
 
     private static final double NAVIGATION_PANEL_BUTTON_HEIGHT_MULTIPLIER = 0.1;
+    private static final String NAVIGATION_STYLESHEET_PATH = "file:assets/navigation_stylesheet.css";
 
     public NavigationPanel() {
+        this.getStylesheets()
+                .add(NAVIGATION_STYLESHEET_PATH);
         this.getStyleClass()
                 .add("navigation-bar");
     }

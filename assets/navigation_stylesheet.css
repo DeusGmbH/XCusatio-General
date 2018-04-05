@@ -1,0 +1,16 @@
+.navigation-bar {
+	-fx-background-color: #444444;
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 3.0, 0.0, 1.0, 0.0);
+}
+
+.button {
+	-fx-background-color: #333333;
+	-fx-background-radius: 0;
+    -fx-border-insets: 0px;
+    -fx-background-insets: 0px;
+    -fx-padding: 10px;
+}
+
+.active {
+	-fx-background-color: #108ACB;
+}
