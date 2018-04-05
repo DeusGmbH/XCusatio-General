@@ -48,7 +48,7 @@ public class GeocodeAPI extends APIService {
     /**
      * 
      */
-    @Override
+    
     public URL buildRequestUrl(UserSettings usersettings) throws UnsupportedEncodingException {
         Address address = usersettings.getHome();
         String streetnum = address.getStreetnum();
@@ -63,7 +63,7 @@ public class GeocodeAPI extends APIService {
         }
     }
 
-    @Override
+    
     public void transmitDataToWebsite() {
         // TODO Auto-generated method stub
 
@@ -89,50 +89,6 @@ public class GeocodeAPI extends APIService {
 		boundingBoxCoordinates[0] = topLeft;
 		boundingBoxCoordinates[1] = bottomRight;
 		return boundingBoxCoordinates;
-		
-		//        JSONObject jsonTotal = new JSONObject(jsonResponseString);
-//        System.out.println(jsonResponseString);
-//
-//        if (jsonTotal.has(JSON_RESPONSE)) {
-//            JSONObject jsonResponse = jsonTotal.getJSONObject(JSON_RESPONSE);
-//            
-//            List<JSONObject> jsonViewList = getJSONObjectsFromJSONArray(jsonResponse, JSON_VIEW);
-//            JSONObject jsonView = jsonViewList.get(0);
-//                
-//                
-//                if (jsonView.has(JSON_RESULT)) {
-//                    JSONArray jsonResultArray = jsonView.getJSONArray(JSON_RESULT);
-//                    JSONObject jsonResult = jsonResultArray.getJSONObject(0);
-//                    
-//                    if (jsonResult.has(JSON_LOCATION)) {
-//                        JSONObject jsonLocation = jsonResult.getJSONObject(JSON_LOCATION);
-//                        
-//                        if (jsonLocation.has(JSON_MAPVIEW)) {
-//                            JSONObject jsonMapView = jsonLocation.getJSONObject(JSON_MAPVIEW);
-//                            
-//                            if (jsonMapView.has(JSON_TOPLEFT) && jsonMapView.has(JSON_BOTTOMRIGHT)) {
-//                                JSONObject jsonTopLeft = jsonMapView.getJSONObject(JSON_TOPLEFT);
-//
-//                                if (jsonTopLeft.has(JSON_LATITUDE) && jsonTopLeft.has(JSON_LONGITUDE)) {
-//                                    boundingBoxCoordinates[0][0] = Double.parseDouble(jsonTopLeft.get(JSON_LATITUDE)
-//                                            .toString());
-//                                    boundingBoxCoordinates[0][1] = Double.parseDouble(jsonTopLeft.get(JSON_LONGITUDE)
-//                                            .toString());
-//                                }
-//
-//                                JSONObject jsonBottomRight = jsonMapView.getJSONObject(JSON_BOTTOMRIGHT);
-//                                if (jsonBottomRight.has(JSON_LATITUDE) && jsonBottomRight.has(JSON_LONGITUDE)) {
-//                                    boundingBoxCoordinates[1][0] = Double.parseDouble(jsonBottomRight.get(JSON_LATITUDE)
-//                                            .toString());
-//                                    boundingBoxCoordinates[1][1] = Double.parseDouble(jsonTopLeft.get(JSON_LONGITUDE)
-//                                            .toString());
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        return boundingBoxCoordinates;
     }
 
     private double[] calculateSpotCoordinates(double[][] boundingBoxCoordinates) {
@@ -182,7 +138,7 @@ public class GeocodeAPI extends APIService {
         return (2 * Math.PI / 360) * deg;
     }
 
-    @Override
+    
     public GeocodeData get(UserSettings usersettings) throws IOException {
         URL requestUrl = buildRequestUrl(usersettings);
         String jsonResponse = getResponseFromWebsite(requestUrl);
@@ -236,14 +192,14 @@ public class GeocodeAPI extends APIService {
 
     }
 
-    @Override
+    
     public void printResponse() {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
-    public void extractDesiredInfoFromResponse() throws JSONException, ParseException {
+    
+    public void extractDesiredInfoFromResponse() throws ParseException {
         // TODO Auto-generated method stub
 
     }

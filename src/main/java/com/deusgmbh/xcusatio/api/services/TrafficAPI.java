@@ -64,7 +64,7 @@ public class TrafficAPI extends APIService {
      * @throws JSONException
      * 
      */
-    @Override
+    
     public TrafficContext get(UserSettings usersettings) throws IOException, JSONException, ParseException {
 
         URL requestUrl = buildRequestUrl(usersettings);
@@ -88,7 +88,7 @@ public class TrafficAPI extends APIService {
 
     }
 
-    @Override
+    
     public void transmitDataToWebsite() {
 
     }
@@ -158,7 +158,7 @@ public class TrafficAPI extends APIService {
         return trafficIncidentTimes;
     }
 
-    @Override
+    
     public void printResponse() {
         // TODO Auto-generated method stub
 
@@ -169,7 +169,7 @@ public class TrafficAPI extends APIService {
         return "12/" + String.valueOf(mapTiles[0]) + "/" + String.valueOf(mapTiles[1]);
     }
 
-    @Override
+    
     public URL buildRequestUrl(UserSettings usersettings) throws IOException {
         GeocodeAPI gApi = new GeocodeAPI();
         GeocodeData gcd = gApi.get(usersettings);
@@ -224,12 +224,12 @@ public class TrafficAPI extends APIService {
     public static void main(String[] uranium) throws JSONException, IOException, ParseException {
         TrafficAPI tApi = new TrafficAPI();
         UserSettings usersettings = new UserSettings(null, null, Sex.MALE,
-                new Address("10", "Dalbergstrasse", "68159", "Mannheim"));
+                new Address("50", "Hanauer Landstrasse", "60314", "Frankfurt am Main"));
         TrafficContext tContext = tApi.get(usersettings);
         tApi.printTrafficIncidentSummary(tContext);
     }
 
-    @Override
+    
     public void extractDesiredInfoFromResponse() throws JSONException, ParseException {
         // TODO Auto-generated method stub
 
