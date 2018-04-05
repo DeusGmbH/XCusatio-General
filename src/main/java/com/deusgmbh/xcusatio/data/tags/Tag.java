@@ -3,17 +3,20 @@ package com.deusgmbh.xcusatio.data.tags;
 public enum Tag {
     MALE(TagFilterType.CONTAINED_IN_EXCUSE),
     FEMALE(TagFilterType.CONTAINED_IN_EXCUSE),
-    AGGRESSIVE(TagFilterType.CONTAINED_IN_CONTEXT),
-    FUNNY(TagFilterType.CONTAINED_IN_CONTEXT),
-    SUCK_UP(TagFilterType.CONTAINED_IN_CONTEXT),
+    AGGRESSIVE(TagFilterType.CONTAINED_IN_CONTEXT, true),
+    FUNNY(TagFilterType.CONTAINED_IN_CONTEXT, true),
+    SUCK_UP(TagFilterType.CONTAINED_IN_CONTEXT, true),
     AGE_UNDER_18(TagFilterType.CONTAINED_IN_EXCUSE),
     AGE_BETWEEN_18_AND_21(TagFilterType.CONTAINED_IN_EXCUSE),
     AGE_BETWEEN_21_AND_30(TagFilterType.CONTAINED_IN_EXCUSE),
     AGE_BETWEEN_30_AND_50(TagFilterType.CONTAINED_IN_EXCUSE),
     AGE_OVER_50(TagFilterType.CONTAINED_IN_EXCUSE),
-    CAT(TagFilterType.CONTAINED_IN_CONTEXT),
-    DOG(TagFilterType.CONTAINED_IN_CONTEXT),
-    FOOTBALL(TagFilterType.CONTAINED_IN_EXCUSE),
+    CAT(TagFilterType.CONTAINED_IN_CONTEXT, true),
+    DOG(TagFilterType.CONTAINED_IN_CONTEXT, true),
+    FOOTBALL(TagFilterType.CONTAINED_IN_CONTEXT, true),
+    SOFTWARE_ENGINEERING(TagFilterType.CONTAINED_IN_CONTEXT, true),
+    AI(TagFilterType.CONTAINED_IN_CONTEXT, true),
+    HANGOVER(TagFilterType.CONTAINED_IN_CONTEXT, true),
     RAINY(TagFilterType.CONTAINED_IN_CONTEXT),
     WINDY(TagFilterType.CONTAINED_IN_CONTEXT),
     STORM(TagFilterType.CONTAINED_IN_CONTEXT),
@@ -23,7 +26,7 @@ public enum Tag {
     HOT(TagFilterType.CONTAINED_IN_CONTEXT),
     SNOW(TagFilterType.CONTAINED_IN_CONTEXT),
     HIGH_TRAFFIC(TagFilterType.CONTAINED_IN_CONTEXT),
-    BICICLE(TagFilterType.CONTAINED_IN_CONTEXT),
+    BICICLE(TagFilterType.CONTAINED_IN_CONTEXT, true),
     TRAIN_CANCELLED(TagFilterType.CONTAINED_IN_CONTEXT),
     TRAIN_DELAYED(TagFilterType.CONTAINED_IN_CONTEXT),
     TRAIN_HEAVILY_DELAYED(TagFilterType.CONTAINED_IN_CONTEXT),
@@ -34,17 +37,38 @@ public enum Tag {
     private String description;
     private TagFilterType filterType;
 
-    Tag(TagFilterType filterType, String description) {
+    /**
+     * This is used to define what tags can be assigned to a lecturer. Setting
+     * this to true will automatically add this tag to the context <b> if </b>
+     * the lecturer that has been defined as recipient of the excuse has this
+     * tag
+     */
+    private boolean lecturerPreference;
+
+    Tag(TagFilterType filterType, boolean lecturerPreference, String description) {
         this.description = description;
         this.filterType = filterType;
     }
 
+    Tag(TagFilterType filterType, boolean lecturerPreference) {
+        this(filterType, lecturerPreference, null);
+    }
+
     Tag(TagFilterType filterType) {
-        this(filterType, null);
+        this(filterType, false, null);
     }
 
     Tag() {
-        this(TagFilterType.NONE, null);
+        this(TagFilterType.NONE);
+    }
+
+    public boolean isLecturerPreference() {
+        return lecturerPreference;
+    }
+
+    public Tag setLecturerPreference(boolean lecturerPreference) {
+        this.lecturerPreference = lecturerPreference;
+        return this;
     }
 
     public String getDescription() {

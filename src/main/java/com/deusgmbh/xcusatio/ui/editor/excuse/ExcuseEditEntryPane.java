@@ -59,10 +59,10 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
         this.excuseTextField.bindSize(this.heightProperty()
                 .multiply(EXCUSE_TEXT_FIELD_HEIGHT_MULTIPLIER));
         this.excuseTextField.setPlaceholder(EXCUSE_TEXTFIELD_PLACEHOLDER);
-        this.tagsListCellView = new DoubleListView<Tag>(editableItems.get(id)
-                .getTags(),
-                super.removeFromAllTagsList(editableItems.get(id)
-                        .getTags()));
+
+        List<Tag> excuseTags = editableItems.get(id)
+                .getTags();
+        this.tagsListCellView = new DoubleListView<Tag>(excuseTags, super.removeFromAllTagsList(excuseTags));
         this.tagsListCellView.bindSize(this.widthProperty()
                 .multiply(TAGS_LIST_WIDTH_PROPERTY),
                 this.heightProperty()

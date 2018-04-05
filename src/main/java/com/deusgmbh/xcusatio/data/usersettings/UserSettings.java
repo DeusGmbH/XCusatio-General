@@ -8,11 +8,6 @@ import java.time.LocalDate;
  *
  */
 public class UserSettings {
-    // TODO: What kind of data does the calendar API need? And how can this be
-    // represented here?
-    // some kind of config json and refresh token
-    private String googleCalendar;
-
     private LocalDate birthdate;
     private Sex sex;
     private Address home;
@@ -20,10 +15,9 @@ public class UserSettings {
     private ExcuseVibeMode excuseVibesMode;
     private ExcuseVibes excuseVibes;
 
-    public UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home,
-            ExcuseVibeMode excuseVibesMode, ExcuseVibes ExcuseVibes) {
+    public UserSettings(LocalDate birthdate, Sex sex, Address home, ExcuseVibeMode excuseVibesMode,
+            ExcuseVibes ExcuseVibes) {
         super();
-        this.googleCalendar = googleCalendar;
         this.home = home;
         this.birthdate = birthdate;
         this.sex = sex;
@@ -32,20 +26,11 @@ public class UserSettings {
     }
 
     public UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home) {
-        this(googleCalendar, birthdate, sex, home, ExcuseVibeMode.AUTOMATIC, new ExcuseVibes(false, false, false));
+        this(birthdate, sex, home, ExcuseVibeMode.AUTOMATIC, new ExcuseVibes(false, false, false));
     }
 
     public UserSettings() {
         super();
-    }
-
-    public String getGoogleCalendar() {
-        return googleCalendar;
-    }
-
-    public UserSettings setGoogleCalendar(String googleCalendar) {
-        this.googleCalendar = googleCalendar;
-        return this;
     }
 
     public Address getHome() {

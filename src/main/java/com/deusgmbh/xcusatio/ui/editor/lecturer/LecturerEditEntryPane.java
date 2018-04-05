@@ -1,5 +1,9 @@
 package com.deusgmbh.xcusatio.ui.editor.lecturer;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.EditEntryPane;
@@ -60,10 +64,11 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
                 this.heightProperty()
                         .multiply(LECTURER_LECTURES_LIST_VIEW_HEIGHT_MULTIPLIER));
         this.lecturerLecturesPane.setPlaceholder(LECTURER_LECTURES_PLACEHOLDER);
-        this.tagsListCellView = new DoubleListView<Tag>(editableItems.get(selectedItemId)
-                .getTags(),
-                super.removeFromAllTagsList(editableItems.get(selectedItemId)
-                        .getTags()));
+
+        List<Tag> lectuererTags = editableItems.get(selectedItemId)
+                .getTags();
+                
+        this.tagsListCellView = new DoubleListView<Tag>(lectuererTags, this.removeFromAllTagsList(lectuererTags));
         this.tagsListCellView.bindSize(this.widthProperty()
                 .multiply(RIGHT_EDIT_HALF_MULTIPLIER),
                 this.heightProperty()
@@ -80,6 +85,15 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
     protected Lecturer getEdtitedEntry() {
         return new Lecturer(lecturerNameTextField.getText(), lecturerLecturesPane.getItems(),
                 tagsListCellView.getLeftListItems());
+    }
+
+    @Override
+    protected List<Tag> removeFromAllTagsList(List<Tag> listToRemove) {
+        List<Tag> reducedSet = new ArrayList<Tag>(this.allTagsSetSupplier.get()).stream()
+                .filter(Tag::isLecturerPreference)
+                .collect(Collectors.toList());
+        reducedSet.removeAll(listToRemove);
+        return reducedSet;
     }
 
 }
