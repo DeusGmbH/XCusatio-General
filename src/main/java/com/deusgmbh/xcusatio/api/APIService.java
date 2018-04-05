@@ -77,25 +77,25 @@ public abstract class APIService {
 
     /**
      * 
-     * @param jO
+     * @param jsonObject
      *            provides the json object that should contain a json array
      * @param KEY
      *            is the key referring to this json array
      * @return a list of all json objects contained in the json array
      * @throws JSONException
      */
-    protected List<JSONObject> getJSONObjectsFromJSONArray(JSONObject jO, String KEY) throws JSONException {
-        if (jO.has(KEY)) {
-            JSONArray jA = jO.getJSONArray(KEY);
+    protected List<JSONObject> getJSONObjectsFromJSONArray(JSONObject jsonObject, String KEY) throws JSONException {
+        if (jsonObject.has(KEY)) {
+            JSONArray jsonArray = jsonObject.getJSONArray(KEY);
 
-            List<JSONObject> jL = new LinkedList<>();
-            for (int i = 0; i < jA.length(); ++i) {
-                jL.add(jA.getJSONObject(i));
+            List<JSONObject> jsonObjectList = new LinkedList<>();
+            for (int i = 0; i < jsonArray.length(); ++i) {
+                jsonObjectList.add(jsonArray.getJSONObject(i));
                 // System.out.println(KEY + jA.get(i));
             }
-            return jL;
+            return jsonObjectList;
         }
-        LOGGER.warning(KEY + " not contained in JSONObject " + jO.toString());
+        LOGGER.warning(KEY + " not contained in JSONObject " + jsonObject.toString());
         return null;
     }
 
