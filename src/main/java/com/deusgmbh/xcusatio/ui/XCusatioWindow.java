@@ -54,7 +54,7 @@ public class XCusatioWindow extends Application {
     private static final double NAVIGATION_PANEL_WIDTH_MULTIPLIER = 0.11;
     private static final String DASHBOARD_TAB_NAME = "Generator";
     private static final String EDITOR_TAB_NAME = "Editor";
-    private static final String PROFILE_SETTINGS_TAB_NAME = "Profile";
+    private static final String PROFILE_SETTINGS_TAB_NAME = "Profil";
 
     private BorderPane main;
     private WindowBorder windowBorder;
