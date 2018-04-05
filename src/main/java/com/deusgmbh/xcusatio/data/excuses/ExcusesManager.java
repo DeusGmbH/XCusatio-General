@@ -51,8 +51,8 @@ public class ExcusesManager extends StorageUnit<Excuse> {
 	@Override
 	public ExcusesManager addDefaultValues() {
 		// TODO: add more default values
-		this.add(new Excuse("Die Bahn kam zu spät", ScenarioType.LATE_ARRIVAL).addTag(Tag.TRAIN).addTag(Tag.MALE)
-				.addTag(Tag.FEMALE).addTag(Tag.HIGH_TRAFFIC))
+		this.add(new Excuse("Die $tramLineLabel$ kam zu spät", ScenarioType.LATE_ARRIVAL).addTag(Tag.TRAIN)
+				.addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.HIGH_TRAFFIC))
 				.add(new Excuse(
 						"Ich habe von einem Fußballspiel geträumt und als ich aufstehen musste, gab es eine Verlängerung.",
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.FUNNY).addTag(Tag.MALE).addTag(Tag.FEMALE)
@@ -74,13 +74,24 @@ public class ExcusesManager extends StorageUnit<Excuse> {
 						.addTag(Tag.RAINY).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18)
 						.addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40)
 						.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
-				.add(new Excuse("Jaja, der erste Schnee! Da hatte natürlich gleich wieder die Bahn Verspätung.",
+				.add(new Excuse(
+						"Jaja, der erste Schnee! $snowHourly$ das ist unglaublich. Da hatte natürlich gleich wieder die Bahn Verspätung.",
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.SNOW).addTag(Tag.TRAIN).addTag(Tag.MALE)
 								.addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21)
 								.addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50)
 								.addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
+				.add(new Excuse("$rainHourly$ und direkt ist die Bahn überfordert. Mir fehlen die Worte.",
+						ScenarioType.LATE_ARRIVAL).addTag(Tag.RAINY).addTag(Tag.TRAIN).addTag(Tag.MALE)
+								.addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21)
+								.addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50)
+								.addTag(Tag.AGE_OVER_50))
+				.add(new Excuse("$windSpeed$. Trump nimm das. Von wegen es würde die Klimaerwärmung nicht geben.",
+						ScenarioType.LATE_ARRIVAL).addTag(Tag.STORM).addTag(Tag.TRAIN).addTag(Tag.MALE)
+								.addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21)
+								.addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50)
+								.addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
 				.add(new Excuse(
-						"Ich gebe die Arbeit nur aus Rücksicht auf Sie nicht ab. Ich weiß ja, dass Sie bis oben hin eingedeckt sind und jetzt sicherlich nicht auch noch meine Hausarbeit korrigieren wollen.",
+						"Ich gebe die Arbeit nur aus Rücksicht auf Sie nicht ab. Ich weiß ja, dass Sie mindestens bis $nextWeekDate$ oben hin eingedeckt sind und jetzt sicherlich nicht auch noch meine Hausarbeit korrigieren wollen.",
 						ScenarioType.DELAYED_SUBMISSION).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18)
 								.addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40)
 								.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY).addTag(Tag.SUCKUP))
@@ -108,10 +119,7 @@ public class ExcusesManager extends StorageUnit<Excuse> {
 						"Ich wollte meine Kommilitonennicht mit klausurbedingten, negativen Schwingungen meinerseits belasten.",
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18)
 								.addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40)
-								.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY).addTag(Tag.MALE)
-								.addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21)
-								.addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50)
-								.addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
+								.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
 				.add(new Excuse("Meine kleine Schwester hat gestern ausprobiert, wie ein Tintenkiller funktioniert.",
 						ScenarioType.DELAYED_SUBMISSION).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18)
 								.addTag(Tag.AGE_UNDER_21).addTag(Tag.FUNNY))
@@ -127,33 +135,21 @@ public class ExcusesManager extends StorageUnit<Excuse> {
 						"Als ich heute Morgen in der Tiefgarage aus dem Auto gestiegen bin, ist mir doch glatt die Hose gerissen. Da musste ich nochmal nach Hause fahren und die Hose wechseln.",
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_21)
 								.addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50)
-								.addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY).addTag(Tag.MALE).addTag(Tag.FEMALE)
-								.addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30)
-								.addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50)
-								.addTag(Tag.CAR))
+								.addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY).addTag(Tag.CAR))
 				.add(new Excuse(
 						"Ich bin vor der Arbeit in eine Polizeikontrolle geraten und die wollten alles sehen. Und das am frühen Morgen.",
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_21)
 								.addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50)
-								.addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY).addTag(Tag.MALE).addTag(Tag.FEMALE)
-								.addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30)
-								.addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50)
-								.addTag(Tag.CAR))
+								.addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY).addTag(Tag.CAR))
 				.add(new Excuse(
-						"Ich bin heute Nacht schlafgewandelt und war schon in der DHBW. Dann muss ich heute doch nicht kommen, oder?",
+						"Ich bin heute Nacht schlafgewandelt und war schon in der DHBW. Dann muss ich heute doch nicht in $lectureEvent$ kommen, oder?",
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18)
 								.addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40)
-								.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY).addTag(Tag.MALE)
-								.addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21)
-								.addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50)
-								.addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
+								.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
 				.add(new Excuse("Ich würde gerne Ihnen die Antwort sagen, aber mein PC zieht gerade Updates.",
 						ScenarioType.WHEELOFFORTUNE).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18)
 								.addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40)
-								.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY).addTag(Tag.MALE)
-								.addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21)
-								.addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50)
-								.addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
+								.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
 				.add(new Excuse("Schon 10 Uhr? Was wollen wir denn zum Mittag heute machen?",
 						ScenarioType.WHEELOFFORTUNE).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18)
 								.addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40)
@@ -169,10 +165,7 @@ public class ExcusesManager extends StorageUnit<Excuse> {
 						"Ich habe bis in die frühen Morgenstunden ein geniales Konzept entworfen. Leider hab ich dann verschlafen und das Konzept vergessen.",
 						ScenarioType.DELAYED_SUBMISSION).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18)
 								.addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40)
-								.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY).addTag(Tag.MALE)
-								.addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21)
-								.addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50)
-								.addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
+								.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
 				.add(new Excuse("Ich dachte die Uhr wäre umgestellt worden.", ScenarioType.LATE_ARRIVAL)
 						.addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_21).addTag(Tag.FUNNY))
 				.add(new Excuse("Aliens haben mich gestern entführt.", ScenarioType.WHEELOFFORTUNE).addTag(Tag.MALE)
@@ -180,9 +173,10 @@ public class ExcusesManager extends StorageUnit<Excuse> {
 				.add(new Excuse("Entschuldigung, aber die Schlange bei meinem Bio-Bäcker wird jeden Morgen länger.",
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_21)
 								.addTag(Tag.FUNNY))
-				.add(new Excuse("Ich konnte leider nicht rechtzeitig kommen… Benzin ist schon wieder teurer geworden.",
+				.add(new Excuse(
+						"Ich konnte leider nicht rechtzeitig kommen… Benzin ist schon wieder teurer geworden. Ich musste warten bis es günstiger wurde.",
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_21)
-								.addTag(Tag.CAR))
+								.addTag(Tag.CAR).addTag(Tag.FUNNY))
 				.add(new Excuse(
 						"Ich habe verschlafen, weil ich gestern SetlX installiert habe und davon fasziniert war und somit nicht schlafen gehen konnte.",
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_21)
@@ -230,7 +224,7 @@ public class ExcusesManager extends StorageUnit<Excuse> {
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_30)
 								.addTag(Tag.AGE_UNDER_21).addTag(Tag.AGGRESSIVE))
 				.add(new Excuse(
-						"Das ist die langweiligste und unnötigste Vorlesung des ganzen Studiums. Dafür werde ich keinerlei kognitive Leistungen verschwenden.",
+						"$lectureEvent$. Pff, das ist die langweiligste und unnötigste Vorlesung des ganzen Studiums. Dafür werde ich keinerlei kognitive Leistungen verschwenden.",
 						ScenarioType.WHEELOFFORTUNE).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_30)
 								.addTag(Tag.AGE_UNDER_21).addTag(Tag.AGGRESSIVE))
 				.add(new Excuse(
@@ -249,12 +243,42 @@ public class ExcusesManager extends StorageUnit<Excuse> {
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18)
 								.addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40)
 								.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
+				.add(new Excuse("Ich sage nur $newEntryTitle$.", ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE)
+						.addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30)
+						.addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50))
 				.add(new Excuse(
-						"Warum ich das Projekt nicht abgeben kann? Warum sollte ich das denn abgeben wollen? Lassen Sie mich in Ruhe! Ich muss mich da jetzt reinsteigern.",
+						"$temperature$. Bei dieser Temperatur ist mein Gehirn leider nicht in der Lage eine sinnvolle Konversation mit Ihnen zu führen. Probieren Sie es später wieder.",
+						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18)
+								.addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40)
+								.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.FUNNY))
+				.add(new Excuse(
+						"Sie wollen von mir eine Begründung, weil ich nur $minutesPassed$ zu spät bin? Merken Sie selbst, oder?",
+						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18)
+								.addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40)
+								.addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50).addTag(Tag.AGGRESSIVE))
+				.add(new Excuse("Haben Sie überhaupt Beweise, dass ich zu spät bin?", ScenarioType.LATE_ARRIVAL)
+						.addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21).addTag(Tag.AGGRESSIVE))
+				.add(new Excuse(
+						"Warum ich das Projekt nicht abgeben kann? Warum sollte ich das denn abgeben wollen? Wer sind Sie überhaupt, dass Sie mich das fragen? Lassen Sie mich in Ruhe! Ich muss mich da jetzt reinsteigern.",
 						ScenarioType.DELAYED_SUBMISSION).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.AGE_UNDER_21)
 								.addTag(Tag.AGE_UNDER_30).addTag(Tag.AGE_UNDER_40).addTag(Tag.AGGRESSIVE))
 				.add(new Excuse("Entschuldigen Sie bitte meine Verspätung, aber die Straßenbahn hatte eine Verspätung.",
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.TRAIN)
+								.addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30)
+								.addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50))
+				.add(new Excuse(
+						"Entschuldigen Sie bitte meine Verspätung, aber es gab einen $trafficIncidentTyp$ in $incidentLocationStreet$ ,$incidentLocationCity$.",
+						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.CAR)
+								.addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30)
+								.addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50))
+				.add(new Excuse(
+						"Entschuldigen Sie bitte meine Verspätung, aber es gab einen $trafficIncidentTyp$ in $incidentLocationStreet$ ,$incidentLocationCity$.",
+						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.CAR)
+								.addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30)
+								.addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50))
+				.add(new Excuse(
+						"Finden Sie es nicht auch besorgniserregend wie es auf den Straße in letzter Zeit zugeht? Schon wieder $trafficIncidentTyp$.",
+						ScenarioType.WHEELOFFORTUNE).addTag(Tag.MALE).addTag(Tag.FEMALE).addTag(Tag.CAR)
 								.addTag(Tag.AGE_UNDER_18).addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_30)
 								.addTag(Tag.AGE_UNDER_40).addTag(Tag.AGE_UNDER_50).addTag(Tag.AGE_OVER_50))
 				.add(new Excuse(
@@ -265,7 +289,7 @@ public class ExcusesManager extends StorageUnit<Excuse> {
 						"Warum ich zu spät bin? Das ist doch vollkommen egal, aber lassen Sie uns über Ihre neue schöne Frisur unterhalten.",
 						ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE).addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_18)
 								.addTag(Tag.AGE_UNDER_30).addTag(Tag.SUCKUP))
-				.add(new Excuse("Haben Sie ein neues Parfüm? Das wirkt aber besonnders gut auf Frauen.",
+				.add(new Excuse("Haben Sie ein neues Parfüm? Das wirkt augenscheinlich besonders gut auf Frauen.",
 						ScenarioType.WHEELOFFORTUNE).addTag(Tag.AGE_UNDER_21).addTag(Tag.AGE_UNDER_18)
 								.addTag(Tag.AGE_UNDER_30).addTag(Tag.SUCKUP))
 				.add(new Excuse("Lassen Sie mich bitte in Ruhe. Ich bin auf Mayo-Diät.", ScenarioType.WHEELOFFORTUNE)
