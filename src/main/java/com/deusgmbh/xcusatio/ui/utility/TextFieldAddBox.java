@@ -93,6 +93,10 @@ public class TextFieldAddBox extends BorderPane {
         return textField.getText();
     }
 
+    public void setPlaceholder(String placeholder) {
+        textField.setPromptText(placeholder);
+    }
+
     public void bindSize(DoubleBinding doubleBinding) {
         this.addBox.prefHeightProperty()
                 .bind(doubleBinding);

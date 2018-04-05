@@ -46,7 +46,7 @@ public class XCusatioWindow extends Application {
     private static final String WINDOW_TITLE = "Deus GmbH - xCusatio";
 
     private static final int WINDOW_BORDER_HEIGHT = 40;
-    private static final int WINDOW_DEF_WIDTH = 1280;
+    private static final int WINDOW_DEF_WIDTH = 1310;
     private static final int WINDOW_DEF_HEIGHT = 720 + WINDOW_BORDER_HEIGHT;
     private static final int WINDOW_MAX_WIDTH = 1920;
     private static final int WINDOW_MAX_HEIGHT = 1080;

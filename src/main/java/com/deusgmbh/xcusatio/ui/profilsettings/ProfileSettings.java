@@ -22,6 +22,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -30,7 +32,7 @@ import javafx.scene.layout.VBox;
  * This is the ProfileSettings class for the User Interface. This class creates
  * the ProfileSettings tab with all of its components
  * 
- * @author Lars.Dittert@de.ibm.com
+ * @author Lars.Dittert@de.ibm.com, Pascal.Schroeder@de.ibm.com
  *
  */
 
@@ -43,15 +45,17 @@ public class ProfileSettings extends FlowPane {
     private static final String CALENDAR_LABEL_TEXT = "Google-Kalendar";
 
     private static final String SUBMIT_BUTTON_LABEL = "Speichern";
+    private static final String FACTORY_RESET_BUTTON_LABEL = "Reset all";
     private static final String TITLE_LABEL_TEXT = "Profileinstellungen";
     private static final double PROFILE_FORM_PANE_WIDTH_MULTIPLIER = 0.5;
     private static final double LABEL_WIDTH_MULTIPLIER = 0.3;
-    // TODO: Ich bin ein kackspast!!!
     protected static final String CALENDAR_CONFIG_TITLE = "Kalender Konfiguration";
     protected static final double CALENDAR_CONFIG_WIDTH = 800;
     protected static final double CALENDAR_CONFIG_HEIGHT = 400;
     private static final String CALENDER_BUTTON_REMOVE_TEXT = "Entfernen";
     private static final String CALENDAR_BUTTON_ADD_TEXT = "Authorisieren";
+
+    protected static final int AUTHORIZE_TIME_LIMIT = 60;
 
     private ObjectProperty<UserSettings> userSettings;
 
@@ -63,6 +67,7 @@ public class ProfileSettings extends FlowPane {
 
     private Button calendarButton;
     private Button saveProfileBtn;
+    private Button factoryResetBtn;
     private HBox calendarPane;
 
     public ProfileSettings() {
@@ -100,10 +105,23 @@ public class ProfileSettings extends FlowPane {
 
         createCalendarButton(CalendarAPI.hasCredentials());
 
-        saveProfileBtn = new Button(SUBMIT_BUTTON_LABEL);
+        HBox btnPane = new HBox();
+        this.saveProfileBtn = new Button(SUBMIT_BUTTON_LABEL);
         this.saveProfileBtn.setOnAction(saveProfileBtnAction);
         StackPane saveBtnPane = new StackPane(saveProfileBtn);
         saveBtnPane.setAlignment(Pos.BOTTOM_RIGHT);
+
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        this.factoryResetBtn = new Button(FACTORY_RESET_BUTTON_LABEL);
+        this.factoryResetBtn.setOnAction(factoryResetBtnAction);
+        this.factoryResetBtn.getStyleClass()
+                .add("remove");
+        StackPane factoryResetBtnPane = new StackPane(factoryResetBtn);
+        factoryResetBtnPane.setAlignment(Pos.BOTTOM_LEFT);
+        btnPane.getChildren()
+                .addAll(factoryResetBtnPane, spacer, saveBtnPane);
 
         HBox sexPane = new HBox(sexLabel, sexTogglePane);
         HBox agePane = new HBox(ageLabel, birthdayDatePicker);
@@ -111,7 +129,7 @@ public class ProfileSettings extends FlowPane {
         calendarPane = new HBox(calendarLabel, calendarButton);
 
         this.profileFormPane.getChildren()
-                .addAll(titleLabel, sexPane, agePane, locationPane, calendarPane, saveBtnPane);
+                .addAll(titleLabel, sexPane, agePane, locationPane, calendarPane, btnPane);
         this.getChildren()
                 .add(profileFormPane);
     }
@@ -139,6 +157,14 @@ public class ProfileSettings extends FlowPane {
         }
     };
 
+    private EventHandler<ActionEvent> factoryResetBtnAction = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent arg0) {
+            userSettings.set(new UserSettings(null, birthdayDatePicker.getValue(), sexTogglePane.getSex(),
+                    addressPane.getAdress()));
+        }
+    };
+
     private void createCalendarButton(boolean existingCalendar) {
         calendarButton = new Button();
         calendarButton.getStyleClass()
@@ -146,10 +172,14 @@ public class ProfileSettings extends FlowPane {
         if (existingCalendar) {
             calendarButton.setText(CALENDER_BUTTON_REMOVE_TEXT);
             calendarButton.setOnAction(removeCalendarAuth);
+            calendarButton.getStyleClass()
+                    .add("remove");
 
         } else {
             calendarButton.setText(CALENDAR_BUTTON_ADD_TEXT);
             calendarButton.setOnAction(authorizeCalendar);
+            calendarButton.getStyleClass()
+                    .add("authorize");
         }
     }
 
@@ -180,7 +210,7 @@ public class ProfileSettings extends FlowPane {
                     }
                 };
                 executor.submit(task)
-                        .get(30, TimeUnit.SECONDS);
+                        .get(AUTHORIZE_TIME_LIMIT, TimeUnit.SECONDS);
                 executor.shutdown();
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 try {
@@ -190,7 +220,8 @@ public class ProfileSettings extends FlowPane {
                 }
                 Alert authorizationErrorAlert = new Alert(AlertType.ERROR);
                 authorizationErrorAlert.setTitle("AUTHORIZATION ERROR");
-                authorizationErrorAlert.setContentText("You could not be successfully authorized");
+                authorizationErrorAlert
+                        .setContentText("You could not be successfully authorized: Time of 60 seconds has expired");
 
                 authorizationErrorAlert.showAndWait();
             }
