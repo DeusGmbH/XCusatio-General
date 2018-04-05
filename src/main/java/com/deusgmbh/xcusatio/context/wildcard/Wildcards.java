@@ -78,7 +78,8 @@ public class Wildcards {
 			@Override
 			public boolean isValidContext(APIContext apiContext) {
 				if (apiContext != null) {
-					if (apiContext.getCalendar() != null) {
+					if (apiContext.getCalendar() != null && apiContext.getCalendar().getLectureEvent() != null
+							&& apiContext.getCalendar().getLectureEvent().getLectureName() != null) {
 						return true;
 					}
 				}
@@ -99,7 +100,7 @@ public class Wildcards {
 			@Override
 			public boolean isValidContext(APIContext apiContext) {
 				if (apiContext != null) {
-					if (apiContext.getCalendar() != null) {
+					if (apiContext.getCalendar() != null && apiContext.getCalendar().getMinutesPassedText() != null) {
 						return true;
 					}
 				}
@@ -112,7 +113,7 @@ public class Wildcards {
 		return new Wildcard("$rainHourly$", "Wird ersetzt mit dem aktuellen Niederschlag von Regen.") {
 			@Override
 			public String replace(String source, APIContext apiContext) {
-				String rainHourly = String.valueOf(apiContext.getWeather().getRainHourly()) + "mm";
+				String rainHourly = String.valueOf(apiContext.getWeather().getRainHourly()) + " mm";
 				source.replaceAll(this.getIdentifier(), rainHourly);
 				return source;
 			}
@@ -133,7 +134,7 @@ public class Wildcards {
 		return new Wildcard("$snowHourly$", "Wird ersetzt mit dem aktuellen Niederschlag von Schnee.") {
 			@Override
 			public String replace(String source, APIContext apiContext) {
-				String snowHourly = String.valueOf(apiContext.getWeather().getSnowHourly()) + "mm";
+				String snowHourly = String.valueOf(apiContext.getWeather().getSnowHourly()) + " mm";
 				source.replaceAll(this.getIdentifier(), snowHourly);
 				return source;
 			}
@@ -154,7 +155,7 @@ public class Wildcards {
 		return new Wildcard("$windSpeed$", "Wird ersetzt mit der aktuellen Windgeschwindigkeit.") {
 			@Override
 			public String replace(String source, APIContext apiContext) {
-				String windSpeed = String.valueOf(apiContext.getWeather().getWindSpeed()) + "km/h";
+				String windSpeed = String.valueOf(apiContext.getWeather().getWindSpeed()) + " km/h";
 				source.replaceAll(this.getIdentifier(), windSpeed);
 				return source;
 			}
@@ -172,19 +173,20 @@ public class Wildcards {
 	}
 
 	private Wildcard getIncidentLocationStreetWildcard() {
-		return new Wildcard("$incidentLocationStreetText$",
+		return new Wildcard("$incidentLocationStreet$",
 				"Wird ersetzt durch die Straﬂe in der ein Zwischenfall aufgetreten ist.") {
 			@Override
 			public String replace(String source, APIContext apiContext) {
-				String incidentLocationStreetText = apiContext.getTraffic().getIncidentLocation().getStreetOfIncident();
-				source.replaceAll(this.getIdentifier(), incidentLocationStreetText);
+				String incidentLocationStreet = apiContext.getTraffic().getIncidentLocation().getStreetOfIncident();
+				source.replaceAll(this.getIdentifier(), incidentLocationStreet);
 				return source;
 			}
 
 			@Override
 			public boolean isValidContext(APIContext apiContext) {
 				if (apiContext != null) {
-					if (apiContext.getTraffic() != null) {
+					if (apiContext.getTraffic() != null && apiContext.getTraffic().getIncidentLocation() != null
+							&& apiContext.getTraffic().getIncidentLocation().getStreetOfIncident() != null) {
 						return true;
 					}
 				}
@@ -194,19 +196,20 @@ public class Wildcards {
 	}
 
 	private Wildcard getIncidentLocationCityWildcard() {
-		return new Wildcard("$incidentLocationCityText$",
+		return new Wildcard("$incidentLocationCity$",
 				"Wird ersetzt durch die Stadt in der ein Zwischenfall aufgetreten ist.") {
 			@Override
 			public String replace(String source, APIContext apiContext) {
-				String incidentLocationCityText = apiContext.getTraffic().getIncidentLocation().getCityOfIncident();
-				source.replaceAll(this.getIdentifier(), incidentLocationCityText);
+				String incidentLocationCity = apiContext.getTraffic().getIncidentLocation().getCityOfIncident();
+				source.replaceAll(this.getIdentifier(), incidentLocationCity);
 				return source;
 			}
 
 			@Override
 			public boolean isValidContext(APIContext apiContext) {
 				if (apiContext != null) {
-					if (apiContext.getTraffic() != null) {
+					if (apiContext.getTraffic() != null && apiContext.getTraffic().getIncidentLocation() != null
+							&& apiContext.getTraffic().getIncidentLocation().getCityOfIncident() != null) {
 						return true;
 					}
 				}
@@ -217,17 +220,61 @@ public class Wildcards {
 
 	private Wildcard getTrafficIncidentTypWildcard() {
 		return new Wildcard("$trafficIncidentTyp$", "Wird ersetzt durch den Typ eines Zwischenfalls.") {
+			String trafficIncidentTypGerman;
+
 			@Override
 			public String replace(String source, APIContext apiContext) {
 				String trafficIncidentTyp = apiContext.getTraffic().getTrafficIncident().getIncidentType().toString();
-				source.replaceAll(this.getIdentifier(), trafficIncidentTyp);
+
+				switch (trafficIncidentTyp) {
+				case "ACCIDENT":
+					trafficIncidentTypGerman = "Unfall";
+					break;
+				case "CONGESTION":
+					trafficIncidentTypGerman = "\u00DCberlastung";
+					break;
+				case "DISABLED_VEHICLE":
+					trafficIncidentTypGerman = "fahrunf\u00E4higes Fahrzeug";
+					break;
+				case "ROAD_HAZARD":
+					trafficIncidentTypGerman = "Gefahrenstelle";
+					break;
+				case "CONSTRUCTION":
+					trafficIncidentTypGerman = "Baustelle";
+					break;
+				case "PLANNED_EVENT":
+					trafficIncidentTypGerman = "geplante Sperrung";
+					break;
+				case "MASS_TRANSIT":
+					trafficIncidentTypGerman = "stockender Verkehr";
+					break;
+				case "OTHER_NEWS":
+					trafficIncidentTypGerman = "anderer Zwischenfall";
+					break;
+				case "WEATHER":
+					trafficIncidentTypGerman = "Wetter";
+					break;
+				case "MISC":
+					trafficIncidentTypGerman = "sonstiges";
+					break;
+				case "ROAD_CLOSURE":
+					trafficIncidentTypGerman = "Stra\u00DFensperrung";
+					break;
+				case "LANE_RESTRICTION":
+					trafficIncidentTypGerman = "Engstelle";
+					break;
+				default:
+					break;
+				}
+				source.replaceAll(this.getIdentifier(), trafficIncidentTypGerman);
 				return source;
 			}
 
 			@Override
 			public boolean isValidContext(APIContext apiContext) {
 				if (apiContext != null) {
-					if (apiContext.getTraffic() != null) {
+					if (apiContext.getTraffic() != null && apiContext.getTraffic().getTrafficIncident() != null
+							&& apiContext.getTraffic().getTrafficIncident().getIncidentType() != null) {
 						return true;
 					}
 				}
@@ -248,7 +295,8 @@ public class Wildcards {
 			@Override
 			public boolean isValidContext(APIContext apiContext) {
 				if (apiContext != null) {
-					if (apiContext.getRnv() != null) {
+					if (apiContext.getRnv() != null && apiContext.getRnv().getTram() != null
+							&& apiContext.getRnv().getTram().getLineLabel() != null) {
 						return true;
 					}
 				}
@@ -258,7 +306,8 @@ public class Wildcards {
 	}
 
 	private Wildcard getNewsEntryTitleWildcard() {
-		return new Wildcard("$newsEntryTitle$", "Wird ersetzt durch den Namen einer Bahn.") {
+		return new Wildcard("$newsEntryTitle$",
+				"Wird ersetzt durch den Titel einer Zwischenfallsnachricht einer Tram.") {
 			@Override
 			public String replace(String source, APIContext apiContext) {
 				String newsEntryTitle = apiContext.getRnv().getNewsEntry().getTitle();
@@ -269,7 +318,8 @@ public class Wildcards {
 			@Override
 			public boolean isValidContext(APIContext apiContext) {
 				if (apiContext != null) {
-					if (apiContext.getRnv() != null) {
+					if (apiContext.getRnv() != null && apiContext.getRnv().getNewsEntry() != null
+							&& apiContext.getRnv().getNewsEntry().getTitle() != null) {
 						return true;
 					}
 				}
