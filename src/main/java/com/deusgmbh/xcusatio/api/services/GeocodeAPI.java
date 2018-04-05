@@ -8,15 +8,18 @@ import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.logging.Logger;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.api.data.GeocodeData;
 import com.deusgmbh.xcusatio.data.usersettings.Address;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class GeocodeAPI extends APIService {
     private static final Logger LOGGER = Logger.getLogger(GeocodeAPI.class.getName());
@@ -39,6 +42,9 @@ public class GeocodeAPI extends APIService {
     public GeocodeAPI() {
     }
 
+    
+    
+    
     /**
      * 
      */
@@ -65,47 +71,68 @@ public class GeocodeAPI extends APIService {
 
     public double[][] extractBoundingBoxCoordinates(URL requestUrl) throws JSONException, IOException {
         double[][] boundingBoxCoordinates = new double[2][2];
-
         String jsonResponseString = getResponseFromWebsite(requestUrl);
-        JSONObject jsonTotal = new JSONObject(jsonResponseString);
-        System.out.println(jsonResponseString);
-
-        if (jsonTotal.has(JSON_RESPONSE)) {
-            JSONObject jsonResponse = jsonTotal.getJSONObject(JSON_RESPONSE);
-            if (jsonResponse.has(JSON_VIEW)) {
-                JSONArray jsonViewArray = jsonResponse.getJSONArray(JSON_VIEW);
-                JSONObject jsonView = jsonViewArray.getJSONObject(0);
-                if (jsonView.has(JSON_RESULT)) {
-                    JSONArray jsonResultArray = jsonView.getJSONArray(JSON_RESULT);
-                    JSONObject jsonResult = jsonResultArray.getJSONObject(0);
-                    if (jsonResult.has(JSON_LOCATION)) {
-                        JSONObject jsonLocation = jsonResult.getJSONObject(JSON_LOCATION);
-                        if (jsonLocation.has(JSON_MAPVIEW)) {
-                            JSONObject jsonMapView = jsonLocation.getJSONObject(JSON_MAPVIEW);
-                            if (jsonMapView.has(JSON_TOPLEFT) && jsonMapView.has(JSON_BOTTOMRIGHT)) {
-                                JSONObject jsonTopLeft = jsonMapView.getJSONObject(JSON_TOPLEFT);
-
-                                if (jsonTopLeft.has(JSON_LATITUDE) && jsonTopLeft.has(JSON_LONGITUDE)) {
-                                    boundingBoxCoordinates[0][0] = Double.parseDouble(jsonTopLeft.get(JSON_LATITUDE)
-                                            .toString());
-                                    boundingBoxCoordinates[0][1] = Double.parseDouble(jsonTopLeft.get(JSON_LONGITUDE)
-                                            .toString());
-                                }
-
-                                JSONObject jsonBottomRight = jsonMapView.getJSONObject(JSON_BOTTOMRIGHT);
-                                if (jsonBottomRight.has(JSON_LATITUDE) && jsonBottomRight.has(JSON_LONGITUDE)) {
-                                    boundingBoxCoordinates[1][0] = Double.parseDouble(jsonBottomRight.get(JSON_LATITUDE)
-                                            .toString());
-                                    boundingBoxCoordinates[1][1] = Double.parseDouble(jsonTopLeft.get(JSON_LONGITUDE)
-                                            .toString());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return boundingBoxCoordinates;
+        Gson gson = new Gson();
+        JsonParser parser = new JsonParser();
+		JsonElement element = parser.parse(jsonResponseString);
+		JsonObject total = gson.fromJson(element.getAsJsonObject(), JsonObject.class);
+		JsonObject response = gson.fromJson(total.get(JSON_RESPONSE), JsonObject.class);        
+    	JsonArray view = gson.fromJson(response.get(JSON_VIEW), JsonArray.class);
+		JsonObject viewObject = gson.fromJson(view.get(0), JsonObject.class);
+		JsonArray result = gson.fromJson(viewObject.get(JSON_RESULT), JsonArray.class);
+		JsonObject resultObject = gson.fromJson(result.get(0), JsonObject.class);
+		JsonObject location = gson.fromJson(resultObject.get(JSON_LOCATION), JsonObject.class);
+		JsonObject mapView = gson.fromJson(location.get(JSON_MAPVIEW), JsonObject.class);
+		JsonObject[] boundingBox = new JsonObject[] { gson.fromJson(mapView.get(JSON_TOPLEFT), JsonObject.class), gson.fromJson(mapView.get(JSON_BOTTOMRIGHT), JsonObject.class) };
+		double[] topLeft = new double[] {gson.fromJson(boundingBox[1].get(JSON_LATITUDE), double.class), gson.fromJson(boundingBox[0].get(JSON_LONGITUDE), double.class)};
+		double[] bottomRight = new double[] {gson.fromJson(boundingBox[0].get(JSON_LATITUDE), double.class), gson.fromJson(boundingBox[1].get(JSON_LONGITUDE), double.class)};
+		boundingBoxCoordinates[0] = topLeft;
+		boundingBoxCoordinates[1] = bottomRight;
+		return boundingBoxCoordinates;
+		
+		//        JSONObject jsonTotal = new JSONObject(jsonResponseString);
+//        System.out.println(jsonResponseString);
+//
+//        if (jsonTotal.has(JSON_RESPONSE)) {
+//            JSONObject jsonResponse = jsonTotal.getJSONObject(JSON_RESPONSE);
+//            
+//            List<JSONObject> jsonViewList = getJSONObjectsFromJSONArray(jsonResponse, JSON_VIEW);
+//            JSONObject jsonView = jsonViewList.get(0);
+//                
+//                
+//                if (jsonView.has(JSON_RESULT)) {
+//                    JSONArray jsonResultArray = jsonView.getJSONArray(JSON_RESULT);
+//                    JSONObject jsonResult = jsonResultArray.getJSONObject(0);
+//                    
+//                    if (jsonResult.has(JSON_LOCATION)) {
+//                        JSONObject jsonLocation = jsonResult.getJSONObject(JSON_LOCATION);
+//                        
+//                        if (jsonLocation.has(JSON_MAPVIEW)) {
+//                            JSONObject jsonMapView = jsonLocation.getJSONObject(JSON_MAPVIEW);
+//                            
+//                            if (jsonMapView.has(JSON_TOPLEFT) && jsonMapView.has(JSON_BOTTOMRIGHT)) {
+//                                JSONObject jsonTopLeft = jsonMapView.getJSONObject(JSON_TOPLEFT);
+//
+//                                if (jsonTopLeft.has(JSON_LATITUDE) && jsonTopLeft.has(JSON_LONGITUDE)) {
+//                                    boundingBoxCoordinates[0][0] = Double.parseDouble(jsonTopLeft.get(JSON_LATITUDE)
+//                                            .toString());
+//                                    boundingBoxCoordinates[0][1] = Double.parseDouble(jsonTopLeft.get(JSON_LONGITUDE)
+//                                            .toString());
+//                                }
+//
+//                                JSONObject jsonBottomRight = jsonMapView.getJSONObject(JSON_BOTTOMRIGHT);
+//                                if (jsonBottomRight.has(JSON_LATITUDE) && jsonBottomRight.has(JSON_LONGITUDE)) {
+//                                    boundingBoxCoordinates[1][0] = Double.parseDouble(jsonBottomRight.get(JSON_LATITUDE)
+//                                            .toString());
+//                                    boundingBoxCoordinates[1][1] = Double.parseDouble(jsonTopLeft.get(JSON_LONGITUDE)
+//                                            .toString());
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        return boundingBoxCoordinates;
     }
 
     private double[] calculateSpotCoordinates(double[][] boundingBoxCoordinates) {
@@ -191,7 +218,7 @@ public class GeocodeAPI extends APIService {
     public static void main(String[] osmium) {
 
         UserSettings usersettings = new UserSettings(null, null, Sex.MALE,
-                new Address("10", "Hanauer Landstraﬂe", "60314", "Frankfurt am Main"));
+                new Address("6", "Coblitzallee", "68163", "Mannheim"));
 
         GeocodeAPI gApi = new GeocodeAPI();
 
@@ -200,7 +227,12 @@ public class GeocodeAPI extends APIService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        gApi.printResponse();
+        for (double[] dd : gApi.boundingBoxCoordinates) {
+        	System.out.println();
+        	for (double d : dd) {
+        		System.out.printf("%f ", d);
+        	}
+        }
 
     }
 
