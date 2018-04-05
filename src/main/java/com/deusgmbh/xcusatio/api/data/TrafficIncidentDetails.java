@@ -6,29 +6,29 @@ package com.deusgmbh.xcusatio.api.data;
  */
 
 public class TrafficIncidentDetails {
-    TrafficIncidentType incidentType;
-    TrafficIncidentStatus incidentStatus;
+    private TrafficIncidentType trafficIncidentType;
+    private TrafficIncidentStatus trafficIncidentStatus;
 
-    public TrafficIncidentDetails(String incidentType, String incidentStatus) {
+    public TrafficIncidentDetails(String trafficIncidentType, String trafficIncidentStatus) {
         super();
-        this.incidentType = TrafficIncidentType.valueOf(incidentType.replace(' ', '_'));
-        this.incidentStatus = TrafficIncidentStatus.valueOf(incidentStatus);
+        this.trafficIncidentType = TrafficIncidentType.valueOf(trafficIncidentType.replace(' ', '_'));
+        this.trafficIncidentStatus = TrafficIncidentStatus.valueOf(trafficIncidentStatus);
     }
 
-    public TrafficIncidentType getIncidentType() {
-        return incidentType;
+    public TrafficIncidentType getTrafficIncidentType() {
+        return trafficIncidentType;
     }
 
-    public void setIncidentType(TrafficIncidentType incidentType) {
-        this.incidentType = incidentType;
+    public void setTrafficIncidentType(TrafficIncidentType trafficIncidentType) {
+        this.trafficIncidentType = trafficIncidentType;
     }
 
-    public TrafficIncidentStatus getIncidentStatus() {
-        return incidentStatus;
+    public TrafficIncidentStatus getTrafficIncidentStatus() {
+        return trafficIncidentStatus;
     }
 
-    public void setIncidentStatus(TrafficIncidentStatus incidentStatus) {
-        this.incidentStatus = incidentStatus;
+    public void setTrafficIncidentStatus(TrafficIncidentStatus trafficIncidentStatus) {
+        this.trafficIncidentStatus = trafficIncidentStatus;
     }
 
 }

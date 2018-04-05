@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 import org.json.JSONException;
@@ -21,94 +23,107 @@ import com.deusgmbh.xcusatio.context.wildcard.TrafficContext;
 import com.deusgmbh.xcusatio.data.usersettings.Address;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class TrafficAPI extends APIService {
     private static final Logger LOGGER = Logger.getLogger(TrafficAPI.class.getName());
 
-    private final String BASE_URL = "https://traffic.cit.api.here.com/traffic/6.2/incidents/json/";
-    private final String APP_KEYS = "?app_id=ObXv79Ww3xdQ996uEDLw&app_code=74fsgcSubek54INvT13Rcg";
-    private final String JSONOB_TRAFFIC_ITEMS = "TRAFFIC_ITEMS";
-    private final String JSONARR_TRAFFIC_ITEM = "TRAFFIC_ITEM";
-    private final String JSONOB_LOCATION = "LOCATION";
-    private final String JSONOB_LOCATION_DEFINED = "DEFINED";
-    private final String JSONOB_LOCATION_INTERSECTION = "INTERSECTION";
-    private final String JSONOB_INTERSECTION_ORIGIN = "ORIGIN";
-    private final String JSONOB_ORIGIN_STREET1 = "STREET1";
-    private final String JSONSTR_STREET1_ADDRESS = "ADDRESS1";
-    private final String JSONOB_DEFINED_ORIGIN = "ORIGIN";
-    private final String JSONOB_ORIGIN_DIRECTION = "DIRECTION";
-    private final String JSONARR_DIRECTION_DESCRIPTION = "DESCRIPTION";
-    private final String JSONSTR_DIRECTION_DESCRIPTION_FIRST = "value";
-    private final String JSONOB_ORIGIN_ROADWAY = "ROADWAY";
-    private final String JSONARR_ROADWAY_DESCRIPTION = "DESCRIPTION";
-    private final String JSONSTR_INCIDENT_TYPE = "TRAFFIC_ITEM_TYPE_DESC";
-    private final String JSONSTR_INCIDENT_STATUS = "TRAFFIC_ITEM_STATUS_SHORT_DESC";
-    private final String JSONSTR_INCIDENT_ENTRY_TIME = "ENTRY_TIME";
-    private final String JSONSTR_INCIDENT_END_TIME = "END_TIME";
+    private static final String BASE_URL = "https://traffic.cit.api.here.com/traffic/6.2/incidents/json/";
+    private static final String APP_KEYS = "?app_id=ObXv79Ww3xdQ996uEDLw&app_code=74fsgcSubek54INvT13Rcg";
+    private static final String JSONOB_TRAFFICML_INCIDENTS = "TRAFFICML_INCIDENTS";
+    private static final String JSONOB_TRAFFIC_ITEMS = "TRAFFIC_ITEMS";
+    private static final String JSONARR_TRAFFIC_ITEM = "TRAFFIC_ITEM";
+    private static final String JSONOB_LOCATION = "LOCATION";
+    private static final String JSONOB_LOCATION_DEFINED = "DEFINED";
+    private static final String JSONOB_LOCATION_INTERSECTION = "INTERSECTION";
+    private static final String JSONOB_INTERSECTION_ORIGIN = "ORIGIN";
+    private static final String JSONOB_ORIGIN_STREET1 = "STREET1";
+    private static final String JSONSTR_STREET1_ADDRESS = "ADDRESS1";
+    private static final String JSONOB_DEFINED_ORIGIN = "ORIGIN";
+    private static final String JSONOB_ORIGIN_DIRECTION = "DIRECTION";
+    private static final String JSONARR_DIRECTION_DESCRIPTION = "DESCRIPTION";
+    private static final String JSONSTR_DIRECTION_DESCRIPTION_FIRST = "value";
+    private static final String JSONOB_ORIGIN_ROADWAY = "ROADWAY";
+    private static final String JSONARR_ROADWAY_DESCRIPTION = "DESCRIPTION";
+    private static final String JSONSTR_INCIDENT_TYPE = "TRAFFIC_ITEM_TYPE_DESC";
+    private static final String JSONSTR_INCIDENT_STATUS = "TRAFFIC_ITEM_STATUS_SHORT_DESC";
+    private static final String JSONSTR_INCIDENT_ENTRY_TIME = "ENTRY_TIME";
+    private static final String JSONSTR_INCIDENT_END_TIME = "END_TIME";
 
     private String jsonResponse;
     private GeocodeData geocodeData;
 
     private String mapMediumText;
 
-    private List<TrafficIncidentDetails> trafficIncidentDetails;
-    private List<TrafficIncidentLocation> trafficIncidentLocations;
-    private List<TrafficIncidentTimes> trafficIncidentTimes;
-
+    // private List<TrafficIncidentDetails> trafficIncidentDetails;
+    // private List<TrafficIncidentLocation> trafficIncidentLocations;
+    //
+    // private List<TrafficIncidentTimes> trafficIncidentTimes;
     public TrafficAPI() {
 
     }
 
     /**
+     * @throws IOException
      * @throws ParseException
      * @throws JSONException
      * 
      */
-    
-    public TrafficContext get(UserSettings usersettings) throws IOException, JSONException, ParseException {
+
+    public TrafficContext get(UserSettings usersettings) throws IOException {
 
         URL requestUrl = buildRequestUrl(usersettings);
 
-        String jsonResponse = getResponseFromWebsite(requestUrl);
+        Gson gson = new Gson();
+        JsonObject total = getTotalJsonObject(requestUrl, gson);
 
-        JSONObject totalJsonObject = new JSONObject(jsonResponse);
+        List<TrafficIncidentDetails> trafficIncidentDetails = extractIncidentDetails(gson, total);
+        // List<TrafficIncidentTimes> trafficIncidentTimes =
+        // extractIncidentTimes(trafficItemList);
+        // List<TrafficIncidentLocation> trafficIncidentLocations =
+        // extractIncidentLocations(trafficItemList);
 
-        if (totalJsonObject.has(JSONOB_TRAFFIC_ITEMS)) {
-            JSONObject trafficItems = totalJsonObject.getJSONObject(JSONOB_TRAFFIC_ITEMS);
-            List<JSONObject> trafficItemList = getJSONObjectsFromJSONArray(trafficItems, JSONARR_TRAFFIC_ITEM);
-            this.trafficIncidentDetails = extractIncidentDetails(trafficItemList);
-            this.trafficIncidentTimes = extractIncidentTimes(trafficItemList);
-            this.trafficIncidentLocations = extractIncidentLocations(trafficItemList);
-        } else {
-
-        }
-
-        return new TrafficContext(this.trafficIncidentDetails, this.trafficIncidentLocations,
-                this.trafficIncidentTimes);
-
-    }
-
-    
-    public void transmitDataToWebsite() {
-
+        return null;
+        // return new TrafficContext(trafficIncidentDetails,
+        // trafficIncidentLocations, trafficIncidentTimes);
     }
 
     /**
      * 
-     * @param trafficItemList
+     * @param total
      * @return
      * @throws JSONException
      */
-    private List<TrafficIncidentDetails> extractIncidentDetails(List<JSONObject> trafficItemList) throws JSONException {
+    private List<TrafficIncidentDetails> extractIncidentDetails(Gson gson, JsonObject total) throws JSONException {
         List<TrafficIncidentDetails> trafficIncidentDetails = new LinkedList<>();
-        List<String> incidentTypes = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_TYPE);
-        List<String> incidentStatus = getValuesFromJSONObjects(trafficItemList, JSONSTR_INCIDENT_STATUS);
-        int typesIndex = 0;
-        while (typesIndex < incidentTypes.size()) {
-            trafficIncidentDetails
-                    .add(new TrafficIncidentDetails(incidentTypes.get(typesIndex), incidentStatus.get(typesIndex)));
-            ++typesIndex;
+
+        System.out.println(total);
+
+        JsonObject trafficItemObject = gson.fromJson(total.get(JSONOB_TRAFFIC_ITEMS), JsonObject.class);
+
+        System.out.println("trafficItemObject: " + trafficItemObject);
+
+        List<JsonArray> trafficItems = new LinkedList<>();
+        for (int numOfItems = 0; numOfItems < trafficItemObject.size(); ++numOfItems) {
+            trafficItems.add(gson.fromJson(trafficItemObject.get(JSONARR_TRAFFIC_ITEM), JsonArray.class));
         }
+
+        Map<String, String> trafficItemTypes = new TreeMap<>();
+
+        trafficItems.forEach(trafficItem -> {
+            System.out.println(trafficItem);
+            JsonObject firstEntry = gson.fromJson(trafficItem.get(0), JsonObject.class);
+            String itemTypeDescription = gson.fromJson(firstEntry.get(JSONSTR_INCIDENT_TYPE), String.class);
+            String itemStatus = gson.fromJson(firstEntry.get(JSONSTR_INCIDENT_STATUS), String.class);
+            trafficItemTypes.put(itemTypeDescription, itemStatus);
+        });
+
+        trafficItemTypes.forEach((k, v) -> {
+            trafficIncidentDetails.add(new TrafficIncidentDetails(k, v));
+        });
+
         return trafficIncidentDetails;
     }
 
@@ -158,7 +173,6 @@ public class TrafficAPI extends APIService {
         return trafficIncidentTimes;
     }
 
-    
     public void printResponse() {
         // TODO Auto-generated method stub
 
@@ -169,7 +183,6 @@ public class TrafficAPI extends APIService {
         return "12/" + String.valueOf(mapTiles[0]) + "/" + String.valueOf(mapTiles[1]);
     }
 
-    
     public URL buildRequestUrl(UserSettings usersettings) throws IOException {
         GeocodeAPI gApi = new GeocodeAPI();
         GeocodeData gcd = gApi.get(usersettings);
@@ -201,10 +214,10 @@ public class TrafficAPI extends APIService {
                             .getStreetOfIncident()
                     + ": " + tContext.getTrafficIncident()
                             .get(i)
-                            .getIncidentType()
+                            .getTrafficIncidentType()
                     + " (" + tContext.getTrafficIncident()
                             .get(i)
-                            .getIncidentStatus()
+                            .getTrafficIncidentStatus()
                     + ") seit " + tContext.getIncidentTimes()
                             .get(i)
                             .getStartTimeOfTrafficIncident()
@@ -225,11 +238,20 @@ public class TrafficAPI extends APIService {
         TrafficAPI tApi = new TrafficAPI();
         UserSettings usersettings = new UserSettings(null, null, Sex.MALE,
                 new Address("50", "Hanauer Landstrasse", "60314", "Frankfurt am Main"));
-        TrafficContext tContext = tApi.get(usersettings);
-        tApi.printTrafficIncidentSummary(tContext);
+        URL requestUrl = tApi.buildRequestUrl(usersettings);
+
+        Gson gson = new Gson();
+        JsonObject total = tApi.getTotalJsonObject(requestUrl, gson);
+
+        List<TrafficIncidentDetails> trafficIncidentDetails = tApi.extractIncidentDetails(gson, total);
+
+        trafficIncidentDetails.forEach(tid -> System.out.println(tid.getTrafficIncidentType()
+                .toString() + " "
+                + tid.getTrafficIncidentStatus()
+                        .toString()));
+
     }
 
-    
     public void extractDesiredInfoFromResponse() throws JSONException, ParseException {
         // TODO Auto-generated method stub
 

@@ -15,6 +15,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * 
@@ -35,12 +39,18 @@ public abstract class APIService {
         // TODO close inputStream ?
     }
 
+    public JsonObject getTotalJsonObject(URL requestUrl, Gson gson) throws IOException {
+        String jsonResponseString = getResponseFromWebsite(requestUrl);
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(jsonResponseString);
+        JsonObject total = gson.fromJson(element.getAsJsonObject(), JsonObject.class);
+        return total;
+    }
+
     public abstract <T extends Object> T get(UserSettings usersettings)
             throws IOException, JSONException, ParseException;
 
     public abstract URL buildRequestUrl(UserSettings usersettings) throws UnsupportedEncodingException, IOException;
-
-    public abstract void transmitDataToWebsite();
 
     /* just for tests */
     public abstract void printResponse();
