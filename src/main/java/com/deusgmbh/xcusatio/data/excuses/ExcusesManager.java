@@ -1,5 +1,6 @@
 package com.deusgmbh.xcusatio.data.excuses;
 
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import com.deusgmbh.xcusatio.data.StorageUnit;
@@ -17,11 +18,27 @@ import javafx.collections.ObservableList;
  */
 
 public class ExcusesManager extends StorageUnit<Excuse> {
-    private static final long MAX_RECENTLY_USED_LIST_SIZE = 10;
-    private ObservableList<String> lastUsedList;
+    private ObservableList<String> mostRecentlyUsed;
 
     public ExcusesManager() {
         super(Excuse.class);
+        this.mostRecentlyUsed = this.getTextSorted(Excuse.byLastUsed);
+        this.get()
+                .addListener(new ListChangeListener<Excuse>() {
+                    @Override
+                    public void onChanged(Change<? extends Excuse> c) {
+                        mostRecentlyUsed.clear();
+                        mostRecentlyUsed.addAll(getTextSorted(Excuse.byLastUsed));
+                    }
+                });
+    }
+
+    private ObservableList<String> getTextSorted(Comparator<Excuse> sorting) {
+        return FXCollections.observableArrayList(this.get()
+                .stream()
+                .sorted(sorting)
+                .map(Excuse::getText)
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -29,35 +46,14 @@ public class ExcusesManager extends StorageUnit<Excuse> {
      *            the maximal amount of excuses to return
      * @returns the most recently used excuses.
      */
-    public ObservableList<String> getSortedByLastUsed() {
-        this.lastUsedList = FXCollections.observableArrayList(this.get()
-                .stream()
-                .sorted(Excuse.byLastUsed)
-                .map(Excuse::getText)
-                .collect(Collectors.toList()));
-
-        this.get()
-                .addListener(new ListChangeListener<Excuse>() {
-                    @Override
-                    public void onChanged(Change<? extends Excuse> c) {
-                        while (c.next()) {
-                            c.getAddedSubList()
-                                    .stream()
-                                    .forEach(addedExcuse -> {
-                                        lastUsedList.remove(addedExcuse.getText());
-                                        lastUsedList.add(0, addedExcuse.getText());
-                                    });
-                        }
-                    }
-                });
-
-        return this.lastUsedList;
+    public ObservableList<String> getMostRecentlyUsed() {
+        return this.mostRecentlyUsed;
     }
 
     @Override
     public ExcusesManager addDefaultValues() {
         // TODO: add more default values
-        this.add(new Excuse("Die Bahn kam zu spät", ScenarioType.LATE_ARRIVAL).addTag(Tag.TRAIN)
+        this.add(new Excuse("Die Bahn kam zu spät", ScenarioType.LATE_ARRIVAL).addTag(Tag.TRAIN_DELAYED)
                 .addTag(Tag.MALE)
                 .addTag(Tag.FEMALE))
                 .add(new Excuse(

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 import com.thoughtworks.xstream.XStream;
@@ -132,6 +133,23 @@ abstract public class StorageUnit<T> {
         this.units = FXCollections.observableArrayList();
         this.addDefaultValues();
         return this;
+    }
+
+    /**
+     * This method can be used to change an element managed by this class in a
+     * way that is going to impact the observable list. This allows the editing
+     * of objects that you don't know the id for.
+     * 
+     * @param object
+     * @param action
+     */
+    public void applyFor(T object, Function<T, T> action) {
+        for (int i = 0; i < this.units.size(); i++) {
+            if (this.units.get(i)
+                    .equals(object)) {
+                this.units.set(i, action.apply(this.units.get(i)));
+            }
+        }
     }
 
     /**

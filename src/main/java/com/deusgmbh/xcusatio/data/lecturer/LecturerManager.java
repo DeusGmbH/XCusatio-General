@@ -36,7 +36,7 @@ public class LecturerManager extends StorageUnit<Lecturer> {
                         .addLecture("Softwareengineering 1")
                         .addLecture("Softwareengineering 2")
                         .addTag(Tag.FUNNY)
-                        .addTag(Tag.SUCKUP));
+                        .addTag(Tag.SUCK_UP));
         return this;
     }
 }
