@@ -123,5 +123,13 @@ public abstract class EditEntryPane<T> extends BorderPane {
         this.selectedItemId = newIdSupplier.applyAsInt(this.selectedItemId);
     }
 
-    abstract protected void saveChanges();
+    protected void saveChanges() {
+        if (this.editableItems.isEmpty()) {
+            this.editableItems.add(this.getEdtitedEntry());
+        } else {
+            this.editableItems.set(this.selectedItemId, this.getEdtitedEntry());
+        }
+    }
+
+    abstract protected T getEdtitedEntry();
 }

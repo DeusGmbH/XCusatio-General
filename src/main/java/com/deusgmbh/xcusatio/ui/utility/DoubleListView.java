@@ -1,8 +1,9 @@
 package com.deusgmbh.xcusatio.ui.utility;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+
+import com.deusgmbh.xcusatio.data.tags.ToStringComparator;
 
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
@@ -42,9 +43,9 @@ public class DoubleListView<T> extends BorderPane {
 
     public DoubleListView(ObservableList<T> leftList, ObservableList<T> rightList) {
         int maxListSize = leftList.size() + rightList.size();
-        leftListView = new ListView<T>(new SortedList<T>(leftList, tagComparator));
+        leftListView = new ListView<T>(new SortedList<T>(leftList, new ToStringComparator<T>()));
         leftListView.setPrefHeight(maxListSize > MAX_TABLE_ROW ? MAX_TABLE_ROW * CELL_SIZE : maxListSize * CELL_SIZE);
-        rightListView = new ListView<T>(new SortedList<T>(rightList, tagComparator));
+        rightListView = new ListView<T>(new SortedList<T>(rightList, new ToStringComparator<T>()));
         rightListView.setPrefHeight(maxListSize > MAX_TABLE_ROW ? MAX_TABLE_ROW * CELL_SIZE : maxListSize * CELL_SIZE);
 
         shiftButtonPane = new ShiftButtonPane(createMoveItemAction(leftListView, rightListView),
@@ -67,8 +68,8 @@ public class DoubleListView<T> extends BorderPane {
                     newGiveList.remove(selectedItem);
                     ObservableList<T> newTagList = FXCollections.observableArrayList(moveTo.getItems());
                     newTagList.add(selectedItem);
-                    moveFrom.setItems(new SortedList<T>(newGiveList, tagComparator));
-                    moveTo.setItems(new SortedList<T>(newTagList, tagComparator));
+                    moveFrom.setItems(new SortedList<T>(newGiveList, new ToStringComparator<T>()));
+                    moveTo.setItems(new SortedList<T>(newTagList, new ToStringComparator<T>()));
                 }
             }
         };
@@ -89,13 +90,4 @@ public class DoubleListView<T> extends BorderPane {
                 .bind(heightProperty.multiply(LIST_VIEW_HEIGHT_MULTIPLIER));
     }
 
-    private Comparator<T> tagComparator = new Comparator<T>() {
-
-        @Override
-        public int compare(T o1, T o2) {
-            return o1.toString()
-                    .compareTo(o2.toString());
-        }
-
-    };
 }

@@ -77,9 +77,9 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
     }
 
     @Override
-    protected void saveChanges() {
-        this.editableItems.set(this.selectedItemId, new Lecturer(lecturerNameTextField.getText(),
-                lecturerLecturesPane.getItems(), tagsListCellView.getLeftListItems()));
+    protected Lecturer getEdtitedEntry() {
+        return new Lecturer(lecturerNameTextField.getText(), lecturerLecturesPane.getItems(),
+                tagsListCellView.getLeftListItems());
     }
 
 }

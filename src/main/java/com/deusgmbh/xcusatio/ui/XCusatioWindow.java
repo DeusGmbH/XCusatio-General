@@ -234,4 +234,8 @@ public class XCusatioWindow extends Application {
         this.dashboard.registerUserSettings(userSettings);
         this.profileSettings.registerUserSettings(userSettings);
     }
+
+    public void registerResetTrigger(Runnable resetTrigger) {
+        this.profileSettings.registerResetTrigger(resetTrigger);
+    }
 }

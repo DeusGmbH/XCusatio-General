@@ -69,6 +69,7 @@ public class ProfileSettings extends FlowPane {
     private Button saveProfileBtn;
     private Button factoryResetBtn;
     private HBox calendarPane;
+    private Runnable resetTrigger;
 
     public ProfileSettings() {
         profileFormPane = new VBox();
@@ -160,8 +161,7 @@ public class ProfileSettings extends FlowPane {
     private EventHandler<ActionEvent> factoryResetBtnAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent arg0) {
-            userSettings.set(new UserSettings(null, birthdayDatePicker.getValue(), sexTogglePane.getSex(),
-                    addressPane.getAdress()));
+            resetTrigger.run();
         }
     };
 
@@ -234,5 +234,9 @@ public class ProfileSettings extends FlowPane {
     public void registerUserSettings(ObjectProperty<UserSettings> userSettings) {
         this.userSettings = userSettings;
         this.createProfileSettingsForm();
+    }
+
+    public void registerResetTrigger(Runnable resetTrigger) {
+        this.resetTrigger = resetTrigger;
     }
 }

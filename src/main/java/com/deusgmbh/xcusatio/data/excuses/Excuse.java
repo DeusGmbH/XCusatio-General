@@ -9,7 +9,8 @@ import java.util.stream.Collectors;
 
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
-import com.deusgmbh.xcusatio.data.tags.Tag;;
+import com.deusgmbh.xcusatio.data.tags.Tag;
+import com.deusgmbh.xcusatio.data.tags.ToStringComparator;;
 
 /**
  * 
@@ -75,6 +76,7 @@ public class Excuse {
 
     public Excuse addTag(Tag tag) {
         this.tags.add(tag);
+        this.tags.sort(new ToStringComparator<Tag>());
         return this;
     }
 

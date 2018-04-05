@@ -97,4 +97,25 @@ public class MainController {
     public Set<Wildcard> getWildcards() {
         return wildcards.getWildcards();
     }
+
+    public void persistAllElements() {
+        this.excusesManager.persist();
+        this.lecturerManager.persist();
+        this.scenarioManager.persist();
+        this.userSettingsManager.persist();
+    }
+
+    public void loadAllElements() {
+        this.excusesManager.load();
+        this.lecturerManager.load();
+        this.scenarioManager.load();
+        this.userSettingsManager.load();
+    }
+
+    public void resetAllElements() {
+        this.excusesManager.reset();
+        this.lecturerManager.reset();
+        this.scenarioManager.reset();
+        this.userSettingsManager.reset();
+    }
 }

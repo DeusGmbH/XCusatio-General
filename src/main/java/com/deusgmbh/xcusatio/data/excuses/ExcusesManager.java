@@ -3,7 +3,7 @@ package com.deusgmbh.xcusatio.data.excuses;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
-import com.deusgmbh.xcusatio.data.StorageUnit;
+import com.deusgmbh.xcusatio.data.DataManager;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 
@@ -17,7 +17,7 @@ import javafx.collections.ObservableList;
  *
  */
 
-public class ExcusesManager extends StorageUnit<Excuse> {
+public class ExcusesManager extends DataManager<Excuse> {
     private ObservableList<String> mostRecentlyUsed;
 
     public ExcusesManager() {

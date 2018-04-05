@@ -96,13 +96,10 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
     }
 
     @Override
-    protected void saveChanges() {
-        this.editableItems
-                .set(this.selectedItemId,
-                        new Excuse(excuseTextField.getText(), scenarioTypes.get(excuseTypeChoiceBox.getSelectionModel()
-                                .getSelectedIndex()), tagsListCellView.getLeftListItems(),
-                                editableItems.get(selectedItemId)
-                                        .getLastUsed()));
+    protected Excuse getEdtitedEntry() {
+        return new Excuse(excuseTextField.getText(), scenarioTypes.get(excuseTypeChoiceBox.getSelectionModel()
+                .getSelectedIndex()), tagsListCellView.getLeftListItems(), editableItems.get(selectedItemId)
+                        .getLastUsed());
     }
 
 }
