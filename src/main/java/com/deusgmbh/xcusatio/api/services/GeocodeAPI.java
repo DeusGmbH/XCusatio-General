@@ -161,9 +161,11 @@ public class GeocodeAPI extends APIService {
      * 
      */
     public static void main(String[] osmium) {
+        // "6 Jianguomen Outer St, JianWai DaJie, Chaoyang Qu, Beijing Shi,
+        // China, 100022"
 
         UserSettings usersettings = new UserSettings(null, null, Sex.MALE,
-                new Address("6", "Coblitzallee", "68163", "Mannheim"));
+                new Address("6", "Jianguomen Outer St", "100022", "Beijing"));
 
         GeocodeAPI gApi = new GeocodeAPI();
 
