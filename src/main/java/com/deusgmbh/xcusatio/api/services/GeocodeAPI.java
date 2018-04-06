@@ -47,10 +47,6 @@ public class GeocodeAPI extends APIService {
     public GeocodeAPI() {
     }
 
-    /**
-     * 
-     */
-
     public URL buildRequestUrl(UserSettings usersettings) throws UnsupportedEncodingException {
         Address address = usersettings.getHome();
         String streetnum = address.getStreetnum();
@@ -63,11 +59,6 @@ public class GeocodeAPI extends APIService {
         } catch (MalformedURLException e) {
             throw new RuntimeException("error building geocode request url");
         }
-    }
-
-    public void transmitDataToWebsite() {
-        // TODO Auto-generated method stub
-
     }
 
     public double[][] extractBoundingBoxCoordinates(URL requestUrl) throws IOException {
