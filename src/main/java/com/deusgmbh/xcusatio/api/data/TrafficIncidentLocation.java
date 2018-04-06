@@ -17,6 +17,11 @@ public class TrafficIncidentLocation {
         this.streetOfIncident = street;
     }
 
+    public TrafficIncidentLocation(String streetOfIncident) {
+        super();
+        this.streetOfIncident = streetOfIncident;
+    }
+
     public String getCityOfIncident() {
         return cityOfIncident;
     }
