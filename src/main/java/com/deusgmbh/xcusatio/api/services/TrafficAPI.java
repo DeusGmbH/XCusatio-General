@@ -7,8 +7,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.logging.Logger;
 
 import org.json.JSONException;
@@ -40,6 +38,7 @@ public class TrafficAPI extends APIService {
     private static final String JSONOB_LOCATION_INTERSECTION = "INTERSECTION";
     private static final String JSONOB_INTERSECTION_ORIGIN = "ORIGIN";
     private static final String JSONOB_ORIGIN_STREET1 = "STREET1";
+    private static final String JSONSTR_DESCRIPTION_VALUE = "value";
     private static final String JSONSTR_STREET1_ADDRESS = "ADDRESS1";
     private static final String JSONOB_DEFINED_ORIGIN = "ORIGIN";
     private static final String JSONOB_ORIGIN_DIRECTION = "DIRECTION";
@@ -78,6 +77,7 @@ public class TrafficAPI extends APIService {
 
         Gson gson = new Gson();
         JsonObject total = getTotalJsonObject(requestUrl, gson);
+        System.out.println(total);
 
         List<TrafficIncidentDetails> trafficIncidentDetails = extractIncidentDetails(gson, total);
         // List<TrafficIncidentTimes> trafficIncidentTimes =
@@ -92,38 +92,47 @@ public class TrafficAPI extends APIService {
 
     /**
      * 
+     * @param gson
      * @param total
-     * @return
+     *            represents the full json response from the url request
+     * @return a list of JsonObjects in the relevant depth level that is needed
+     *         for all further extractions of information hence this method is
+     *         class-specific
+     */
+    private List<JsonObject> getRelevantJsonObjects(Gson gson, JsonObject total) {
+        JsonObject trafficItemObject = gson.fromJson(total.get(JSONOB_TRAFFIC_ITEMS), JsonObject.class);
+        // System.out.println("\nTraffic item object: " + trafficItemObject);
+        JsonArray trafficItemArray = gson.fromJson(trafficItemObject.get(JSONARR_TRAFFIC_ITEM), JsonArray.class);
+        List<JsonObject> trafficItemsFromArray = new LinkedList<>();
+        trafficItemArray.forEach(element -> {
+            trafficItemsFromArray.add((JsonObject) element);
+            // System.out.println("Added " + element);
+        });
+        return trafficItemsFromArray;
+    }
+
+    /**
+     * 
+     * @param total
+     *            contains the complete json response string from the web
+     *            request
+     * @return list containing TrafficIncidentDetails, that is the type of
+     *         incident + its current status
      * @throws JSONException
      */
-    private List<TrafficIncidentDetails> extractIncidentDetails(Gson gson, JsonObject total) throws JSONException {
+    private List<TrafficIncidentDetails> extractIncidentDetails(Gson gson, JsonObject total) {
         List<TrafficIncidentDetails> trafficIncidentDetails = new LinkedList<>();
 
-        System.out.println(total);
-
-        JsonObject trafficItemObject = gson.fromJson(total.get(JSONOB_TRAFFIC_ITEMS), JsonObject.class);
-
-        System.out.println("trafficItemObject: " + trafficItemObject);
-
-        List<JsonArray> trafficItems = new LinkedList<>();
-        for (int numOfItems = 0; numOfItems < trafficItemObject.size(); ++numOfItems) {
-            trafficItems.add(gson.fromJson(trafficItemObject.get(JSONARR_TRAFFIC_ITEM), JsonArray.class));
-        }
-
-        Map<String, String> trafficItemTypes = new TreeMap<>();
+        List<JsonObject> trafficItems = getRelevantJsonObjects(gson, total);
 
         trafficItems.forEach(trafficItem -> {
-            System.out.println(trafficItem);
-            JsonObject firstEntry = gson.fromJson(trafficItem.get(0), JsonObject.class);
-            String itemTypeDescription = gson.fromJson(firstEntry.get(JSONSTR_INCIDENT_TYPE), String.class);
-            String itemStatus = gson.fromJson(firstEntry.get(JSONSTR_INCIDENT_STATUS), String.class);
-            trafficItemTypes.put(itemTypeDescription, itemStatus);
+            String[] trafficItemTypes = new String[2];
+            String itemTypeDescription = gson.fromJson(trafficItem.get(JSONSTR_INCIDENT_TYPE), String.class);
+            String itemStatus = gson.fromJson(trafficItem.get(JSONSTR_INCIDENT_STATUS), String.class);
+            trafficItemTypes[0] = itemTypeDescription;
+            trafficItemTypes[1] = itemStatus;
+            trafficIncidentDetails.add(new TrafficIncidentDetails(trafficItemTypes[0], trafficItemTypes[1]));
         });
-
-        trafficItemTypes.forEach((k, v) -> {
-            trafficIncidentDetails.add(new TrafficIncidentDetails(k, v));
-        });
-
         return trafficIncidentDetails;
     }
 
@@ -134,28 +143,68 @@ public class TrafficAPI extends APIService {
      * @return list of traffic incident locations
      * @throws JSONException
      */
-    private List<TrafficIncidentLocation> extractIncidentLocations(List<JSONObject> trafficItemList)
-            throws JSONException {
-        List<TrafficIncidentLocation> trafficIncidentLocations = new LinkedList<>();
-        List<JSONObject> locationList = goInside(trafficItemList, JSONOB_LOCATION);
-        List<JSONObject> definedLocations = goInside(locationList, JSONOB_LOCATION_DEFINED);
-        List<JSONObject> locOrigins = goInside(definedLocations, JSONOB_DEFINED_ORIGIN);
-        List<String> cityNamesOfIncidents = getValuesFromNestedJSONArray(locOrigins, JSONOB_ORIGIN_DIRECTION,
-                JSONARR_DIRECTION_DESCRIPTION, JSONSTR_DIRECTION_DESCRIPTION_FIRST);
-        if (cityNamesOfIncidents.isEmpty()) {
-            List<JSONObject> intersections = goInside(locationList, JSONOB_LOCATION_INTERSECTION);
-            List<JSONObject> intersectionsOrigins = goInside(intersections, JSONOB_INTERSECTION_ORIGIN);
-            List<JSONObject> originsStreets = goInside(intersectionsOrigins, JSONOB_ORIGIN_STREET1);
-            cityNamesOfIncidents = getValuesFromJSONObjects(originsStreets, JSONSTR_STREET1_ADDRESS);
-        }
-        List<String> streetNamesOfIncidents = getValuesFromNestedJSONArray(locOrigins, JSONOB_ORIGIN_ROADWAY,
-                JSONARR_ROADWAY_DESCRIPTION, JSONSTR_DIRECTION_DESCRIPTION_FIRST);
+    private List<TrafficIncidentLocation> extractIncidentLocations(Gson gson, JsonObject total) throws JSONException {
 
-        for (int i = 0; i < cityNamesOfIncidents.size(); ++i) {
-            trafficIncidentLocations
-                    .add(new TrafficIncidentLocation(cityNamesOfIncidents.get(i), streetNamesOfIncidents.get(i)));
-        }
+        List<TrafficIncidentLocation> trafficIncidentLocations = new LinkedList<>();
+
+        List<JsonObject> trafficItems = getRelevantJsonObjects(gson, total);
+
+        List<JsonObject> locations = new LinkedList<>();
+        trafficItems.forEach(trafficItem -> {
+            locations.add(gson.fromJson(trafficItem.get(JSONOB_LOCATION), JsonObject.class));
+        });
+
+        locations.forEach(location -> {
+            if (location.get(JSONOB_LOCATION_DEFINED) != null) {
+                // path 1: defined origin roadway description[] value_STR
+                JsonObject defined = gson.fromJson(location.get(JSONOB_LOCATION_DEFINED), JsonObject.class);
+                JsonObject origin = gson.fromJson(defined.get(JSONOB_DEFINED_ORIGIN), JsonObject.class);
+                JsonObject roadway = gson.fromJson(origin.get(JSONOB_ORIGIN_ROADWAY), JsonObject.class);
+                JsonArray description = gson.fromJson(roadway.get(JSONARR_ROADWAY_DESCRIPTION), JsonArray.class);
+                JsonObject descriptionObject = gson.fromJson(description.get(0), JsonObject.class);
+                String streetOfIncident = gson.fromJson(descriptionObject.get(JSONSTR_DESCRIPTION_VALUE), String.class);
+                trafficIncidentLocations.add(new TrafficIncidentLocation(streetOfIncident));
+            } else {
+                // path 2: intersection origin street address1_STR
+                JsonObject intersection = gson.fromJson(location.get(JSONOB_LOCATION_INTERSECTION), JsonObject.class);
+                JsonObject origin = gson.fromJson(intersection.get(JSONOB_INTERSECTION_ORIGIN), JsonObject.class);
+                JsonObject street1 = gson.fromJson(origin.get(JSONOB_ORIGIN_STREET1), JsonObject.class);
+                String streetOfIncident = gson.fromJson(street1.get(JSONSTR_STREET1_ADDRESS), String.class);
+                trafficIncidentLocations.add(new TrafficIncidentLocation(streetOfIncident));
+            }
+        });
         return trafficIncidentLocations;
+
+        //
+        // List<JSONObject> locationList = goInside(trafficItemList,
+        // JSONOB_LOCATION);
+        // List<JSONObject> definedLocations = goInside(locationList,
+        // JSONOB_LOCATION_DEFINED);
+        // List<JSONObject> locOrigins = goInside(definedLocations,
+        // JSONOB_DEFINED_ORIGIN);
+        // List<String> cityNamesOfIncidents =
+        // getValuesFromNestedJSONArray(locOrigins, JSONOB_ORIGIN_DIRECTION,
+        // JSONARR_DIRECTION_DESCRIPTION, JSONSTR_DIRECTION_DESCRIPTION_FIRST);
+        // if (cityNamesOfIncidents.isEmpty()) {
+        // List<JSONObject> intersections = goInside(locationList,
+        // JSONOB_LOCATION_INTERSECTION);
+        // List<JSONObject> intersectionsOrigins = goInside(intersections,
+        // JSONOB_INTERSECTION_ORIGIN);
+        // List<JSONObject> originsStreets = goInside(intersectionsOrigins,
+        // JSONOB_ORIGIN_STREET1);
+        // cityNamesOfIncidents = getValuesFromJSONObjects(originsStreets,
+        // JSONSTR_STREET1_ADDRESS);
+        // }
+        // List<String> streetNamesOfIncidents =
+        // getValuesFromNestedJSONArray(locOrigins, JSONOB_ORIGIN_ROADWAY,
+        // JSONARR_ROADWAY_DESCRIPTION, JSONSTR_DIRECTION_DESCRIPTION_FIRST);
+        //
+        // for (int i = 0; i < cityNamesOfIncidents.size(); ++i) {
+        // trafficIncidentLocations
+        // .add(new TrafficIncidentLocation(cityNamesOfIncidents.get(i),
+        // streetNamesOfIncidents.get(i)));
+        // }
+        // return trafficIncidentLocations;
     }
 
     private List<TrafficIncidentTimes> extractIncidentTimes(List<JSONObject> trafficItemList)
@@ -237,18 +286,29 @@ public class TrafficAPI extends APIService {
     public static void main(String[] uranium) throws JSONException, IOException, ParseException {
         TrafficAPI tApi = new TrafficAPI();
         UserSettings usersettings = new UserSettings(null, null, Sex.MALE,
-                new Address("50", "Hanauer Landstrasse", "60314", "Frankfurt am Main"));
+                new Address("6", "Hanauer Landstrasse", "60314", "Frankfurt am Main"));
         URL requestUrl = tApi.buildRequestUrl(usersettings);
+
+        System.out.println(requestUrl);
 
         Gson gson = new Gson();
         JsonObject total = tApi.getTotalJsonObject(requestUrl, gson);
 
         List<TrafficIncidentDetails> trafficIncidentDetails = tApi.extractIncidentDetails(gson, total);
+        List<TrafficIncidentLocation> trafficIncidentLocations = tApi.extractIncidentLocations(gson, total);
 
-        trafficIncidentDetails.forEach(tid -> System.out.println(tid.getTrafficIncidentType()
-                .toString() + " "
-                + tid.getTrafficIncidentStatus()
-                        .toString()));
+        System.out.println("Number of traffic incidents: " + trafficIncidentDetails.size());
+
+        System.out
+                .println("------------------------------------------------------------------------------------------");
+
+        trafficIncidentDetails.forEach(tid -> System.out
+                .println("Type: " + tid.getTrafficIncidentType() + ", Status: " + tid.getTrafficIncidentStatus()));
+
+        System.out
+                .println("------------------------------------------------------------------------------------------");
+
+        trafficIncidentLocations.forEach(til -> System.out.println("Location: " + til.getStreetOfIncident()));
 
     }
 
