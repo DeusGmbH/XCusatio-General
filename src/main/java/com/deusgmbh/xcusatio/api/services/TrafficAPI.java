@@ -55,38 +55,30 @@ public class TrafficAPI extends APIService {
 
     private String mapMediumText;
 
-    // private List<TrafficIncidentDetails> trafficIncidentDetails;
-    // private List<TrafficIncidentLocation> trafficIncidentLocations;
-    //
-    // private List<TrafficIncidentTimes> trafficIncidentTimes;
     public TrafficAPI() {
 
     }
 
-    /**
-     * @throws IOException
-     * @throws ParseException
-     * @throws JSONException
-     * 
-     */
-
+    @Override
     public TrafficContext get(UserSettings usersettings) throws IOException {
 
+        // build the url for the request and build the total json response
+        // string
         URL requestUrl = buildRequestUrl(usersettings);
-
         Gson gson = new Gson();
         JsonObject total = getTotalJsonObject(requestUrl, gson);
-        System.out.println(total);
 
+        // extract all required information from json
         List<TrafficIncidentDetails> trafficIncidentDetails = extractIncidentDetails(gson, total);
-        // List<TrafficIncidentTimes> trafficIncidentTimes =
-        // extractIncidentTimes(trafficItemList);
-        // List<TrafficIncidentLocation> trafficIncidentLocations =
-        // extractIncidentLocations(trafficItemList);
+        List<TrafficIncidentLocation> trafficIncidentLocations = extractIncidentLocations(gson, total);
+        List<TrafficIncidentTimes> trafficIncidentTimes = extractIncidentTimes(gson, total);
 
-        return null;
-        // return new TrafficContext(trafficIncidentDetails,
-        // trafficIncidentLocations, trafficIncidentTimes);
+        // fill these information into the defined context object for traffic
+        // incidents
+        TrafficContext trafficContext = new TrafficContext(trafficIncidentDetails, trafficIncidentLocations,
+                trafficIncidentTimes);
+
+        return trafficContext;
     }
 
     /**
@@ -204,16 +196,12 @@ public class TrafficAPI extends APIService {
         // return trafficIncidentTimes;
     }
 
-    public void printResponse() {
-        // TODO Auto-generated method stub
-
-    }
-
     private String prepareUrlBuild(GeocodeData gcd, UserSettings usersettings) {
         int[] mapTiles = gcd.getMapTiles();
         return "12/" + String.valueOf(mapTiles[0]) + "/" + String.valueOf(mapTiles[1]);
     }
 
+    @Override
     public URL buildRequestUrl(UserSettings usersettings) throws IOException {
         GeocodeAPI gApi = new GeocodeAPI();
         GeocodeData gcd = gApi.get(usersettings);
@@ -267,8 +255,4 @@ public class TrafficAPI extends APIService {
 
     }
 
-    public void extractDesiredInfoFromResponse() throws JSONException, ParseException {
-        // TODO Auto-generated method stub
-
-    }
 }
