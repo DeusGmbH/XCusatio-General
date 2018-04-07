@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.deusgmbh.xcusatio.context.wildcard.APIContext;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings.ExcuseVibeMode;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 
 /**
@@ -13,6 +14,7 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
  *
  */
 public class Context {
+    private ExcuseVibeMode excuseVibeMode;
     private LocalDate age;
     private Sex sex;
     private ExcuseVibes manuellExcusesVibes;
@@ -76,6 +78,15 @@ public class Context {
 
     public Context setApiContext(APIContext apiContext) {
         this.apiContext = apiContext;
+        return this;
+    }
+
+    public ExcuseVibeMode getExcuseVibeMode() {
+        return excuseVibeMode;
+    }
+
+    public Context setExcuseVibeMode(ExcuseVibeMode excuseVibesMode) {
+        this.excuseVibeMode = excuseVibesMode;
         return this;
     }
 

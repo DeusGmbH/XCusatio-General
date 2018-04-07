@@ -1,5 +1,7 @@
 package com.deusgmbh.xcusatio.data.tags;
 
+import java.util.Arrays;
+
 public enum Tag {
     MALE(TagFilterType.CONTAINED_IN_EXCUSE),
     FEMALE(TagFilterType.CONTAINED_IN_EXCUSE),
@@ -48,6 +50,7 @@ public enum Tag {
     Tag(TagFilterType filterType, boolean lecturerPreference, String description) {
         this.description = description;
         this.filterType = filterType;
+        this.lecturerPreference = lecturerPreference;
     }
 
     Tag(TagFilterType filterType, boolean lecturerPreference) {
@@ -101,5 +104,14 @@ public enum Tag {
                 .equals(TagFilterType.CONTAINED_IN_EXCUSE)
                 || this.getFilterType()
                         .equals(TagFilterType.BOTH);
+    }
+
+    public boolean isNotExcuseVibe() {
+        return !this.isExcuseVibe();
+    }
+
+    private boolean isExcuseVibe() {
+        return Arrays.asList(Tag.FUNNY, Tag.SUCK_UP, Tag.AGGRESSIVE)
+                .contains(this);
     }
 }

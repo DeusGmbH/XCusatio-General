@@ -12,7 +12,7 @@ public class UserSettings {
     private Sex sex;
     private Address home;
     private Address university;
-    private ExcuseVibeMode excuseVibesMode;
+    private ExcuseVibeMode excuseVibeMode;
     private ExcuseVibes excuseVibes;
 
     public UserSettings(LocalDate birthdate, Sex sex, Address home, ExcuseVibeMode excuseVibesMode,
@@ -21,7 +21,7 @@ public class UserSettings {
         this.home = home;
         this.birthdate = birthdate;
         this.sex = sex;
-        this.excuseVibesMode = excuseVibesMode;
+        this.excuseVibeMode = excuseVibesMode;
         this.excuseVibes = ExcuseVibes;
     }
 
@@ -70,11 +70,11 @@ public class UserSettings {
     }
 
     public ExcuseVibeMode getExcuseVibeMode() {
-        return excuseVibesMode;
+        return excuseVibeMode;
     }
 
     public UserSettings setExcuseVibeMode(ExcuseVibeMode ExcuseVibesMode) {
-        this.excuseVibesMode = ExcuseVibesMode;
+        this.excuseVibeMode = ExcuseVibesMode;
         return this;
     }
 

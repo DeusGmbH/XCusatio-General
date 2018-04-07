@@ -21,8 +21,7 @@ import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
-
-import javafx.collections.ObservableList;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings.ExcuseVibeMode;
 
 /**
  * 
@@ -32,7 +31,6 @@ import javafx.collections.ObservableList;
 public class ExcuseGenerator {
     private final String NO_EXCUSE_FOUND = "Es konnte leider keine Ausrede für dieses Scenario gefunden werden. Im Editor können diese aber hinzugefügt werden.";
     private Wildcards wildcards;
-    private ObservableList<Excuse> excuseList;
 
     public ExcuseGenerator(Wildcards wildcards) {
         this.wildcards = wildcards;
@@ -215,8 +213,15 @@ public class ExcuseGenerator {
     private Collection<Tag> getLecturerTag(Context context) {
         if (context.getLecturer() != null && context.getLecturer()
                 .getTags() != null) {
-            return context.getLecturer()
+            List<Tag> lecturerTags = context.getLecturer()
                     .getTags();
+            if (context.getExcuseVibeMode()
+                    .equals(ExcuseVibeMode.MANUALLY)) {
+                return lecturerTags.stream()
+                        .filter(Tag::isNotExcuseVibe)
+                        .collect(Collectors.toList());
+            }
+            return lecturerTags;
         }
         return new HashSet<>();
     }
