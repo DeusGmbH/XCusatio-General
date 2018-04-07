@@ -34,7 +34,8 @@ public enum Tag {
     TRAIN_HEAVILY_DELAYED(TagFilterType.CONTAINED_IN_CONTEXT),
     BUS(TagFilterType.CONTAINED_IN_CONTEXT),
     ACCIDENT(TagFilterType.CONTAINED_IN_CONTEXT),
-    CONSTRUCTION(TagFilterType.CONTAINED_IN_CONTEXT);
+    CONSTRUCTION(TagFilterType.CONTAINED_IN_CONTEXT),
+    SETLX(TagFilterType.CONTAINED_IN_CONTEXT, true);
 
     private String description;
     private TagFilterType filterType;
