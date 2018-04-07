@@ -1,20 +1,25 @@
 package com.deusgmbh.xcusatio.api.services;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.IOUtils;
+
 import com.deusgmbh.xcusatio.api.APIService;
+import com.deusgmbh.xcusatio.api.data.TramDetails;
 import com.deusgmbh.xcusatio.context.wildcard.RNVContext;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -23,6 +28,7 @@ public class RNVAPI extends APIService {
     private final static Logger LOGGER = Logger.getLogger(RNVAPI.class.getName());
 
     private final static String DUALE_HOCHSCHULE_STATION_ID = "2521";
+    private final static String PARADEPLATZ = "2451"; // for tests only
     private final static String BASE_URL = "http://rnv.the-agent-factory.de:8080/easygo2/api";
     private final static String RNV_API_TOKEN = "l1kjqp3r2m788o0oouolaeg8ui";
 
@@ -41,21 +47,16 @@ public class RNVAPI extends APIService {
 
     private final static SimpleDateFormat RNV_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd+hh:mm:ss");
 
+    private URL[] requestUrls;
+
     // private List<TramDetails> tramDetails;
     // private List<TramNews> tramNews;
     // private List<TramStatus> tramStatus;
     // private String universityStationId;
     // private List<String> universityLinesIds;
 
-    public RNVAPI() {
-        // super();
-        // this.jsonResponses = new String[3];
-        // this.tramDetails = new LinkedList<>();
-        // this.tramNews = new LinkedList<>();
-        // this.tramStatus = new LinkedList<>();
-        // this.universityStationId = DUALE_HOCHSCHULE_STATION_ID;
-        // this.universityLinesIds = new LinkedList<>();
-        // universityLinesIds.add("5");
+    public RNVAPI(UserSettings userSettings) {
+        this.requestUrls = this.buildRequestUrls(userSettings);
     }
 
     @Override
@@ -63,7 +64,45 @@ public class RNVAPI extends APIService {
 
         URL requestUrl = buildRequestUrl(usersettings);
         Gson gson = new Gson();
-        JsonObject total = getTotalJsonObject(requestUrl, gson);
+        JsonArray totalLines = getLinesPackage();
+
+        TramDetails tramDetails = extractTramDetails(gson, totalLines, DUALE_HOCHSCHULE_STATION_ID);
+        return null;
+    }
+
+    private TramDetails extractTramDetails(Gson gson, JsonArray totalLines, String searchedStationId) {
+
+        List<JsonObject> lineObjects = new LinkedList<>();
+        for (int lineObjectIndex = 0; lineObjectIndex < totalLines.size(); ++lineObjectIndex) {
+            lineObjects.add(totalLines.get(lineObjectIndex)
+                    .getAsJsonObject());
+        }
+
+        // extract the line label(s) of trams stopping at the searched stations
+        List<String> linesStoppingAtSearchedStation = new LinkedList<>();
+        lineObjects.forEach(lineObject -> {
+            JsonArray stopIdsOfThisLine = gson.fromJson(lineObject.get(JSONARR_LINE_IDS), JsonArray.class);
+
+            for (int stopId = 0; stopId < stopIdsOfThisLine.size(); ++stopId) {
+                String lineStopId = stopIdsOfThisLine.get(stopId)
+                        .toString();
+                lineStopId = lineStopId.substring(1, lineStopId.length() - 1);
+
+                if (lineStopId.equals(searchedStationId)) {
+                    String line = gson.fromJson(stopIdsOfThisLine.get(stopId), String.class);
+                    String foundLine = gson.fromJson(lineObject.get(JSON_LINE_LABEL), String.class);
+                    linesStoppingAtSearchedStation.add(foundLine);
+                }
+            }
+        });
+        linesStoppingAtSearchedStation.forEach(s -> System.out.println("Found line: " + s));
+
+        // extract the stops of these lines
+        // TODO 1: get stopIds of the line
+        // TODO 2: map stopIds to station names ectracting them for each station
+        // id out of the stations package
+        // TODO 3: fill a list of streings with these names
+
         return null;
     }
 
@@ -306,77 +345,90 @@ public class RNVAPI extends APIService {
         return Integer.parseInt(clockTime.substring(3, 5));
     }
 
-    public JsonElement[] getResponsesFromSites(URL[] requestUrls) throws IOException {
-        JsonElement[] jsonResponseElements = new JsonObject[3];
-        String[] responseStrings = getJsonFromInputStream(requestUrls);
-        if (jsonResponseElements.length != responseStrings.length) {
-            throw new RuntimeException("bug in method getResponsesFromSites");
-        }
-        JsonParser parser = new JsonParser();
-        int responseIndex = 0;
-        for (String response : responseStrings) {
-            JsonElement element = parser.parse(response);
-            if (element.isJsonObject()) {
-                jsonResponseElements[responseIndex] = element;
-                System.out.println(element);
-            } else {
-                response = "{\"object\":" + response + "}";
-                element = parser.parse(response);
-                jsonResponseElements[responseIndex] = element;
-            }
+    private JsonObject getStationsPackage() throws IOException {
+        URL requestUrl = this.requestUrls[0];
+        JsonElement element = getJsonFromWebRequest(requestUrl);
+        JsonObject stationsObject = element.getAsJsonObject();
+        return stationsObject;
 
-        }
-        return jsonResponseElements;
     }
 
-    private String[] getJsonFromInputStream(URL[] requestUrls) throws IOException {
-        String[] jsonResponses = new String[3];
-        int responseIndex = 0;
-        for (URL url : requestUrls) {
-            StringBuilder sb = new StringBuilder();
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("RNV_API_TOKEN", RNV_API_TOKEN);
-            connection.setRequestProperty("Content-Type", "application/json");
+    private JsonArray getLinesPackage() throws IOException {
+        URL requestUrl = this.requestUrls[1];
+        JsonElement element = getJsonFromWebRequest(requestUrl);
+        JsonArray linesObject = element.getAsJsonArray();
+        return linesObject;
+    }
 
-            InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-            BufferedReader buffReader = new BufferedReader(reader);
-            String line;
-            while ((line = buffReader.readLine()) != null) {
-                sb.append(line);
-            }
-            byte[] bytes = sb.toString()
-                    .getBytes();
-            jsonResponses[responseIndex] = new String(bytes, "UTF-8");
-            buffReader.close();
-            reader.close();
-            connection.disconnect();
-            ++responseIndex;
-        }
+    private JsonObject getStationsMonitorPackage() throws IOException {
+        URL requestUrl = this.requestUrls[2];
+        JsonElement element = getJsonFromWebRequest(requestUrl);
+        JsonObject stationsMonitorArray = element.getAsJsonObject();
+        return stationsMonitorArray;
+    }
 
-        return jsonResponses;
+    private JsonElement getJsonFromWebRequest(URL requestUrl) throws IOException {
+        String jsonResponse = null;
+        StringBuilder sb = new StringBuilder();
+
+        HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("RNV_API_TOKEN", RNV_API_TOKEN);
+        connection.setRequestProperty("Content-Type", "application/json");
+        // TODO handle encoding problems
+
+        InputStream is = connection.getInputStream();
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(IOUtils.toString(is));
+        return element;
+
+        // JsonParser parser = new JsonParser();
+        // JsonElement element = parser.parse(jsonResponseString);
+        // JsonObject total = gson.fromJson(element.getAsJsonObject(),
+        // JsonObject.class);
+        //
+        // InputStreamReader reader = new
+        // InputStreamReader(connection.getInputStream());
+        // BufferedReader buffReader = new BufferedReader(reader);
+        // String line;
+        // while ((line = buffReader.readLine()) != null) {
+        // sb.append(line);
+        // }
+        // byte[] bytes = sb.toString()
+        // .getBytes();
+        // jsonResponse = new String(bytes, "UTF-8");
+        // buffReader.close();
+        // reader.close();
+        // connection.disconnect();
+        // return jsonResponse;
     }
 
     public static void main(String[] aflok) throws IOException {
         UserSettings userSettings = null;
-        RNVAPI rnvapi = new RNVAPI();
+        RNVAPI rnvapi = new RNVAPI(userSettings);
 
-        URL[] requestUrls = rnvapi.buildRequestUrls(userSettings);
         // System.out.println("Request URLs:");
-        for (URL url : requestUrls) {
+        for (URL url : rnvapi.requestUrls) {
             System.out.println(url);
         }
-        System.out.println(
-                "---------------------------------------------------------------------------------------------------------------------------------------");
 
-        System.out.println("Json Objects:");
+        JsonObject stationsPackage = rnvapi.getStationsPackage();
+        System.out.println(stationsPackage);
+        JsonArray linesPackage = rnvapi.getLinesPackage();
+        System.out.println(linesPackage);
 
-        JsonElement[] jsonElements = rnvapi.getResponsesFromSites(requestUrls);
-        for (JsonElement jsonObject : jsonElements) {
-            System.out.println(jsonObject);
-        }
+        JsonObject stationsMonitorPackage = rnvapi.getStationsMonitorPackage();
+        System.out.println(stationsMonitorPackage);
+
         System.out.println(
-                "---------------------------------------------------------------------------------------------------------------------------------------");
+                "------------------------------3---------------------------------------------------------------------------------------------------------");
+
+        Gson gson = new Gson();
+        JsonArray totalLines = rnvapi.getLinesPackage();
+
+        // TramDetails tramDetails = rnvapi.extractTramDetails(gson, totalLines,
+        // PARADEPLATZ);
+        TramDetails tramDetails = rnvapi.extractTramDetails(gson, totalLines, DUALE_HOCHSCHULE_STATION_ID);
 
     }
 
