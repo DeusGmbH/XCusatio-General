@@ -74,8 +74,7 @@ public class QuickSettingsPane extends VBox {
         UserSettings oldValue = this.userSettings.getValue();
         ExcuseVibes newExcuseVibes = new ExcuseVibes(this.aggressionToggle.getToggleState(),
                 this.humorToggle.getToggleState(), this.fawnToggle.getToggleState());
-        this.userSettings.set(new UserSettings(oldValue.getGoogleCalendar(), oldValue.getBirthdate(), oldValue.getSex(),
-                oldValue.getHome(),
+        this.userSettings.set(new UserSettings(oldValue.getBirthdate(), oldValue.getSex(), oldValue.getHome(),
                 autoMoodToggle.getToggleState() ? ExcuseVibeMode.AUTOMATIC : ExcuseVibeMode.MANUALLY, newExcuseVibes));
     }
 

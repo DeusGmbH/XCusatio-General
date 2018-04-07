@@ -33,14 +33,14 @@
 
 .tab .tab-label { 
     -fx-alignment: CENTER;
-    -fx-text-fill: #FFF;
+    -fx-text-fill: #AAA;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
 
 .tab:hover .tab-label
 {
-    -fx-text-fill: #AAA;
+    -fx-text-fill: #666;
 }
 
 .tab:selected .tab-label { 

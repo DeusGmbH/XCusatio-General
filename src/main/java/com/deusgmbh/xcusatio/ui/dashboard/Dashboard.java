@@ -101,7 +101,6 @@ public class Dashboard extends BorderPane {
     }
 
     public void setThumbGesture(double value) {
-        // TODO: calculate thumb rotation in steps
         this.reactionPane = new ScenarioReactionPane((int) (value * 180));
         leftPane.setCenter(reactionPane);
     }
@@ -138,7 +137,7 @@ public class Dashboard extends BorderPane {
     }
 
     public void registerMostRecentlyUsedExcuses(ObservableList<String> mostRecentlyUsedObservableList) {
-        rightPane.setCenter(new RecentlyUsedPane(mostRecentlyUsedObservableList));
+        rightPane.setBottom(new RecentlyUsedPane(mostRecentlyUsedObservableList));
     }
 
     public void registerUserSettings(ObjectProperty<UserSettings> userSettings) {

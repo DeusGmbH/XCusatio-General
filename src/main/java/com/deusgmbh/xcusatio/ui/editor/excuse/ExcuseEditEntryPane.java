@@ -31,6 +31,7 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
     private static final String EXCUSE_TYPE_LABEL_TEXT = "Ausredentyp:";
     private static final String TAGS_LABEL_TEXT = "Tags:";
     private static final String DEFAULT_LAST_USED_TEXT = "Bisher nicht benutzt";
+    private static final String EXCUSE_TEXTFIELD_PLACEHOLDER = "Ausrede";
     private static final double TAGS_LIST_WIDTH_PROPERTY = 0.6;
     private static final double TAGS_LIST_HEIGHT_PROPERTY = 0.4;
     private static final double EXCUSE_TEXT_FIELD_WIDTH_PROPERTY = 0.6;
@@ -57,10 +58,11 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
                 .getText(), wildcardSetSupplier.get());
         this.excuseTextField.bindSize(this.heightProperty()
                 .multiply(EXCUSE_TEXT_FIELD_HEIGHT_MULTIPLIER));
-        this.tagsListCellView = new DoubleListView<Tag>(editableItems.get(id)
-                .getTags(),
-                super.removeFromAllTagsList(editableItems.get(id)
-                        .getTags()));
+        this.excuseTextField.setPlaceholder(EXCUSE_TEXTFIELD_PLACEHOLDER);
+
+        List<Tag> excuseTags = editableItems.get(id)
+                .getTags();
+        this.tagsListCellView = new DoubleListView<Tag>(excuseTags, super.removeFromAllTagsList(excuseTags));
         this.tagsListCellView.bindSize(this.widthProperty()
                 .multiply(TAGS_LIST_WIDTH_PROPERTY),
                 this.heightProperty()
@@ -94,13 +96,10 @@ public class ExcuseEditEntryPane extends EditEntryPane<Excuse> {
     }
 
     @Override
-    protected void saveChanges() {
-        this.editableItems
-                .set(this.selectedItemId,
-                        new Excuse(excuseTextField.getText(), scenarioTypes.get(excuseTypeChoiceBox.getSelectionModel()
-                                .getSelectedIndex()), tagsListCellView.getLeftListItems(),
-                                editableItems.get(selectedItemId)
-                                        .getLastUsed()));
+    protected Excuse getEdtitedEntry() {
+        return new Excuse(excuseTextField.getText(), scenarioTypes.get(excuseTypeChoiceBox.getSelectionModel()
+                .getSelectedIndex()), tagsListCellView.getLeftListItems(), editableItems.get(selectedItemId)
+                        .getLastUsed());
     }
 
 }

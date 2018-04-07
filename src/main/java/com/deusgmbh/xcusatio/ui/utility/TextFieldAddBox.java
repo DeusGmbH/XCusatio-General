@@ -57,7 +57,7 @@ public class TextFieldAddBox extends BorderPane {
         StackPane addBoxStackPane = new StackPane(addBox);
         addBoxStackPane.setAlignment(Pos.CENTER_LEFT);
 
-        Button shiftEntryButton = new Button("^");
+        Button shiftEntryButton = new Button("+");
         shiftEntryButton.getStyleClass()
                 .add("shift-button");
 
@@ -91,6 +91,10 @@ public class TextFieldAddBox extends BorderPane {
 
     public String getText() {
         return textField.getText();
+    }
+
+    public void setPlaceholder(String placeholder) {
+        textField.setPromptText(placeholder);
     }
 
     public void bindSize(DoubleBinding doubleBinding) {

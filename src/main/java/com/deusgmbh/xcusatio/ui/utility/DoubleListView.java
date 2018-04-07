@@ -3,9 +3,12 @@ package com.deusgmbh.xcusatio.ui.utility;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.deusgmbh.xcusatio.data.tags.ToStringComparator;
+
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
@@ -40,9 +43,9 @@ public class DoubleListView<T> extends BorderPane {
 
     public DoubleListView(ObservableList<T> leftList, ObservableList<T> rightList) {
         int maxListSize = leftList.size() + rightList.size();
-        leftListView = new ListView<T>(leftList);
+        leftListView = new ListView<T>(new SortedList<T>(leftList, new ToStringComparator<T>()));
         leftListView.setPrefHeight(maxListSize > MAX_TABLE_ROW ? MAX_TABLE_ROW * CELL_SIZE : maxListSize * CELL_SIZE);
-        rightListView = new ListView<T>(rightList);
+        rightListView = new ListView<T>(new SortedList<T>(rightList, new ToStringComparator<T>()));
         rightListView.setPrefHeight(maxListSize > MAX_TABLE_ROW ? MAX_TABLE_ROW * CELL_SIZE : maxListSize * CELL_SIZE);
 
         shiftButtonPane = new ShiftButtonPane(createMoveItemAction(leftListView, rightListView),
@@ -61,10 +64,12 @@ public class DoubleListView<T> extends BorderPane {
                 T selectedItem = moveFrom.getSelectionModel()
                         .getSelectedItem();
                 if (selectedItem != null) {
-                    moveFrom.getItems()
-                            .remove(selectedItem);
-                    moveTo.getItems()
-                            .add(selectedItem);
+                    ObservableList<T> newGiveList = FXCollections.observableArrayList(moveFrom.getItems());
+                    newGiveList.remove(selectedItem);
+                    ObservableList<T> newTagList = FXCollections.observableArrayList(moveTo.getItems());
+                    newTagList.add(selectedItem);
+                    moveFrom.setItems(new SortedList<T>(newGiveList, new ToStringComparator<T>()));
+                    moveTo.setItems(new SortedList<T>(newTagList, new ToStringComparator<T>()));
                 }
             }
         };
@@ -84,4 +89,5 @@ public class DoubleListView<T> extends BorderPane {
         rightListView.prefHeightProperty()
                 .bind(heightProperty.multiply(LIST_VIEW_HEIGHT_MULTIPLIER));
     }
+
 }

@@ -1,5 +1,9 @@
 package com.deusgmbh.xcusatio.ui.editor.lecturer;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.ui.editor.EditEntryPane;
@@ -26,6 +30,8 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
     private static final double RIGHT_EDIT_HALF_MULTIPLIER = 0.6;
     private static final double LECTURER_LECTURES_LIST_VIEW_HEIGHT_MULTIPLIER = 0.15;
     private static final double TAGS_LIST_HEIGHT_MULTIPLIER = 0.4;
+    private static final String LECTURER_NAME_TEXTFIELD_PLACEHOLDER = "Dozentenname";
+    private static final String LECTURER_LECTURES_PLACEHOLDER = "Vorlesung hinzufügen";
 
     private TextField lecturerNameTextField;
     private ListViewTextField lecturerLecturesPane;
@@ -50,16 +56,19 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
         this.lecturerNameTextField.prefWidthProperty()
                 .bind(this.widthProperty()
                         .multiply(RIGHT_EDIT_HALF_MULTIPLIER));
+        this.lecturerNameTextField.setPromptText(LECTURER_NAME_TEXTFIELD_PLACEHOLDER);
         this.lecturerLecturesPane = new ListViewTextField(editableItems.get(selectedItemId)
                 .getLectures());
         this.lecturerLecturesPane.bindSize(this.widthProperty()
                 .multiply(RIGHT_EDIT_HALF_MULTIPLIER),
                 this.heightProperty()
                         .multiply(LECTURER_LECTURES_LIST_VIEW_HEIGHT_MULTIPLIER));
-        this.tagsListCellView = new DoubleListView<Tag>(editableItems.get(selectedItemId)
-                .getTags(),
-                super.removeFromAllTagsList(editableItems.get(selectedItemId)
-                        .getTags()));
+        this.lecturerLecturesPane.setPlaceholder(LECTURER_LECTURES_PLACEHOLDER);
+
+        List<Tag> lectuererTags = editableItems.get(selectedItemId)
+                .getTags();
+                
+        this.tagsListCellView = new DoubleListView<Tag>(lectuererTags, this.removeFromAllTagsList(lectuererTags));
         this.tagsListCellView.bindSize(this.widthProperty()
                 .multiply(RIGHT_EDIT_HALF_MULTIPLIER),
                 this.heightProperty()
@@ -73,9 +82,18 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
     }
 
     @Override
-    protected void saveChanges() {
-        this.editableItems.set(this.selectedItemId, new Lecturer(lecturerNameTextField.getText(),
-                lecturerLecturesPane.getItems(), tagsListCellView.getLeftListItems()));
+    protected Lecturer getEdtitedEntry() {
+        return new Lecturer(lecturerNameTextField.getText(), lecturerLecturesPane.getItems(),
+                tagsListCellView.getLeftListItems());
+    }
+
+    @Override
+    protected List<Tag> removeFromAllTagsList(List<Tag> listToRemove) {
+        List<Tag> reducedSet = new ArrayList<Tag>(this.allTagsSetSupplier.get()).stream()
+                .filter(Tag::isLecturerPreference)
+                .collect(Collectors.toList());
+        reducedSet.removeAll(listToRemove);
+        return reducedSet;
     }
 
 }
