@@ -1,10 +1,8 @@
 package com.deusgmbh.xcusatio.ui.dashboard.excusepane;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 
 /**
  * 
@@ -14,30 +12,22 @@ import javafx.scene.text.Font;
  *
  */
 public class ExcuseLabelPane extends VBox {
-    private static final int EXCUSE_TITLE_LABEL_FONT_SIZE = 40;
-    private static final int EXCUSE_LABEL_FONT_SIZE = 24;
-
-    // TODO: Change
     private static final String EXCUSE_TITLE = "Ausrede";
 
     public ExcuseLabelPane(String output) {
-        Label excuseTitleLabel = createCenteredLabel(EXCUSE_TITLE, EXCUSE_TITLE_LABEL_FONT_SIZE,
-                new Insets(5, 0, 20, 0));
-        excuseTitleLabel.getStyleClass().add("h1");
-        Label excuseLabel = createCenteredLabel(output, EXCUSE_LABEL_FONT_SIZE, new Insets(10, 0, 15, 0));
-        excuseLabel.getStyleClass().add("h2");
+        Label excuseTitleLabel = createFormattedLabel(EXCUSE_TITLE, "h1");
+        Label excuseLabel = createFormattedLabel(output, "excuse-label");
 
-        this.getChildren().addAll(excuseTitleLabel, excuseLabel);
+        this.getChildren()
+                .addAll(excuseTitleLabel, excuseLabel);
     }
 
-    private Label createCenteredLabel(String text, int fontSize, Insets paddingInsets) {
+    private Label createFormattedLabel(String text, String styleClass) {
         Label label = new Label(text);
-        // design only temporary, later with CSS
         label.setMaxWidth(Double.MAX_VALUE);
-        label.setFont(new Font("Arial", fontSize));
         label.setAlignment(Pos.CENTER);
-        label.setPadding(paddingInsets);
-        label.setWrapText(true);
+        label.getStyleClass()
+                .add(styleClass);
         return label;
     }
 }

@@ -13,10 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 
 /**
  * 
@@ -28,9 +28,10 @@ import javafx.scene.layout.VBox;
  *
  */
 
-public abstract class EntryListPane<T> extends VBox {
-									   
-									
+public abstract class EntryListPane<T> extends BorderPane {
+
+    private static final String ENTRY_LIST_STYLESHEET_PATH = "file:assets/entry_list_pane_stylesheet.css";
+
     protected TableView<T> entryTable;
     protected Button addEntryButton;
     protected Button removeSelectedEntryButton;
@@ -38,13 +39,6 @@ public abstract class EntryListPane<T> extends VBox {
 
     public EntryListPane() {
         HBox entryOptionsPane = new HBox();
-													
-												   
-									  
-														   
-
-						  
-									   
 
         entryTable = new TableView<>();
         entryTable.setEditable(false);
@@ -53,7 +47,7 @@ public abstract class EntryListPane<T> extends VBox {
         this.setTableColumns(this.getRequiredTableColumns());
 
         removeSelectedEntryButton = new Button("Entfernen");
-        addEntryButton = new Button("Hinzufügen");
+        addEntryButton = new Button("Hinzuf\u00fcgen");
 
         Pane spacer = new Pane();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -66,11 +60,14 @@ public abstract class EntryListPane<T> extends VBox {
         entryOptionsPane.getChildren()
                 .addAll(removeSelectedEntryButton, spacer, addEntryButton);
 
-        this.getChildren()
-                .addAll(entryTable, entryOptionsPane);
+        this.setCenter(entryTable);
+        this.setBottom(entryOptionsPane);
 
         this.createRemoveEntryButtonListener();
         this.createAddEntryButtonListener();
+
+        this.getStylesheets()
+                .add(ENTRY_LIST_STYLESHEET_PATH);
     }
 
     private void setTableColumns(HashMap<String, String> columnList) {
@@ -114,9 +111,14 @@ public abstract class EntryListPane<T> extends VBox {
         removeSelectedEntryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent e) {
-                entryTable.getItems()
-                        .remove(entryTable.getSelectionModel()
-                                .getSelectedIndex());
+                if (entryTable.getSelectionModel()
+                        .getSelectedItems()
+                        .size() > 0) {
+                    entryTable.getItems()
+                            .remove(entryTable.getSelectionModel()
+                                    .getSelectedIndex());
+                }
+
             }
         });
     }

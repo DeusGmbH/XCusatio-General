@@ -3,6 +3,7 @@ package com.deusgmbh.xcusatio.ui.dashboard;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
@@ -18,17 +19,23 @@ public class RecentlyUsedPane extends VBox {
 
     // TODO: Not static, but dynamic dependent on the size of this Pane
     private static final int LIMIT_RECENTLY_USED_ENTRIES = 10;
-    private static final int CELL_HEIGHT = 34;
+    private static final int CELL_HEIGHT = 37;
 
     public RecentlyUsedPane(ObservableList<String> recentlyUsedList) {
         Label recentlyUsedLabel = new Label(RECENTLY_USED_TITLE);
         recentlyUsedLabel.getStyleClass()
                 .add("h3");
         ListView<String> recentlyUsedListView = new ListView<String>(recentlyUsedList);
-        this.getChildren()
-                .addAll(recentlyUsedLabel, recentlyUsedListView);
-        recentlyUsedListView.prefHeightProperty()
+        recentlyUsedListView.setMaxHeight(LIMIT_RECENTLY_USED_ENTRIES * CELL_HEIGHT);
+        HBox spacer = new HBox();
+        spacer.minHeightProperty()
                 .bind(this.heightProperty()
-                        .multiply(0.85));
+                        .multiply(0.07));
+        spacer.maxHeightProperty()
+                .bind(this.heightProperty()
+                        .multiply(0.07));
+
+        this.getChildren()
+                .addAll(recentlyUsedLabel, recentlyUsedListView, spacer);
     }
 }

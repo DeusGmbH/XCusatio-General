@@ -24,9 +24,8 @@ public class CalendarAPI extends APIService {
         lecturesRead.add("Programmieren in C");
 
         List<Tag> tagList = new LinkedList<>();
-        tagList.add(Tag.MALE);
-        tagList.add(Tag.AGE_UNDER_50);
         tagList.add(Tag.FUNNY);
+        tagList.add(Tag.SUCK_UP);
 
         Lecturer kruse = new Lecturer(null, null, null);
         kruse.setLectures(lecturesRead);
