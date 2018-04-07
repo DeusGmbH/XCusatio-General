@@ -79,7 +79,7 @@ public class RNVAPI extends APIService {
     }
     
     private List<TramNews> extractTramNews(JsonArray tramNewsEntries) {
-    	return null;
+    	return new LinkedList<>();
     }
 
     
