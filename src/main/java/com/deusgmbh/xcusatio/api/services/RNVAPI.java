@@ -19,6 +19,7 @@ import org.apache.http.impl.io.SocketOutputBuffer;
 
 import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.api.data.TramDetails;
+import com.deusgmbh.xcusatio.api.data.TramNews;
 import com.deusgmbh.xcusatio.context.wildcard.RNVContext;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.google.gson.Gson;
@@ -75,6 +76,10 @@ public class RNVAPI extends APIService {
 
         List<TramDetails> tramDetails = extractTramDetails(gson, totalLines, totalStations, totalStationsMonitor, DUALE_HOCHSCHULE_STATION_ID);
         return new RNVContext(tramDetails, null, null);
+    }
+    
+    private List<TramNews> extractTramNews(JsonArray tramNewsEntries) {
+    	return null;
     }
 
     
