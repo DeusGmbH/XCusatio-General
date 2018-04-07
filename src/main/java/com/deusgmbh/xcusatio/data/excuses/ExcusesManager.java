@@ -432,7 +432,7 @@ public class ExcusesManager extends DataManager<Excuse> {
                                 .addTag(Tag.AGE_BETWEEN_30_AND_50)
                                 .addTag(Tag.AGE_OVER_50)
                                 .addTag(Tag.FUNNY))
-                .add(new Excuse("Ich sage nur $newEntryTitle$.", ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE)
+                .add(new Excuse("Ich sage nur $newsEntryTitle$.", ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE)
                         .addTag(Tag.FEMALE)
                         .addTag(Tag.AGE_UNDER_18)
                         .addTag(Tag.AGE_BETWEEN_18_AND_21)

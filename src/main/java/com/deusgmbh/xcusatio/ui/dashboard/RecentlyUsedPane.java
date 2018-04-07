@@ -17,7 +17,6 @@ import javafx.scene.layout.VBox;
 public class RecentlyUsedPane extends VBox {
     private static final String RECENTLY_USED_TITLE = "Zuletzt generierte Ausreden";
 
-    // TODO: Not static, but dynamic dependent on the size of this Pane
     private static final int LIMIT_RECENTLY_USED_ENTRIES = 10;
     private static final int CELL_HEIGHT = 37;
 
