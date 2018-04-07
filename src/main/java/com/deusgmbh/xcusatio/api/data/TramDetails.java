@@ -11,16 +11,17 @@ import java.util.List;
 public class TramDetails {
     private String lineLabel;
     private String homeStation; /* the relevant station for the student */
-    private int differenceTimeInMinutes; /*
+    private List<Integer> differenceTimesInMinutes; /*
                                           * in relation to normal time on
                                           * homeStation
                                           */
     private List<String> stops;
 
-    public TramDetails(String lineNumber, String homeStation, List<String> stops) {
+    public TramDetails(String lineNumber, String homeStation, List<Integer> differenceTimesInMinutes, List<String> stops) {
         super();
         this.lineLabel = lineNumber;
         this.homeStation = homeStation;
+        this.differenceTimesInMinutes = differenceTimesInMinutes;
         this.stops = stops;
     }
 
@@ -48,12 +49,14 @@ public class TramDetails {
         this.homeStation = homeStation;
     }
 
-    public int getDifferenceTimeInMinutes() {
-        return differenceTimeInMinutes;
-    }
+	public List<Integer> getDifferenceTimesInMinutes() {
+		return differenceTimesInMinutes;
+	}
 
-    public void setDifferenceTimeInMinutes(int differenceTimeInMinutes) {
-        this.differenceTimeInMinutes = differenceTimeInMinutes;
-    }
+	public void setDifferenceTimesInMinutes(List<Integer> differenceTimesInMinutes) {
+		this.differenceTimesInMinutes = differenceTimesInMinutes;
+	}
+
+
 
 }
