@@ -53,16 +53,4 @@ public class TrafficContext {
         this.incidentTimes = incidentTimes;
     }
 
-    public void logContextContent() {
-        System.out.println("Details: ");
-        this.incidentDetails.forEach((s) -> LOGGER.info(s.getIncidentStatus() + ", " + s.getIncidentType()
-                .toString()));
-        System.out.println("Location: ");
-        this.incidentLocation.forEach((s) -> LOGGER.info(s.getCityOfIncident() + " : " + s.getStreetOfIncident()));
-        System.out.println("Times: ");
-        this.incidentTimes.forEach(s -> LOGGER
-                .info("START: " + s.getStartTimeOfTrafficIncident() + ", END: " + s.getEndTimeOfTrafficIncident()));
-        System.out.println("\n\nSUCCESSFULL.");
-    }
-
 }
