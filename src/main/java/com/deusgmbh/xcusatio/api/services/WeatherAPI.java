@@ -8,6 +8,10 @@ import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
+import java.io.FileReader;
+import javax.json.Json;
+import javax.json.JsonReader;
+import javax.json.JsonStructure;
 
 import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.context.wildcard.WeatherContext;
@@ -58,6 +62,19 @@ public class WeatherAPI extends APIService {
             return sb.toString();
         }
         return null;
+        
+        URL url = new URL("https://graph.facebook.com/search?q=java&type=post");
+        try (InputStream is = url.openStream();
+            JsonReader rdr = Json.createReader(is)) {
+                JsonObject obj = rdr.readObject();
+                JsonArray results = obj.getJsonArray("data");
+                for (JsonObject result : results.getValuesAs(JsonObject.class)) {
+                    System.out.print(result.getJsonObject("from").getString("name"));
+                    System.out.print(": ");
+                    System.out.println(result.getString("message", ""));
+                    System.out.println("-----------");
+                }
+            }
 
     }
 
