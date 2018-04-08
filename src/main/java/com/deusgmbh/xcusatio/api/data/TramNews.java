@@ -15,12 +15,12 @@ public class TramNews {
     private List<LocalDate[]> timestamps;
     private List<String> titles;
     private List<String> contents;
-    private List<List<String>> affectedLines;
+    private List<String> affectedLines;
 
     
     
     public TramNews(List<LocalDate[]> timestamps, List<String> titles, List<String> contents,
-			List<List<String>> affectedLines) {
+			List<String> affectedLines) {
 		super();
 		this.timestamps = timestamps;
 		this.titles = titles;
@@ -45,10 +45,10 @@ public class TramNews {
 	public void setContents(List<String> contents) {
 		this.contents = contents;
 	}
-	public List<List<String>> getAffectedLines() {
+	public List<String> getAffectedLines() {
 		return affectedLines;
 	}
-	public void setAffectedLines(List<List<String>> affectedLines) {
+	public void setAffectedLines(List<String> affectedLines) {
 		this.affectedLines = affectedLines;
 	}
 
