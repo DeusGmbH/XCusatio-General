@@ -127,7 +127,9 @@ public abstract class EditEntryPane<T> extends BorderPane {
         if (this.editableItems.isEmpty()) {
             this.editableItems.add(this.getEdtitedEntry());
         } else {
-            this.editableItems.set(this.selectedItemId, this.getEdtitedEntry());
+            if (this.getEdtitedEntry() != null) {
+                this.editableItems.set(this.selectedItemId, this.getEdtitedEntry());
+            }
         }
     }
 

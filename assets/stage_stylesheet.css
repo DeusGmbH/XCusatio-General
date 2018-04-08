@@ -55,3 +55,8 @@
 	-fx-wrap-text: true;
 	-fx-text-alignment: center;
 }
+
+.context-menu {
+  -fx-background-color: #444;
+  -fx-text-fill: white;
+}

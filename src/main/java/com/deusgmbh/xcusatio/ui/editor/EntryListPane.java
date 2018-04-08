@@ -114,11 +114,13 @@ public abstract class EntryListPane<T> extends BorderPane {
                 if (entryTable.getSelectionModel()
                         .getSelectedItems()
                         .size() > 0) {
-                    entryTable.getItems()
-                            .remove(entryTable.getSelectionModel()
-                                    .getSelectedIndex());
+                    if (entryTable.getItems()
+                            .size() > 1) {
+                        entryTable.getItems()
+                                .remove(entryTable.getSelectionModel()
+                                        .getSelectedIndex());
+                    }
                 }
-
             }
         });
     }

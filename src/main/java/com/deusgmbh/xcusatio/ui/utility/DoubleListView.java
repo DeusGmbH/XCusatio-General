@@ -12,6 +12,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
 /**
@@ -47,6 +48,8 @@ public class DoubleListView<T> extends BorderPane {
         leftListView.setPrefHeight(maxListSize > MAX_TABLE_ROW ? MAX_TABLE_ROW * CELL_SIZE : maxListSize * CELL_SIZE);
         rightListView = new ListView<T>(new SortedList<T>(rightList, new ToStringComparator<T>()));
         rightListView.setPrefHeight(maxListSize > MAX_TABLE_ROW ? MAX_TABLE_ROW * CELL_SIZE : maxListSize * CELL_SIZE);
+        leftListView.setOnMouseClicked(createMoveItemDoubleClickAction(leftListView, rightListView));
+        rightListView.setOnMouseClicked(createMoveItemDoubleClickAction(rightListView, leftListView));
 
         shiftButtonPane = new ShiftButtonPane(createMoveItemAction(leftListView, rightListView),
                 createMoveItemAction(rightListView, leftListView));
@@ -61,18 +64,33 @@ public class DoubleListView<T> extends BorderPane {
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent e) {
-                T selectedItem = moveFrom.getSelectionModel()
-                        .getSelectedItem();
-                if (selectedItem != null) {
-                    ObservableList<T> newGiveList = FXCollections.observableArrayList(moveFrom.getItems());
-                    newGiveList.remove(selectedItem);
-                    ObservableList<T> newTagList = FXCollections.observableArrayList(moveTo.getItems());
-                    newTagList.add(selectedItem);
-                    moveFrom.setItems(new SortedList<T>(newGiveList, new ToStringComparator<T>()));
-                    moveTo.setItems(new SortedList<T>(newTagList, new ToStringComparator<T>()));
+                moveItem(moveFrom, moveTo);
+            }
+        };
+    }
+
+    private EventHandler<MouseEvent> createMoveItemDoubleClickAction(ListView<T> moveFrom, ListView<T> moveTo) {
+        return new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent click) {
+                if (click.getClickCount() == 2) {
+                    moveItem(moveFrom, moveTo);
                 }
             }
         };
+    }
+
+    private void moveItem(ListView<T> moveFrom, ListView<T> moveTo) {
+        T selectedItem = moveFrom.getSelectionModel()
+                .getSelectedItem();
+        if (selectedItem != null) {
+            ObservableList<T> newGiveList = FXCollections.observableArrayList(moveFrom.getItems());
+            newGiveList.remove(selectedItem);
+            ObservableList<T> newTagList = FXCollections.observableArrayList(moveTo.getItems());
+            newTagList.add(selectedItem);
+            moveFrom.setItems(new SortedList<T>(newGiveList, new ToStringComparator<T>()));
+            moveTo.setItems(new SortedList<T>(newTagList, new ToStringComparator<T>()));
+        }
     }
 
     public List<T> getLeftListItems() {

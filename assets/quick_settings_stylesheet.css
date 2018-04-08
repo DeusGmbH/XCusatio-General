@@ -13,8 +13,8 @@
 }
 
 .list-view {
-  -fx-background-insets: 10;
-  -fx-padding: 10;
+  -fx-background-insets: 0 10 40 10;
+  -fx-padding: 0 10 40 10;
 }
 
 .scroll-bar:vertical,
