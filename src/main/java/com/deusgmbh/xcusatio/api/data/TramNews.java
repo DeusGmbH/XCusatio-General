@@ -12,38 +12,34 @@ import java.util.Date;
 import java.util.List;
 
 public class TramNews {
-    private List<LocalDate[]> timestamps;
-    private List<String> titles;
-    private List<String> contents;
+    private LocalDate[] timestamps;
+    private String title;
+    private String content;
     private List<String> affectedLines;
-
-    
-    
-    public TramNews(List<LocalDate[]> timestamps, List<String> titles, List<String> contents,
-			List<String> affectedLines) {
+	public TramNews(LocalDate[] timestamps, String title, String content, List<String> affectedLines) {
 		super();
 		this.timestamps = timestamps;
-		this.titles = titles;
-		this.contents = contents;
+		this.title = title;
+		this.content = content;
 		this.affectedLines = affectedLines;
 	}
-	public List<LocalDate[]> getTimestamps() {
+	public LocalDate[] getTimestamps() {
 		return timestamps;
 	}
-	public void setTimestamps(List<LocalDate[]> timestamps) {
+	public void setTimestamps(LocalDate[] timestamps) {
 		this.timestamps = timestamps;
 	}
-	public List<String> getTitles() {
-		return titles;
+	public String getTitle() {
+		return title;
 	}
-	public void setTitles(List<String> titles) {
-		this.titles = titles;
+	public void setTitle(String title) {
+		this.title = title;
 	}
-	public List<String> getContents() {
-		return contents;
+	public String getContent() {
+		return content;
 	}
-	public void setContents(List<String> contents) {
-		this.contents = contents;
+	public void setContent(String content) {
+		this.content = content;
 	}
 	public List<String> getAffectedLines() {
 		return affectedLines;
@@ -53,5 +49,6 @@ public class TramNews {
 	}
 
     
+        
 
 }
