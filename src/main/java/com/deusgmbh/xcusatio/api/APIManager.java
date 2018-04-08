@@ -1,6 +1,10 @@
 package com.deusgmbh.xcusatio.api;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
+
+import org.json.JSONException;
 
 import com.deusgmbh.xcusatio.api.services.CalendarAPI;
 import com.deusgmbh.xcusatio.api.services.RNVAPI;
@@ -31,7 +35,7 @@ public class APIManager {
         this(scenario.getRequiredAPIs());
     }
 
-    public APIContext getAPIData(UserSettings userSettings) {
+    public APIContext getAPIData(UserSettings userSettings) throws JSONException, IOException, ParseException {
         if (apis == null) {
             return null;
         }
@@ -47,24 +51,24 @@ public class APIManager {
         return new APIContext(weather, traffic, rnv, calendar);
     }
 
-    private WeatherContext callWeatherAPI(UserSettings userSettings) {
+    private WeatherContext callWeatherAPI(UserSettings userSettings) throws JSONException, IOException, ParseException {
         return callIfRequired(WeatherAPI.class, WeatherContext.class, userSettings);
     }
 
-    private TrafficContext callTrafficAPI(UserSettings userSettings) {
+    private TrafficContext callTrafficAPI(UserSettings userSettings) throws JSONException, IOException, ParseException {
         return callIfRequired(TrafficAPI.class, TrafficContext.class, userSettings);
     }
 
-    private RNVContext calRNVAPI(UserSettings userSettings) {
+    private RNVContext calRNVAPI(UserSettings userSettings) throws JSONException, IOException, ParseException {
         return callIfRequired(RNVAPI.class, RNVContext.class, userSettings);
     }
 
-    private CalendarContext callCalendarAPI(UserSettings userSettings) {
+    private CalendarContext callCalendarAPI(UserSettings userSettings) throws JSONException, IOException, ParseException {
         return callIfRequired(CalendarAPI.class, CalendarContext.class, userSettings);
     }
 
     private <T extends Object> T callIfRequired(Class<? extends APIService> api, Class<T> returnType,
-            UserSettings userSettings) {
+            UserSettings userSettings) throws JSONException, IOException, ParseException {
         if (this.containsAPI(api)) {
             try {
                 return api.newInstance()

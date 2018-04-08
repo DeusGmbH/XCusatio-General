@@ -1,5 +1,6 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.deusgmbh.xcusatio.api.data.TrafficIncidentDetails;
@@ -16,50 +17,40 @@ public class TrafficContext {
 
     private static final Logger LOGGER = Logger.getLogger(TrafficContext.class.getName());
 
-    private TrafficIncidentDetails trafficIncident;
-    private TrafficIncidentLocation incidentLocation;
-    private TrafficIncidentTimes incidentTimes;
+    private List<TrafficIncidentDetails> incidentDetails;
+    private List<TrafficIncidentLocation> incidentLocation;
+    private List<TrafficIncidentTimes> incidentTimes;
 
-    public TrafficContext(TrafficIncidentDetails trafficIncident, TrafficIncidentLocation incidentLocation,
-            TrafficIncidentTimes incidentTimes) {
+    public TrafficContext(List<TrafficIncidentDetails> incidentDetails, List<TrafficIncidentLocation> incidentLocations,
+            List<TrafficIncidentTimes> incidentTimes) {
         super();
-        this.trafficIncident = trafficIncident;
-        this.incidentLocation = incidentLocation;
+        this.incidentDetails = incidentDetails;
+        this.incidentLocation = incidentLocations;
         this.incidentTimes = incidentTimes;
     }
 
-    public TrafficIncidentDetails getTrafficIncident() {
-        return trafficIncident;
+    public List<TrafficIncidentDetails> getTrafficIncident() {
+        return incidentDetails;
     }
 
-    public void setTrafficIncident(TrafficIncidentDetails trafficIncident) {
-        this.trafficIncident = trafficIncident;
+    public void setTrafficIncident(List<TrafficIncidentDetails> trafficIncident) {
+        this.incidentDetails = trafficIncident;
     }
 
-    public TrafficIncidentLocation getIncidentLocation() {
+    public List<TrafficIncidentLocation> getIncidentLocation() {
         return incidentLocation;
     }
 
-    public void setIncidentLocation(TrafficIncidentLocation incidentLocation) {
+    public void setIncidentLocation(List<TrafficIncidentLocation> incidentLocation) {
         this.incidentLocation = incidentLocation;
     }
 
-    public TrafficIncidentTimes getIncidentTimes() {
+    public List<TrafficIncidentTimes> getIncidentTimes() {
         return incidentTimes;
     }
 
-    public void setIncidentTimes(TrafficIncidentTimes incidentTimes) {
+    public void setIncidentTimes(List<TrafficIncidentTimes> incidentTimes) {
         this.incidentTimes = incidentTimes;
     }
 
-    public void logContextContent() {
-        LOGGER.info("TrafficContext:\nType of incident: " + this.getTrafficIncident().getIncidentType()
-                + "\nDescription: " + this.getTrafficIncident().getIncidentDescription() + "\nStatus: "
-                + this.getTrafficIncident().getIncidentStatus() + "\noccured in: "
-                + this.getIncidentLocation().getCountryOfIncident() + ", "
-                + this.getIncidentLocation().getCityOfIncident() + ", "
-                + this.getIncidentLocation().getStreetOfIncident() + "\nStarted: "
-                + this.getIncidentTimes().getStartTimeOfTrafficIncident() + "\nEnd: "
-                + this.getIncidentTimes().getEndTimeOfTrafficIncident());
-    }
 }

@@ -1,5 +1,6 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.deusgmbh.xcusatio.api.data.TimeFormattingUtils;
@@ -17,68 +18,42 @@ public class RNVContext extends TimeFormattingUtils {
 
     private static final Logger LOGGER = Logger.getLogger(RNVContext.class.getName());
 
-    private TramDetails tram;
-    private TramNews newsEntry; // can be empty if line not affected by any
+    private List<TramDetails> tramDetails;
+    private List<TramNews> newsEntries; // can be empty if line not affected by any
                                 // incidents
-    private TramStatus tramStatus;
-    private int differenceTimeInMinutes;
-    private String differenceTimeInMinutesText;
+    private List<TramStatus> tramStatus;
+    
+    
+    
+    
+	public RNVContext(List<TramDetails> tramDetails, List<TramNews> newsEntries,
+										List<TramStatus> tramStatus) {
+									super();
+									this.tramDetails = tramDetails;
+									this.newsEntries = newsEntries;
+									this.tramStatus = tramStatus;
+								}
 
-    public RNVContext(TramDetails tram, TramNews newsEntry, TramStatus tramStatus, int differenceTimeInMinutes) {
-        super();
-        this.tram = tram;
-        this.newsEntry = newsEntry;
-        this.tramStatus = tramStatus;
-        this.differenceTimeInMinutes = differenceTimeInMinutes;
-        this.differenceTimeInMinutesText = formatMinutesAsText(differenceTimeInMinutes);
-    }
+	public List<TramDetails> getTramDetails() {
+		return tramDetails;
+	}
+	
+	public void setTramDetails(List<TramDetails> tramDetails) {
+		this.tramDetails = tramDetails;
+	}
+	public List<TramNews> getNewsEntries() {
+		return newsEntries;
+	}
+	public void setNewsEntries(List<TramNews> newsEntries) {
+		this.newsEntries = newsEntries;
+	}
+	public List<TramStatus> getTramStatus() {
+		return tramStatus;
+	}
+	public void setTramStatus(List<TramStatus> tramStatus) {
+		this.tramStatus = tramStatus;
+	}
 
-    public TramDetails getTram() {
-        return tram;
-    }
-
-    public void setTram(TramDetails tram) {
-        this.tram = tram;
-    }
-
-    public TramNews getNewsEntry() {
-        return newsEntry;
-    }
-
-    public void setNewsEntry(TramNews newsEntry) {
-        this.newsEntry = newsEntry;
-    }
-
-    public TramStatus getTramStatus() {
-        return tramStatus;
-    }
-
-    public void setTramStatus(TramStatus tramStatus) {
-        this.tramStatus = tramStatus;
-    }
-
-    public int getDifferenceTimeInMinutes() {
-        return differenceTimeInMinutes;
-    }
-
-    public void setDifferenceTimeInMinutes(int differenceTimeInMinutes) {
-        this.differenceTimeInMinutes = differenceTimeInMinutes;
-    }
-
-    public String getDifferenceTimeInMinutesText() {
-        return this.differenceTimeInMinutesText;
-    }
-
-    public void setDifferenceTimeInMinutesText() {
-        this.differenceTimeInMinutesText = formatMinutesAsText(this.differenceTimeInMinutes);
-    }
-
-    public void logContextContent() {
-        LOGGER.info("RNVContext:\nTram No. " + this.tram.getLineLabel() + "\nFrom: " + this.tram.getFirstEndStation()
-                + "\nTo: " + this.tram.getSecondEndstation() + "\n(" + this.tram.getStops().size() + " stops)\n"
-                + this.newsEntry.getTitle() + ": " + this.newsEntry.getContent() + ", affecting "
-                + this.newsEntry.getAffectedLines().size() + "lines.\nStatus of tram: " + this.tramStatus
-                + "\nTram delay: " + this.differenceTimeInMinutesText);
-    }
+    
 
 }

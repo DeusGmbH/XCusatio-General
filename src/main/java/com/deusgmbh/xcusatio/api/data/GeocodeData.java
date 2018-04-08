@@ -5,14 +5,16 @@ import com.deusgmbh.xcusatio.data.usersettings.Address;
 public class GeocodeData {
 
     private Address address;
-    private double[] addressSpotCoordinates;
+    private double[] spotCoordinates;
     private double[][] boundingBoxCoordinates;
+    private int[] mapTiles;
+    private String quadkey;
 
-    public GeocodeData(Address address, double[] addressSpotCoordinates, double[][] boundingBoxCoordinates) {
+    public GeocodeData(Address address, double[] spotCoordinates, int[] mapTiles) {
         super();
         this.address = address;
-        this.addressSpotCoordinates = addressSpotCoordinates;
-        this.boundingBoxCoordinates = boundingBoxCoordinates;
+        this.spotCoordinates = spotCoordinates;
+        this.mapTiles = mapTiles;
     }
 
     public GeocodeData(Address address) {
@@ -28,12 +30,12 @@ public class GeocodeData {
         this.address = address;
     }
 
-    public double[] getAddressSpotCoordinates() {
-        return addressSpotCoordinates;
+    public double[] getSpotCoordinates() {
+        return spotCoordinates;
     }
 
-    public void setAddressSpotCoordinates(double[] addressSpotCoordinates) {
-        this.addressSpotCoordinates = addressSpotCoordinates;
+    public void setSpotCoordinates(double[] spotCoordinates) {
+        this.spotCoordinates = spotCoordinates;
     }
 
     public double[][] getBoundingBoxCoordinates() {
@@ -42,6 +44,22 @@ public class GeocodeData {
 
     public void setBoundingBoxCoordinates(double[][] boundingBoxCoordinates) {
         this.boundingBoxCoordinates = boundingBoxCoordinates;
+    }
+
+    public int[] getMapTiles() {
+        return mapTiles;
+    }
+
+    public void setMapTiles(int[] mapTiles) {
+        this.mapTiles = mapTiles;
+    }
+
+    public String getQuadkey() {
+        return quadkey;
+    }
+
+    public void setQuadkey(String quadkey) {
+        this.quadkey = quadkey;
     }
 
 }

@@ -1,10 +1,16 @@
 package com.deusgmbh.xcusatio.api.services;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import org.json.JSONException;
 
 import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.context.wildcard.CalendarContext;
@@ -13,7 +19,6 @@ import com.deusgmbh.xcusatio.data.tags.Tag;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 public class CalendarAPI extends APIService {
-
     private final static Logger LOGGER = Logger.getLogger(CalendarAPI.class.getName());
 
     @Override
@@ -45,25 +50,11 @@ public class CalendarAPI extends APIService {
                 15);
         return calendarContext;
     }
+    
+	@Override
+	public URL buildRequestUrl(UserSettings usersettings) throws UnsupportedEncodingException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public void transmitDataToWebsite() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void extractDesiredInfoFromResponse() {
-        // TODO Auto-generated method stub
-
-    }
-
-    // public static void main(String[] args) {
-    // UserSettings userSettings = new UserSettings(null, 0, null, null, null,
-    // null, null);
-    // CalendarAPI calendarAPI = new CalendarAPI();
-    //
-    // CalendarContext calendarContext = calendarAPI.get(userSettings);
-    // calendarContext.logContextContent();
-    // }
 }
