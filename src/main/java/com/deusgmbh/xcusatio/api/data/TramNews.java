@@ -1,5 +1,6 @@
 package com.deusgmbh.xcusatio.api.data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -11,47 +12,46 @@ import java.util.Date;
 import java.util.List;
 
 public class TramNews {
-    private Date timestamp;
-    private String title;
-    private String content;
-    private List<String> affectedLines;
+    private List<LocalDate[]> timestamps;
+    private List<String> titles;
+    private List<String> contents;
+    private List<List<String>> affectedLines;
 
-    public TramNews(Date timestamp, String title, String content, List<String> affectedLines) {
-        super();
-        this.timestamp = timestamp; // mind that the API returns a
-                                    // date-as-String. conversion of String to
-                                    // Date back to String??
-        this.title = title;
-        this.content = content;
-        this.affectedLines = affectedLines;
-    }
+    
+    
+    public TramNews(List<LocalDate[]> timestamps, List<String> titles, List<String> contents,
+			List<List<String>> affectedLines) {
+		super();
+		this.timestamps = timestamps;
+		this.titles = titles;
+		this.contents = contents;
+		this.affectedLines = affectedLines;
+	}
+	public List<LocalDate[]> getTimestamps() {
+		return timestamps;
+	}
+	public void setTimestamps(List<LocalDate[]> timestamps) {
+		this.timestamps = timestamps;
+	}
+	public List<String> getTitles() {
+		return titles;
+	}
+	public void setTitles(List<String> titles) {
+		this.titles = titles;
+	}
+	public List<String> getContents() {
+		return contents;
+	}
+	public void setContents(List<String> contents) {
+		this.contents = contents;
+	}
+	public List<List<String>> getAffectedLines() {
+		return affectedLines;
+	}
+	public void setAffectedLines(List<List<String>> affectedLines) {
+		this.affectedLines = affectedLines;
+	}
 
-    public TramNews() {
-
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public List<String> getAffectedLines() {
-        return affectedLines;
-    }
-
-    public void setAffectedLines(List<String> affectedLines) {
-        this.affectedLines = affectedLines;
-    }
+    
 
 }
