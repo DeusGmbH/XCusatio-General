@@ -92,12 +92,10 @@ public class TrafficAPI extends APIService {
      */
     private List<JsonObject> getRelevantJsonObjects(Gson gson, JsonObject total) {
         JsonObject trafficItemObject = gson.fromJson(total.get(JSONOB_TRAFFIC_ITEMS), JsonObject.class);
-        // System.out.println("\nTraffic item object: " + trafficItemObject);
         JsonArray trafficItemArray = gson.fromJson(trafficItemObject.get(JSONARR_TRAFFIC_ITEM), JsonArray.class);
         List<JsonObject> trafficItemsFromArray = new LinkedList<>();
         trafficItemArray.forEach(element -> {
             trafficItemsFromArray.add((JsonObject) element);
-            // System.out.println("Added " + element);
         });
         return trafficItemsFromArray;
     }
@@ -113,9 +111,7 @@ public class TrafficAPI extends APIService {
      */
     private List<TrafficIncidentDetails> extractIncidentDetails(Gson gson, JsonObject total) {
         List<TrafficIncidentDetails> trafficIncidentDetails = new LinkedList<>();
-
         List<JsonObject> trafficItems = getRelevantJsonObjects(gson, total);
-
         trafficItems.forEach(trafficItem -> {
             String[] trafficItemTypes = new String[2];
             String itemTypeDescription = gson.fromJson(trafficItem.get(JSONSTR_INCIDENT_TYPE), String.class);
@@ -143,7 +139,7 @@ public class TrafficAPI extends APIService {
         List<TrafficIncidentLocation> trafficIncidentLocations = new LinkedList<>();
         locations.forEach(location -> {
             if (location.get(JSONOB_LOCATION_DEFINED) != null) {
-                // path 1: defined origin roadway description[] value_STR
+            	// path 1: defined origin roadway description[] value_STR
                 JsonObject defined = gson.fromJson(location.get(JSONOB_LOCATION_DEFINED), JsonObject.class);
                 JsonObject origin = gson.fromJson(defined.get(JSONOB_DEFINED_ORIGIN), JsonObject.class);
                 JsonObject roadway = gson.fromJson(origin.get(JSONOB_ORIGIN_ROADWAY), JsonObject.class);
@@ -163,9 +159,8 @@ public class TrafficAPI extends APIService {
         return trafficIncidentLocations;
     }
 
-    private List<TrafficIncidentTimes> extractIncidentTimes(Gson gson, JsonObject total) {
+	private List<TrafficIncidentTimes> extractIncidentTimes(Gson gson, JsonObject total) {
         List<JsonObject> trafficItems = getRelevantJsonObjects(gson, total);
-        List<JsonObject> times = new LinkedList<>();
         List<TrafficIncidentTimes> trafficIncidentTimes = new LinkedList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
         trafficItems.forEach(trafficItem -> {
@@ -179,21 +174,6 @@ public class TrafficAPI extends APIService {
         });
 
         return trafficIncidentTimes;
-
-        // List<TrafficIncidentTimes> trafficIncidentTimes = new LinkedList<>();
-        // List<String> entryTimes = getValuesFromJSONObjects(trafficItemList,
-        // JSONSTR_INCIDENT_ENTRY_TIME);
-        // List<String> endTimes = getValuesFromJSONObjects(trafficItemList,
-        // JSONSTR_INCIDENT_END_TIME);
-        // int timesIndex = 0;
-        // SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-        // while (timesIndex < entryTimes.size()) {
-        // trafficIncidentTimes.add(new
-        // TrafficIncidentTimes(sdf.parse(entryTimes.get(timesIndex)),
-        // sdf.parse(endTimes.get(timesIndex))));
-        // ++timesIndex;
-        // }
-        // return trafficIncidentTimes;
     }
 
     private String prepareUrlBuild(GeocodeData gcd, UserSettings usersettings) {
