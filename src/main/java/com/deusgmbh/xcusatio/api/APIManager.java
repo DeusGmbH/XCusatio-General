@@ -1,6 +1,11 @@
 package com.deusgmbh.xcusatio.api;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
+import java.util.logging.Logger;
+
+import org.json.JSONException;
 
 import com.deusgmbh.xcusatio.api.services.CalendarAPI;
 import com.deusgmbh.xcusatio.api.services.RNVAPI;
@@ -20,6 +25,7 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
  *
  */
 public class APIManager {
+    private static final Logger LOGGER = Logger.getLogger(APIManager.class.getName());
     List<Class<? extends APIService>> apis;
 
     public APIManager(List<Class<? extends APIService>> apis) {
@@ -67,8 +73,14 @@ public class APIManager {
             UserSettings userSettings) {
         if (this.containsAPI(api)) {
             try {
-                return api.newInstance()
-                        .get(userSettings);
+                try {
+                    return api.newInstance()
+                            .get(userSettings);
+                } catch (JSONException | IOException | ParseException e) {
+                    LOGGER.warning("An API Service could not processe the api result:");
+                    LOGGER.warning(e.getMessage());
+                    return null;
+                }
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
                 throw new RuntimeException("APIService does not have an accessible constructor");

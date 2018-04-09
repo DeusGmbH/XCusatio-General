@@ -1,5 +1,6 @@
 package com.deusgmbh.xcusatio.api.data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -11,47 +12,43 @@ import java.util.Date;
 import java.util.List;
 
 public class TramNews {
-    private Date timestamp;
+    private LocalDate[] timestamps;
     private String title;
     private String content;
     private List<String> affectedLines;
+	public TramNews(LocalDate[] timestamps, String title, String content, List<String> affectedLines) {
+		super();
+		this.timestamps = timestamps;
+		this.title = title;
+		this.content = content;
+		this.affectedLines = affectedLines;
+	}
+	public LocalDate[] getTimestamps() {
+		return timestamps;
+	}
+	public void setTimestamps(LocalDate[] timestamps) {
+		this.timestamps = timestamps;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public List<String> getAffectedLines() {
+		return affectedLines;
+	}
+	public void setAffectedLines(List<String> affectedLines) {
+		this.affectedLines = affectedLines;
+	}
 
-    public TramNews(Date timestamp, String title, String content, List<String> affectedLines) {
-        super();
-        this.timestamp = timestamp; // mind that the API returns a
-                                    // date-as-String. conversion of String to
-                                    // Date back to String??
-        this.title = title;
-        this.content = content;
-        this.affectedLines = affectedLines;
-    }
-
-    public TramNews() {
-
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public List<String> getAffectedLines() {
-        return affectedLines;
-    }
-
-    public void setAffectedLines(List<String> affectedLines) {
-        this.affectedLines = affectedLines;
-    }
+    
+        
 
 }

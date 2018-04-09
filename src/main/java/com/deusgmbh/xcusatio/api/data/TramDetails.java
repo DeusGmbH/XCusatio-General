@@ -10,15 +10,18 @@ import java.util.List;
 
 public class TramDetails {
     private String lineLabel;
-    private String firstEndStation;
-    private String secondEndstation;
+    private String homeStation; /* the relevant station for the student */
+    private List<Integer> differenceTimesInMinutes; /*
+                                          * in relation to normal time on
+                                          * homeStation
+                                          */
     private List<String> stops;
 
-    public TramDetails(String lineNumber, String firstEndStation, String secondEndstation, List<String> stops) {
+    public TramDetails(String lineNumber, String homeStation, List<Integer> differenceTimesInMinutes, List<String> stops) {
         super();
         this.lineLabel = lineNumber;
-        this.firstEndStation = firstEndStation;
-        this.secondEndstation = secondEndstation;
+        this.homeStation = homeStation;
+        this.differenceTimesInMinutes = differenceTimesInMinutes;
         this.stops = stops;
     }
 
@@ -30,22 +33,6 @@ public class TramDetails {
         this.lineLabel = lineLabel;
     }
 
-    public String getFirstEndStation() {
-        return firstEndStation;
-    }
-
-    public void setFirstEndStation(String firstEndStation) {
-        this.firstEndStation = firstEndStation;
-    }
-
-    public String getSecondEndstation() {
-        return secondEndstation;
-    }
-
-    public void setSecondEndstation(String secondEndstation) {
-        this.secondEndstation = secondEndstation;
-    }
-
     public List<String> getStops() {
         return stops;
     }
@@ -53,5 +40,23 @@ public class TramDetails {
     public void setStops(List<String> stops) {
         this.stops = stops;
     }
+
+    public String getHomeStation() {
+        return homeStation;
+    }
+
+    public void setHomeStation(String homeStation) {
+        this.homeStation = homeStation;
+    }
+
+	public List<Integer> getDifferenceTimesInMinutes() {
+		return differenceTimesInMinutes;
+	}
+
+	public void setDifferenceTimesInMinutes(List<Integer> differenceTimesInMinutes) {
+		this.differenceTimesInMinutes = differenceTimesInMinutes;
+	}
+
+
 
 }

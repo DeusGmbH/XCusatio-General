@@ -6,40 +6,29 @@ package com.deusgmbh.xcusatio.api.data;
  */
 
 public class TrafficIncidentDetails {
-    TrafficIncidentType incidentType;
-    TrafficIncidentStatus incidentStatus;
-    String incidentDescription;
+    private TrafficIncidentType trafficIncidentType;
+    private TrafficIncidentStatus trafficIncidentStatus;
 
-    public TrafficIncidentDetails(TrafficIncidentType incidentType, TrafficIncidentStatus incidentStatus,
-            String incidentDescription) {
+    public TrafficIncidentDetails(String trafficIncidentType, String trafficIncidentStatus) {
         super();
-        this.incidentType = incidentType;
-        this.incidentStatus = incidentStatus;
-        this.incidentDescription = incidentDescription;
+        this.trafficIncidentType = TrafficIncidentType.valueOf(trafficIncidentType.replace(' ', '_'));
+        this.trafficIncidentStatus = TrafficIncidentStatus.valueOf(trafficIncidentStatus);
     }
 
-    public TrafficIncidentType getIncidentType() {
-        return incidentType;
+    public TrafficIncidentType getTrafficIncidentType() {
+        return trafficIncidentType;
     }
 
-    public void setIncidentType(TrafficIncidentType incidentType) {
-        this.incidentType = incidentType;
+    public void setTrafficIncidentType(TrafficIncidentType trafficIncidentType) {
+        this.trafficIncidentType = trafficIncidentType;
     }
 
-    public TrafficIncidentStatus getIncidentStatus() {
-        return incidentStatus;
+    public TrafficIncidentStatus getTrafficIncidentStatus() {
+        return trafficIncidentStatus;
     }
 
-    public void setIncidentStatus(TrafficIncidentStatus incidentStatus) {
-        this.incidentStatus = incidentStatus;
-    }
-
-    public String getIncidentDescription() {
-        return incidentDescription;
-    }
-
-    public void setIncidentDescription(String incidentDescription) {
-        this.incidentDescription = incidentDescription;
+    public void setTrafficIncidentStatus(TrafficIncidentStatus trafficIncidentStatus) {
+        this.trafficIncidentStatus = trafficIncidentStatus;
     }
 
 }

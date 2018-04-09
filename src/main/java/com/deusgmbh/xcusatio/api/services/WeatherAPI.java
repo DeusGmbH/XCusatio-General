@@ -1,5 +1,8 @@
 package com.deusgmbh.xcusatio.api.services;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.logging.Logger;
 
 import com.deusgmbh.xcusatio.api.APIService;
@@ -7,7 +10,6 @@ import com.deusgmbh.xcusatio.context.wildcard.WeatherContext;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 public class WeatherAPI extends APIService {
-
     private static final Logger LOGGER = Logger.getLogger(WeatherAPI.class.getName());
 
     @Override
@@ -18,23 +20,9 @@ public class WeatherAPI extends APIService {
     }
 
     @Override
-    public void transmitDataToWebsite() {
+    public URL buildRequestUrl(UserSettings usersettings) throws UnsupportedEncodingException, IOException {
         // TODO Auto-generated method stub
-
+        return null;
     }
-
-    @Override
-    public void extractDesiredInfoFromResponse() {
-        // TODO Auto-generated method stub
-
-    }
-
-    // public static void main(String[] plutonium) {
-    // UserSettings userSettings = new UserSettings(null, 0, null, null, null,
-    // null, null);
-    // WeatherAPI weatherAPI = new WeatherAPI();
-    // WeatherContext weatherContext = weatherAPI.get(userSettings);
-    // weatherContext.logContextContent();
-    // }
 
 }
