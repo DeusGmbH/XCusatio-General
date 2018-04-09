@@ -1,0 +1,48 @@
+.excuse-quick-settings {
+	-fx-background-color: #444444;
+	-fx-border-color: rgba(0,0,0,0.8);
+	-fx-border-width: 0 0 0 1;
+}
+
+.label {
+	-fx-padding: 4pt;
+}
+
+.toggle-switch {
+	-fx-padding: 2 8 2 8;
+}
+
+.list-view {
+  -fx-background-insets: 0 10 40 10;
+  -fx-padding: 0 10 40 10;
+}
+
+.scroll-bar:vertical,
+.scroll-bar:vertical .track,
+.scroll-bar:vertical .track-background, 
+.scroll-bar:horizontal,
+.scroll-bar:horizontal .track,
+.scroll-bar:horizontal .track-background ,
+.corner {
+    -fx-background-color: #444;
+}
+
+.scroll-bar .increment-button, 
+.scroll-bar .decrement-button {
+    -fx-opacity: 0;
+}
+
+.list-cell {
+	-fx-background-color: #444;
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+}
+
+.list-cell:odd {
+	-fx-background-color: #444;
+	-fx-text-fill: white;
+}
+
+.list-cell:hover {
+    -fx-background-color: #444;
+}

@@ -2,7 +2,7 @@ package com.deusgmbh.xcusatio.data.lecturer;
 
 import java.util.Optional;
 
-import com.deusgmbh.xcusatio.data.StorageUnit;
+import com.deusgmbh.xcusatio.data.DataManager;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 
 /**
@@ -10,7 +10,7 @@ import com.deusgmbh.xcusatio.data.tags.Tag;
  * @author Tobias.Schmidt@de.ibm.com
  *
  */
-public class LecturerManager extends StorageUnit<Lecturer> {
+public class LecturerManager extends DataManager<Lecturer> {
 
     public LecturerManager() {
         super(Lecturer.class);
@@ -24,7 +24,7 @@ public class LecturerManager extends StorageUnit<Lecturer> {
     }
 
     @Override
-    public StorageUnit<Lecturer> addDefaultValues() {
+    public DataManager<Lecturer> addDefaultValues() {
         this.add(new Lecturer("Stroetmann").addLecture("Algorithmen")
                 .addLecture("Statistik")
                 .addLecture("Logik")
@@ -36,7 +36,7 @@ public class LecturerManager extends StorageUnit<Lecturer> {
                         .addLecture("Softwareengineering 1")
                         .addLecture("Softwareengineering 2")
                         .addTag(Tag.FUNNY)
-                        .addTag(Tag.SUCKUP));
+                        .addTag(Tag.SUCK_UP));
         return this;
     }
 }

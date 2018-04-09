@@ -4,21 +4,21 @@ import com.deusgmbh.xcusatio.api.services.CalendarAPI;
 import com.deusgmbh.xcusatio.api.services.RNVAPI;
 import com.deusgmbh.xcusatio.api.services.TrafficAPI;
 import com.deusgmbh.xcusatio.api.services.WeatherAPI;
-import com.deusgmbh.xcusatio.data.StorageUnit;
+import com.deusgmbh.xcusatio.data.DataManager;
 
 /**
  * 
  * @author Tobias.Schmidt@de.ibm.com
  *
  */
-public class ScenarioManager extends StorageUnit<Scenario> {
+public class ScenarioManager extends DataManager<Scenario> {
 
     public ScenarioManager() {
         super(Scenario.class);
     }
 
     @Override
-    public StorageUnit<Scenario> addDefaultValues() {
+    public DataManager<Scenario> addDefaultValues() {
         this.add(new Scenario(ScenarioType.THUMBGESTURE))
                 .add(new Scenario(ScenarioType.WHEELOFFORTUNE).addRequiredAPI(CalendarAPI.class)
                         .addRequiredAPI(RNVAPI.class)

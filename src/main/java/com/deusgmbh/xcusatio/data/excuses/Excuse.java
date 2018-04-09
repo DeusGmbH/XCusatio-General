@@ -5,10 +5,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.scenarios.ScenarioType;
-import com.deusgmbh.xcusatio.data.tags.Tag;;
+import com.deusgmbh.xcusatio.data.tags.Tag;
+import com.deusgmbh.xcusatio.data.tags.ToStringComparator;;
 
 /**
  * 
@@ -74,6 +76,7 @@ public class Excuse {
 
     public Excuse addTag(Tag tag) {
         this.tags.add(tag);
+        this.tags.sort(new ToStringComparator<Tag>());
         return this;
     }
 
@@ -111,7 +114,22 @@ public class Excuse {
     }
 
     public static Predicate<Excuse> byScenario(Scenario scenario) {
-        return excuse -> excuse.getScenarioType().equals(scenario.getScenarioType());
+        return excuse -> excuse.getScenarioType()
+                .equals(scenario.getScenarioType());
+    }
+
+    public static Predicate<Excuse> hasContextTagsInExcuse(List<Tag> contextTags) {
+        return excuse -> excuse.getTags()
+                .containsAll(contextTags.stream()
+                        .filter(tag -> tag.inExcuse())
+                        .collect(Collectors.toSet()));
+    }
+
+    public static Predicate<Excuse> hasExcuseTagsInContext(List<Tag> contextTags) {
+        return excuse -> contextTags.containsAll(excuse.getTags()
+                .stream()
+                .filter(tag -> tag.inContext())
+                .collect(Collectors.toSet()));
     }
 
     public static Comparator<Excuse> byRating = new Comparator<Excuse>() {

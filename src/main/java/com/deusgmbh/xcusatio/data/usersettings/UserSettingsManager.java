@@ -3,7 +3,7 @@ package com.deusgmbh.xcusatio.data.usersettings;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import com.deusgmbh.xcusatio.data.StorageUnit;
+import com.deusgmbh.xcusatio.data.DataManager;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.ExcuseVibeMode;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 
@@ -18,13 +18,13 @@ import javafx.beans.value.ObservableValue;
  *
  */
 
-public class UserSettingsManager extends StorageUnit<UserSettings> {
+public class UserSettingsManager extends DataManager<UserSettings> {
     public UserSettingsManager() {
         super(UserSettings.class);
     }
 
     @Override
-    public StorageUnit<UserSettings> addDefaultValues() {
+    public DataManager<UserSettings> addDefaultValues() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dt = LocalDate.parse("1989-11-09", dtf);
         this.add(new UserSettings().setAge(dt)

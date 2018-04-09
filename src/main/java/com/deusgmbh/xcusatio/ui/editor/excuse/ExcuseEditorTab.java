@@ -27,26 +27,14 @@ public class ExcuseEditorTab extends EditorTab {
     public ExcuseEditorTab(String name) {
         super(name);
         entryListPane = new ExcuseEntryListPane();
+
         editEntryPane = new ExcuseEditEntryPane();
 
         entryListPane.registerOnSelectEntryEvent(this::createEditForm);
         entryListPane.registerItemSelectionIdUpdate(editEntryPane::updateSelectionId);
 
-        entryListPane.minWidthProperty()
-                .bind(this.editor.widthProperty()
-                        .multiply(0.39));
-        entryListPane.maxWidthProperty()
-                .bind(this.editor.widthProperty()
-                        .multiply(0.39));
-
-        editEntryPane.minWidthProperty()
-                .bind(this.editor.widthProperty()
-                        .multiply(0.59));
-        editEntryPane.maxWidthProperty()
-                .bind(this.editor.widthProperty()
-                        .multiply(0.59));
-        super.editor.setLeft(entryListPane);
-        super.editor.setCenter(editEntryPane);
+        super.editor.getItems()
+                .addAll(entryListPane, editEntryPane);
     }
 
     public void registerTagsSetSupplier(Supplier<List<Tag>> tagsSetSupplier) {
@@ -58,6 +46,8 @@ public class ExcuseEditorTab extends EditorTab {
     }
 
     private void createEditForm(int selectedExcuseID, ObservableList<Excuse> excuses) {
+        editEntryPane.getChildren()
+                .clear();
         editEntryPane.createEditForm(selectedExcuseID, excuses);
     }
 

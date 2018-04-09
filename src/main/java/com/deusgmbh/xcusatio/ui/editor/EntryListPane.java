@@ -13,8 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 
 /**
  * 
@@ -26,32 +28,46 @@ import javafx.scene.layout.VBox;
  *
  */
 
-public abstract class EntryListPane<T> extends VBox {
-    protected Button removeEntryButton;
-    protected Button addEntryButton;
+public abstract class EntryListPane<T> extends BorderPane {
+
+    private static final String ENTRY_LIST_STYLESHEET_PATH = "file:assets/entry_list_pane_stylesheet.css";
+
     protected TableView<T> entryTable;
+    protected Button addEntryButton;
+    protected Button removeSelectedEntryButton;
     private Consumer<IntUnaryOperator> itemSelectionIdUpdateEvent;
 
     public EntryListPane() {
         HBox entryOptionsPane = new HBox();
-        removeEntryButton = new Button("Entfernen");
-        addEntryButton = new Button("Hinzufügen");
-        entryOptionsPane.getChildren()
-                .addAll(removeEntryButton, addEntryButton);
-
-        this.getChildren()
-                .add(entryOptionsPane);
 
         entryTable = new TableView<>();
         entryTable.setEditable(false);
+        entryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         this.setTableColumns(this.getRequiredTableColumns());
+
+        removeSelectedEntryButton = new Button("Entfernen");
+        addEntryButton = new Button("Hinzuf\u00fcgen");
+
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        removeSelectedEntryButton.getStyleClass()
+                .add("entry-list-button");
+        addEntryButton.getStyleClass()
+                .add("entry-list-button");
+
+        entryOptionsPane.getChildren()
+                .addAll(removeSelectedEntryButton, spacer, addEntryButton);
+
+        this.setCenter(entryTable);
+        this.setBottom(entryOptionsPane);
 
         this.createRemoveEntryButtonListener();
         this.createAddEntryButtonListener();
 
-        this.getChildren()
-                .add(0, entryTable);
+        this.getStylesheets()
+                .add(ENTRY_LIST_STYLESHEET_PATH);
     }
 
     private void setTableColumns(HashMap<String, String> columnList) {
@@ -65,13 +81,14 @@ public abstract class EntryListPane<T> extends VBox {
                     column.prefWidthProperty()
                             .bind(entryTable.widthProperty()
                                     .multiply(1d / columnList.size())
-                                    .subtract(1));
+                                    .subtract(40));
                     entryTable.getColumns()
                             .add(column);
                 });
     }
 
     public void setTableContent(ObservableList<T> entryList) {
+
         entryTable.setItems(entryList);
         entryTable.getItems()
                 .addListener(new ListChangeListener<T>() {
@@ -91,12 +108,19 @@ public abstract class EntryListPane<T> extends VBox {
     }
 
     private void createRemoveEntryButtonListener() {
-        removeEntryButton.setOnAction(new EventHandler<ActionEvent>() {
+        removeSelectedEntryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent e) {
-                entryTable.getItems()
-                        .remove(entryTable.getSelectionModel()
-                                .getSelectedIndex());
+                if (entryTable.getSelectionModel()
+                        .getSelectedItems()
+                        .size() > 0) {
+                    if (entryTable.getItems()
+                            .size() > 1) {
+                        entryTable.getItems()
+                                .remove(entryTable.getSelectionModel()
+                                        .getSelectedIndex());
+                    }
+                }
             }
         });
     }

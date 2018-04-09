@@ -18,12 +18,13 @@ import com.deusgmbh.xcusatio.util.TriConsumer;
 
 import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -39,18 +40,21 @@ import javafx.stage.StageStyle;
  */
 
 public class XCusatioWindow extends Application {
+    private static final String SCENE_STYLESHEET_PATH = "file:assets/stage_stylesheet.css";
+    private static final String ICON_IMAGE_PATH = "file:src/main/resources/icon.png";
+
     private static final String WINDOW_TITLE = "Deus GmbH - xCusatio";
-    private static final int WINDOW_DEF_WIDTH = 1280;
-    private static final int WINDOW_DEF_HEIGHT = 720;
+
+    private static final int WINDOW_BORDER_HEIGHT = 40;
+    private static final int WINDOW_DEF_WIDTH = 1310;
+    private static final int WINDOW_DEF_HEIGHT = 720 + WINDOW_BORDER_HEIGHT;
     private static final int WINDOW_MAX_WIDTH = 1920;
     private static final int WINDOW_MAX_HEIGHT = 1080;
 
     private static final double NAVIGATION_PANEL_WIDTH_MULTIPLIER = 0.11;
     private static final String DASHBOARD_TAB_NAME = "Generator";
     private static final String EDITOR_TAB_NAME = "Editor";
-    private static final String PROFILE_SETTINGS_TAB_NAME = "Profile";
-
-    private static final String SCENE_STYLESHEET_PATH = "file:assets/stage_stylesheet.css";
+    private static final String PROFILE_SETTINGS_TAB_NAME = "Profil";
 
     private BorderPane main;
     private WindowBorder windowBorder;
@@ -68,23 +72,51 @@ public class XCusatioWindow extends Application {
         initMainStage(this.stage);
 
         windowBorder = new WindowBorder(minimizeWindow, restoreWindow, closeWindow);
+        windowBorder.setPrefHeight(WINDOW_BORDER_HEIGHT);
 
         navigationPanel = new NavigationPanel();
-        navigationPanel.prefWidthProperty().bind(main.widthProperty().multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
+        navigationPanel.prefWidthProperty()
+                .bind(main.widthProperty()
+                        .multiply(NAVIGATION_PANEL_WIDTH_MULTIPLIER));
 
         dashboard = new Dashboard();
         editor = new Editor();
         profileSettings = new ProfileSettings();
 
-        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, main);
-        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, main);
-        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, main);
+        navigationPanel.addNavigationEntry(DASHBOARD_TAB_NAME, dashboard, this::setContent);
+        navigationPanel.addNavigationEntry(EDITOR_TAB_NAME, editor, this::setContent);
+        navigationPanel.addNavigationEntry(PROFILE_SETTINGS_TAB_NAME, profileSettings, this::setContent);
+        navigationPanel.getChildren()
+                .get(0)
+                .getStyleClass()
+                .add("active");
+
+        windowBorder.toFront();
 
         main.setTop(windowBorder);
         main.setLeft(navigationPanel);
         main.setCenter(dashboard);
 
-        stage.show();
+        this.stage.getIcons()
+                .add(new Image(ICON_IMAGE_PATH));
+        this.stage.show();
+    }
+
+    private void setContent(Node node) {
+        navigationPanel.getChildren()
+                .stream()
+                .forEach(btn -> {
+                    if (btn.getStyleClass()
+                            .get(btn.getStyleClass()
+                                    .size() - 1)
+                            .equals("active")) {
+                        btn.getStyleClass()
+                                .remove(btn.getStyleClass()
+                                        .size() - 1);
+                    }
+                });
+        main.setCenter(node);
+
     }
 
     private BorderPane initMainStage(Stage stage) {
@@ -92,7 +124,8 @@ public class XCusatioWindow extends Application {
         stage.initStyle(StageStyle.UNDECORATED);
 
         Scene scene = new Scene(main);
-        scene.getStylesheets().add(SCENE_STYLESHEET_PATH);
+        scene.getStylesheets()
+                .add(SCENE_STYLESHEET_PATH);
         stage.setWidth(WINDOW_DEF_WIDTH);
         stage.setHeight(WINDOW_DEF_HEIGHT);
         stage.setMinWidth(WINDOW_DEF_WIDTH);
@@ -101,8 +134,9 @@ public class XCusatioWindow extends Application {
         stage.setMaxHeight(WINDOW_MAX_HEIGHT);
         stage.setScene(scene);
         stage.setTitle(WINDOW_TITLE);
-        ResizeHelper.addResizeListener(stage, stage.getMinWidth(), stage.getMinHeight(), stage.getMaxWidth(),
-                stage.getMaxHeight());
+
+        ResizeHelper.addResizeListener(this.stage, this.stage.getMinWidth(), this.stage.getMinHeight(),
+                this.stage.getMaxWidth(), this.stage.getMaxHeight());
 
         return main;
     }
@@ -186,10 +220,6 @@ public class XCusatioWindow extends Application {
         this.scenarioList = scenarioList;
     }
 
-    public void setQuickSettings(ObservableValue<UserSettings> userSettings) {
-        // TODO: adjust QuickSettings
-    }
-
     public void registerExcuseSupplier(Supplier<ObservableList<Excuse>> excuseSupplier) {
         this.editor.registerExcuseSupplier(excuseSupplier);
     }
@@ -202,12 +232,12 @@ public class XCusatioWindow extends Application {
         this.dashboard.registerMostRecentlyUsedExcuses(mostRecentlyUsedObservableList);
     }
 
-    public void registerChangeUserSettingsEvent(Consumer<UserSettings> userSettingsConsumer) {
-        profileSettings.createEditProfileBtnAction(userSettingsConsumer);
-    }
-
     public void registerUserSettings(ObjectProperty<UserSettings> userSettings) {
         this.dashboard.registerUserSettings(userSettings);
         this.profileSettings.registerUserSettings(userSettings);
+    }
+
+    public void registerResetTrigger(Runnable resetTrigger) {
+        this.profileSettings.registerResetTrigger(resetTrigger);
     }
 }

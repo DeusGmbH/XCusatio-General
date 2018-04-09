@@ -13,9 +13,11 @@ public class TagTranslator {
 
     public static List<String> toGerman(List<Tag> tagList) {
         List<String> translatedTagList = new ArrayList<String>();
-        tagList.stream().forEach(tag -> {
-            translatedTagList.add(toGerman(tag));
-        });
+        tagList.stream()
+                .forEach(tag -> {
+                    translatedTagList.add(toGerman(tag));
+                });
         return translatedTagList;
     }
+
 }

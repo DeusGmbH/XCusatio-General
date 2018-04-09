@@ -1,7 +1,9 @@
 package com.deusgmbh.xcusatio.ui.editor;
 
+import com.deusgmbh.xcusatio.ui.utility.ResizeHelper;
+
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.BorderPane;
 
 /**
  * 
@@ -16,14 +18,16 @@ import javafx.scene.layout.BorderPane;
  */
 
 public class EditorTab extends Tab {
-    protected BorderPane editor;
+    protected SplitPane editor;
 
     public EditorTab(String name) {
         this.setText(name);
         this.setClosable(false);
 
-        editor = new BorderPane();
-        editor.setStyle("-fx-border-color: " + "#000000");
+        editor = new SplitPane();
+        // Because Tabs are not recognized as nodes, the nodes of the editor
+        // tabes must be initialized with event handlers for resizing separately
+        ResizeHelper.addListenerDeeply(editor);
 
         this.setContent(editor);
     }

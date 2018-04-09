@@ -1,10 +1,11 @@
 package com.deusgmbh.xcusatio.ui;
 
+import java.util.function.Consumer;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -19,22 +20,33 @@ import javafx.scene.layout.VBox;
 public class NavigationPanel extends VBox {
 
     private static final double NAVIGATION_PANEL_BUTTON_HEIGHT_MULTIPLIER = 0.1;
+    private static final String NAVIGATION_STYLESHEET_PATH = "file:assets/navigation_stylesheet.css";
 
     public NavigationPanel() {
-        this.getStyleClass().add("navigation-bar");
+        this.getStylesheets()
+                .add(NAVIGATION_STYLESHEET_PATH);
+        this.getStyleClass()
+                .add("navigation-bar");
     }
 
-    public void addNavigationEntry(String text, Node paneToFocus, BorderPane mainPane) {
+    public void addNavigationEntry(String text, Node paneToFocus, Consumer<Node> setContent) {
         Button btn = new Button(text);
-        btn.maxWidthProperty().bind(this.widthProperty());
-        btn.maxHeightProperty().bind(this.heightProperty().multiply(NAVIGATION_PANEL_BUTTON_HEIGHT_MULTIPLIER));
-
+        btn.maxWidthProperty()
+                .bind(this.widthProperty());
+        btn.maxHeightProperty()
+                .bind(this.heightProperty()
+                        .multiply(NAVIGATION_PANEL_BUTTON_HEIGHT_MULTIPLIER));
+        btn.getStyleClass()
+                .add("navigation-button");
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                mainPane.setCenter(paneToFocus);
+                setContent.accept(paneToFocus);
+                btn.getStyleClass()
+                        .add("active");
             }
         });
-        this.getChildren().add(btn);
+        this.getChildren()
+                .add(btn);
     }
 }

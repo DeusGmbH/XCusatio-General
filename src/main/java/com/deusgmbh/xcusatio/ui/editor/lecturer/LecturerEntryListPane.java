@@ -24,7 +24,7 @@ public class LecturerEntryListPane extends EntryListPane<Lecturer> {
     private static final String REQ_COLUMN_NAME_TITLE = "Name";
     private static final String REQ_COLUMN_LECTURES_TITLE = "Vorlesungen";
     private static final String REQ_COLUMN_TAGS_TITLE = "Tags";
-    protected static final String NEW_LECTURER_DEFAULT_TEXT = "Dozentenname";
+    protected static final String NEW_LECTURER_DEFAULT_TEXT = "";
 
     @Override
     protected Lecturer createNewItem() {
