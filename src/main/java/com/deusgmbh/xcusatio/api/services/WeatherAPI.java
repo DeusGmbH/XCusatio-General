@@ -1,8 +1,5 @@
 package com.deusgmbh.xcusatio.api.services;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.util.logging.Logger;
 
 import com.deusgmbh.xcusatio.api.APIService;
@@ -17,12 +14,6 @@ public class WeatherAPI extends APIService {
         // TODO: implement API call and result processing
         WeatherContext weatherContext = new WeatherContext(11, "Sturmböen", "SE", 15, 8, 34, 0, 2);
         return weatherContext;
-    }
-
-    @Override
-    public URL buildRequestUrl(UserSettings usersettings) throws UnsupportedEncodingException, IOException {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

@@ -1,8 +1,5 @@
 package com.deusgmbh.xcusatio.api.services;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -47,11 +44,4 @@ public class CalendarAPI extends APIService {
                 15);
         return calendarContext;
     }
-
-    @Override
-    public URL buildRequestUrl(UserSettings usersettings) throws UnsupportedEncodingException, IOException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }

@@ -76,7 +76,6 @@ public class RNVAPI extends APIService {
      */
     @Override
     public RNVContext get(UserSettings usersettings) throws UnsupportedEncodingException, IOException {
-        URL requestUrl = buildRequestUrl(usersettings);
         Gson gson = new Gson();
         JsonArray totalLines = getLinesPackage();
         JsonObject totalStations = getStationsPackage();
@@ -86,6 +85,7 @@ public class RNVAPI extends APIService {
                 DUALE_HOCHSCHULE_STATION_ID);
         List<TramNews> tramNews = extractTramNews(gson, totalNewsEntries, DUALE_HOCHSCHULE_STATION_ID, "5");
         List<TramStatus> tramStatus = extractTramStatus(gson, totalStationsMonitor, "5");
+
         return new RNVContext(tramDetails, tramNews, tramStatus);
     }
 
@@ -484,12 +484,6 @@ public class RNVAPI extends APIService {
                     System.out.println(s.getAffectedLines());
                     System.out.println(s.getContent());
                 });
-    }
-
-    @Override
-    public URL buildRequestUrl(UserSettings usersettings) throws UnsupportedEncodingException, IOException {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }
