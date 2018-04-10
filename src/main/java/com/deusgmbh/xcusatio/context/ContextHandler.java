@@ -21,8 +21,8 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings.ExcuseVibeMode;
 public class ContextHandler {
 
     /**
-     * This method creates a new context object out of data from userSettings the
-     * lecturers and the data from the apis specified in the scenario object
+     * This method creates a new context object out of data from userSettings
+     * the lecturers and the data from the apis specified in the scenario object
      * 
      * @param userSettings
      * @param lecturers
@@ -32,8 +32,7 @@ public class ContextHandler {
      * @throws IOException
      * @throws JSONException
      */
-    public Context buildContext(UserSettings userSettings, List<Lecturer> lecturers, Scenario scenario)
-            throws JSONException, IOException, ParseException {
+    public Context buildContext(UserSettings userSettings, List<Lecturer> lecturers, Scenario scenario) {
         Context context = new Context().setAge(userSettings.getBirthdate())
                 .setSex(userSettings.getSex())
                 .setExcuseVibeMode(userSettings.getExcuseVibeMode());
