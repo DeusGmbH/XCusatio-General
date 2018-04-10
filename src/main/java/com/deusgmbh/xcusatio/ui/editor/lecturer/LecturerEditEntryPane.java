@@ -67,7 +67,7 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
 
         List<Tag> lectuererTags = editableItems.get(selectedItemId)
                 .getTags();
-                
+
         this.tagsListCellView = new DoubleListView<Tag>(lectuererTags, this.removeFromAllTagsList(lectuererTags));
         this.tagsListCellView.bindSize(this.widthProperty()
                 .multiply(RIGHT_EDIT_HALF_MULTIPLIER),
@@ -83,8 +83,13 @@ public class LecturerEditEntryPane extends EditEntryPane<Lecturer> {
 
     @Override
     protected Lecturer getEdtitedEntry() {
-        return new Lecturer(lecturerNameTextField.getText(), lecturerLecturesPane.getItems(),
-                tagsListCellView.getLeftListItems());
+        if (lecturerNameTextField.getText()
+                .length() > 0) {
+            return new Lecturer(lecturerNameTextField.getText(), lecturerLecturesPane.getItems(),
+                    tagsListCellView.getLeftListItems());
+        } else {
+            return null;
+        }
     }
 
     @Override

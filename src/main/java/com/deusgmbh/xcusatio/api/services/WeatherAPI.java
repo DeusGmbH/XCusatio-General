@@ -49,7 +49,6 @@ public class WeatherAPI extends APIService {
         return weatherContext;
     }
 
-    @Override
     public URL buildRequestUrl(UserSettings usersettings) throws IOException {
         GeocodeAPI gApi = new GeocodeAPI();
         GeocodeData gcd = gApi.get(usersettings);
@@ -71,8 +70,8 @@ public class WeatherAPI extends APIService {
      * @param gson
      * @param total
      *            represents the full json response from the url request
-     * @return a list of JsonObjects in the relevant depth level that is needed for
-     *         all further extractions of information hence this method is
+     * @return a list of JsonObjects in the relevant depth level that is needed
+     *         for all further extractions of information hence this method is
      *         class-specific
      */
     private List<JsonObject> getRelevantJsonObjects(Gson gson, JsonObject total) {
@@ -87,9 +86,10 @@ public class WeatherAPI extends APIService {
     /**
      * 
      * @param total
-     *            contains the complete json response string from the web request
-     * @return list containing TrafficIncidentDetails, that is the type of incident
-     *         + its current status
+     *            contains the complete json response string from the web
+     *            request
+     * @return list containing TrafficIncidentDetails, that is the type of
+     *         incident + its current status
      * @throws JSONException
      */
     private Integer extractCurrentTemperature(Gson gson, JsonObject total) {

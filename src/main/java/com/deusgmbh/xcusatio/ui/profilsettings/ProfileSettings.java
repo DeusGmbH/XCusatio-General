@@ -41,7 +41,7 @@ public class ProfileSettings extends FlowPane {
 
     private static final String SEX_TOGGLE_PANE_LABEL_TEXT = "Geschlecht";
     private static final String AGE_LABEL_TEXT = "Geburtstag";
-    private static final String LOCATION_LABEL_TEXT = "Standort";
+    private static final String LOCATION_LABEL_TEXT = "Heimatort";
     private static final String CALENDAR_LABEL_TEXT = "Google-Kalendar";
 
     private static final String SUBMIT_BUTTON_LABEL = "Speichern";
@@ -89,10 +89,10 @@ public class ProfileSettings extends FlowPane {
         titleLabel.getStyleClass()
                 .add("h1");
 
-        StackPane sexLabel = createFormattedLabel(SEX_TOGGLE_PANE_LABEL_TEXT);
-        StackPane ageLabel = createFormattedLabel(AGE_LABEL_TEXT);
-        StackPane locationLabel = createFormattedLabel(LOCATION_LABEL_TEXT);
-        StackPane calendarLabel = createFormattedLabel(CALENDAR_LABEL_TEXT);
+        StackPane sexLabel = createFormattedLabel(SEX_TOGGLE_PANE_LABEL_TEXT, Pos.CENTER_RIGHT);
+        StackPane ageLabel = createFormattedLabel(AGE_LABEL_TEXT, Pos.CENTER_RIGHT);
+        StackPane locationLabel = createFormattedLabel(LOCATION_LABEL_TEXT, Pos.TOP_RIGHT);
+        StackPane calendarLabel = createFormattedLabel(CALENDAR_LABEL_TEXT, Pos.CENTER_RIGHT);
 
         sexTogglePane = new SexTogglePane(userSettings.getValue()
                 .getSex());
@@ -135,7 +135,7 @@ public class ProfileSettings extends FlowPane {
                 .add(profileFormPane);
     }
 
-    private StackPane createFormattedLabel(String labelContent) {
+    private StackPane createFormattedLabel(String labelContent, Pos position) {
         Label label = new Label(labelContent);
         StackPane labelPane = new StackPane(label);
 
@@ -145,7 +145,7 @@ public class ProfileSettings extends FlowPane {
         labelPane.maxWidthProperty()
                 .bind(this.profileFormPane.widthProperty()
                         .multiply(LABEL_WIDTH_MULTIPLIER));
-        labelPane.setAlignment(Pos.CENTER_RIGHT);
+        labelPane.setAlignment(position);
 
         return labelPane;
     }

@@ -2,7 +2,6 @@ package com.deusgmbh.xcusatio.api;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.logging.Logger;
@@ -72,16 +71,5 @@ public abstract class APIService {
      */
     public abstract <T extends Object> T get(UserSettings usersettings)
             throws IOException, JSONException, ParseException;
-
-    /**
-     * 
-     * @param usersettings
-     *            contain settings entered by the user such as address, calendar
-     *            link, etc.
-     * @return the URL which is used for the following web request
-     * @throws UnsupportedEncodingException
-     * @throws IOException
-     */
-    public abstract URL buildRequestUrl(UserSettings usersettings) throws UnsupportedEncodingException, IOException;
 
 }

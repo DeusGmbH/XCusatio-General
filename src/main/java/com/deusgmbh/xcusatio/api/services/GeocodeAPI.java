@@ -19,19 +19,12 @@ import com.google.gson.JsonObject;
 
 public class GeocodeAPI extends APIService {
     private static final Logger LOGGER = Logger.getLogger(GeocodeAPI.class.getName());
-
-    private static final int ZOOM_LEVEL = 12; // 12 represents a
-    // medium level of
-    // zoom. in areas
-    // of high traffic
-    // a zoom of 16
-    // still yields
-    // good results.
-    // if the area has
-    // almost no
-    // traffic choose
-    // 8 to get a
-    // wider area
+    /**
+     * 12 represents a medium level of zoom. in areas of high traffic a zoom of
+     * 16 still yields good results. if the area has almost no traffic choose 8
+     * to get a wider area
+     */
+    private static final int ZOOM_LEVEL = 12;
 
     private final String JSON_RESPONSE = "Response";
     private final String JSON_VIEW = "View";

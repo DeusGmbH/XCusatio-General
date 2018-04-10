@@ -3,6 +3,7 @@ package com.deusgmbh.xcusatio.api;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.json.JSONException;
 
@@ -24,6 +25,7 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
  *
  */
 public class APIManager {
+    private static final Logger LOGGER = Logger.getLogger(APIManager.class.getName());
     List<Class<? extends APIService>> apis;
 
     public APIManager(List<Class<? extends APIService>> apis) {
@@ -35,7 +37,7 @@ public class APIManager {
         this(scenario.getRequiredAPIs());
     }
 
-    public APIContext getAPIData(UserSettings userSettings) throws JSONException, IOException, ParseException {
+    public APIContext getAPIData(UserSettings userSettings) {
         if (apis == null) {
             return null;
         }
@@ -51,28 +53,34 @@ public class APIManager {
         return new APIContext(weather, traffic, rnv, calendar);
     }
 
-    private WeatherContext callWeatherAPI(UserSettings userSettings) throws JSONException, IOException, ParseException {
+    private WeatherContext callWeatherAPI(UserSettings userSettings) {
         return callIfRequired(WeatherAPI.class, WeatherContext.class, userSettings);
     }
 
-    private TrafficContext callTrafficAPI(UserSettings userSettings) throws JSONException, IOException, ParseException {
+    private TrafficContext callTrafficAPI(UserSettings userSettings) {
         return callIfRequired(TrafficAPI.class, TrafficContext.class, userSettings);
     }
 
-    private RNVContext calRNVAPI(UserSettings userSettings) throws JSONException, IOException, ParseException {
+    private RNVContext calRNVAPI(UserSettings userSettings) {
         return callIfRequired(RNVAPI.class, RNVContext.class, userSettings);
     }
 
-    private CalendarContext callCalendarAPI(UserSettings userSettings) throws JSONException, IOException, ParseException {
+    private CalendarContext callCalendarAPI(UserSettings userSettings) {
         return callIfRequired(CalendarAPI.class, CalendarContext.class, userSettings);
     }
 
     private <T extends Object> T callIfRequired(Class<? extends APIService> api, Class<T> returnType,
-            UserSettings userSettings) throws JSONException, IOException, ParseException {
+            UserSettings userSettings) {
         if (this.containsAPI(api)) {
             try {
-                return api.newInstance()
-                        .get(userSettings);
+                try {
+                    return api.newInstance()
+                            .get(userSettings);
+                } catch (JSONException | IOException | ParseException e) {
+                    LOGGER.warning("An API Service could not processe the api result:");
+                    LOGGER.warning(e.getMessage());
+                    return null;
+                }
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
                 throw new RuntimeException("APIService does not have an accessible constructor");

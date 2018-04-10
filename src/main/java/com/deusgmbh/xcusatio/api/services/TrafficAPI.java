@@ -27,6 +27,8 @@ import com.google.gson.JsonObject;
 public class TrafficAPI extends APIService {
     private static final Logger LOGGER = Logger.getLogger(TrafficAPI.class.getName());
 
+    // TODO: @jan please remove all variables that are not going to be used.
+    // There seems to be a lot of them in here ;)
     private static final String BASE_URL = "https://traffic.cit.api.here.com/traffic/6.2/incidents/json/";
     private static final String APP_KEYS = "?app_id=ObXv79Ww3xdQ996uEDLw&app_code=74fsgcSubek54INvT13Rcg";
     private static final String JSONOB_TRAFFICML_INCIDENTS = "TRAFFICML_INCIDENTS";
@@ -139,7 +141,7 @@ public class TrafficAPI extends APIService {
         List<TrafficIncidentLocation> trafficIncidentLocations = new LinkedList<>();
         locations.forEach(location -> {
             if (location.get(JSONOB_LOCATION_DEFINED) != null) {
-            	// path 1: defined origin roadway description[] value_STR
+                // path 1: defined origin roadway description[] value_STR
                 JsonObject defined = gson.fromJson(location.get(JSONOB_LOCATION_DEFINED), JsonObject.class);
                 JsonObject origin = gson.fromJson(defined.get(JSONOB_DEFINED_ORIGIN), JsonObject.class);
                 JsonObject roadway = gson.fromJson(origin.get(JSONOB_ORIGIN_ROADWAY), JsonObject.class);
@@ -159,7 +161,7 @@ public class TrafficAPI extends APIService {
         return trafficIncidentLocations;
     }
 
-	private List<TrafficIncidentTimes> extractIncidentTimes(Gson gson, JsonObject total) {
+    private List<TrafficIncidentTimes> extractIncidentTimes(Gson gson, JsonObject total) {
         List<JsonObject> trafficItems = getRelevantJsonObjects(gson, total);
         List<TrafficIncidentTimes> trafficIncidentTimes = new LinkedList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
@@ -181,7 +183,6 @@ public class TrafficAPI extends APIService {
         return "12/" + String.valueOf(mapTiles[0]) + "/" + String.valueOf(mapTiles[1]);
     }
 
-    @Override
     public URL buildRequestUrl(UserSettings usersettings) throws IOException {
         GeocodeAPI gApi = new GeocodeAPI();
         GeocodeData gcd = gApi.get(usersettings);

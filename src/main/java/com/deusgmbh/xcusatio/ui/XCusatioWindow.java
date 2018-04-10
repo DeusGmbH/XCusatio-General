@@ -97,9 +97,9 @@ public class XCusatioWindow extends Application {
         main.setLeft(navigationPanel);
         main.setCenter(dashboard);
 
-        stage.getIcons()
+        this.stage.getIcons()
                 .add(new Image(ICON_IMAGE_PATH));
-        stage.show();
+        this.stage.show();
     }
 
     private void setContent(Node node) {
@@ -116,6 +116,7 @@ public class XCusatioWindow extends Application {
                     }
                 });
         main.setCenter(node);
+
     }
 
     private BorderPane initMainStage(Stage stage) {
@@ -133,8 +134,9 @@ public class XCusatioWindow extends Application {
         stage.setMaxHeight(WINDOW_MAX_HEIGHT);
         stage.setScene(scene);
         stage.setTitle(WINDOW_TITLE);
-        ResizeHelper.addResizeListener(stage, stage.getMinWidth(), stage.getMinHeight(), stage.getMaxWidth(),
-                stage.getMaxHeight());
+
+        ResizeHelper.addResizeListener(this.stage, this.stage.getMinWidth(), this.stage.getMinHeight(),
+                this.stage.getMaxWidth(), this.stage.getMaxHeight());
 
         return main;
     }
