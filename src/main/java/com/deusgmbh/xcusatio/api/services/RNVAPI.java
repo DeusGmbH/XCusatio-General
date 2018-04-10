@@ -84,11 +84,15 @@ public class RNVAPI extends APIService {
         JsonObject totalStations = getStationsPackage();
         JsonObject totalStationsMonitor = getStationsMonitorPackage();
         JsonArray totalNewsEntries = getNewsEntriesPackage();
+
         Collection tramDetails = extractTramDetails(gson, totalLines, totalStations, totalStationsMonitor,
                 DUALE_HOCHSCHULE_STATION_ID);
         Collection tramNews = extractTramNews(gson, totalNewsEntries, DUALE_HOCHSCHULE_STATION_ID, "5");
 
         List<TramStatus> tramStatus = extractTramStatus(gson, totalStationsMonitor, "5");
+
+        tramDetails.forEach(action);
+
         return new RNVContext(tramDetails, tramNews, tramStatus);
     }
 
