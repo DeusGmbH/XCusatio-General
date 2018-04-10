@@ -18,6 +18,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+/**
+ * 
+ * @author Lars.Dittert@de.ibm.com
+ *
+ */
 public class WeatherAPI extends APIService {
     private static final Logger LOGGER = Logger.getLogger(WeatherAPI.class.getName());
 
