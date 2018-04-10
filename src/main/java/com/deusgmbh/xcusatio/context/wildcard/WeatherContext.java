@@ -13,93 +13,71 @@ public class WeatherContext {
     private int temperature;
     private String description;
     private String windDirection;
-    private int maxTemparature;
-    private int minTemparature;
     private int windSpeed;
     private int snowHourly;
     private int rainHourly;
 
-    public WeatherContext(int temperature, String description, String windDirection, int maxTemparature,
-            int minTemparature, int windSpeed, int snowHourly, int rainHourly) {
+    public WeatherContext() {
         super();
-        this.temperature = temperature;
-        this.description = description;
-        this.windDirection = windDirection;
-        this.maxTemparature = maxTemparature;
-        this.minTemparature = minTemparature;
-        this.windSpeed = windSpeed;
-        this.snowHourly = snowHourly;
-        this.rainHourly = rainHourly;
     }
 
     public int getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(int temperature) {
+    public WeatherContext setTemperature(int temperature) {
         this.temperature = temperature;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public WeatherContext setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public String getWindDirection() {
         return windDirection;
     }
 
-    public void setWindDirection(String windDirection) {
+    public WeatherContext setWindDirection(String windDirection) {
         this.windDirection = windDirection;
-    }
-
-    public int getMaxTemparature() {
-        return maxTemparature;
-    }
-
-    public void setMaxTemparature(int maxTemparature) {
-        this.maxTemparature = maxTemparature;
-    }
-
-    public int getMinTemparature() {
-        return minTemparature;
-    }
-
-    public void setMinTemparature(int minTemparature) {
-        this.minTemparature = minTemparature;
+        return this;
     }
 
     public int getWindSpeed() {
         return windSpeed;
     }
 
-    public void setWindSpeed(int windSpeed) {
+    public WeatherContext setWindSpeed(int windSpeed) {
         this.windSpeed = windSpeed;
+        return this;
     }
 
     public int getSnowHourly() {
         return snowHourly;
     }
 
-    public void setSnowHourly(int snowHourly) {
+    public WeatherContext setSnowHourly(int snowHourly) {
         this.snowHourly = snowHourly;
+        return this;
     }
 
     public int getRainHourly() {
         return rainHourly;
     }
 
-    public void setRainHourly(int rainHourly) {
+    public WeatherContext setRainHourly(int rainHourly) {
         this.rainHourly = rainHourly;
+        return this;
     }
 
     public void logContextContent() {
         LOGGER.info("WeatherContext:\nTemperature: " + this.getTemperature() + " C\nDesc.: " + this.getDescription()
-                + "\nWind comes from: " + this.getWindDirection() + "\nMax. T: " + this.getMaxTemparature()
-                + "\nMin. T: " + this.getMinTemparature() + "\nWind speed: " + this.getWindSpeed() + "\nSnow hourly: "
-                + this.getSnowHourly() + "\nRain hourly: " + this.getRainHourly());
+                + "\nWind comes from: " + this.getWindDirection() + "\nWind speed: " + this.getWindSpeed()
+                + "\nSnow hourly: " + this.getSnowHourly() + "\nRain hourly: " + this.getRainHourly());
     }
 }

@@ -50,7 +50,10 @@ public class WeatherAPI extends APIService {
         Gson gson = new Gson();
         JsonObject total = getTotalJsonObject(requestUrl, gson);
 
-        WeatherContext weatherContext = new WeatherContext(11, "Sturmböen", "SE", 15, 8, 34, 0, 2);
+        WeatherContext weatherContext = new WeatherContext().setWindSpeed(this.extractCurrentWindSpeed(gson, total))
+                .setSnowHourly(this.extractCurrentSnowHourly(gson, total))
+                .setRainHourly(this.extractCurrentRainHourly(gson, total))
+                .setTemperature(this.extractCurrentTemperature(gson, total));
         return weatherContext;
     }
 
