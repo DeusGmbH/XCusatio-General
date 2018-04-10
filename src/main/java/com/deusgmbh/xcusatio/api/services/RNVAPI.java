@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -35,6 +36,7 @@ public class RNVAPI extends APIService {
     private final static Logger LOGGER = Logger.getLogger(RNVAPI.class.getName());
 
     private final static String DUALE_HOCHSCHULE_STATION_ID = "2521";
+    private final static String LINE_LABEL = "5";
     private final static String PARADEPLATZ = "2451"; // for tests only
     private final static String BASE_URL = "http://rnv.the-agent-factory.de:8080/easygo2/api";
     private final static String RNV_API_TOKEN = "l1kjqp3r2m788o0oouolaeg8ui";
@@ -82,15 +84,19 @@ public class RNVAPI extends APIService {
         JsonObject totalStations = getStationsPackage();
         JsonObject totalStationsMonitor = getStationsMonitorPackage();
         JsonArray totalNewsEntries = getNewsEntriesPackage();
-        List<TramDetails> tramDetails = extractTramDetails(gson, totalLines, totalStations, totalStationsMonitor,
+        Collection tramDetails = extractTramDetails(gson, totalLines, totalStations, totalStationsMonitor,
                 DUALE_HOCHSCHULE_STATION_ID);
-        List<TramNews> tramNews = extractTramNews(gson, totalNewsEntries, DUALE_HOCHSCHULE_STATION_ID, "5");
+        Collection tramNews = extractTramNews(gson, totalNewsEntries, DUALE_HOCHSCHULE_STATION_ID, "5");
+
         List<TramStatus> tramStatus = extractTramStatus(gson, totalStationsMonitor, "5");
         return new RNVContext(tramDetails, tramNews, tramStatus);
     }
 
-    private List<TramNews> extractTramNews(Gson gson, JsonArray tramNewsEntries, String searchedStationId,
+    private Collection extractTramNews(Gson gson, JsonArray tramNewsEntries, String searchedStationId,
             String lineLabelOfInterest) {
+
+        Collection tramNewsCollected = null;
+
         List<JsonObject> tramNewsObjectsList = new LinkedList<>();
         for (int tramNewsObjectIndex = 0; tramNewsObjectIndex < tramNewsEntries.size(); ++tramNewsObjectIndex) {
             tramNewsObjectsList.add(tramNewsEntries.get(tramNewsObjectIndex)
@@ -103,13 +109,18 @@ public class RNVAPI extends APIService {
         List<LocalDate[]> timeStampsList = extractNewsTimeStamps(gson, newsObjectsOfInterest);
         List<List<String>> affectedLines = extractAffectedLines(gson, newsObjectsOfInterest);
 
+        tramNewsCollected.add(newsTitlesList);
+        tramNewsCollected.add(newsContentsList);
+        tramNewsCollected.addAll(timeStampsList);
+        tramNewsCollected.add(affectedLines);
+
         List<TramNews> tramNewsList = new LinkedList<>();
         for (int i = 0; i < newsObjectsOfInterest.size(); ++i) {
             TramNews tramNews = new TramNews(timeStampsList.get(i), newsTitlesList.get(i), newsContentsList.get(i),
                     affectedLines.get(i));
             tramNewsList.add(tramNews);
         }
-        return tramNewsList;
+        return tramNewsCollected;
     }
 
     private List<List<String>> extractAffectedLines(Gson gson, List<JsonObject> newsObjects) {
@@ -184,8 +195,10 @@ public class RNVAPI extends APIService {
         return newsObjects;
     }
 
-    private List<TramDetails> extractTramDetails(Gson gson, JsonArray totalLines, JsonObject totalStations,
+    private Collection extractTramDetails(Gson gson, JsonArray totalLines, JsonObject totalStations,
             JsonObject totalStationsMonitor, String searchedStationId) {
+
+        Collection tramDetailsCollected = null;
 
         // fill a list with json objects representing lines with their
         // associated station IDs
@@ -247,7 +260,14 @@ public class RNVAPI extends APIService {
             tramDetails.add(new TramDetails(linesStoppingAtSearchedStation.get(tramIndex), DUALE_HOCHSCHULE_STATION_ID,
                     delayTimes, stopNamesOfLine));
         }
-        return tramDetails;
+
+        // collect information
+        tramDetailsCollected.add(LINE_LABEL);
+        tramDetailsCollected.add(DUALE_HOCHSCHULE_STATION_ID);
+        tramDetailsCollected.add(stopNamesOfLine);
+        tramDetailsCollected.add(delayTimes);
+
+        return tramDetailsCollected;
 
     }
 
@@ -465,25 +485,6 @@ public class RNVAPI extends APIService {
         RNVAPI rnvapi = new RNVAPI(null);
         RNVContext rnvContext = rnvapi.get(null);
 
-        rnvContext.getTramDetails()
-                .forEach(s -> {
-                    System.out.println(s.getLineLabel());
-                    System.out.println(s.getStops());
-                    System.out.println(s.getDifferenceTimesInMinutes());
-                });
-
-        rnvContext.getTramStatus()
-                .forEach(s -> {
-                    System.out.println(s);
-                });
-
-        rnvContext.getNewsEntries()
-                .forEach(s -> {
-                    System.out.println(s.getTitle());
-                    System.out.println(s.getTimestamps()[0] + " - " + s.getTimestamps()[1]);
-                    System.out.println(s.getAffectedLines());
-                    System.out.println(s.getContent());
-                });
     }
 
     @Override
