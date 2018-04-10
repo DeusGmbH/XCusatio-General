@@ -183,7 +183,6 @@ public class TrafficAPI extends APIService {
         return "12/" + String.valueOf(mapTiles[0]) + "/" + String.valueOf(mapTiles[1]);
     }
 
-    @Override
     public URL buildRequestUrl(UserSettings usersettings) throws IOException {
         GeocodeAPI gApi = new GeocodeAPI();
         GeocodeData gcd = gApi.get(usersettings);
