@@ -360,7 +360,7 @@ public class RNVAPI extends APIService {
         for (Integer i : delayTimes) {
             if (i > -1) {
                 ++numberOfPositiveDelayTimes;
-                sumOfDelayTimes = +i;
+                sumOfDelayTimes += i;
             }
         }
         int ceiledAverage = (int) Math.ceil(sumOfDelayTimes / numberOfPositiveDelayTimes);
