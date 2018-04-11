@@ -304,7 +304,6 @@ public class RNVAPI extends APIService {
         InputStream is = connection.getInputStream();
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(IOUtils.toString(is));
-        System.out.println(element);
         return element;
     }
 
