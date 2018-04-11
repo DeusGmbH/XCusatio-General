@@ -1,6 +1,5 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import com.deusgmbh.xcusatio.api.data.TimeFormattingUtils;
@@ -16,19 +15,19 @@ public class RNVContext extends TimeFormattingUtils {
 
     private static final Logger LOGGER = Logger.getLogger(RNVContext.class.getName());
 
-    private List<Tram> trams;
+    private Tram tram;
 
-    public RNVContext(List<Tram> trams) {
+    public RNVContext(Tram tram) {
         super();
-        this.trams = trams;
+        this.tram = tram;
     }
 
-    public List<Tram> getTrams() {
-        return trams;
+    public Tram getTram() {
+        return tram;
     }
 
-    public void setTrams(List<Tram> trams) {
-        this.trams = trams;
+    public void setTram(Tram tram) {
+        this.tram = tram;
     }
 
 }

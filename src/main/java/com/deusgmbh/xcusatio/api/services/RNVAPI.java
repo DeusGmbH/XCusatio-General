@@ -7,12 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +18,7 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 
 import com.deusgmbh.xcusatio.api.APIService;
-import com.deusgmbh.xcusatio.api.data.TramDetails;
-import com.deusgmbh.xcusatio.api.data.TramNews;
+import com.deusgmbh.xcusatio.api.data.Tram;
 import com.deusgmbh.xcusatio.api.data.TramStatus;
 import com.deusgmbh.xcusatio.context.wildcard.RNVContext;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
@@ -68,9 +64,14 @@ public class RNVAPI extends APIService {
     private final static SimpleDateFormat RNV_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd+hh:mm:ss");
 
     private URL[] requestUrls; // could also be stored static
+    private Map<String, List<String>> stopsOfLines;
 
-    public RNVAPI(UserSettings userSettings) {
+    public RNVAPI(UserSettings userSettings) throws IOException {
+        Gson gson = new Gson();
         this.requestUrls = this.buildRequestUrls(userSettings);
+        this.stopsOfLines = new LinkedHashMap<>();
+        List<String> stopsOfLine5 = getLineStops(LINE_LABEL);
+        this.stopsOfLines.put(LINE_LABEL, stopsOfLine5);
     }
 
     /**
@@ -79,213 +80,32 @@ public class RNVAPI extends APIService {
     @Override
     public RNVContext get(UserSettings usersettings) throws UnsupportedEncodingException, IOException {
         Gson gson = new Gson();
-        JsonArray totalLines = getLinesPackage();
-        JsonObject totalStations = getStationsPackage();
         JsonObject totalStationsMonitor = getStationsMonitorPackage();
         JsonArray totalNewsEntries = getNewsEntriesPackage();
 
-        Collection tramDetails = extractTramDetails(gson, totalLines, totalStations, totalStationsMonitor,
-                DUALE_HOCHSCHULE_STATION_ID);
-        Collection tramNews = extractTramNews(gson, totalNewsEntries, DUALE_HOCHSCHULE_STATION_ID, "5");
+        Tram tram = extractTram(DUALE_HOCHSCHULE_STATION_ID);
 
-        List<TramStatus> tramStatus = extractTramStatus(gson, totalStationsMonitor, "5");
-
-        return null;
+        RNVContext rnvContext = new RNVContext(tram);
+        return rnvContext;
     }
 
-    private Collection extractTramNews(Gson gson, JsonArray tramNewsEntries, String searchedStationId,
-            String lineLabelOfInterest) {
+    private Tram extractTram(String searchedStationId) throws IOException {
 
-        Collection tramNewsCollected = null;
+        Gson gson = new Gson();
+        JsonObject totalStationsMonitor = getStationsMonitorPackage();
 
-        List<JsonObject> tramNewsObjectsList = new LinkedList<>();
-        for (int tramNewsObjectIndex = 0; tramNewsObjectIndex < tramNewsEntries.size(); ++tramNewsObjectIndex) {
-            tramNewsObjectsList.add(tramNewsEntries.get(tramNewsObjectIndex)
-                    .getAsJsonObject());
-        }
-        List<JsonObject> newsObjectsOfInterest = filterNewsObjectsByLineLabel(gson, tramNewsObjectsList,
-                lineLabelOfInterest);
-        List<String> newsTitlesList = extractNewsTitles(gson, newsObjectsOfInterest);
-        List<String> newsContentsList = extractNewsContents(gson, newsObjectsOfInterest);
-        List<LocalDate[]> timeStampsList = extractNewsTimeStamps(gson, newsObjectsOfInterest);
-        List<List<String>> affectedLines = extractAffectedLines(gson, newsObjectsOfInterest);
-
-        tramNewsCollected.add(newsTitlesList);
-        tramNewsCollected.add(newsContentsList);
-        tramNewsCollected.addAll(timeStampsList);
-        tramNewsCollected.add(affectedLines);
-
-        List<TramNews> tramNewsList = new LinkedList<>();
-        for (int i = 0; i < newsObjectsOfInterest.size(); ++i) {
-            TramNews tramNews = new TramNews(timeStampsList.get(i), newsTitlesList.get(i), newsContentsList.get(i),
-                    affectedLines.get(i));
-            tramNewsList.add(tramNews);
-        }
-        return tramNewsCollected;
-    }
-
-    private List<List<String>> extractAffectedLines(Gson gson, List<JsonObject> newsObjects) {
-        List<List<String>> allLineListsOccuringInNews = new LinkedList<>();
-        List<String> affectedLinesPerNewsEntry = new LinkedList<>();
-        newsObjects.forEach(news -> {
-            JsonArray affectedLines = gson.fromJson(news.get(JSONARR_NEWS_AFFECTED_LINES), JsonArray.class);
-            for (int lineIndex = 0; lineIndex < affectedLines.size(); ++lineIndex) {
-                String line = removeQuotes(affectedLines.get(lineIndex)
-                        .toString());
-                affectedLinesPerNewsEntry.add(line);
-            }
-            allLineListsOccuringInNews.add(affectedLinesPerNewsEntry);
-        });
-        return allLineListsOccuringInNews;
-    }
-
-    private List<String> extractNewsContents(Gson gson, List<JsonObject> newsObjects) {
-        List<String> newsContents = new LinkedList<>();
-        newsObjects.forEach(news -> {
-            String newsTitle = gson.fromJson(news.get(JSONSTR_NEWS_CONTENT), String.class);
-            newsContents.add(newsTitle);
-        });
-        return newsContents;
-    }
-
-    private List<LocalDate[]> extractNewsTimeStamps(Gson gson, List<JsonObject> newsObjects) {
-        List<LocalDate[]> timeStampsList = new LinkedList<>();
-        LocalDate[] startAndEndDate = new LocalDate[2];
-        newsObjects.forEach(newsObject -> {
-            String start = gson.fromJson(newsObject.get(JSONSTR_NEWS_VALID_FROM), String.class);
-            String end = gson.fromJson(newsObject.get(JSONSTR_NEWS_VALID_TO), String.class);
-            startAndEndDate[0] = convertMillisTextToLocalDate(start);
-            startAndEndDate[1] = convertMillisTextToLocalDate(end);
-            timeStampsList.add(startAndEndDate);
-        });
-        return timeStampsList;
-    }
-
-    private LocalDate convertMillisTextToLocalDate(String millisText) {
-        Long millisLong = Long.parseLong(millisText);
-        LocalDate localDate = Instant.ofEpochMilli(millisLong)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        return localDate;
-    }
-
-    private List<String> extractNewsTitles(Gson gson, List<JsonObject> newsObjects) {
-        List<String> newsTitles = new LinkedList<>();
-        newsObjects.forEach(news -> {
-            String newsTitle = gson.fromJson(news.get(JSONSTR_NEWS_TITLE), String.class);
-            newsTitles.add(newsTitle);
-        });
-        return newsTitles;
-    }
-
-    private List<JsonObject> filterNewsObjectsByLineLabel(Gson gson, List<JsonObject> tramNewsObjectsList,
-            String lineLabelOfInterest) {
-        List<JsonObject> newsObjects = new LinkedList<>();
-        tramNewsObjectsList.forEach(newsObject -> {
-            JsonArray affectedLines = gson.fromJson(newsObject.get(JSONARR_NEWS_AFFECTED_LINES), JsonArray.class);
-            for (int lineIndex = 0; lineIndex < affectedLines.size(); ++lineIndex) {
-                String currentLine = removeQuotes(affectedLines.get(lineIndex)
-                        .toString());
-                if ((currentLine.equals(lineLabelOfInterest))) {
-                    newsObjects.add(newsObject);
-                } else {
-                    continue;
-                }
-            }
-        });
-        return newsObjects;
-    }
-
-    private Collection extractTramDetails(Gson gson, JsonArray totalLines, JsonObject totalStations,
-            JsonObject totalStationsMonitor, String searchedStationId) {
-
-        Collection tramDetailsCollected = null;
-
-        // fill a list with json objects representing lines with their
-        // associated station IDs
-        List<JsonObject> lineObjects = new LinkedList<>();
-        for (int lineObjectIndex = 0; lineObjectIndex < totalLines.size(); ++lineObjectIndex) {
-            lineObjects.add(totalLines.get(lineObjectIndex)
-                    .getAsJsonObject());
-        }
-
-        // extract the line label(s) of trams stopping at the searched station
-        List<String> linesStoppingAtSearchedStation = new LinkedList<>();
-        List<String> stopIdsOfLineAsText = new LinkedList<>();
-        List<String> stopNamesOfLine = new LinkedList<>();
-
-        // use a map which contains all stations with their IDs as keys and
-        // their textual names as values
-        Map<String, String> stationsMap = getStationIdNamesMap(gson, totalStations);
-
-        lineObjects.forEach(lineObject -> {
-
-            // get the stop IDs of the current lineObject iterated over...
-            JsonArray stopIdsOfThisLine = gson.fromJson(lineObject.get(JSONARR_LINE_IDS), JsonArray.class);
-
-            // ...and iterate over these IDs
-            for (int stopId = 0; stopId < stopIdsOfThisLine.size(); ++stopId) {
-                String lineStopId = stopIdsOfThisLine.get(stopId)
-                        .toString();
-                lineStopId = removeQuotes(lineStopId);
-
-                // test if the station ID belonging to the current line object
-                // matches the one searched for that is
-                // a line has been found that stops at the desired station
-                if (lineStopId.equals(searchedStationId)) {
-                    String line = gson.fromJson(stopIdsOfThisLine.get(stopId), String.class);
-                    line = removeQuotes(line);
-                    String foundLine = gson.fromJson(lineObject.get(JSON_LINE_LABEL), String.class);
-                    linesStoppingAtSearchedStation.add(foundLine);
-
-                    // add all of the stops of the found line to a list
-                    stopIdsOfThisLine.forEach(stop -> {
-                        String stopTrimmed = removeQuotes(stop.toString());
-                        stopIdsOfLineAsText.add(stopTrimmed.toString());
-                    });
-                }
-            }
-        });
-        stopIdsOfLineAsText.forEach(id -> {
-            stationsMap.forEach((stationId, name) -> {
-                if (id.equals(stationId) && (!stopNamesOfLine.contains(name))) {
-                    stopNamesOfLine.add(name);
-                }
-            });
-        });
         // Determine delay times
-        List<Integer> delayTimes = extractDelayTimes(gson, totalStationsMonitor);
+        int delayTime = extractDelayTime(gson, totalStationsMonitor);
 
-        List<TramDetails> tramDetails = new LinkedList<>();
-        for (int tramIndex = 0; tramIndex < linesStoppingAtSearchedStation.size(); ++tramIndex) {
-            tramDetails.add(new TramDetails(linesStoppingAtSearchedStation.get(tramIndex), DUALE_HOCHSCHULE_STATION_ID,
-                    delayTimes, stopNamesOfLine));
-        }
+        TramStatus tramStatus = extractTramStatus(gson, totalStationsMonitor, DUALE_HOCHSCHULE_STATION_ID);
 
-        // collect information
-        tramDetailsCollected.add(LINE_LABEL);
-        tramDetailsCollected.add(DUALE_HOCHSCHULE_STATION_ID);
-        tramDetailsCollected.add(stopNamesOfLine);
-        tramDetailsCollected.add(delayTimes);
+        Tram tram = new Tram(LINE_LABEL, DUALE_HOCHSCHULE_STATION_ID, delayTime, this.stopsOfLines, tramStatus);
 
-        return tramDetailsCollected;
+        return tram;
 
     }
 
-    private String removeQuotes(String stringWithinQuotes) {
-        try {
-            if (!(stringWithinQuotes.matches("\".*\""))) {
-                return stringWithinQuotes;
-            }
-            return stringWithinQuotes.substring(1, stringWithinQuotes.length() - 1);
-        } catch (Exception e) {
-            throw new RuntimeException("Error transforming quoted string, got: " + stringWithinQuotes + " expected: "
-                    + "\"" + stringWithinQuotes + "\"");
-        }
-
-    }
-
-    private List<Integer> extractDelayTimes(Gson gson, JsonObject totalStationsMonitor) {
+    private int extractDelayTime(Gson gson, JsonObject totalStationsMonitor) {
         List<Integer> delayTimes = new LinkedList<>();
         JsonArray departuresArray = gson.fromJson(totalStationsMonitor.get(JSONARR_DEPARTURES_LIST), JsonArray.class);
         List<JsonObject> departureObjects = new LinkedList<>();
@@ -310,7 +130,42 @@ public class RNVAPI extends APIService {
                 delayTimes.add(timeDiff - calculateDiffTimeInMinutes(nowAsText, timeCut));
             }
         });
-        return delayTimes;
+        int delayTime = filterDelaysByRelevance(delayTimes);
+        return delayTime;
+    }
+
+    private List<String> getLineStops(String lineLabel) throws IOException {
+        Gson gson = new Gson();
+        JsonArray totalLines = getLinesPackage();
+        JsonObject totalStations = getStationsPackage();
+        JsonObject lineObject5 = null;
+        for (int lineObjectIndex = 0; lineObjectIndex < totalLines.size(); ++lineObjectIndex) {
+            JsonObject currentObject = totalLines.get(lineObjectIndex)
+                    .getAsJsonObject();
+            String currentLineLabel = removeQuotes(currentObject.get(JSON_LINE_LABEL)
+                    .toString());
+            if (currentLineLabel.equals(LINE_LABEL)) {
+                lineObject5 = currentObject;
+                break;
+            }
+        }
+
+        JsonArray stopIdsOfThisLine = gson.fromJson(lineObject5.get(JSONARR_LINE_IDS), JsonArray.class);
+        List<String> stopIdsOfLineAsText = new LinkedList<>();
+        stopIdsOfThisLine.forEach(stop -> {
+            String stopTrimmed = removeQuotes(stop.toString());
+            stopIdsOfLineAsText.add(stopTrimmed.toString());
+        });
+        Map<String, String> stationsMap = getStationIdNamesMap(gson, totalStations);
+        List<String> stopNamesOfLine = new LinkedList<>();
+        stopIdsOfLineAsText.forEach(id -> {
+            stationsMap.forEach((stationId, name) -> {
+                if (id.equals(stationId) && (!stopNamesOfLine.contains(name))) {
+                    stopNamesOfLine.add(name);
+                }
+            });
+        });
+        return stopNamesOfLine;
     }
 
     private Map<String, String> getStationIdNamesMap(Gson gson, JsonObject totalStations) {
@@ -336,9 +191,9 @@ public class RNVAPI extends APIService {
         return stationsMap;
     }
 
-    private List<TramStatus> extractTramStatus(Gson gson, JsonObject totalStationsMonitor, String lineLabelOfInterest) {
-        List<String> tramStatusList = new LinkedList<>();
+    private TramStatus extractTramStatus(Gson gson, JsonObject totalStationsMonitor, String lineLabelOfInterest) {
         JsonArray departures = gson.fromJson(totalStationsMonitor.get(JSONARR_DEPARTURES_LIST), JsonArray.class);
+        String tramStatusText = null;
 
         // collect the departure objects in a list
         List<JsonObject> departureObjectsList = new LinkedList<>();
@@ -351,23 +206,17 @@ public class RNVAPI extends APIService {
         List<JsonObject> statusObjectsOfInterest = filterTramStatusByLineLabel(gson, departureObjectsList,
                 lineLabelOfInterest);
 
-        statusObjectsOfInterest.forEach(status -> {
+        for (JsonObject status : statusObjectsOfInterest) {
             String line = removeQuotes(gson.fromJson(status.get(JSONSTR_LINE_LABEL), String.class));
             if (!(line.equals(lineLabelOfInterest))) {
                 throw new RuntimeException("filtering lines of interest failed!");
             } else {
-                String tramStatusText = gson.fromJson(status.get(JSONSTR_STATUS), String.class);
-                tramStatusList.add(tramStatusText);
+                tramStatusText = gson.fromJson(status.get(JSONSTR_STATUS), String.class);
+                return TramStatus.valueOf(tramStatusText);
             }
-        });
-
-        // fill the TramStatus-list to be returned
-        List<TramStatus> tramStatus = new LinkedList<>();
-        tramStatusList.forEach(status -> {
-            TramStatus tS = TramStatus.valueOf(status);
-            tramStatus.add(tS);
-        });
-        return tramStatus;
+        }
+        return TramStatus.valueOf("OK"); // probably not occuring in an excuse
+                                         // then
     }
 
     private List<JsonObject> filterTramStatusByLineLabel(Gson gson, List<JsonObject> tramStatusObjectsList,
@@ -391,6 +240,14 @@ public class RNVAPI extends APIService {
         return statusObjects;
     }
 
+    // getters and setters
+
+    /*
+     * Methods for doing web requests and receiving the necessary json objects
+     * as response
+     * 
+     */
+
     // if urls stored static this method becomes obsolete; currently
     // UserSettings is not used here due to the project's requirements
     private URL[] buildRequestUrls(UserSettings userSettings) {
@@ -406,35 +263,6 @@ public class RNVAPI extends APIService {
             throw new RuntimeException("error building urls in rnvApi");
         }
 
-    }
-
-    private Integer calculateDiffTimeInMinutes(String startTime, String endTime) {
-        Integer endH = getHours(endTime);
-        Integer endM = getMinutes(endTime);
-        Integer startH = getHours(startTime);
-        Integer startM = getMinutes(startTime);
-
-        if (endH == startH) {
-            return endM - startM;
-        }
-        if (endH - startH < 0) {
-            Integer deltaH = 24 + (endH - startH);
-            return 60 * deltaH + (endM - startM);
-        }
-        Integer deltaH = endH - startH;
-        if (endM - startM < 0) {
-            return 60 * deltaH + (endM - startM);
-        }
-        return 60 * deltaH + (endM - startM);
-    }
-
-    // getters and setters
-    private Integer getHours(String clockTime) {
-        return Integer.parseInt(clockTime.substring(0, 2));
-    }
-
-    private Integer getMinutes(String clockTime) {
-        return Integer.parseInt(clockTime.substring(3, 5));
     }
 
     private JsonObject getStationsPackage() throws IOException {
@@ -480,11 +308,78 @@ public class RNVAPI extends APIService {
         return element;
     }
 
+    /*
+     * 
+     * Helper methods
+     * 
+     * 
+     */
+    private Integer calculateDiffTimeInMinutes(String startTime, String endTime) {
+        Integer endH = getHours(endTime);
+        Integer endM = getMinutes(endTime);
+        Integer startH = getHours(startTime);
+        Integer startM = getMinutes(startTime);
+
+        if (endH == startH) {
+            return endM - startM;
+        }
+        if (endH - startH < 0) {
+            Integer deltaH = 24 + (endH - startH);
+            return 60 * deltaH + (endM - startM);
+        }
+        Integer deltaH = endH - startH;
+        if (endM - startM < 0) {
+            return 60 * deltaH + (endM - startM);
+        }
+        return 60 * deltaH + (endM - startM);
+    }
+
+    private Integer getHours(String clockTime) {
+        return Integer.parseInt(clockTime.substring(0, 2));
+    }
+
+    private Integer getMinutes(String clockTime) {
+        return Integer.parseInt(clockTime.substring(3, 5));
+    }
+
+    private String removeQuotes(String stringWithinQuotes) {
+        try {
+            if (!(stringWithinQuotes.matches("\".*\""))) {
+                return stringWithinQuotes;
+            }
+            return stringWithinQuotes.substring(1, stringWithinQuotes.length() - 1);
+        } catch (Exception e) {
+            throw new RuntimeException("Error transforming quoted string, got: " + stringWithinQuotes + " expected: "
+                    + "\"" + stringWithinQuotes + "\"");
+        }
+
+    }
+
+    private int filterDelaysByRelevance(List<Integer> delayTimes) {
+        double sumOfDelayTimes = 0.0;
+        int numberOfPositiveDelayTimes = 0;
+        for (Integer i : delayTimes) {
+            if (i > -1) {
+                ++numberOfPositiveDelayTimes;
+                sumOfDelayTimes = +i;
+            }
+        }
+        int ceiledAverage = (int) Math.ceil(sumOfDelayTimes / numberOfPositiveDelayTimes);
+        return ceiledAverage;
+    }
+
     // testing
     public static void main(String[] aflok) throws IOException {
 
         RNVAPI rnvapi = new RNVAPI(null);
         RNVContext rnvContext = rnvapi.get(null);
+        System.out.println(rnvContext.getTram()
+                .getDifferenceTimeInMinutes());
+        System.out.println(rnvContext.getTram()
+                .getLineLabel());
+        System.out.println(rnvContext.getTram()
+                .getStopsOfLines()
+                .get(LINE_LABEL));
 
     }
 

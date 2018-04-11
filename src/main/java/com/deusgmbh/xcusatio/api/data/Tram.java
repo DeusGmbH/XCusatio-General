@@ -1,38 +1,24 @@
 package com.deusgmbh.xcusatio.api.data;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class Tram {
 
     // former TramDetails
     private String lineLabel;
-    private String homeStation; /* the relevant station for the student */
-    private List<Integer> differenceTimesInMinutes;
-    private List<String> stops;
+    private String universityStation; /* the relevant station for the student */
+    private int differenceTimeInMinutes;
+    private Map<String, List<String>> stopsOfLines;
+    private TramStatus tramStatus;
 
-    // former TramNews
-    private boolean hasNewsEntry;
-    private LocalDate[] timestampsOfNews;
-    private String titleOfNews;
-    private String contentOfNews;
-    private List<String> affectedLines; // empty if lineLabel not sublist
-
-    private List<TramStatus> tramStatus;
-
-    public Tram(String lineLabel, String homeStation, List<Integer> differenceTimesInMinutes, List<String> stops,
-            boolean hasNewsEntry, LocalDate[] timestampsOfNews, String titleOfNews, String contentOfNews,
-            List<String> affectedLines, List<TramStatus> tramStatus) {
+    public Tram(String lineLabel, String universityStation, int differenceTimeInMinutes,
+            Map<String, List<String>> stopsOfLines, TramStatus tramStatus) {
         super();
         this.lineLabel = lineLabel;
-        this.homeStation = homeStation;
-        this.differenceTimesInMinutes = differenceTimesInMinutes;
-        this.stops = stops;
-        this.hasNewsEntry = hasNewsEntry;
-        this.timestampsOfNews = timestampsOfNews;
-        this.titleOfNews = titleOfNews;
-        this.contentOfNews = contentOfNews;
-        this.affectedLines = affectedLines;
+        this.universityStation = universityStation;
+        this.differenceTimeInMinutes = differenceTimeInMinutes;
+        this.stopsOfLines = stopsOfLines;
         this.tramStatus = tramStatus;
     }
 
@@ -44,76 +30,36 @@ public class Tram {
         this.lineLabel = lineLabel;
     }
 
-    public String getHomeStation() {
-        return homeStation;
+    public String getUniversityStation() {
+        return universityStation;
     }
 
-    public void setHomeStation(String homeStation) {
-        this.homeStation = homeStation;
+    public void setUniversityStation(String universityStation) {
+        this.universityStation = universityStation;
     }
 
-    public List<Integer> getDifferenceTimesInMinutes() {
-        return differenceTimesInMinutes;
+    public int getDifferenceTimeInMinutes() {
+        return differenceTimeInMinutes;
     }
 
-    public void setDifferenceTimesInMinutes(List<Integer> differenceTimesInMinutes) {
-        this.differenceTimesInMinutes = differenceTimesInMinutes;
+    public void setDifferenceTimeInMinutes(int differenceTimeInMinutes) {
+        this.differenceTimeInMinutes = differenceTimeInMinutes;
     }
 
-    public boolean isHasNewsEntry() {
-        return hasNewsEntry;
+    public Map<String, List<String>> getStopsOfLines() {
+        return stopsOfLines;
     }
 
-    public void setHasNewsEntry(boolean hasNewsEntry) {
-        this.hasNewsEntry = hasNewsEntry;
+    public void setStopsOfLines(Map<String, List<String>> stopsOfLines) {
+        this.stopsOfLines = stopsOfLines;
     }
 
-    public LocalDate[] getTimestampsOfNews() {
-        return timestampsOfNews;
-    }
-
-    public void setTimestampsOfNews(LocalDate[] timestampsOfNews) {
-        this.timestampsOfNews = timestampsOfNews;
-    }
-
-    public String getTitleOfNews() {
-        return titleOfNews;
-    }
-
-    public void setTitleOfNews(String titleOfNews) {
-        this.titleOfNews = titleOfNews;
-    }
-
-    public String getContentOfNews() {
-        return contentOfNews;
-    }
-
-    public void setContentOfNews(String contentOfNews) {
-        this.contentOfNews = contentOfNews;
-    }
-
-    public List<String> getAffectedLines() {
-        return affectedLines;
-    }
-
-    public void setAffectedLines(List<String> affectedLines) {
-        this.affectedLines = affectedLines;
-    }
-
-    public List<TramStatus> getTramStatus() {
+    public TramStatus getTramStatus() {
         return tramStatus;
     }
 
-    public void setTramStatus(List<TramStatus> tramStatus) {
+    public void setTramStatus(TramStatus tramStatus) {
         this.tramStatus = tramStatus;
-    }
-
-    public List<String> getStops() {
-        return stops;
-    }
-
-    public void setStops(List<String> stops) {
-        this.stops = stops;
     }
 
 }
