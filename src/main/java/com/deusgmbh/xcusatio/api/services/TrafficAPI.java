@@ -13,6 +13,7 @@ import org.json.JSONException;
 
 import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.api.data.GeocodeData;
+import com.deusgmbh.xcusatio.api.data.TrafficIncident;
 import com.deusgmbh.xcusatio.api.data.TrafficIncidentDetails;
 import com.deusgmbh.xcusatio.api.data.TrafficIncidentLocation;
 import com.deusgmbh.xcusatio.api.data.TrafficIncidentTimes;
@@ -68,19 +69,39 @@ public class TrafficAPI extends APIService {
         // string
         URL requestUrl = buildRequestUrl(usersettings);
         Gson gson = new Gson();
-        JsonObject total = getTotalJsonObject(requestUrl, gson);
+        JsonObject totalJsonResponse = getTotalJsonObject(requestUrl, gson);
 
         // extract all required information from json
-        List<TrafficIncidentDetails> trafficIncidentDetails = extractIncidentDetails(gson, total);
-        List<TrafficIncidentLocation> trafficIncidentLocations = extractIncidentLocations(gson, total);
-        List<TrafficIncidentTimes> trafficIncidentTimes = extractIncidentTimes(gson, total);
 
-        // fill these information into the defined context object for traffic
-        // incidents
-        TrafficContext trafficContext = new TrafficContext(trafficIncidentDetails, trafficIncidentLocations,
+        List<TrafficIncidentDetails> trafficIncidentDetails = extractIncidentDetails(totalJsonResponse);
+        List<TrafficIncidentLocation> trafficIncidentLocations = extractIncidentLocations(totalJsonResponse);
+        List<TrafficIncidentTimes> trafficIncidentTimes = extractIncidentTimes(totalJsonResponse);
+
+        int numberOfCompleteTrafficIncidents = getLargestIndexPossible(trafficIncidentDetails, trafficIncidentLocations,
                 trafficIncidentTimes);
 
+        List<TrafficIncident> trafficIncidents = new LinkedList<>();
+        for (int incidentNumber = 0; incidentNumber < numberOfCompleteTrafficIncidents; ++incidentNumber) {
+            trafficIncidents.add(new TrafficIncident(trafficIncidentDetails.get(incidentNumber),
+                    trafficIncidentLocations.get(incidentNumber), trafficIncidentTimes.get(incidentNumber)));
+        }
+
+        TrafficContext trafficContext = new TrafficContext(trafficIncidents);
+
         return trafficContext;
+    }
+
+    private int getLargestIndexPossible(List list1, List list2, List list3) {
+        if (list1.size() > list2.size()) {
+            if (list2.size() > list3.size()) {
+                return list3.size();
+            }
+            return list2.size();
+        }
+        if (list1.size() < list3.size()) {
+            return list1.size();
+        }
+        return list3.size();
     }
 
     /**
@@ -92,7 +113,8 @@ public class TrafficAPI extends APIService {
      *         for all further extractions of information hence this method is
      *         class-specific
      */
-    private List<JsonObject> getRelevantJsonObjects(Gson gson, JsonObject total) {
+    private List<JsonObject> getRelevantJsonObjects(JsonObject total) {
+        Gson gson = new Gson();
         JsonObject trafficItemObject = gson.fromJson(total.get(JSONOB_TRAFFIC_ITEMS), JsonObject.class);
         JsonArray trafficItemArray = gson.fromJson(trafficItemObject.get(JSONARR_TRAFFIC_ITEM), JsonArray.class);
         List<JsonObject> trafficItemsFromArray = new LinkedList<>();
@@ -111,9 +133,10 @@ public class TrafficAPI extends APIService {
      *         incident + its current status
      * @throws JSONException
      */
-    private List<TrafficIncidentDetails> extractIncidentDetails(Gson gson, JsonObject total) {
+    private List<TrafficIncidentDetails> extractIncidentDetails(JsonObject total) {
+        Gson gson = new Gson();
         List<TrafficIncidentDetails> trafficIncidentDetails = new LinkedList<>();
-        List<JsonObject> trafficItems = getRelevantJsonObjects(gson, total);
+        List<JsonObject> trafficItems = getRelevantJsonObjects(total);
         trafficItems.forEach(trafficItem -> {
             String[] trafficItemTypes = new String[2];
             String itemTypeDescription = gson.fromJson(trafficItem.get(JSONSTR_INCIDENT_TYPE), String.class);
@@ -132,8 +155,9 @@ public class TrafficAPI extends APIService {
      * @return list of traffic incident locations
      * @throws JSONException
      */
-    private List<TrafficIncidentLocation> extractIncidentLocations(Gson gson, JsonObject total) throws JSONException {
-        List<JsonObject> trafficItems = getRelevantJsonObjects(gson, total);
+    private List<TrafficIncidentLocation> extractIncidentLocations(JsonObject total) throws JSONException {
+        Gson gson = new Gson();
+        List<JsonObject> trafficItems = getRelevantJsonObjects(total);
         List<JsonObject> locations = new LinkedList<>();
         trafficItems.forEach(trafficItem -> {
             locations.add(gson.fromJson(trafficItem.get(JSONOB_LOCATION), JsonObject.class));
@@ -161,8 +185,9 @@ public class TrafficAPI extends APIService {
         return trafficIncidentLocations;
     }
 
-    private List<TrafficIncidentTimes> extractIncidentTimes(Gson gson, JsonObject total) {
-        List<JsonObject> trafficItems = getRelevantJsonObjects(gson, total);
+    private List<TrafficIncidentTimes> extractIncidentTimes(JsonObject total) {
+        Gson gson = new Gson();
+        List<JsonObject> trafficItems = getRelevantJsonObjects(total);
         List<TrafficIncidentTimes> trafficIncidentTimes = new LinkedList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
         trafficItems.forEach(trafficItem -> {
@@ -205,34 +230,56 @@ public class TrafficAPI extends APIService {
         TrafficAPI tApi = new TrafficAPI();
         UserSettings usersettings = new UserSettings(null, null, Sex.MALE,
                 new Address("10", "Dalbergstrasse", "68159", "Mannheim"));
-        URL requestUrl = tApi.buildRequestUrl(usersettings);
 
-        System.out.println(requestUrl);
+        TrafficContext trafficContext = tApi.get(usersettings);
 
-        Gson gson = new Gson();
-        JsonObject total = tApi.getTotalJsonObject(requestUrl, gson);
+        trafficContext.getTrafficIncidents()
+                .forEach(element -> {
+                    System.out.println(element.getTrafficIncidentDetails()
+                            .getTrafficIncidentType());
+                    System.out.println(element.getTrafficIncidentDetails()
+                            .getTrafficIncidentStatus());
+                    System.out.println(element.getTrafficIncidentLocation()
+                            .getStreetOfIncident());
+                    System.out.println(element.getTrafficIncidentTimes()
+                            .getEndTimeOfTrafficIncident());
+                });
 
-        List<TrafficIncidentDetails> trafficIncidentDetails = tApi.extractIncidentDetails(gson, total);
-        List<TrafficIncidentLocation> trafficIncidentLocations = tApi.extractIncidentLocations(gson, total);
-        List<TrafficIncidentTimes> trafficIncidentTimes = tApi.extractIncidentTimes(gson, total);
-
-        System.out.println("Number of traffic incidents: " + trafficIncidentDetails.size());
-
-        System.out.println(
-                "---------------------------------------------------------------------------------------------------------------------------------------");
-
-        trafficIncidentDetails.forEach(tid -> System.out
-                .println("Type: " + tid.getTrafficIncidentType() + ", Status: " + tid.getTrafficIncidentStatus()));
-
-        System.out.println(
-                "---------------------------------------------------------------------------------------------------------------------------------------");
-
-        trafficIncidentLocations.forEach(til -> System.out.println("Location: " + til.getStreetOfIncident()));
-
-        System.out.println(
-                "---------------------------------------------------------------------------------------------------------------------------------------");
-
-        trafficIncidentTimes.forEach(tit -> System.out.println(tit.getEndTimeOfTrafficIncident()));
+        // URL requestUrl = tApi.buildRequestUrl(usersettings);
+        //
+        // System.out.println(requestUrl);
+        //
+        // Gson gson = new Gson();
+        // JsonObject total = tApi.getTotalJsonObject(requestUrl, gson);
+        //
+        // List<TrafficIncidentDetails> trafficIncidentDetails =
+        // tApi.extractIncidentDetails(gson, total);
+        // List<TrafficIncidentLocation> trafficIncidentLocations =
+        // tApi.extractIncidentLocations(gson, total);
+        // List<TrafficIncidentTimes> trafficIncidentTimes =
+        // tApi.extractIncidentTimes(gson, total);
+        //
+        // System.out.println("Number of traffic incidents: " +
+        // trafficIncidentDetails.size());
+        //
+        // System.out.println(
+        // "---------------------------------------------------------------------------------------------------------------------------------------");
+        //
+        // trafficIncidentDetails.forEach(tid -> System.out
+        // .println("Type: " + tid.getTrafficIncidentType() + ", Status: " +
+        // tid.getTrafficIncidentStatus()));
+        //
+        // System.out.println(
+        // "---------------------------------------------------------------------------------------------------------------------------------------");
+        //
+        // trafficIncidentLocations.forEach(til -> System.out.println("Location:
+        // " + til.getStreetOfIncident()));
+        //
+        // System.out.println(
+        // "---------------------------------------------------------------------------------------------------------------------------------------");
+        //
+        // trafficIncidentTimes.forEach(tit ->
+        // System.out.println(tit.getEndTimeOfTrafficIncident()));
 
     }
 
