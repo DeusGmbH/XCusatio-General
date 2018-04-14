@@ -2,49 +2,34 @@ package com.deusgmbh.xcusatio.api.data;
 
 import java.util.Date;
 
-/**
- * 
- * @author jan.leiblein@gmail.com
- * 
- * */
-
-import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
-
 public class LectureEvent extends TimeFormattingUtils {
-    String lectureName;
-    Lecturer lecturer;
+    String lectureTitle;
+    String lecturerName;
     Date startTime;
     Date endTime;
-    String startTimeAsClocktimeText;
-    String endTimeAsClocktimeText;
-    double startTimeAsClocktime;
-    double endTimeAsClocktime;
 
-    public LectureEvent(String lectureName, Lecturer lecturer, Date startTime, Date endTime) {
-        this.lectureName = lectureName;
-        this.lecturer = lecturer;
+    public LectureEvent(String lectureTitle, String lecturerName, Date startTime, Date endTime) {
+        super();
+        this.lectureTitle = lectureTitle;
+        this.lecturerName = lecturerName;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
-    public String getLectureName() {
-        return lectureName;
+    public String getLectureTitle() {
+        return lectureTitle;
     }
 
-    public void setLectureName(String lectureName) {
-        this.lectureName = lectureName;
+    public void setLectureTitle(String lectureTitle) {
+        this.lectureTitle = lectureTitle;
     }
 
-    public Lecturer getLecturer() {
-        return lecturer;
+    public String getLecturerName() {
+        return lecturerName;
     }
 
-    public void setLecturer(Lecturer lecturer) {
-        this.lecturer = lecturer;
-    }
-
-    public String getStartTimeAsClocktimeText() {
-        return startTimeAsClocktimeText;
+    public void setLecturerName(String lecturerName) {
+        this.lecturerName = lecturerName;
     }
 
     public Date getStartTime() {
@@ -61,18 +46,6 @@ public class LectureEvent extends TimeFormattingUtils {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
-    }
-
-    public void setStartTimeAsClocktime(double startTimeAsClocktime) {
-        this.startTimeAsClocktime = startTimeAsClocktime;
-    }
-
-    public double getEndTimeAsClocktime() {
-        return endTimeAsClocktime;
-    }
-
-    public void setEndTimeAsClocktime(double endTimeAsClocktime) {
-        this.endTimeAsClocktime = endTimeAsClocktime;
     }
 
 }
