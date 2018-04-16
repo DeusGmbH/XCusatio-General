@@ -1,11 +1,13 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+import com.deusgmbh.xcusatio.context.data.APIContext;
+
 /**
  * 
  * @author Tobias.Schmidt@de.ibm.com
  *
  */
-public abstract class Wildcard {
+public abstract class WildcardTransformer {
 
     private String identifier;
     private String uiDescription;
@@ -13,7 +15,7 @@ public abstract class Wildcard {
     /**
      * 
      * @param identifier
-     *            The identifier of a {@link Wildcard} is the string that is
+     *            The identifier of a {@link WildcardTransformer} is the string that is
      *            going to be replaced. It is case sensitive and is to be used
      *            with a $ symbol in the front and back. So for example, if the
      *            identifier is <i>testifier</i> than the text that is going to
@@ -22,7 +24,7 @@ public abstract class Wildcard {
      *            The description that should be displayed in the UI as tool tip
      *            and explain what the identifier is going to be replaced with
      */
-    public Wildcard(String identifier, String uiDescription) {
+    public WildcardTransformer(String identifier, String uiDescription) {
         this.identifier = identifier;
         this.uiDescription = uiDescription;
     }
@@ -43,7 +45,7 @@ public abstract class Wildcard {
     /**
      * This method should be used to check whether the
      * {@linkplain #replace(String, APIContext)} method of this particular
-     * {@link Wildcard} can be used when providing the same apiContext
+     * {@link WildcardTransformer} can be used when providing the same apiContext
      * 
      * @param apiContext
      *            the data source to be checked for null values

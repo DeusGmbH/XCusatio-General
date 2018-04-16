@@ -2,7 +2,7 @@ package com.deusgmbh.xcusatio.context;
 
 import java.time.LocalDate;
 
-import com.deusgmbh.xcusatio.context.wildcard.APIContext;
+import com.deusgmbh.xcusatio.context.data.APIContext;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.ExcuseVibeMode;

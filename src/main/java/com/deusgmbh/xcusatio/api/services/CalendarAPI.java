@@ -1,47 +1,162 @@
 package com.deusgmbh.xcusatio.api.services;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+
+import org.json.JSONException;
 
 import com.deusgmbh.xcusatio.api.APIService;
-import com.deusgmbh.xcusatio.context.wildcard.CalendarContext;
-import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
-import com.deusgmbh.xcusatio.data.tags.Tag;
+import com.deusgmbh.xcusatio.api.calendar.CalendarAPIConfig;
+import com.deusgmbh.xcusatio.api.data.calendar.LectureEvent;
+import com.deusgmbh.xcusatio.context.data.CalendarContext;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.Events;
+
+/**
+ * 
+ * @author Pascal.Schroeder@de.ibm.com, jan.leiblein@gmail.com
+ *
+ */
 
 public class CalendarAPI extends APIService {
-    private final static Logger LOGGER = Logger.getLogger(CalendarAPI.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CalendarAPI.class.getName());
+
+    private static final String JSONSTR_DATE_TIME = "dateTime";
+
+    public com.google.api.services.calendar.Calendar getCalendarService() throws IOException {
+        return new com.google.api.services.calendar.Calendar.Builder(CalendarAPIConfig.HTTP_TRANSPORT,
+                CalendarAPIConfig.JSON_FACTORY, CalendarAPIConfig.credentials)
+                        .setApplicationName(CalendarAPIConfig.APPLICATION_NAME)
+                        .build();
+    }
+
+    private Event getCurrentLectureEvent() throws IOException {
+        List<Event> events = getEvents();
+        Event firstEvent = events.get(0);
+        return firstEvent;
+    }
+
+    private String extractLectureTitle(Event firstEvent) {
+        String eventSummary = firstEvent.getSummary();
+        String[] lectureDetails = Pattern.compile(", ")
+                .split(eventSummary);
+        return lectureDetails[0];
+    }
+
+    private String extractLecturerName(Event firstEvent) {
+        String eventSummary = firstEvent.getSummary();
+
+        String[] lectureDetails = Pattern.compile(", ")
+                .split(eventSummary);
+        return lectureDetails[1];
+    }
+
+    private Date[] extractLectureTimes(Event firstEvent) throws ParseException {
+        String startTime = firstEvent.getStart()
+                .get(JSONSTR_DATE_TIME)
+                .toString();
+        startTime = startTime.substring(0, startTime.indexOf('+'));
+        String endTime = firstEvent.getEnd()
+                .get(JSONSTR_DATE_TIME)
+                .toString();
+        endTime = endTime.substring(0, endTime.indexOf('+'));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS");
+        Date[] lectureTimes = new Date[2];
+
+        lectureTimes[0] = sdf.parse(startTime);
+        lectureTimes[1] = sdf.parse(endTime);
+
+        return lectureTimes;
+    }
+
+    private LectureEvent extractLectureEvent(Event firstEvent) throws ParseException {
+        String title = extractLectureTitle(firstEvent);
+        String lecturerName = extractLecturerName(firstEvent);
+        Date startTime = extractLectureTimes(firstEvent)[0];
+        Date endTime = extractLectureTimes(firstEvent)[1];
+        return new LectureEvent(title, lecturerName, startTime, endTime);
+    }
+
+    public List<Event> getEvents() throws IOException {
+        try {
+            com.google.api.services.calendar.Calendar service = getCalendarService();
+
+            DateTime now = new DateTime(System.currentTimeMillis());
+            Events events = service.events()
+                    .list("primary")
+                    .setMaxResults(10)
+                    .setTimeMin(now)
+                    .setOrderBy("startTime")
+                    .setSingleEvents(true)
+                    .execute();
+            List<Event> items = events.getItems();
+            if (items.size() == 0) {
+                LOGGER.info("No upcoming events found.");
+            } else {
+                LOGGER.info("Upcoming events");
+                for (Event event : items) {
+                    DateTime start = event.getStart()
+                            .getDateTime();
+                    if (start == null) {
+                        start = event.getStart()
+                                .getDate();
+                    }
+                }
+                return items;
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("No calendar connected");
+        }
+        return null;
+
+    }
+
+    private long extractMinutesPassed(Date startTime) {
+        long now = System.currentTimeMillis();
+        long startTimeMillis = startTime.getTime();
+        return (((now - startTimeMillis) / 1000) / 60);
+    }
+
+    private long extractMinutesLeft(Date endTime) {
+        long now = System.currentTimeMillis();
+        long endTimeMillis = endTime.getTime();
+        return (((endTimeMillis - now) / 1000) / 60);
+    }
+
+    public static void main(String[] abcdefg) throws IOException, ParseException {
+        CalendarAPI cApi = new CalendarAPI();
+        CalendarContext calendarContext = cApi.get(null);
+        System.out.println(calendarContext.getLectureEvent()
+                .getLectureTitle());
+    }
 
     @Override
-    public CalendarContext get(UserSettings usersettings) {
+    public CalendarContext get(UserSettings usersettings) throws IOException, JSONException, ParseException {
+        CalendarAPI calendarAPI = new CalendarAPI();
+        CalendarAPIConfig.authorize();
 
-        List<String> lecturesRead = new LinkedList<>();
-        lecturesRead.add("Software Engineering ");
-        lecturesRead.add("Programmieren in C");
+        Event currentEvent = calendarAPI.getCurrentLectureEvent();
+        String lectureTitle = extractLectureTitle(currentEvent);
+        String lecturerName = extractLecturerName(currentEvent);
+        Date startTime = extractLectureTimes(currentEvent)[0];
+        Date endTime = extractLectureTimes(currentEvent)[1];
 
-        List<Tag> tagList = new LinkedList<>();
-        tagList.add(Tag.FUNNY);
-        tagList.add(Tag.SUCK_UP);
+        LectureEvent currentLecture = new LectureEvent(lectureTitle, lecturerName, startTime, endTime);
 
-        Lecturer kruse = new Lecturer(null, null, null);
-        kruse.setLectures(lecturesRead);
-        kruse.setName("Eckard Kruse");
-        kruse.setTags(tagList);
+        long minutesLeft = extractMinutesLeft(endTime);
+        long minutesPassed = extractMinutesPassed(startTime);
 
-        String dateFormat = "MM/dd/yyyy hh:mm:ss";
-        Date startTime = null, endTime = null;
-        try {
-            startTime = new SimpleDateFormat(dateFormat).parse("03/27/2018 09:00:00");
-            endTime = new SimpleDateFormat(dateFormat).parse("03/27/2018 12:15:00");
-        } catch (Exception e) {
-            LOGGER.info("parsed wrong date format, " + e.getMessage());
-        }
+        CalendarContext calendarContext = new CalendarContext(currentLecture, minutesLeft, minutesPassed);
 
-        CalendarContext calendarContext = new CalendarContext("Software Engineering 2", kruse, startTime, endTime, 190,
-                15);
         return calendarContext;
     }
+
 }

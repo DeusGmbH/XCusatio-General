@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.deusgmbh.xcusatio.context.data.APIContext;
 import com.deusgmbh.xcusatio.data.EnumTranslator;
 
 /**
@@ -15,27 +16,26 @@ import com.deusgmbh.xcusatio.data.EnumTranslator;
  * @author Lars.Dittert@de.ibm.com
  *
  */
-public class Wildcards {
-    private Set<Wildcard> wildcards;
+public class WildcardTransformers {
+    private Set<WildcardTransformer> wildcardTransformers;
 
-    public Wildcards() {
-        wildcards = new HashSet<Wildcard>();
-        wildcards.add(this.getTemperatureWildcard());
-        wildcards.add(this.getNextWeekDateWildcard());
-        wildcards.add(this.getIncidentLocationCityWildcard());
-        wildcards.add(this.getIncidentLocationStreetWildcard());
-        wildcards.add(this.getLectureEventWildcard());
-        wildcards.add(this.getMinutesPassedWildcard());
-        wildcards.add(this.getNewsEntryTitleWildcard());
-        wildcards.add(this.getRainHourlyWildcard());
-        wildcards.add(this.getTrafficIncidentTypWildcard());
-        wildcards.add(this.getSnowHourlyWildcard());
-        wildcards.add(this.getTramLineLabelWildcard());
-        wildcards.add(this.getWindSpeedWildcard());
+    public WildcardTransformers() {
+        wildcardTransformers = new HashSet<WildcardTransformer>();
+        wildcardTransformers.add(this.getTemperatureWildcard());
+        wildcardTransformers.add(this.getNextWeekDateWildcard());
+        wildcardTransformers.add(this.getIncidentLocationCityWildcard());
+        wildcardTransformers.add(this.getIncidentLocationStreetWildcard());
+        wildcardTransformers.add(this.getLectureEventWildcard());
+        wildcardTransformers.add(this.getMinutesPassedWildcard());
+        wildcardTransformers.add(this.getRainHourlyWildcard());
+        wildcardTransformers.add(this.getTrafficIncidentTypWildcard());
+        wildcardTransformers.add(this.getSnowHourlyWildcard());
+        wildcardTransformers.add(this.getTramLineLabelWildcard());
+        wildcardTransformers.add(this.getWindSpeedWildcard());
     }
 
-    private Wildcard getTemperatureWildcard() {
-        return new Wildcard("temperature", "Wird ersetzt mit der aktuellen Temperatur in °C (Bsp.: '14°C').") {
+    private WildcardTransformer getTemperatureWildcard() {
+        return new WildcardTransformer("temperature", "Wird ersetzt mit der aktuellen Temperatur in °C (Bsp.: '14°C').") {
             @Override
             public String replace(String source, APIContext apiContext) {
                 String temperatureText = apiContext.getWeather()
@@ -56,8 +56,8 @@ public class Wildcards {
         };
     }
 
-    private Wildcard getNextWeekDateWildcard() {
-        return new Wildcard("nextWeekDate",
+    private WildcardTransformer getNextWeekDateWildcard() {
+        return new WildcardTransformer("nextWeekDate",
                 "Wird mit dem Datum des aktuellen Tages in einer Woche ersetzt (Bspw.: '13.03.2018').") {
             @Override
             public String replace(String source, APIContext apiContext) {
@@ -77,14 +77,14 @@ public class Wildcards {
         };
     }
 
-    private Wildcard getLectureEventWildcard() {
-        return new Wildcard("lectureEvent", "Wird ersetzt mit der aktuellen Vorlesung.") {
+    private WildcardTransformer getLectureEventWildcard() {
+        return new WildcardTransformer("lectureEvent", "Wird ersetzt mit der aktuellen Vorlesung.") {
             @Override
             public String replace(String source, APIContext apiContext) {
-                String lectureText = apiContext.getCalendar()
+                String lectureTitle = apiContext.getCalendar()
                         .getLectureEvent()
-                        .getLectureName();
-                source = source.replaceAll(this.getIdentifierRegEx(), lectureText);
+                        .getLectureTitle();
+                source = source.replaceAll(this.getIdentifierRegEx(), lectureTitle);
                 return source;
             }
 
@@ -94,7 +94,7 @@ public class Wildcards {
                     if (apiContext.getCalendar() != null && apiContext.getCalendar()
                             .getLectureEvent() != null && apiContext.getCalendar()
                                     .getLectureEvent()
-                                    .getLectureName() != null) {
+                                    .getLectureTitle() != null) {
                         return true;
                     }
                 }
@@ -103,8 +103,8 @@ public class Wildcards {
         };
     }
 
-    private Wildcard getMinutesPassedWildcard() {
-        return new Wildcard("minutesPassed", "Wird ersetzt mit der Summe der verspäteten Minuten.") {
+    private WildcardTransformer getMinutesPassedWildcard() {
+        return new WildcardTransformer("minutesPassed", "Wird ersetzt mit der Summe der verspäteten Minuten.") {
             @Override
             public String replace(String source, APIContext apiContext) {
                 String minutesPassed = apiContext.getCalendar()
@@ -126,8 +126,8 @@ public class Wildcards {
         };
     }
 
-    private Wildcard getRainHourlyWildcard() {
-        return new Wildcard("rainHourly", "Wird ersetzt mit dem aktuellen Niederschlag von Regen.") {
+    private WildcardTransformer getRainHourlyWildcard() {
+        return new WildcardTransformer("rainHourly", "Wird ersetzt mit dem aktuellen Niederschlag von Regen.") {
             @Override
             public String replace(String source, APIContext apiContext) {
                 String rainHourly = String.valueOf(apiContext.getWeather()
@@ -148,8 +148,8 @@ public class Wildcards {
         };
     }
 
-    private Wildcard getSnowHourlyWildcard() {
-        return new Wildcard("snowHourly", "Wird ersetzt mit dem aktuellen Niederschlag von Schnee.") {
+    private WildcardTransformer getSnowHourlyWildcard() {
+        return new WildcardTransformer("snowHourly", "Wird ersetzt mit dem aktuellen Niederschlag von Schnee.") {
             @Override
             public String replace(String source, APIContext apiContext) {
                 String snowHourly = String.valueOf(apiContext.getWeather()
@@ -170,8 +170,8 @@ public class Wildcards {
         };
     }
 
-    private Wildcard getWindSpeedWildcard() {
-        return new Wildcard("windSpeed", "Wird ersetzt mit der aktuellen Windgeschwindigkeit.") {
+    private WildcardTransformer getWindSpeedWildcard() {
+        return new WildcardTransformer("windSpeed", "Wird ersetzt mit der aktuellen Windgeschwindigkeit.") {
             @Override
             public String replace(String source, APIContext apiContext) {
                 String windSpeed = String.valueOf(apiContext.getWeather()
@@ -192,13 +192,15 @@ public class Wildcards {
         };
     }
 
-    private Wildcard getIncidentLocationStreetWildcard() {
-        return new Wildcard("incidentLocationStreet",
+    private WildcardTransformer getIncidentLocationStreetWildcard() {
+        return new WildcardTransformer("incidentLocationStreet",
                 "Wird ersetzt durch die Straße in der ein Zwischenfall aufgetreten ist.") {
             @Override
             public String replace(String source, APIContext apiContext) {
                 String incidentLocationStreet = apiContext.getTraffic()
-                        .getIncidentLocation()
+                        .getTrafficIncidents()
+                        .get(0)
+                        .getTrafficIncidentLocation()
                         .getStreetOfIncident();
                 source = source.replaceAll(this.getIdentifierRegEx(), incidentLocationStreet);
                 return source;
@@ -207,9 +209,16 @@ public class Wildcards {
             @Override
             public boolean isValidContext(APIContext apiContext) {
                 if (apiContext != null) {
-                    if (apiContext.getTraffic() != null && apiContext.getTraffic()
-                            .getIncidentLocation() != null && apiContext.getTraffic()
-                                    .getIncidentLocation()
+                    if (apiContext.getTraffic() != null && !apiContext.getTraffic()
+                            .getTrafficIncidents()
+                            .isEmpty() && apiContext.getTraffic()
+                                    .getTrafficIncidents()
+                                    .get(0)
+                                    .getTrafficIncidentLocation() != null
+                            && apiContext.getTraffic()
+                                    .getTrafficIncidents()
+                                    .get(0)
+                                    .getTrafficIncidentLocation()
                                     .getStreetOfIncident() != null) {
                         return true;
                     }
@@ -219,13 +228,15 @@ public class Wildcards {
         };
     }
 
-    private Wildcard getIncidentLocationCityWildcard() {
-        return new Wildcard("incidentLocationCity",
+    private WildcardTransformer getIncidentLocationCityWildcard() {
+        return new WildcardTransformer("incidentLocationCity",
                 "Wird ersetzt durch die Stadt in der ein Zwischenfall aufgetreten ist.") {
             @Override
             public String replace(String source, APIContext apiContext) {
                 String incidentLocationCity = apiContext.getTraffic()
-                        .getIncidentLocation()
+                        .getTrafficIncidents()
+                        .get(0)
+                        .getTrafficIncidentLocation()
                         .getCityOfIncident();
                 source = source.replaceAll(this.getIdentifierRegEx(), incidentLocationCity);
                 return source;
@@ -234,9 +245,16 @@ public class Wildcards {
             @Override
             public boolean isValidContext(APIContext apiContext) {
                 if (apiContext != null) {
-                    if (apiContext.getTraffic() != null && apiContext.getTraffic()
-                            .getIncidentLocation() != null && apiContext.getTraffic()
-                                    .getIncidentLocation()
+                    if (apiContext.getTraffic() != null && !apiContext.getTraffic()
+                            .getTrafficIncidents()
+                            .isEmpty() && apiContext.getTraffic()
+                                    .getTrafficIncidents()
+                                    .get(0)
+                                    .getTrafficIncidentLocation() != null
+                            && apiContext.getTraffic()
+                                    .getTrafficIncidents()
+                                    .get(0)
+                                    .getTrafficIncidentLocation()
                                     .getCityOfIncident() != null) {
                         return true;
                     }
@@ -246,13 +264,15 @@ public class Wildcards {
         };
     }
 
-    private Wildcard getTrafficIncidentTypWildcard() {
-        return new Wildcard("trafficIncidentTyp", "Wird ersetzt durch den Typ eines Zwischenfalls.") {
+    private WildcardTransformer getTrafficIncidentTypWildcard() {
+        return new WildcardTransformer("trafficIncidentTyp", "Wird ersetzt durch den Typ eines Zwischenfalls.") {
             @Override
             public String replace(String source, APIContext apiContext) {
                 String trafficIncidentTypeGerman = EnumTranslator.toGerman(apiContext.getTraffic()
-                        .getTrafficIncident()
-                        .getIncidentType());
+                        .getTrafficIncidents()
+                        .get(0)
+                        .getTrafficIncidentDetails()
+                        .getTrafficIncidentType());
                 source = source.replaceAll(this.getIdentifierRegEx(), trafficIncidentTypeGerman);
                 return source;
             }
@@ -260,10 +280,17 @@ public class Wildcards {
             @Override
             public boolean isValidContext(APIContext apiContext) {
                 if (apiContext != null) {
-                    if (apiContext.getTraffic() != null && apiContext.getTraffic()
-                            .getTrafficIncident() != null && apiContext.getTraffic()
-                                    .getTrafficIncident()
-                                    .getIncidentType() != null) {
+                    if (apiContext.getTraffic() != null && !apiContext.getTraffic()
+                            .getTrafficIncidents()
+                            .isEmpty() && apiContext.getTraffic()
+                                    .getTrafficIncidents()
+                                    .get(0)
+                                    .getTrafficIncidentDetails() != null
+                            && apiContext.getTraffic()
+                                    .getTrafficIncidents()
+                                    .get(0)
+                                    .getTrafficIncidentDetails()
+                                    .getTrafficIncidentType() != null) {
                         return true;
                     }
                 }
@@ -272,8 +299,8 @@ public class Wildcards {
         };
     }
 
-    private Wildcard getTramLineLabelWildcard() {
-        return new Wildcard("tramLineLabel", "Wird ersetzt durch den Namen einer Bahn.") {
+    private WildcardTransformer getTramLineLabelWildcard() {
+        return new WildcardTransformer("tramLineLabel", "Wird ersetzt durch den Namen einer Bahn.") {
             @Override
             public String replace(String source, APIContext apiContext) {
                 String tramLineLabel = apiContext.getRnv()
@@ -298,34 +325,8 @@ public class Wildcards {
         };
     }
 
-    private Wildcard getNewsEntryTitleWildcard() {
-        return new Wildcard("newsEntryTitle", "Wird ersetzt durch den Titel einer Zwischenfallsnachricht einer Tram.") {
-            @Override
-            public String replace(String source, APIContext apiContext) {
-                String newsEntryTitle = apiContext.getRnv()
-                        .getNewsEntry()
-                        .getTitle();
-                source = source.replaceAll(this.getIdentifierRegEx(), newsEntryTitle);
-                return source;
-            }
-
-            @Override
-            public boolean isValidContext(APIContext apiContext) {
-                if (apiContext != null) {
-                    if (apiContext.getRnv() != null && apiContext.getRnv()
-                            .getNewsEntry() != null && apiContext.getRnv()
-                                    .getNewsEntry()
-                                    .getTitle() != null) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        };
-    }
-
     public String replace(String source, APIContext apiContext) {
-        for (Wildcard wildcard : wildcards) {
+        for (WildcardTransformer wildcard : wildcardTransformers) {
             if (source.contains(wildcard.getIdentifierExcuseString())) {
                 source = wildcard.replace(source, apiContext);
             }
@@ -334,18 +335,18 @@ public class Wildcards {
     }
 
     public boolean isValidContext(String source, APIContext apiContext) {
-        return wildcards.stream()
+        return wildcardTransformers.stream()
                 .filter(wildcard -> source.contains(wildcard.getIdentifierExcuseString()))
                 .allMatch(wildcard -> wildcard.isValidContext(apiContext));
     }
 
     public List<String> getNames() {
-        return wildcards.stream()
-                .map(Wildcard::getIdentifierExcuseString)
+        return wildcardTransformers.stream()
+                .map(WildcardTransformer::getIdentifierExcuseString)
                 .collect(Collectors.toList());
     }
 
-    public Set<Wildcard> getWildcards() {
-        return wildcards;
+    public Set<WildcardTransformer> getWildcards() {
+        return wildcardTransformers;
     }
 }

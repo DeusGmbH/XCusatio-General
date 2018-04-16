@@ -18,9 +18,9 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 
 import com.deusgmbh.xcusatio.api.APIService;
-import com.deusgmbh.xcusatio.api.data.Tram;
-import com.deusgmbh.xcusatio.api.data.TramStatus;
-import com.deusgmbh.xcusatio.context.wildcard.RNVContext;
+import com.deusgmbh.xcusatio.api.data.rnv.Tram;
+import com.deusgmbh.xcusatio.api.data.rnv.TramStatus;
+import com.deusgmbh.xcusatio.context.data.RNVContext;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -67,7 +67,6 @@ public class RNVAPI extends APIService {
     private Map<String, List<String>> stopsOfLines;
 
     public RNVAPI(UserSettings userSettings) throws IOException {
-        Gson gson = new Gson();
         this.requestUrls = this.buildRequestUrls(userSettings);
         this.stopsOfLines = new LinkedHashMap<>();
         List<String> stopsOfLine5 = getLineStops(LINE_LABEL);
@@ -79,9 +78,6 @@ public class RNVAPI extends APIService {
      */
     @Override
     public RNVContext get(UserSettings usersettings) throws UnsupportedEncodingException, IOException {
-        Gson gson = new Gson();
-        JsonObject totalStationsMonitor = getStationsMonitorPackage();
-        JsonArray totalNewsEntries = getNewsEntriesPackage();
 
         Tram tram = extractTram(DUALE_HOCHSCHULE_STATION_ID);
 

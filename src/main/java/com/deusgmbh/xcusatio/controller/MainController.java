@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 
 import com.deusgmbh.xcusatio.context.Context;
 import com.deusgmbh.xcusatio.context.ContextHandler;
-import com.deusgmbh.xcusatio.context.wildcard.Wildcard;
-import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
+import com.deusgmbh.xcusatio.context.wildcard.WildcardTransformer;
+import com.deusgmbh.xcusatio.context.wildcard.WildcardTransformers;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.excuses.ExcusesManager;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
@@ -42,10 +42,10 @@ public class MainController {
     private UserSettingsManager userSettingsManager;
     private ExcuseGenerator excuseGenerator;
     private ContextHandler contextHandler;
-    private Wildcards wildcards;
+    private WildcardTransformers wildcards;
 
     public MainController() {
-        wildcards = new Wildcards();
+        wildcards = new WildcardTransformers();
         excusesManager = new ExcusesManager();
         lecturerManager = new LecturerManager();
         scenarioManager = new ScenarioManager();
@@ -94,7 +94,7 @@ public class MainController {
         return wildcards.getNames();
     }
 
-    public Set<Wildcard> getWildcards() {
+    public Set<WildcardTransformer> getWildcards() {
         return wildcards.getWildcards();
     }
 

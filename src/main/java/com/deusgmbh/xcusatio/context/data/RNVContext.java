@@ -1,9 +1,9 @@
-package com.deusgmbh.xcusatio.context.wildcard;
+package com.deusgmbh.xcusatio.context.data;
 
 import java.util.logging.Logger;
 
-import com.deusgmbh.xcusatio.api.data.TimeFormattingUtils;
-import com.deusgmbh.xcusatio.api.data.Tram;
+import com.deusgmbh.xcusatio.api.data.calendar.TimeFormattingUtils;
+import com.deusgmbh.xcusatio.api.data.rnv.Tram;
 
 /**
  * 
