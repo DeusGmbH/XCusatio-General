@@ -30,6 +30,8 @@ public class CalendarAPI extends APIService {
 
     private static final String JSONSTR_DATE_TIME = "dateTime";
 
+    private static final Integer MAX_EVENTS = 1;
+
     public com.google.api.services.calendar.Calendar getCalendarService() throws IOException {
         return new com.google.api.services.calendar.Calendar.Builder(CalendarAPIConfig.HTTP_TRANSPORT,
                 CalendarAPIConfig.JSON_FACTORY, CalendarAPIConfig.credentials)
@@ -85,37 +87,31 @@ public class CalendarAPI extends APIService {
     }
 
     public List<Event> getEvents() throws IOException {
-        try {
-            com.google.api.services.calendar.Calendar service = getCalendarService();
+        com.google.api.services.calendar.Calendar service = getCalendarService();
 
-            DateTime now = new DateTime(System.currentTimeMillis());
-            Events events = service.events()
-                    .list("primary")
-                    .setMaxResults(10)
-                    .setTimeMin(now)
-                    .setOrderBy("startTime")
-                    .setSingleEvents(true)
-                    .execute();
-            List<Event> items = events.getItems();
-            if (items.size() == 0) {
-                LOGGER.info("No upcoming events found.");
-            } else {
-                LOGGER.info("Upcoming events");
-                for (Event event : items) {
-                    DateTime start = event.getStart()
-                            .getDateTime();
-                    if (start == null) {
-                        start = event.getStart()
-                                .getDate();
-                    }
+        DateTime now = new DateTime(System.currentTimeMillis());
+        Events events = service.events()
+                .list("primary")
+                .setMaxResults(MAX_EVENTS)
+                .setTimeMin(now)
+                .setOrderBy("startTime")
+                .setSingleEvents(true)
+                .execute();
+        List<Event> items = events.getItems();
+        if (items.isEmpty()) {
+            LOGGER.info("No upcoming events found.");
+        } else {
+            LOGGER.info("Upcoming events");
+            for (Event event : items) {
+                DateTime start = event.getStart()
+                        .getDateTime();
+                if (start == null) {
+                    start = event.getStart()
+                            .getDate();
                 }
-                return items;
             }
-
-        } catch (Exception e) {
-            throw new RuntimeException("No calendar connected");
         }
-        return null;
+        return items;
 
     }
 
@@ -140,23 +136,22 @@ public class CalendarAPI extends APIService {
 
     @Override
     public CalendarContext get(UserSettings usersettings) throws IOException, JSONException, ParseException {
-        CalendarAPI calendarAPI = new CalendarAPI();
-        CalendarAPIConfig.authorize();
+        if (CalendarAPIConfig.hasCredentials()) {
+            Event currentEvent = this.getCurrentLectureEvent();
+            String lectureTitle = extractLectureTitle(currentEvent);
+            String lecturerName = extractLecturerName(currentEvent);
+            Date startTime = extractLectureTimes(currentEvent)[0];
+            Date endTime = extractLectureTimes(currentEvent)[1];
 
-        Event currentEvent = calendarAPI.getCurrentLectureEvent();
-        String lectureTitle = extractLectureTitle(currentEvent);
-        String lecturerName = extractLecturerName(currentEvent);
-        Date startTime = extractLectureTimes(currentEvent)[0];
-        Date endTime = extractLectureTimes(currentEvent)[1];
+            LectureEvent currentLecture = new LectureEvent(lectureTitle, lecturerName, startTime, endTime);
 
-        LectureEvent currentLecture = new LectureEvent(lectureTitle, lecturerName, startTime, endTime);
+            long minutesLeft = extractMinutesLeft(endTime);
+            long minutesPassed = extractMinutesPassed(startTime);
 
-        long minutesLeft = extractMinutesLeft(endTime);
-        long minutesPassed = extractMinutesPassed(startTime);
-
-        CalendarContext calendarContext = new CalendarContext(currentLecture, minutesLeft, minutesPassed);
-
-        return calendarContext;
+            return new CalendarContext(currentLecture, minutesLeft, minutesPassed);
+        } else {
+            return null;
+        }
     }
 
 }

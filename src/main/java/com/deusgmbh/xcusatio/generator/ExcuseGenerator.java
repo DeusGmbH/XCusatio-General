@@ -38,14 +38,7 @@ public class ExcuseGenerator {
         this.wildcardTransformers = wildcardTransformers;
     }
 
-    /**
-     * 
-     * @param context
-     * @returns the percentage indicating the approval rate to be displayed
-     */
     public double getThumbGesture(Context context) {
-        // TODO: calculate random percantage base on context (e.g. more likely
-        // to be near 1 if context.vibemodes.suckup == true)
         return Math.random();
     }
 
@@ -61,6 +54,7 @@ public class ExcuseGenerator {
         }
 
         List<Tag> contextTags = this.getContextTag(context);
+
         List<Excuse> filteredExcuses = new ExcuseFilter(excuses).byScenario(scenario)
                 .byValidWildcard(wildcardTransformers, context)
                 .byContextTags(contextTags)
@@ -113,8 +107,6 @@ public class ExcuseGenerator {
         tags.addAll(this.getPublicTransportTags(context));
         tags.addAll(this.getAgeGroupeTags(context));
 
-        // add traffic jam tag
-
         return tags.stream()
                 .distinct()
                 .collect(Collectors.toList());
@@ -162,7 +154,6 @@ public class ExcuseGenerator {
     }
 
     private Collection<? extends Tag> getTrafficTags(Context context) {
-        // TODO: add more traffic tags
         Set<Tag> trafficTags = new HashSet<>();
         TrafficContext trafficContext = context.getApiContext()
                 .getTraffic();

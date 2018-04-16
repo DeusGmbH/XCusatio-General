@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -63,13 +64,18 @@ public class RNVAPI extends APIService {
 
     private final static SimpleDateFormat RNV_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd+hh:mm:ss");
 
-    private URL[] requestUrls; // could also be stored static
+    private URL[] requestUrls;
     private Map<String, List<String>> stopsOfLines;
 
-    public RNVAPI(UserSettings userSettings) throws IOException {
-        this.requestUrls = this.buildRequestUrls(userSettings);
+    public RNVAPI() {
+        this.requestUrls = this.buildRequestUrls();
         this.stopsOfLines = new LinkedHashMap<>();
-        List<String> stopsOfLine5 = getLineStops(LINE_LABEL);
+        List<String> stopsOfLine5;
+        try {
+            stopsOfLine5 = getLineStops(LINE_LABEL);
+        } catch (IOException e) {
+            stopsOfLine5 = new ArrayList<>();
+        }
         this.stopsOfLines.put(LINE_LABEL, stopsOfLine5);
     }
 
@@ -244,9 +250,7 @@ public class RNVAPI extends APIService {
      * 
      */
 
-    // if urls stored static this method becomes obsolete; currently
-    // UserSettings is not used here due to the project's requirements
-    private URL[] buildRequestUrls(UserSettings userSettings) {
+    private URL[] buildRequestUrls() {
         URL[] requestUrls = new URL[4];
         try {
             requestUrls[0] = new URL(STATIONS_PACKAGE);
@@ -366,7 +370,7 @@ public class RNVAPI extends APIService {
     // testing
     public static void main(String[] aflok) throws IOException {
 
-        RNVAPI rnvapi = new RNVAPI(null);
+        RNVAPI rnvapi = new RNVAPI();
         RNVContext rnvContext = rnvapi.get(null);
         System.out.println(rnvContext.getTram()
                 .getDifferenceTimeInMinutes());
