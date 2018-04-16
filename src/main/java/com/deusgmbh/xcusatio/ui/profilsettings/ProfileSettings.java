@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import com.deusgmbh.xcusatio.api.calendar.CalendarAPI;
+import com.deusgmbh.xcusatio.api.calendar.CalendarAPIConfig;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 import javafx.beans.property.ObjectProperty;
@@ -104,7 +104,7 @@ public class ProfileSettings extends FlowPane {
         birthdayDatePicker.setValue(userSettings.getValue()
                 .getBirthdate());
 
-        createCalendarButton(CalendarAPI.hasCredentials());
+        createCalendarButton(CalendarAPIConfig.hasCredentials());
 
         HBox btnPane = new HBox();
         this.saveProfileBtn = new Button(SUBMIT_BUTTON_LABEL);
@@ -186,13 +186,13 @@ public class ProfileSettings extends FlowPane {
     private EventHandler<ActionEvent> removeCalendarAuth = new EventHandler<ActionEvent>() {
         public void handle(ActionEvent event) {
             try {
-                CalendarAPI.removeCredentials();
+                CalendarAPIConfig.removeCredentials();
             } catch (IOException e) {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("REMOVING AUTHORIZATION ERROR");
                 alert.setContentText("Your authorization token could not be successfully removed");
             }
-            createCalendarButton(CalendarAPI.hasCredentials());
+            createCalendarButton(CalendarAPIConfig.hasCredentials());
             calendarPane.getChildren()
                     .set(1, calendarButton);
         }
@@ -205,7 +205,7 @@ public class ProfileSettings extends FlowPane {
                 Task<Void> task = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        CalendarAPI.authorize();
+                        CalendarAPIConfig.authorize();
                         return null;
                     }
                 };
@@ -214,7 +214,7 @@ public class ProfileSettings extends FlowPane {
                 executor.shutdown();
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 try {
-                    CalendarAPI.removeCredentials();
+                    CalendarAPIConfig.removeCredentials();
                 } catch (IOException e1) {
                     throw new RuntimeException("AUTHORIZATION PROCESS COULD NOT BE PERFORMED");
                 }
@@ -225,7 +225,7 @@ public class ProfileSettings extends FlowPane {
 
                 authorizationErrorAlert.showAndWait();
             }
-            createCalendarButton(CalendarAPI.hasCredentials());
+            createCalendarButton(CalendarAPIConfig.hasCredentials());
             calendarPane.getChildren()
                     .set(1, calendarButton);
         }

@@ -11,11 +11,11 @@ import com.deusgmbh.xcusatio.api.services.CalendarAPI;
 import com.deusgmbh.xcusatio.api.services.RNVAPI;
 import com.deusgmbh.xcusatio.api.services.TrafficAPI;
 import com.deusgmbh.xcusatio.api.services.WeatherAPI;
-import com.deusgmbh.xcusatio.context.wildcard.APIContext;
-import com.deusgmbh.xcusatio.context.wildcard.CalendarContext;
-import com.deusgmbh.xcusatio.context.wildcard.RNVContext;
-import com.deusgmbh.xcusatio.context.wildcard.TrafficContext;
-import com.deusgmbh.xcusatio.context.wildcard.WeatherContext;
+import com.deusgmbh.xcusatio.context.data.APIContext;
+import com.deusgmbh.xcusatio.context.data.CalendarContext;
+import com.deusgmbh.xcusatio.context.data.RNVContext;
+import com.deusgmbh.xcusatio.context.data.TrafficContext;
+import com.deusgmbh.xcusatio.context.data.WeatherContext;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 

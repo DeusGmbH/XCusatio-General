@@ -18,9 +18,9 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 
 import com.deusgmbh.xcusatio.api.APIService;
-import com.deusgmbh.xcusatio.api.data.Tram;
-import com.deusgmbh.xcusatio.api.data.TramStatus;
-import com.deusgmbh.xcusatio.context.wildcard.RNVContext;
+import com.deusgmbh.xcusatio.api.data.rnv.Tram;
+import com.deusgmbh.xcusatio.api.data.rnv.TramStatus;
+import com.deusgmbh.xcusatio.context.data.RNVContext;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;

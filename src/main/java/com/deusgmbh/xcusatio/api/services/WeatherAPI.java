@@ -12,7 +12,7 @@ import org.json.JSONException;
 
 import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.api.data.GeocodeData;
-import com.deusgmbh.xcusatio.context.wildcard.WeatherContext;
+import com.deusgmbh.xcusatio.context.data.WeatherContext;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;

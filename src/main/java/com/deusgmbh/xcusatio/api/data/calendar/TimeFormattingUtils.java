@@ -1,4 +1,4 @@
-package com.deusgmbh.xcusatio.api.data;
+package com.deusgmbh.xcusatio.api.data.calendar;
 
 /**
  * 

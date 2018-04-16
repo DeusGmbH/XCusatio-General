@@ -1,9 +1,9 @@
-package com.deusgmbh.xcusatio.context.wildcard;
+package com.deusgmbh.xcusatio.context.data;
 
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.deusgmbh.xcusatio.api.data.TrafficIncident;
+import com.deusgmbh.xcusatio.api.data.traffic.TrafficIncident;
 
 /**
  * 

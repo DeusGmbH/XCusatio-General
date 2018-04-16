@@ -13,11 +13,11 @@ import org.json.JSONException;
 
 import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.api.data.GeocodeData;
-import com.deusgmbh.xcusatio.api.data.TrafficIncident;
-import com.deusgmbh.xcusatio.api.data.TrafficIncidentDetails;
-import com.deusgmbh.xcusatio.api.data.TrafficIncidentLocation;
-import com.deusgmbh.xcusatio.api.data.TrafficIncidentTimes;
-import com.deusgmbh.xcusatio.context.wildcard.TrafficContext;
+import com.deusgmbh.xcusatio.api.data.traffic.TrafficIncident;
+import com.deusgmbh.xcusatio.api.data.traffic.TrafficIncidentDetails;
+import com.deusgmbh.xcusatio.api.data.traffic.TrafficIncidentLocation;
+import com.deusgmbh.xcusatio.api.data.traffic.TrafficIncidentTimes;
+import com.deusgmbh.xcusatio.context.data.TrafficContext;
 import com.deusgmbh.xcusatio.data.usersettings.Address;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;

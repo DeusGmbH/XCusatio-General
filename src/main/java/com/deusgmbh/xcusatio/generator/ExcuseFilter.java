@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.deusgmbh.xcusatio.context.Context;
-import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
+import com.deusgmbh.xcusatio.context.wildcard.WildcardTransformers;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.tags.Tag;
@@ -17,7 +17,7 @@ public class ExcuseFilter {
         this.excuses = excuses;
     }
 
-    public ExcuseFilter byValidWildcard(Wildcards wildcards, Context context) {
+    public ExcuseFilter byValidWildcard(WildcardTransformers wildcards, Context context) {
         excuses = excuses.stream()
                 .filter(excuse -> wildcards.isValidContext(excuse.getText(), context.getApiContext()))
                 .collect(Collectors.toList());

@@ -7,7 +7,7 @@ import java.util.List;
 import org.json.JSONException;
 
 import com.deusgmbh.xcusatio.api.APIManager;
-import com.deusgmbh.xcusatio.context.wildcard.CalendarContext;
+import com.deusgmbh.xcusatio.context.data.CalendarContext;
 import com.deusgmbh.xcusatio.data.lecturer.Lecturer;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
@@ -45,10 +45,10 @@ public class ContextHandler {
                     .getCalendar();
 
             if (calendar != null && calendar.getLectureEvent() != null) {
-                String lectureName = calendar.getLectureEvent()
-                        .getLectureName();
+                String lectureTitle = calendar.getLectureEvent()
+                        .getLectureTitle();
                 lecturers.stream()
-                        .filter(Lecturer.hasLecture(lectureName))
+                        .filter(Lecturer.hasLecture(lectureTitle))
                         .findAny()
                         .ifPresent(lecturer -> context.setLecturer(lecturer));
             }

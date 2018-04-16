@@ -1,6 +1,8 @@
-package com.deusgmbh.xcusatio.api.data;
+package com.deusgmbh.xcusatio.api.data.traffic;
 
 import java.util.Date;
+
+import com.deusgmbh.xcusatio.api.data.calendar.TimeFormattingUtils;
 
 /**
  * 

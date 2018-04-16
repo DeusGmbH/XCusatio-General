@@ -10,13 +10,15 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-import com.deusgmbh.xcusatio.api.data.TrafficIncidentType;
-import com.deusgmbh.xcusatio.api.data.TramStatus;
+import com.deusgmbh.xcusatio.api.data.rnv.Tram;
+import com.deusgmbh.xcusatio.api.data.rnv.TramStatus;
+import com.deusgmbh.xcusatio.api.data.traffic.TrafficIncident;
+import com.deusgmbh.xcusatio.api.data.traffic.TrafficIncidentType;
 import com.deusgmbh.xcusatio.context.Context;
-import com.deusgmbh.xcusatio.context.wildcard.RNVContext;
-import com.deusgmbh.xcusatio.context.wildcard.TrafficContext;
-import com.deusgmbh.xcusatio.context.wildcard.WeatherContext;
-import com.deusgmbh.xcusatio.context.wildcard.Wildcards;
+import com.deusgmbh.xcusatio.context.data.RNVContext;
+import com.deusgmbh.xcusatio.context.data.TrafficContext;
+import com.deusgmbh.xcusatio.context.data.WeatherContext;
+import com.deusgmbh.xcusatio.context.wildcard.WildcardTransformers;
 import com.deusgmbh.xcusatio.data.excuses.Excuse;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.tags.Tag;
@@ -29,11 +31,11 @@ import com.deusgmbh.xcusatio.data.usersettings.UserSettings.ExcuseVibeMode;
  *
  */
 public class ExcuseGenerator {
-    private final String NO_EXCUSE_FOUND = "Es konnte leider keine Ausrede für dieses Scenario gefunden werden. Im Editor können diese aber hinzugefügt werden.";
-    private Wildcards wildcards;
+    private static final String NO_EXCUSE_FOUND = "Es konnte leider keine Ausrede für dieses Scenario gefunden werden. Im Editor können diese aber hinzugefügt werden.";
+    private WildcardTransformers wildcardTransformers;
 
-    public ExcuseGenerator(Wildcards wildcards) {
-        this.wildcards = wildcards;
+    public ExcuseGenerator(WildcardTransformers wildcardTransformers) {
+        this.wildcardTransformers = wildcardTransformers;
     }
 
     /**
@@ -60,7 +62,7 @@ public class ExcuseGenerator {
 
         List<Tag> contextTags = this.getContextTag(context);
         List<Excuse> filteredExcuses = new ExcuseFilter(excuses).byScenario(scenario)
-                .byValidWildcard(wildcards, context)
+                .byValidWildcard(wildcardTransformers, context)
                 .byContextTags(contextTags)
                 .get();
 
@@ -142,15 +144,18 @@ public class ExcuseGenerator {
         RNVContext publicTransportContext = context.getApiContext()
                 .getRnv();
         if (publicTransportContext != null) {
-            if (publicTransportContext.getTramStatus()
-                    .equals(TramStatus.CANCELLED)) {
-                publicTransportTags.add(Tag.TRAIN_CANCELLED);
-            }
-            if (publicTransportContext.getDifferenceTimeInMinutes() > 0) {
-                publicTransportTags.add(Tag.TRAIN_DELAYED);
-            }
-            if (publicTransportContext.getDifferenceTimeInMinutes() > 15) {
-                publicTransportTags.add(Tag.TRAIN_HEAVILY_DELAYED);
+            Tram tram = publicTransportContext.getTram();
+            if (tram != null) {
+                if (tram.getTramStatus()
+                        .equals(TramStatus.CANCELLED)) {
+                    publicTransportTags.add(Tag.TRAIN_CANCELLED);
+                }
+                if (tram.getDifferenceTimeInMinutes() > 0) {
+                    publicTransportTags.add(Tag.TRAIN_DELAYED);
+                }
+                if (tram.getDifferenceTimeInMinutes() > 15) {
+                    publicTransportTags.add(Tag.TRAIN_HEAVILY_DELAYED);
+                }
             }
         }
         return publicTransportTags;
@@ -162,16 +167,19 @@ public class ExcuseGenerator {
         TrafficContext trafficContext = context.getApiContext()
                 .getTraffic();
         if (trafficContext != null) {
-            if (trafficContext.getTrafficIncident()
-                    .getIncidentType()
-                    .equals(TrafficIncidentType.ACCIDENT)) {
-                trafficTags.add(Tag.ACCIDENT);
-            }
-            if (trafficContext.getTrafficIncident()
-                    .getIncidentType()
-                    .equals(TrafficIncidentType.CONSTRUCTION)) {
-                trafficTags.add(Tag.CONSTRUCTION);
-            }
+            List<TrafficIncident> trafficIncidents = trafficContext.getTrafficIncidents();
+            trafficIncidents.forEach(trafficIncident -> {
+                if (trafficIncident.getTrafficIncidentDetails()
+                        .getTrafficIncidentType()
+                        .equals(TrafficIncidentType.ACCIDENT)) {
+                    trafficTags.add(Tag.ACCIDENT);
+                }
+                if (trafficIncident.getTrafficIncidentDetails()
+                        .getTrafficIncidentType()
+                        .equals(TrafficIncidentType.CONSTRUCTION)) {
+                    trafficTags.add(Tag.CONSTRUCTION);
+                }
+            });
         }
         return trafficTags;
     }

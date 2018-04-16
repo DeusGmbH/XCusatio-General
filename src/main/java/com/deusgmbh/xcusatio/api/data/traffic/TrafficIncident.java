@@ -1,4 +1,4 @@
-package com.deusgmbh.xcusatio.api.data;
+package com.deusgmbh.xcusatio.api.data.traffic;
 
 public class TrafficIncident {
     private TrafficIncidentDetails trafficIncidentDetails;

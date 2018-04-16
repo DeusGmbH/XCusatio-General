@@ -1,4 +1,4 @@
-package com.deusgmbh.xcusatio.context.wildcard;
+package com.deusgmbh.xcusatio.context.data;
 
 import java.util.logging.Logger;
 

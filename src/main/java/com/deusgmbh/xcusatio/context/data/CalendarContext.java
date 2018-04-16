@@ -1,9 +1,9 @@
-package com.deusgmbh.xcusatio.context.wildcard;
+package com.deusgmbh.xcusatio.context.data;
 
 import java.util.logging.Logger;
 
-import com.deusgmbh.xcusatio.api.data.LectureEvent;
-import com.deusgmbh.xcusatio.api.data.TimeFormattingUtils;
+import com.deusgmbh.xcusatio.api.data.calendar.LectureEvent;
+import com.deusgmbh.xcusatio.api.data.calendar.TimeFormattingUtils;
 
 /**
  * 
@@ -48,4 +48,11 @@ public class CalendarContext extends TimeFormattingUtils {
         this.minutesPassed = minutesPassed;
     }
 
+    public String getMinutesLeftText() {
+        return formatMinutesAsText(this.minutesLeft);
+    }
+
+    public String getMinutesPassedText() {
+        return formatMinutesAsText(this.minutesPassed);
+    }
 }

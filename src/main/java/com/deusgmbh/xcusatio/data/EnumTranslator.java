@@ -3,7 +3,7 @@ package com.deusgmbh.xcusatio.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.deusgmbh.xcusatio.api.data.TrafficIncidentType;
+import com.deusgmbh.xcusatio.api.data.traffic.TrafficIncidentType;
 import com.deusgmbh.xcusatio.data.tags.Tag;
 
 /**

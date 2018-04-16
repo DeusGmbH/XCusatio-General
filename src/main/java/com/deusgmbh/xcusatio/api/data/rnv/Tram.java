@@ -1,4 +1,4 @@
-package com.deusgmbh.xcusatio.api.data;
+package com.deusgmbh.xcusatio.api.data.rnv;
 
 import java.util.List;
 import java.util.Map;
