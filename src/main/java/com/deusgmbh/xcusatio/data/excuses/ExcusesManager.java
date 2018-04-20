@@ -103,7 +103,7 @@ public class ExcusesManager extends DataManager<Excuse> {
                         .addTag(Tag.AGE_OVER_50)
                         .addTag(Tag.FUNNY))
                 .add(new Excuse(
-                        "Jaja, der erste Schnee! $snowHourly$ das ist unglaublich. Da hatte nat\u00fcrlich gleich wieder die Bahn Versp\u00e4tung.",
+                        "Jaja, der erste Schnee! $snowHourly$ Niederschlag, das ist unglaublich. Da hatte nat\u00fcrlich gleich wieder die Bahn Versp\u00e4tung.",
                         ScenarioType.LATE_ARRIVAL).addTag(Tag.SNOW)
                                 .addTag(Tag.TRAIN_DELAYED)
                                 .addTag(Tag.MALE)
@@ -114,7 +114,8 @@ public class ExcusesManager extends DataManager<Excuse> {
                                 .addTag(Tag.AGE_BETWEEN_30_AND_50)
                                 .addTag(Tag.AGE_OVER_50)
                                 .addTag(Tag.FUNNY))
-                .add(new Excuse("$rainHourly$ und direkt ist die Bahn \u00fcberfordert. Mir fehlen die Worte.",
+                .add(new Excuse(
+                        "$rainHourly$ Niederschlag und direkt ist die Bahn \u00fcberfordert. Mir fehlen die Worte.",
                         ScenarioType.LATE_ARRIVAL).addTag(Tag.RAINY)
                                 .addTag(Tag.TRAIN_DELAYED)
                                 .addTag(Tag.MALE)
@@ -125,7 +126,7 @@ public class ExcusesManager extends DataManager<Excuse> {
                                 .addTag(Tag.AGE_BETWEEN_30_AND_50)
                                 .addTag(Tag.AGE_OVER_50))
                 .add(new Excuse(
-                        "$windSpeed$. Trump nimm das. Von wegen es w\u00fcrde die Klimaerw\u00e4rmung nicht geben.",
+                        "$windSpeed$ Windgeschwindigkeit. Trump nimm das. Von wegen es w\u00fcrde die Klimaerw\u00e4rmung nicht geben.",
                         ScenarioType.LATE_ARRIVAL).addTag(Tag.STORM)
                                 .addTag(Tag.TRAIN_DELAYED)
                                 .addTag(Tag.MALE)
@@ -255,6 +256,22 @@ public class ExcusesManager extends DataManager<Excuse> {
                                 .addTag(Tag.AGE_BETWEEN_30_AND_50)
                                 .addTag(Tag.AGE_OVER_50)
                                 .addTag(Tag.FUNNY))
+                .add(new Excuse("Kann ich kurz zur Toilette gehen?", ScenarioType.WHEELOFFORTUNE).addTag(Tag.MALE)
+                        .addTag(Tag.FEMALE)
+                        .addTag(Tag.AGE_UNDER_18)
+                        .addTag(Tag.AGE_BETWEEN_18_AND_21)
+                        .addTag(Tag.AGE_BETWEEN_21_AND_30)
+                        .addTag(Tag.AGE_BETWEEN_30_AND_50)
+                        .addTag(Tag.AGE_OVER_50)
+                        .addTag(Tag.FUNNY)
+                        .addTag(Tag.SOFTWARE_ENGINEERING))
+                .add(new Excuse("K\u00f6nnten Sie die Frage wiederholen?", ScenarioType.WHEELOFFORTUNE).addTag(Tag.MALE)
+                        .addTag(Tag.FEMALE))
+                .add(new Excuse("Was ein tolles Wetter, oder? Finden Sie $temperature$ angenehm?",
+                        ScenarioType.WHEELOFFORTUNE).addTag(Tag.MALE)
+                                .addTag(Tag.FEMALE)
+                                .addTag(Tag.WARM)
+                                .addTag(Tag.SOFTWARE_ENGINEERING))
                 .add(new Excuse("Schon 10 Uhr? Was wollen wir denn zum Mittag heute machen?",
                         ScenarioType.WHEELOFFORTUNE).addTag(Tag.MALE)
                                 .addTag(Tag.FEMALE)
@@ -473,15 +490,6 @@ public class ExcusesManager extends DataManager<Excuse> {
                         ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE)
                                 .addTag(Tag.FEMALE)
                                 .addTag(Tag.TRAIN_DELAYED)
-                                .addTag(Tag.AGE_UNDER_18)
-                                .addTag(Tag.AGE_BETWEEN_18_AND_21)
-                                .addTag(Tag.AGE_BETWEEN_21_AND_30)
-                                .addTag(Tag.AGE_BETWEEN_30_AND_50)
-                                .addTag(Tag.AGE_OVER_50))
-                .add(new Excuse(
-                        "Entschuldigen Sie bitte meine Versp\u00e4tung, aber es gab einen $trafficIncidentTyp$ in $incidentLocationStreet$ ,$incidentLocationCity$.",
-                        ScenarioType.LATE_ARRIVAL).addTag(Tag.MALE)
-                                .addTag(Tag.FEMALE)
                                 .addTag(Tag.AGE_UNDER_18)
                                 .addTag(Tag.AGE_BETWEEN_18_AND_21)
                                 .addTag(Tag.AGE_BETWEEN_21_AND_30)
