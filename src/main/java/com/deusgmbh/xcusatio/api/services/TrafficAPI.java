@@ -18,9 +18,7 @@ import com.deusgmbh.xcusatio.api.data.traffic.TrafficIncidentDetails;
 import com.deusgmbh.xcusatio.api.data.traffic.TrafficIncidentLocation;
 import com.deusgmbh.xcusatio.api.data.traffic.TrafficIncidentTimes;
 import com.deusgmbh.xcusatio.context.data.TrafficContext;
-import com.deusgmbh.xcusatio.data.usersettings.Address;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
-import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -222,70 +220,6 @@ public class TrafficAPI extends APIService {
         } catch (MalformedURLException e) {
             throw new RuntimeException("error building url");
         }
-    }
-
-    /*
-     * 
-     * test section
-     * 
-     * 
-     * 
-     */
-    public static void main(String[] uranium) throws JSONException, IOException, ParseException {
-        TrafficAPI tApi = new TrafficAPI();
-        UserSettings usersettings = new UserSettings(null, null, Sex.MALE,
-                new Address("10", "Dalbergstrasse", "68159", "Mannheim"));
-
-        TrafficContext trafficContext = tApi.get(usersettings);
-
-        trafficContext.getTrafficIncidents()
-                .forEach(element -> {
-                    System.out.println(element.getTrafficIncidentDetails()
-                            .getTrafficIncidentType());
-                    System.out.println(element.getTrafficIncidentDetails()
-                            .getTrafficIncidentStatus());
-                    System.out.println(element.getTrafficIncidentLocation()
-                            .getStreetOfIncident());
-                    System.out.println(element.getTrafficIncidentTimes()
-                            .getEndTimeOfTrafficIncident());
-                });
-
-        // URL requestUrl = tApi.buildRequestUrl(usersettings);
-        //
-        // System.out.println(requestUrl);
-        //
-        // Gson gson = new Gson();
-        // JsonObject total = tApi.getTotalJsonObject(requestUrl, gson);
-        //
-        // List<TrafficIncidentDetails> trafficIncidentDetails =
-        // tApi.extractIncidentDetails(gson, total);
-        // List<TrafficIncidentLocation> trafficIncidentLocations =
-        // tApi.extractIncidentLocations(gson, total);
-        // List<TrafficIncidentTimes> trafficIncidentTimes =
-        // tApi.extractIncidentTimes(gson, total);
-        //
-        // System.out.println("Number of traffic incidents: " +
-        // trafficIncidentDetails.size());
-        //
-        // System.out.println(
-        // "---------------------------------------------------------------------------------------------------------------------------------------");
-        //
-        // trafficIncidentDetails.forEach(tid -> System.out
-        // .println("Type: " + tid.getTrafficIncidentType() + ", Status: " +
-        // tid.getTrafficIncidentStatus()));
-        //
-        // System.out.println(
-        // "---------------------------------------------------------------------------------------------------------------------------------------");
-        //
-        // trafficIncidentLocations.forEach(til -> System.out.println("Location:
-        // " + til.getStreetOfIncident()));
-        //
-        // System.out.println(
-        // "---------------------------------------------------------------------------------------------------------------------------------------");
-        //
-        // trafficIncidentTimes.forEach(tit ->
-        // System.out.println(tit.getEndTimeOfTrafficIncident()));
-
     }
 
 }

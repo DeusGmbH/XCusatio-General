@@ -373,19 +373,4 @@ public class RNVAPI extends APIService {
         return ceiledAverage;
     }
 
-    // testing
-    public static void main(String[] aflok) throws IOException {
-
-        RNVAPI rnvapi = new RNVAPI();
-        RNVContext rnvContext = rnvapi.get(null);
-        System.out.println(rnvContext.getTram()
-                .getDifferenceTimeInMinutes());
-        System.out.println(rnvContext.getTram()
-                .getLineLabel());
-        System.out.println(rnvContext.getTram()
-                .getStopsOfLines()
-                .get(LINE_LABEL));
-
-    }
-
 }

@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import com.deusgmbh.xcusatio.api.calendar.CalendarAPIConfig;
+import com.deusgmbh.xcusatio.api.data.calendar.CalendarAPIConfig;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
 
 import javafx.beans.property.ObjectProperty;

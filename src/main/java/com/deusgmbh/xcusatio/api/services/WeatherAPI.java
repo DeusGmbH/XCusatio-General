@@ -9,9 +9,7 @@ import org.json.JSONException;
 
 import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.context.data.WeatherContext;
-import com.deusgmbh.xcusatio.data.usersettings.Address;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
-import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -178,13 +176,6 @@ public class WeatherAPI extends APIService {
         double temperatureDouble = Double.parseDouble(temperature);
         int temperatureRounded = (int) Math.round(temperatureDouble);
         return temperatureRounded;
-    }
-
-    public static void main(String[] plutonium) throws JSONException, IOException, ParseException {
-        WeatherAPI wApi = new WeatherAPI();
-        UserSettings usersettings = new UserSettings(null, null, Sex.MALE,
-                new Address("6", "Coblitzallee", "68163", "Mannheim"));
-        WeatherContext context = wApi.get(usersettings);
     }
 
 }
