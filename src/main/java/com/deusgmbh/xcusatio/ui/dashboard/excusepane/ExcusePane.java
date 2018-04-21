@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
  *
  */
 public class ExcusePane extends VBox {
-    private static final double EXCUSE_OPTIONS_LABEL_PANE_HEIGHT_MULTIPLIER = 0.55;
+    private static final double EXCUSE_OPTIONS_LABEL_PANE_HEIGHT_MULTIPLIER = 0.9;
     private static final double EXCUSE_OPTIONS_PANE_HEIGHT_MULTIPLIER = 0.1;
 
     private ExcuseLabelPane excuseLabelPane;

@@ -33,6 +33,7 @@ public class CalendarAPI extends APIService {
     private static final Integer MAX_EVENTS = 1;
 
     public com.google.api.services.calendar.Calendar getCalendarService() throws IOException {
+        CalendarAPIConfig.authorize();
         return new com.google.api.services.calendar.Calendar.Builder(CalendarAPIConfig.HTTP_TRANSPORT,
                 CalendarAPIConfig.JSON_FACTORY, CalendarAPIConfig.credentials)
                         .setApplicationName(CalendarAPIConfig.APPLICATION_NAME)
