@@ -17,8 +17,15 @@ public class WeatherContext {
     private int snowHourly;
     private int rainHourly;
 
-    public WeatherContext() {
+    public WeatherContext(int temperature, String description, String windDirection, int windSpeed, int snowHourly,
+            int rainHourly) {
         super();
+        this.temperature = temperature;
+        this.description = description;
+        this.windDirection = windDirection;
+        this.windSpeed = windSpeed;
+        this.snowHourly = snowHourly;
+        this.rainHourly = rainHourly;
     }
 
     public int getTemperature() {

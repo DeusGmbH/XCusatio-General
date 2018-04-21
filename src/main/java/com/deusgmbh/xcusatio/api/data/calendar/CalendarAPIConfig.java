@@ -1,4 +1,4 @@
-package com.deusgmbh.xcusatio.api.calendar;
+package com.deusgmbh.xcusatio.api.data.calendar;
 
 import java.io.File;
 import java.io.IOException;

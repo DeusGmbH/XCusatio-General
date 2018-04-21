@@ -3,6 +3,11 @@ package com.deusgmbh.xcusatio.api.data.rnv;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 
+ * @author jan.leiblein@gmail.com
+ *
+ */
 public class Tram {
 
     // former TramDetails

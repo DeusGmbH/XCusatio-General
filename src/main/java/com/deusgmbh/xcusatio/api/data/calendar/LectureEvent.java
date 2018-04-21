@@ -2,6 +2,12 @@ package com.deusgmbh.xcusatio.api.data.calendar;
 
 import java.util.Date;
 
+/**
+ * 
+ * @author jan.leiblein@gmail.com
+ *
+ */
+
 public class LectureEvent extends TimeFormattingUtils {
     String lectureTitle;
     String lecturerName;

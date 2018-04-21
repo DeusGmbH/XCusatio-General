@@ -5,17 +5,21 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.ParseException;
 import java.util.logging.Logger;
 
 import com.deusgmbh.xcusatio.api.APIService;
 import com.deusgmbh.xcusatio.api.data.GeocodeData;
 import com.deusgmbh.xcusatio.data.usersettings.Address;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
-import com.deusgmbh.xcusatio.data.usersettings.UserSettings.Sex;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+/**
+ * 
+ * @author jan.leiblein@gmail.com
+ *
+ */
 
 public class GeocodeAPI extends APIService {
     private static final Logger LOGGER = Logger.getLogger(GeocodeAPI.class.getName());
@@ -133,48 +137,6 @@ public class GeocodeAPI extends APIService {
 
         int[] mapTiles = calculateTiles(spotCoordinates, ZOOM_LEVEL);
         return new GeocodeData(usersettings.getHome(), spotCoordinates, mapTiles);
-    }
-
-    // https://traffic.cit.api.here.com/traffic/6.0/incidents.json?bbox=52.5311%2C13.3644%3B52.5114%2C13.4035&criticality=minor&app_id=DemoAppId01082013GAL&app_code=AJKnXv84fjrb0KIHawS0Tg
-
-    /*
-     * 
-     * test section
-     * 
-     * 
-     * 
-     */
-    public static void main(String[] osmium) {
-        // "6 Jianguomen Outer St, JianWai DaJie, Chaoyang Qu, Beijing Shi,
-        // China, 100022"
-
-        UserSettings usersettings = new UserSettings(null, null, Sex.MALE,
-                new Address("6", "Jianguomen Outer St", "100022", "Beijing"));
-
-        GeocodeAPI gApi = new GeocodeAPI();
-
-        try {
-            GeocodeData geocodeData = gApi.get(usersettings);
-            double[] spotCoordinates = geocodeData.getSpotCoordinates();
-
-            for (double d : spotCoordinates) {
-                System.out.printf("%f ", d);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void printResponse() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void extractDesiredInfoFromResponse() throws ParseException {
-        // TODO Auto-generated method stub
-
     }
 
 }

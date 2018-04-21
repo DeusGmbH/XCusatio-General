@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import org.json.JSONException;
 
 import com.deusgmbh.xcusatio.api.APIService;
-import com.deusgmbh.xcusatio.api.calendar.CalendarAPIConfig;
+import com.deusgmbh.xcusatio.api.data.calendar.CalendarAPIConfig;
 import com.deusgmbh.xcusatio.api.data.calendar.LectureEvent;
 import com.deusgmbh.xcusatio.context.data.CalendarContext;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
@@ -127,13 +127,6 @@ public class CalendarAPI extends APIService {
         return (((endTimeMillis - now) / 1000) / 60);
     }
 
-    public static void main(String[] abcdefg) throws IOException, ParseException {
-        CalendarAPI cApi = new CalendarAPI();
-        CalendarContext calendarContext = cApi.get(null);
-        System.out.println(calendarContext.getLectureEvent()
-                .getLectureTitle());
-    }
-
     @Override
     public CalendarContext get(UserSettings usersettings) throws IOException, JSONException, ParseException {
         if (CalendarAPIConfig.hasCredentials()) {
@@ -149,9 +142,8 @@ public class CalendarAPI extends APIService {
             long minutesPassed = extractMinutesPassed(startTime);
 
             return new CalendarContext(currentLecture, minutesLeft, minutesPassed);
-        } else {
-            return null;
         }
+        return null;
     }
 
 }

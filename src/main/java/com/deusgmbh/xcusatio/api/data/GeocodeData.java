@@ -2,6 +2,12 @@ package com.deusgmbh.xcusatio.api.data;
 
 import com.deusgmbh.xcusatio.data.usersettings.Address;
 
+/**
+ * 
+ * @author jan.leiblein@gmail.com
+ *
+ */
+
 public class GeocodeData {
 
     private Address address;

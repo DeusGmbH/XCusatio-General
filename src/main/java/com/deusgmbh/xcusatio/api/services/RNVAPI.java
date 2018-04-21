@@ -29,6 +29,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/**
+ * 
+ * @author jan.leiblein@gmail.com
+ *
+ */
+
 public class RNVAPI extends APIService {
     private final static Logger LOGGER = Logger.getLogger(RNVAPI.class.getName());
 
@@ -365,21 +371,6 @@ public class RNVAPI extends APIService {
         }
         int ceiledAverage = (int) Math.ceil(sumOfDelayTimes / numberOfPositiveDelayTimes);
         return ceiledAverage;
-    }
-
-    // testing
-    public static void main(String[] aflok) throws IOException {
-
-        RNVAPI rnvapi = new RNVAPI();
-        RNVContext rnvContext = rnvapi.get(null);
-        System.out.println(rnvContext.getTram()
-                .getDifferenceTimeInMinutes());
-        System.out.println(rnvContext.getTram()
-                .getLineLabel());
-        System.out.println(rnvContext.getTram()
-                .getStopsOfLines()
-                .get(LINE_LABEL));
-
     }
 
 }
