@@ -16,6 +16,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+/**
+ * 
+ * @author jan.leiblein@gmail.com
+ *
+ */
+
 public class WeatherAPI extends APIService {
 
     private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";

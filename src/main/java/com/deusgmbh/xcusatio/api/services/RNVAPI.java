@@ -29,6 +29,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/**
+ * 
+ * @author jan.leiblein@gmail.com
+ *
+ */
+
 public class RNVAPI extends APIService {
     private final static Logger LOGGER = Logger.getLogger(RNVAPI.class.getName());
 

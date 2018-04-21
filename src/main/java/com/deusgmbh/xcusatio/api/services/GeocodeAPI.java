@@ -17,6 +17,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+/**
+ * 
+ * @author jan.leiblein@gmail.com
+ *
+ */
+
 public class GeocodeAPI extends APIService {
     private static final Logger LOGGER = Logger.getLogger(GeocodeAPI.class.getName());
     /**
