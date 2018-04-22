@@ -115,4 +115,14 @@ public enum Tag {
         return Arrays.asList(Tag.FUNNY, Tag.SUCK_UP, Tag.AGGRESSIVE)
                 .contains(this);
     }
+
+    @Override
+    public String toString() {
+        switch (this) {
+        case MALE:
+            return "M\u00e4nnlich";
+        default:
+            return super.toString();
+        }
+    }
 }

@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -30,7 +32,7 @@ public class CalendarAPI extends APIService {
 
     private static final String JSONSTR_DATE_TIME = "dateTime";
 
-    private static final Integer MAX_EVENTS = 1;
+    private static final Integer MAX_EVENTS = 10;
 
     public com.google.api.services.calendar.Calendar getCalendarService() throws IOException {
         CalendarAPIConfig.authorize();
@@ -50,7 +52,10 @@ public class CalendarAPI extends APIService {
         String eventSummary = firstEvent.getSummary();
         String[] lectureDetails = Pattern.compile(", ")
                 .split(eventSummary);
-        return lectureDetails[0];
+        if (lectureDetails.length > 0) {
+            return lectureDetails[0];
+        }
+        return null;
     }
 
     private String extractLecturerName(Event firstEvent) {
@@ -58,7 +63,10 @@ public class CalendarAPI extends APIService {
 
         String[] lectureDetails = Pattern.compile(", ")
                 .split(eventSummary);
-        return lectureDetails[1];
+        if (lectureDetails.length > 1) {
+            return lectureDetails[1];
+        }
+        return null;
     }
 
     private Date[] extractLectureTimes(Event firstEvent) throws ParseException {
@@ -79,17 +87,12 @@ public class CalendarAPI extends APIService {
         return lectureTimes;
     }
 
-    private LectureEvent extractLectureEvent(Event firstEvent) throws ParseException {
-        String title = extractLectureTitle(firstEvent);
-        String lecturerName = extractLecturerName(firstEvent);
-        Date startTime = extractLectureTimes(firstEvent)[0];
-        Date endTime = extractLectureTimes(firstEvent)[1];
-        return new LectureEvent(title, lecturerName, startTime, endTime);
-    }
-
     public List<Event> getEvents() throws IOException {
         com.google.api.services.calendar.Calendar service = getCalendarService();
 
+        Set<Entry<String, Object>> calendars = service.calendarList()
+                .list()
+                .entrySet();
         DateTime now = new DateTime(System.currentTimeMillis());
         Events events = service.events()
                 .list("primary")
