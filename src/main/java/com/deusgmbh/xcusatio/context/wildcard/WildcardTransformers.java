@@ -1,5 +1,6 @@
 package com.deusgmbh.xcusatio.context.wildcard;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -35,7 +36,8 @@ public class WildcardTransformers {
     }
 
     private WildcardTransformer getTemperatureWildcard() {
-        return new WildcardTransformer("temperature", "Wird ersetzt mit der aktuellen Temperatur in °C (Bsp.: '14°C').") {
+        return new WildcardTransformer("temperature",
+                "Wird ersetzt mit der aktuellen Temperatur in °C (Bsp.: '14°C').") {
             @Override
             public String replace(String source, APIContext apiContext) {
                 String temperatureText = apiContext.getWeather()
@@ -67,6 +69,25 @@ public class WildcardTransformers {
                 String nextWeekDate = dateInSevenDays.toString();
 
                 source = source.replaceAll(this.getIdentifierRegEx(), nextWeekDate);
+                return source;
+            }
+
+            @Override
+            public boolean isValidContext(APIContext apiContext) {
+                return true;
+            }
+        };
+    }
+
+    private WildcardTransformer getCurrentTimeWildcard() {
+        return new WildcardTransformer("currentTime", "Wird durch die aktuelle Uhrzeit ersetzt.") {
+            @Override
+            public String replace(String source, APIContext apiContext) {
+                SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm");
+                Date currentDate = new Date();
+                String currentDateString = sdfDate.format(currentDate);
+
+                source = source.replaceAll(this.getIdentifierRegEx(), currentDateString);
                 return source;
             }
 
