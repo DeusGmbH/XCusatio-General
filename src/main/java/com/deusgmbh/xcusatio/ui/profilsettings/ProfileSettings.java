@@ -8,7 +8,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import com.deusgmbh.xcusatio.api.data.calendar.CalendarAPIConfig;
+import com.deusgmbh.xcusatio.data.usersettings.ExcuseVibes;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
+import com.deusgmbh.xcusatio.data.usersettings.UserSettings.ExcuseVibeMode;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.concurrent.Task;
@@ -153,8 +155,12 @@ public class ProfileSettings extends FlowPane {
     private EventHandler<ActionEvent> saveProfileBtnAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent arg0) {
-            userSettings.set(new UserSettings(null, birthdayDatePicker.getValue(), sexTogglePane.getSex(),
-                    addressPane.getAdress()));
+            ExcuseVibes currentVibes = userSettings.get()
+                    .getExcuseVibes();
+            ExcuseVibeMode currentVibeMode = userSettings.get()
+                    .getExcuseVibeMode();
+            userSettings.set(new UserSettings(birthdayDatePicker.getValue(), sexTogglePane.getSex(),
+                    addressPane.getAdress(), currentVibeMode, currentVibes));
         }
     };
 

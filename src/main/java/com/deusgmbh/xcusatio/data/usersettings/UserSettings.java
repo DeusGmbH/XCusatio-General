@@ -25,7 +25,7 @@ public class UserSettings {
         this.excuseVibes = ExcuseVibes;
     }
 
-    public UserSettings(String googleCalendar, LocalDate birthdate, Sex sex, Address home) {
+    public UserSettings(LocalDate birthdate, Sex sex, Address home) {
         this(birthdate, sex, home, ExcuseVibeMode.AUTOMATIC, new ExcuseVibes(false, false, false));
     }
 
