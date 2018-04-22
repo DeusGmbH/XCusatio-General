@@ -41,8 +41,11 @@ public class CalendarAPI extends APIService {
 
     private Event getCurrentLectureEvent() throws IOException {
         List<Event> events = getEvents();
-        Event firstEvent = events.get(0);
-        return firstEvent;
+        if (!events.isEmpty()) {
+            Event firstEvent = events.get(0);
+            return firstEvent;
+        }
+        return null;
     }
 
     private Date[] extractLectureTimes(Event firstEvent) throws ParseException {
@@ -108,16 +111,18 @@ public class CalendarAPI extends APIService {
     public CalendarContext get(UserSettings usersettings) throws IOException, JSONException, ParseException {
         if (CalendarAPIConfig.hasCredentials()) {
             Event currentEvent = this.getCurrentLectureEvent();
-            String lectureTitle = currentEvent.getSummary();
-            Date startTime = extractLectureTimes(currentEvent)[0];
-            Date endTime = extractLectureTimes(currentEvent)[1];
+            if (currentEvent != null) {
+                String lectureTitle = currentEvent.getSummary();
+                Date startTime = extractLectureTimes(currentEvent)[0];
+                Date endTime = extractLectureTimes(currentEvent)[1];
 
-            LectureEvent currentLecture = new LectureEvent(lectureTitle, startTime, endTime);
+                LectureEvent currentLecture = new LectureEvent(lectureTitle, startTime, endTime);
 
-            long minutesLeft = extractMinutesLeft(endTime);
-            long minutesPassed = extractMinutesPassed(startTime);
+                long minutesLeft = extractMinutesLeft(endTime);
+                long minutesPassed = extractMinutesPassed(startTime);
 
-            return new CalendarContext(currentLecture, minutesLeft, minutesPassed);
+                return new CalendarContext(currentLecture, minutesLeft, minutesPassed);
+            }
         }
         return null;
     }

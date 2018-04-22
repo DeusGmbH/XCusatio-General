@@ -34,6 +34,8 @@ public class ExcuseFilter {
     public ExcuseFilter byContextTags(List<Tag> contextTags) {
         excuses = excuses.stream()
                 .filter(Excuse.hasContextTagsInExcuse(contextTags))
+                .collect(Collectors.toList());
+        excuses = excuses.stream()
                 .filter(Excuse.hasExcuseTagsInContext(contextTags))
                 .collect(Collectors.toList());
         return this;

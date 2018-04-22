@@ -1,5 +1,7 @@
 package com.deusgmbh.xcusatio.ui.dashboard;
 
+import java.io.File;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -13,11 +15,12 @@ import javafx.scene.layout.StackPane;
  *
  */
 public class ThumbGesturePane extends BorderPane {
-    private static final String THUMB_GESTURE_PATH = "file:src/main/resources/thumbGesture.png";
+    private static final String THUMB_GESTURE_PATH = "thumbGesture.png";
 
     public ThumbGesturePane(int thumbGestureValue) {
         Image thumbGestureImg = new Image(THUMB_GESTURE_PATH);
-
+        System.out.println(new File("testfile.txt").getAbsolutePath());
+        System.out.println(new File("testasdfile.txt").getPath());
         ImageView thumbGestureImgView = new ImageView(thumbGestureImg);
         thumbGestureImgView.fitWidthProperty()
                 .bind(this.widthProperty()

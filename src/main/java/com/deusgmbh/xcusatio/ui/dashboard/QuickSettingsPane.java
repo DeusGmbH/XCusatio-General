@@ -22,7 +22,7 @@ public class QuickSettingsPane extends VBox {
     private static final String MOOD_REGULATOR_TITLE = "Stimmungsregulator";
     private static final String AUTO_MOOD_TOGGLE_LABEL = "Automatisch";
     private static final String MOOD_HUMOR_LABEL = "Humor";
-    private static final String MOOD_AGGRESSION_LABEL = "Aggression";
+    private static final String MOOD_AGGRESSION_LABEL = "Aggressiv";
     private static final String MOOD_FAWN_LABEL = "Schleimen";
 
     private LabeledToggleSwitch autoMoodToggle;

@@ -125,11 +125,10 @@ public enum Tag {
             return "Weiblich";
         case AGGRESSIVE:
             return "Aggressiv";
-
         case FUNNY:
-            return "Lustig";
+            return "Humor";
         case SUCK_UP:
-            return "Schleimerisch";
+            return "Schleimen";
         case AGE_UNDER_18:
             return "Alter unter 18";
         case AGE_BETWEEN_18_AND_21:

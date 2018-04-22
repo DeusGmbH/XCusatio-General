@@ -64,13 +64,8 @@ public class ExcuseGenerator {
                 .sorted(Excuse.byLastUsed.reversed())
                 .collect(Collectors.toList());
 
-        List<Excuse> sortedByRating = sortedByLastUsed.stream()
+        List<Excuse> finalExcuses = sortedByLastUsed.stream()
                 .limit(getRelativeSize(sortedByLastUsed, 0.5))
-                .sorted(Excuse.byRating)
-                .collect(Collectors.toList());
-
-        List<Excuse> finalExcuses = sortedByRating.stream()
-                .limit(getRelativeSize(sortedByRating, 0.8))
                 .collect(Collectors.toList());
 
         if (finalExcuses.isEmpty()) {

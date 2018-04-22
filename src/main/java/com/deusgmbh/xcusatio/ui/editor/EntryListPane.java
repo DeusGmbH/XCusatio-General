@@ -30,7 +30,7 @@ import javafx.scene.layout.Priority;
 
 public abstract class EntryListPane<T> extends BorderPane {
 
-    private static final String ENTRY_LIST_STYLESHEET_PATH = "file:assets/entry_list_pane_stylesheet.css";
+    private static final String ENTRY_LIST_STYLESHEET_PATH = "assets/entry_list_pane_stylesheet.css";
 
     protected TableView<T> entryTable;
     protected Button addEntryButton;

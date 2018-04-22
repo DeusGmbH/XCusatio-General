@@ -27,7 +27,7 @@ import javafx.scene.control.TabPane;
  */
 
 public class Editor extends TabPane {
-    private static final String EDITOR_STYLESHEET_PATH = "file:assets/editor_stylesheet.css";
+    private static final String EDITOR_STYLESHEET_PATH = "assets/editor_stylesheet.css";
 
     private static final String EXCUSE_TAB_TITLE = "Ausreden";
     private static final String LECTURER_TAB_TITLE = "Dozenten";

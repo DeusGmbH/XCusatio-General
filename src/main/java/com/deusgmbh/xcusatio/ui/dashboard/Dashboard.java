@@ -29,7 +29,7 @@ import javafx.scene.layout.HBox;
  */
 
 public class Dashboard extends BorderPane {
-    private static final String QUICK_SETTINGS_STYLESHEET_PATH = "file:assets/quick_settings_stylesheet.css";
+    private static final String QUICK_SETTINGS_STYLESHEET_PATH = "assets/quick_settings_stylesheet.css";
 
     private static final double QUICK_SETTINGS_PANE_WIDTH_MULTIPLIER = 0.3;
     private static final double SCENARIO_BUTTON_PANE_HEIGHT_MULTIPLIER = 0.15;

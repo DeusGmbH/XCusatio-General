@@ -1,11 +1,32 @@
 apply plugin: 'application'
 
+version = '1.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 mainClassName = 'com.deusgmbh.xcusatio.XCusatio'
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File',  
+        	'Implementation-Version': version,
+        	'Main-Class': 'com.deusgmbh.xcusatio.XCusatio'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 
 jar {
 	manifest {
 	    attributes 'Main-Class': 'com.deusgmbh.xcusatio.XCusatio'
 	}
+	from('assets') {
+     include '**/*.css'
+     into "assets"
+  }
+ 
 }
 
 repositories {
