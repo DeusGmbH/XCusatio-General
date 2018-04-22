@@ -272,7 +272,7 @@ public class ExcusesManager extends DataManager<Excuse> {
                                 .addTag(Tag.FEMALE)
                                 .addTag(Tag.WARM)
                                 .addTag(Tag.SOFTWARE_ENGINEERING))
-                .add(new Excuse("Schon 10 Uhr? Was wollen wir denn zum Mittag heute machen?",
+                .add(new Excuse("Schon $currentTime$ Uhr? Was wollen wir denn heute noch machen?",
                         ScenarioType.WHEELOFFORTUNE).addTag(Tag.MALE)
                                 .addTag(Tag.FEMALE)
                                 .addTag(Tag.AGE_UNDER_18)
