@@ -589,7 +589,7 @@ public class ExcusesManager extends DataManager<Excuse> {
                 .add(new Excuse("Entschuldigen Sie, aber mein Fahrrad wurde gestohlen.",
                         ScenarioType.DELAYED_SUBMISSION).addTag(Tag.MALE)
                                 .addTag(Tag.FEMALE)
-                                .addTag(Tag.BICICLE)
+                                .addTag(Tag.BICYCLE)
                                 .addTag(Tag.AGE_UNDER_18)
                                 .addTag(Tag.AGE_BETWEEN_18_AND_21)
                                 .addTag(Tag.AGE_BETWEEN_21_AND_30)

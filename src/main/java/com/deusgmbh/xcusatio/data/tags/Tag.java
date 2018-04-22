@@ -28,7 +28,7 @@ public enum Tag {
     HOT(TagFilterType.CONTAINED_IN_CONTEXT),
     SNOW(TagFilterType.CONTAINED_IN_CONTEXT),
     HIGH_TRAFFIC(TagFilterType.CONTAINED_IN_CONTEXT),
-    BICICLE(TagFilterType.CONTAINED_IN_CONTEXT, true),
+    BICYCLE(TagFilterType.CONTAINED_IN_CONTEXT, true),
     TRAIN_CANCELLED(TagFilterType.CONTAINED_IN_CONTEXT),
     TRAIN_DELAYED(TagFilterType.CONTAINED_IN_CONTEXT),
     TRAIN_HEAVILY_DELAYED(TagFilterType.CONTAINED_IN_CONTEXT),
@@ -121,6 +121,71 @@ public enum Tag {
         switch (this) {
         case MALE:
             return "M\u00e4nnlich";
+        case FEMALE:
+            return "Weiblich";
+        case AGGRESSIVE:
+            return "Aggressiv";
+
+        case FUNNY:
+            return "Lustig";
+        case SUCK_UP:
+            return "Schleimerisch";
+        case AGE_UNDER_18:
+            return "Alter unter 18";
+        case AGE_BETWEEN_18_AND_21:
+            return "Alter zwischen 18 und 21";
+        case AGE_BETWEEN_21_AND_30:
+            return "Alter zwischen 21 und 30";
+        case AGE_BETWEEN_30_AND_50:
+            return "Alter zwischen 30 und 50";
+        case AGE_OVER_50:
+            return "Alter \u00fcber 50";
+        case CAT:
+            return "Katze";
+        case DOG:
+            return "Hund";
+        case FOOTBALL:
+            return "Fu\u00dfball";
+        case SOFTWARE_ENGINEERING:
+            return "Software Engineering";
+        case AI:
+            return "K\u00fcnstliche Intelligenz";
+        case HANGOVER:
+            return "Verkatert";
+        case RAINY:
+            return "Regnerisch";
+        case WINDY:
+            return "Windig";
+        case STORM:
+            return "St\u00fcrmisch";
+        case COLD:
+            return "Kalt";
+        case MILD:
+            return "Mild";
+        case WARM:
+            return "Warm";
+        case HOT:
+            return "Hei\u00df";
+        case SNOW:
+            return "Schnee";
+        case HIGH_TRAFFIC:
+            return "Viel Verkehr";
+        case BICYCLE:
+            return "Fahrrad";
+        case TRAIN_CANCELLED:
+            return "Zug ausgefallen";
+        case TRAIN_DELAYED:
+            return "Zug versp\u00e4tet";
+        case TRAIN_HEAVILY_DELAYED:
+            return "Zug extrem versp\u00e4tet";
+        case BUS:
+            return "Bus";
+        case ACCIDENT:
+            return "Unfall";
+        case CONSTRUCTION:
+            return "Baustelle";
+        case SETLX:
+            return "SetlX";
         default:
             return super.toString();
         }
