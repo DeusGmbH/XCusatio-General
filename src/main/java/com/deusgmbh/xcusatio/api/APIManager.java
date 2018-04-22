@@ -18,6 +18,7 @@ import com.deusgmbh.xcusatio.context.data.TrafficContext;
 import com.deusgmbh.xcusatio.context.data.WeatherContext;
 import com.deusgmbh.xcusatio.data.scenarios.Scenario;
 import com.deusgmbh.xcusatio.data.usersettings.UserSettings;
+import com.google.api.client.util.DateTime;
 
 /**
  * 
@@ -42,13 +43,26 @@ public class APIManager {
             return null;
         }
 
-        // TODO: Maybe some performance optimization is necessary here:
-        // investigate Futures and completableFutures
-
+        DateTime beforeAPICall = new DateTime(System.currentTimeMillis());
         WeatherContext weather = callWeatherAPI(userSettings);
+        long weathertime = beforeAPICall.getValue() - new DateTime(System.currentTimeMillis()).getValue();
+
+        beforeAPICall = new DateTime(System.currentTimeMillis());
         TrafficContext traffic = callTrafficAPI(userSettings);
+        long traffictime = beforeAPICall.getValue() - new DateTime(System.currentTimeMillis()).getValue();
+
+        beforeAPICall = new DateTime(System.currentTimeMillis());
         RNVContext rnv = calRNVAPI(userSettings);
+        long rnvtime = beforeAPICall.getValue() - new DateTime(System.currentTimeMillis()).getValue();
+
+        beforeAPICall = new DateTime(System.currentTimeMillis());
         CalendarContext calendar = callCalendarAPI(userSettings);
+        long calendartime = beforeAPICall.getValue() - new DateTime(System.currentTimeMillis()).getValue();
+
+        LOGGER.info("Request time of " + weathertime + " ms for Weather API");
+        LOGGER.info("Request time of " + traffictime + " ms for Traffic API");
+        LOGGER.info("Request time of " + rnvtime + " ms for RNV API");
+        LOGGER.info("Request time of " + calendartime + " ms for Calendar API");
 
         return new APIContext(weather, traffic, rnv, calendar);
     }

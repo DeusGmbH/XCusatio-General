@@ -40,7 +40,6 @@ public class RNVAPI extends APIService {
 
     private final static String DUALE_HOCHSCHULE_STATION_ID = "2521";
     private final static String LINE_LABEL = "5";
-    private final static String PARADEPLATZ = "2451"; // for tests only
     private final static String BASE_URL = "http://rnv.the-agent-factory.de:8080/easygo2/api";
     private final static String RNV_API_TOKEN = "l1kjqp3r2m788o0oouolaeg8ui";
 
@@ -70,19 +69,25 @@ public class RNVAPI extends APIService {
 
     private final static SimpleDateFormat RNV_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd+hh:mm:ss");
 
-    private URL[] requestUrls;
-    private Map<String, List<String>> stopsOfLines;
+    private static final long VALID_CACHE_TIME = 10000;
 
-    public RNVAPI() {
-        this.requestUrls = this.buildRequestUrls();
-        this.stopsOfLines = new LinkedHashMap<>();
+    private static URL[] requestUrls;
+    private static Map<String, List<String>> stopsOfLines;
+
+    static {
+        RNVAPI.requestUrls = RNVAPI.buildRequestUrls();
+        RNVAPI.stopsOfLines = new LinkedHashMap<>();
         List<String> stopsOfLine5;
         try {
             stopsOfLine5 = getLineStops(LINE_LABEL);
         } catch (IOException e) {
             stopsOfLine5 = new ArrayList<>();
         }
-        this.stopsOfLines.put(LINE_LABEL, stopsOfLine5);
+        RNVAPI.stopsOfLines.put(LINE_LABEL, stopsOfLine5);
+    }
+
+    public RNVAPI() {
+
     }
 
     /**
@@ -90,11 +95,7 @@ public class RNVAPI extends APIService {
      */
     @Override
     public RNVContext get(UserSettings usersettings) throws UnsupportedEncodingException, IOException {
-
-        Tram tram = extractTram(DUALE_HOCHSCHULE_STATION_ID);
-
-        RNVContext rnvContext = new RNVContext(tram);
-        return rnvContext;
+        return new RNVContext(extractTram(DUALE_HOCHSCHULE_STATION_ID));
     }
 
     private Tram extractTram(String searchedStationId) throws IOException {
@@ -142,7 +143,7 @@ public class RNVAPI extends APIService {
         return delayTime;
     }
 
-    private List<String> getLineStops(String lineLabel) throws IOException {
+    private static List<String> getLineStops(String lineLabel) throws IOException {
         Gson gson = new Gson();
         JsonArray totalLines = getLinesPackage();
         JsonObject totalStations = getStationsPackage();
@@ -176,7 +177,7 @@ public class RNVAPI extends APIService {
         return stopNamesOfLine;
     }
 
-    private Map<String, String> getStationIdNamesMap(Gson gson, JsonObject totalStations) {
+    private static Map<String, String> getStationIdNamesMap(Gson gson, JsonObject totalStations) {
         JsonArray stationsArray = gson.fromJson(totalStations.get(JSONARR_STATIONS), JsonArray.class);
         List<JsonObject> stationObjects = new LinkedList<>();
 
@@ -256,7 +257,7 @@ public class RNVAPI extends APIService {
      * 
      */
 
-    private URL[] buildRequestUrls() {
+    private static URL[] buildRequestUrls() {
         URL[] requestUrls = new URL[4];
         try {
             requestUrls[0] = new URL(STATIONS_PACKAGE);
@@ -271,36 +272,36 @@ public class RNVAPI extends APIService {
 
     }
 
-    private JsonObject getStationsPackage() throws IOException {
-        URL requestUrl = this.requestUrls[0];
+    private static JsonObject getStationsPackage() throws IOException {
+        URL requestUrl = RNVAPI.requestUrls[0];
         JsonElement element = getJsonFromWebRequest(requestUrl);
         JsonObject stationsObject = element.getAsJsonObject();
         return stationsObject;
 
     }
 
-    private JsonArray getLinesPackage() throws IOException {
-        URL requestUrl = this.requestUrls[1];
+    private static JsonArray getLinesPackage() throws IOException {
+        URL requestUrl = RNVAPI.requestUrls[1];
         JsonElement element = getJsonFromWebRequest(requestUrl);
         JsonArray linesObject = element.getAsJsonArray();
         return linesObject;
     }
 
     private JsonObject getStationsMonitorPackage() throws IOException {
-        URL requestUrl = this.requestUrls[2];
+        URL requestUrl = RNVAPI.requestUrls[2];
         JsonElement element = getJsonFromWebRequest(requestUrl);
         JsonObject stationsMonitorObject = element.getAsJsonObject();
         return stationsMonitorObject;
     }
 
     private JsonArray getNewsEntriesPackage() throws IOException {
-        URL requestUrl = this.requestUrls[3];
+        URL requestUrl = RNVAPI.requestUrls[3];
         JsonElement element = getJsonFromWebRequest(requestUrl);
         JsonArray newsEntryObject = element.getAsJsonArray();
         return newsEntryObject;
     }
 
-    private JsonElement getJsonFromWebRequest(URL requestUrl) throws IOException {
+    private static JsonElement getJsonFromWebRequest(URL requestUrl) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("RNV_API_TOKEN", RNV_API_TOKEN);
@@ -347,7 +348,7 @@ public class RNVAPI extends APIService {
         return Integer.parseInt(clockTime.substring(3, 5));
     }
 
-    private String removeQuotes(String stringWithinQuotes) {
+    private static String removeQuotes(String stringWithinQuotes) {
         try {
             if (!(stringWithinQuotes.matches("\".*\""))) {
                 return stringWithinQuotes;

@@ -52,6 +52,11 @@ public class ContextHandler {
                         .findAny()
                         .ifPresent(lecturer -> context.setLecturer(lecturer));
             }
+
+            if (context.getLecturer() == null) {
+                context.getApiContext()
+                        .setCalendar(null);
+            }
         }
 
         if (context.getLecturer() == null || context.getExcuseVibeMode()

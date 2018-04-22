@@ -30,6 +30,7 @@ public class WildcardTransformers {
         wildcardTransformers.add(this.getMinutesPassedWildcard());
         wildcardTransformers.add(this.getRainHourlyWildcard());
         wildcardTransformers.add(this.getTrafficIncidentTypWildcard());
+        wildcardTransformers.add(this.getCurrentTimeWildcard());
         wildcardTransformers.add(this.getSnowHourlyWildcard());
         wildcardTransformers.add(this.getTramLineLabelWildcard());
         wildcardTransformers.add(this.getWindSpeedWildcard());

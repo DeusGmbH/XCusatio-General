@@ -10,14 +10,12 @@ import java.util.Date;
 
 public class LectureEvent extends TimeFormattingUtils {
     String lectureTitle;
-    String lecturerName;
     Date startTime;
     Date endTime;
 
-    public LectureEvent(String lectureTitle, String lecturerName, Date startTime, Date endTime) {
+    public LectureEvent(String lectureTitle, Date startTime, Date endTime) {
         super();
         this.lectureTitle = lectureTitle;
-        this.lecturerName = lecturerName;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -28,14 +26,6 @@ public class LectureEvent extends TimeFormattingUtils {
 
     public void setLectureTitle(String lectureTitle) {
         this.lectureTitle = lectureTitle;
-    }
-
-    public String getLecturerName() {
-        return lecturerName;
-    }
-
-    public void setLecturerName(String lecturerName) {
-        this.lecturerName = lecturerName;
     }
 
     public Date getStartTime() {

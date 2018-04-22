@@ -5,10 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 import org.json.JSONException;
 
@@ -48,27 +45,6 @@ public class CalendarAPI extends APIService {
         return firstEvent;
     }
 
-    private String extractLectureTitle(Event firstEvent) {
-        String eventSummary = firstEvent.getSummary();
-        String[] lectureDetails = Pattern.compile(", ")
-                .split(eventSummary);
-        if (lectureDetails.length > 0) {
-            return lectureDetails[0];
-        }
-        return null;
-    }
-
-    private String extractLecturerName(Event firstEvent) {
-        String eventSummary = firstEvent.getSummary();
-
-        String[] lectureDetails = Pattern.compile(", ")
-                .split(eventSummary);
-        if (lectureDetails.length > 1) {
-            return lectureDetails[1];
-        }
-        return null;
-    }
-
     private Date[] extractLectureTimes(Event firstEvent) throws ParseException {
         String startTime = firstEvent.getStart()
                 .get(JSONSTR_DATE_TIME)
@@ -90,9 +66,6 @@ public class CalendarAPI extends APIService {
     public List<Event> getEvents() throws IOException {
         com.google.api.services.calendar.Calendar service = getCalendarService();
 
-        Set<Entry<String, Object>> calendars = service.calendarList()
-                .list()
-                .entrySet();
         DateTime now = new DateTime(System.currentTimeMillis());
         Events events = service.events()
                 .list("primary")
@@ -135,12 +108,11 @@ public class CalendarAPI extends APIService {
     public CalendarContext get(UserSettings usersettings) throws IOException, JSONException, ParseException {
         if (CalendarAPIConfig.hasCredentials()) {
             Event currentEvent = this.getCurrentLectureEvent();
-            String lectureTitle = extractLectureTitle(currentEvent);
-            String lecturerName = extractLecturerName(currentEvent);
+            String lectureTitle = currentEvent.getSummary();
             Date startTime = extractLectureTimes(currentEvent)[0];
             Date endTime = extractLectureTimes(currentEvent)[1];
 
-            LectureEvent currentLecture = new LectureEvent(lectureTitle, lecturerName, startTime, endTime);
+            LectureEvent currentLecture = new LectureEvent(lectureTitle, startTime, endTime);
 
             long minutesLeft = extractMinutesLeft(endTime);
             long minutesPassed = extractMinutesPassed(startTime);

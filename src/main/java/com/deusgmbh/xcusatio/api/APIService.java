@@ -30,7 +30,6 @@ public abstract class APIService {
     public String getJsonStringFromInputStream(URL requestUrl) throws IOException {
         InputStream is = requestUrl.openStream();
         return IOUtils.toString(is, "UTF-8");
-        // TODO close inputStream ?
     }
 
     public JsonObject getTotalJsonObject(URL requestUrl, Gson gson) throws IOException {

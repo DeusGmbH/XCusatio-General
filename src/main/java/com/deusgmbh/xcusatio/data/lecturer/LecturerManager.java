@@ -36,6 +36,7 @@ public class LecturerManager extends DataManager<Lecturer> {
                 .add(new Lecturer("Kruse").addLecture("Programmieren in C")
                         .addLecture("Grundlagen des Softwareengineering 1")
                         .addLecture("Grundlagen des Softwareengineering 2")
+                        .addLecture("Grundlagen des Softwareengineering")
                         .addTag(Tag.FUNNY)
                         .addTag(Tag.SUCK_UP))
                 .add(new Lecturer("Lohnert").addLecture("Betriebssysteme")
@@ -45,25 +46,19 @@ public class LecturerManager extends DataManager<Lecturer> {
                         .addLecture("Programmieren in Java")
                         .addTag(Tag.SUCK_UP)
                         .addTag(Tag.FUNNY)
-
                         .addTag(Tag.AGGRESSIVE))
                 .add(new Lecturer("Glaser").addLecture("Digitaltechnik")
                         .addLecture("Rechnerarchitektur")
                         .addTag(Tag.FUNNY)
                         .addTag(Tag.FOOTBALL)
-                        .addTag(Tag.HANGOVER)
-
-                )
+                        .addTag(Tag.HANGOVER))
                 .add(new Lecturer("Stargardt").addLecture("E-Business")
                         .addTag(Tag.FUNNY)
                         .addTag(Tag.DOG)
                         .addTag(Tag.CAT))
-                .add(new Lecturer("Reidelbach").addLecture("Netztechnik")
-
-                )
-                .add(new Lecturer("H\u00fcbl").addLecture("Statistik")
-                        .addLecture("Codierungstheorie")
-                        .addLecture("Angewandte Informatik")
+                .add(new Lecturer("Reidelbach").addLecture("Netztechnik"))
+                .add(new Lecturer("H\u00fcbl").addLecture("Codierungstheorie")
+                        .addLecture("Angewandte Mathematik")
                         .addTag(Tag.BICYCLE)
                         .addTag(Tag.FUNNY))
                 .add(new Lecturer("Forster").addLecture("Intercultural Communication")
@@ -76,9 +71,7 @@ public class LecturerManager extends DataManager<Lecturer> {
                         .addLecture("Gesch\u00e4ftsprozesse")
                         .addTag(Tag.FUNNY)
                         .addTag(Tag.FOOTBALL)
-                        .addTag(Tag.HANGOVER)
-
-        );
+                        .addTag(Tag.HANGOVER));
         return this;
     }
 }

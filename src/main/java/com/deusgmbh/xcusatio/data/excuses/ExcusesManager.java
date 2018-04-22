@@ -272,7 +272,7 @@ public class ExcusesManager extends DataManager<Excuse> {
                                 .addTag(Tag.FEMALE)
                                 .addTag(Tag.WARM)
                                 .addTag(Tag.SOFTWARE_ENGINEERING))
-                .add(new Excuse("Schon $currentTime$ Uhr? Was wollen wir denn heute noch machen?",
+                .add(new Excuse("Schon $lectureEvent$ Uhr? Was wollen wir denn heute noch machen?",
                         ScenarioType.WHEELOFFORTUNE).addTag(Tag.MALE)
                                 .addTag(Tag.FEMALE)
                                 .addTag(Tag.AGE_UNDER_18)
@@ -531,11 +531,6 @@ public class ExcusesManager extends DataManager<Excuse> {
                                 .addTag(Tag.AGE_UNDER_18)
                                 .addTag(Tag.AGE_BETWEEN_21_AND_30)
                                 .addTag(Tag.SUCK_UP))
-                .add(new Excuse("Lassen Sie mich bitte in Ruhe. Ich bin auf Mayo-Di\u00e4t.",
-                        ScenarioType.WHEELOFFORTUNE).addTag(Tag.MALE)
-                                .addTag(Tag.FEMALE)
-                                .addTag(Tag.AGE_BETWEEN_18_AND_21)
-                                .addTag(Tag.FUNNY))
                 .add(new Excuse("Ich bin nicht zu sp\u00e4t! Sie sind zu fr\u00fch!", ScenarioType.LATE_ARRIVAL)
                         .addTag(Tag.MALE)
                         .addTag(Tag.FEMALE)
