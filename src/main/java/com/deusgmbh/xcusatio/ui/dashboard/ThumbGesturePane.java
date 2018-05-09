@@ -15,7 +15,7 @@ import javafx.scene.layout.StackPane;
  *
  */
 public class ThumbGesturePane extends BorderPane {
-    private static final String THUMB_GESTURE_PATH = "thumbGesture.png";
+    private static final String THUMB_GESTURE_PATH = "file:thumbGesture.png";
 
     public ThumbGesturePane(int thumbGestureValue) {
         Image thumbGestureImg = new Image(THUMB_GESTURE_PATH);

@@ -40,8 +40,8 @@ import javafx.stage.StageStyle;
  */
 
 public class XCusatioWindow extends Application {
-    private static final String SCENE_STYLESHEET_PATH = "assets/stage_stylesheet.css";
-    private static final String ICON_IMAGE_PATH = "icon.png";
+    private static final String SCENE_STYLESHEET_PATH = "file:assets/stage_stylesheet.css";
+    private static final String ICON_IMAGE_PATH = "file:src/main/resources/icon.png";
 
     private static final String WINDOW_TITLE = "Deus GmbH - xCusatio";
 

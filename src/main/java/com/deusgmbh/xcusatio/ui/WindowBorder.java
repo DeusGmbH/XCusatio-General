@@ -16,7 +16,7 @@ import javafx.scene.layout.HBox;
  */
 
 public class WindowBorder extends HBox {
-    private static final String WINDOW_BORDER_STYLESHEET_PATH = "assets/window_border_stylesheet.css";
+    private static final String WINDOW_BORDER_STYLESHEET_PATH = "file:assets/window_border_stylesheet.css";
 
     private static final String CLOSE_BUTTON_UNICODE = "\u274C";
     private static final String FULLSCREEN_BUTTON_UNICODE = "\u25FB";

@@ -39,7 +39,7 @@ import javafx.scene.layout.VBox;
  */
 
 public class ProfileSettings extends FlowPane {
-    private static final String PROFILE_SETTINGS_STYLESHEET_PATH = "assets/profile_settings_stylesheet.css";
+    private static final String PROFILE_SETTINGS_STYLESHEET_PATH = "file:assets/profile_settings_stylesheet.css";
 
     private static final String SEX_TOGGLE_PANE_LABEL_TEXT = "Geschlecht";
     private static final String AGE_LABEL_TEXT = "Geburtstag";

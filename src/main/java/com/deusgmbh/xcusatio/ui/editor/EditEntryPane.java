@@ -33,7 +33,7 @@ import javafx.scene.layout.VBox;
  */
 
 public abstract class EditEntryPane<T> extends BorderPane {
-    private static final String EDIT_ENTRY_STYLESHEET_PATH = "assets/edit_entry_stylesheet.css";
+    private static final String EDIT_ENTRY_STYLESHEET_PATH = "file:assets/edit_entry_stylesheet.css";
 
     private static final String EDITOR_TITLE = "Editor";
     private static final String SUBMIT_EDITED_ENTRY_BTN_LABEL = "Speichern";
